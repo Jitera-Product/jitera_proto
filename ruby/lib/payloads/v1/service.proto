@@ -1,0 +1,71 @@
+syntax = "proto3";
+package schema.v1;
+
+import "v1/backend.proto";
+import "v1/frontend.proto";
+
+service CoreService {
+  rpc ListTables (ListTablesRequest) returns (ListTablesResponse) {}
+	rpc ListControllers (ListControllersRequest) returns (ListControllersResponse) {}
+	rpc ListFeatures (ListFeaturesRequest) returns (ListFeaturesResponse) {}
+	rpc ListAuthorizations (ListAuthorizationsRequest) returns (ListAuthorizationsResponse) {}
+	rpc ListLocalizations (ListLocalizationsRequest) returns (ListLocalizationsResponse) {}
+	rpc ListAppPages (ListAppPagesRequest) returns (ListAppPagesResponse) {}
+	rpc GetBackend (GetBackendRequest) returns (GetBackendResponse) {}
+}
+
+message ListAppPagesRequest {
+	int32 project_id = 1;
+}
+
+message ListAppPagesResponse {
+	repeated AppPage app_pages = 1;
+}
+
+message GetBackendRequest {
+	int32 project_id = 1;
+}
+
+message GetBackendResponse {
+	Backend backend = 1;
+}
+
+message ListTablesRequest {
+	int32 project_id = 1;
+}
+
+message ListTablesResponse {
+	repeated Table tables = 1;
+}
+
+message ListControllersRequest {
+	int32 project_id = 1;
+}
+
+message ListControllersResponse {
+	repeated Controller controllers = 1;
+}
+
+message ListFeaturesRequest {
+	int32 project_id = 1;
+}
+
+message ListFeaturesResponse {
+	repeated Feature features = 1;
+}
+
+message ListAuthorizationsRequest {
+	int32 project_id = 1;
+}
+
+message ListAuthorizationsResponse {
+	repeated Authorization authorizations = 1;
+}
+
+message ListLocalizationsRequest {
+	int32 project_id = 1;
+}
+
+message ListLocalizationsResponse {
+	repeated Localization localizations = 1;
+}

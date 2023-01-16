@@ -1,0 +1,29 @@
+PATH
+  remote: .
+  specs:
+    jitera_proto (0.0.1)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    google-protobuf (3.21.12)
+    googleapis-common-protos-types (1.5.0)
+      google-protobuf (~> 3.14)
+    grpc (1.50.0)
+      google-protobuf (~> 3.21)
+      googleapis-common-protos-types (~> 1.0)
+    grpc-tools (1.50.0)
+    rake (13.0.6)
+
+PLATFORMS
+  arm64-darwin-21
+
+DEPENDENCIES
+  google-protobuf
+  grpc
+  grpc-tools
+  jitera_proto!
+  rake (~> 13.0)
+
+BUNDLED WITH
+   2.3.16

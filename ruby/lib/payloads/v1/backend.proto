@@ -1,0 +1,557 @@
+syntax = "proto3";
+package schema.v1;
+
+message Project {
+	string id = 1;
+	string project_name = 2;
+	int32 project_id = 3;
+	optional Infra infra = 4;
+
+	oneof generate_type {
+		ProjectExport project_export = 9;
+		ProjectPreview project_preview = 10;
+	}
+}
+
+message ProjectExport {
+	int32 id = 1;
+}
+
+message ProjectPreview {
+	int32 id = 1;
+}
+
+message Infra {
+	string path = 1;
+}
+
+message Backend {
+	repeated Table tables = 4;
+	repeated Controller controllers = 5;
+	repeated Feature features = 6;
+	repeated Authorization authorizations = 7;
+	repeated Localization localizations = 8;
+}
+
+message Localization {
+	string lang = 1;
+	repeated Namespace namespaces = 3;
+
+	message Namespace {
+		string name = 1;
+		repeated Translate translates = 2;
+	}
+
+	message Translate {
+		string key = 1;
+		string value = 2;
+	}
+}
+
+enum DataTypeName {
+	BOOLEAN = 0;
+	INTEGER = 1;
+	FLOAT = 2;
+	STRING = 3;
+	TEXT = 4;
+	DATE = 5;
+	DATETIME = 6;
+	ARRAY = 7;
+	OBJECT = 8;
+	PAGE_SIZE = 9;
+	PAGE_NUMBER = 10;
+	FILE = 11;
+	TABLE = 12;
+	ENUM = 13;
+}
+
+message DataType {
+	DataTypeName name = 1;
+}
+
+enum Operator {
+	WHERE = 0;
+	PAGINATION = 1;
+	ORDER = 2;
+
+	ORDER_ASC = 3;
+	ORDER_DESC = 4;
+
+	JOIN_AND = 5;
+	JOIN_OR = 6;
+
+	EQUAL = 7;
+	START_WITH = 8;
+	END_WITH = 9;
+	CONTAIN = 10;
+	NOT_EQUAL = 11;
+	GREATER_THAN = 12;
+	LESS_THAN = 13;
+	GREATER_OR_EQUAL_THAN = 14;
+	LESS_OR_EQUAL_THAN = 15;
+
+	WHERE_AND = 16;
+	WHERE_OR = 17;
+}
+
+message Authorization {
+	string name = 1;
+	int32 id = 2;
+	repeated Policy policies = 3;
+
+	message Policy {
+		string resource = 3;
+		RoleBinding role_binding = 4;
+		Rule rule = 5;
+		Scope scope = 6;
+	
+		message RoleBinding {
+			string table = 1;
+			string column = 2;
+			string role = 3;
+		}
+	
+		enum Scope {
+			ALL = 0;
+			ASSOCIATED = 1;
+		}
+	
+		message Rule {
+			repeated Operand operands = 1;
+			repeated Operator operators = 2;
+	
+			message Operand {
+				oneof operand {
+					Expr expr = 1;
+					Rule rule = 2;
+				}
+			}
+	
+			message Expr {
+				string column = 1;
+				oneof map_to {
+					string value = 2;
+					string paths = 3;
+				}
+				DataType data_type = 4;
+				Operator operator = 5;
+			}
+		}
+	}	
+}
+
+message Feature {
+	FeatureName name = 1;
+	Environment env = 2;
+	oneof types {
+		EmailLogin email_login = 3;
+		JPBankData jp_bank_data = 4;
+		BasicAuth basic_auth = 5;
+		TwilioLogin twilio_login = 6;
+		Rollbar rollbar = 7;
+		DeepLink deep_link = 8;
+		Stripe stripe = 9;
+		LineLogin line_login = 10;
+	}
+
+	message EmailLogin {
+		repeated string tables = 1;
+		int32 password_min_length = 2;
+		int32 remember_for = 3;
+		int32 reset_password_within = 4;
+		int32 maximum_retries = 5;
+		UnlockStrategy unlock_strategy = 6;
+		int32 unlock_in = 7;
+		string password_regex = 8;
+		bool confirmation_email = 9;
+
+		enum UnlockStrategy {
+			TIME = 0;
+			EMAIL = 1;
+			BOTH = 2;
+		}
+	}
+
+	message JPBankData { }
+
+	message BasicAuth {
+		string username = 1;
+		string password = 2;
+	}
+
+	message TwilioLogin {
+		repeated string user_tables = 1;
+		string service_id = 2;
+		string sid = 3;
+		string token = 4;
+		int32 otp_length = 5;
+	}
+
+	message Rollbar {
+		string access_token = 1;
+	}
+
+	message DeepLink {
+		string ios_app_store_id = 1;
+		string ios_bundle_id = 2;
+		string ios_app_link = 3;
+		string android_package_name = 4;
+		string android_cert_fingerprints = 5;
+		string android_app_link = 6;
+		string firebase_domain = 7;
+	}
+	
+	message Stripe {
+		repeated string subscription_tables = 1;
+		repeated string user_tables = 2;
+		string public_key = 3;
+		string secret_key = 4;
+		string stripe_endpoint_secret = 5;
+		string http_stripe_signature = 6;
+		bool add_stripe_subscription = 7;
+		bool add_charge_api = 8;
+		bool add_intent_api = 9;
+	}
+
+	message LineLogin {
+		repeated string user_tables = 1;
+		string client_id = 2;
+		string secret_key = 3;
+	}
+
+	enum FeatureName {
+		EMAIL_LOGIN = 0;
+		JP_BANKS_DATA = 1;
+		BASIC_AUTH = 2;
+		TWILIO_LOGIN = 3;
+		ROLLBAR = 4;
+		DEEP_LINK = 5;
+		STRIPE = 6;
+		LINE_LOGIN = 7;
+	}
+
+	enum Environment {
+		DEVELOPMENT = 0;
+		STAGING = 1;
+		PRODUCTION = 2;
+		ALL = 3;
+	}
+}
+
+message Controller {
+	string name = 1;
+	repeated Endpoint endpoints = 2;
+
+	message Endpoint {
+		string path = 1;
+		string name = 2;
+		oneof resource {
+			string table = 3;
+			Feature.FeatureName feature = 4;
+		}
+		oneof methods {
+			List list = 5;
+			Get get = 6;
+			Create create = 7;
+			Update update = 8;
+			Delete delete = 9;
+		}
+		Authentication authentication = 10;
+		Authorization authorization = 11;
+		Response responses = 12;
+		RequestContent params = 13;
+
+		message List {
+			RequestContent queries = 1;
+			ResourceCondition conditions = 2;
+		}
+
+		message Get {
+			RequestContent queries = 1;
+			ResourceCondition conditions = 2;
+		}
+
+		message Create {
+			RequestContent body = 1;
+			ResourceCondition conditions = 2;
+			ResourceUpdate resources = 3;
+		}
+
+		message Update {
+			RequestContent body = 1;
+			ResourceCondition conditions = 2;
+			ResourceUpdate resources = 3;
+		}
+
+		message Delete {
+			RequestContent body = 1;
+			ResourceCondition conditions = 2;
+		}
+	}
+
+	message RequestContent {
+		repeated Field fields = 1;
+
+		message Field {
+			string name = 1;
+			DataType data_type = 2;
+			repeated Field children = 3;
+		}
+	}
+
+	message Response {
+		repeated Field fields = 1;
+
+		message Field {
+			string name = 1;
+			oneof map_to {
+				string resource = 2;
+				string property = 3;
+				string value = 4;
+			}
+			DataType data_type = 5;
+			repeated Field children = 6;
+		}
+	}
+
+	message ResourceCondition {
+		repeated Operand operands = 1;
+		repeated Operator operators = 2;
+
+		message Operand {
+			oneof operand {
+				Expr expr = 1;
+				ResourceCondition condition = 2;
+			}
+		}
+
+		message Expr {
+			repeated string paths = 1;
+			oneof map_to {
+				string query = 2;
+				string params = 3;
+				string body = 4;
+				string value = 5;
+				System system = 7;
+			}
+			DataType data_type = 8;
+			Operator operator = 9;
+		}
+
+		enum System {
+			RESOURCE_OWNER = 0;
+		}
+	}
+
+	message ResourceUpdate {
+		repeated Field fields = 1;
+
+		message Field {
+			string name = 1;
+			oneof map_to {
+				string query = 2;
+				string params = 3;
+				string body = 4;
+				string value = 5;
+			}
+			DataType data_type = 6;
+			repeated Field children = 7;
+		}
+	}
+
+	message Authentication {
+		string table_name = 1;
+	}
+
+	message Authorization {
+		int32 authorization_id = 1;
+		string table_name = 2;
+	}
+}
+
+message Table {
+	string name = 1;
+	repeated Column columns = 2;
+	repeated Relation relations = 3;
+	repeated Index indexes = 4;
+
+	message Column {
+		string name = 1;
+		ColumnType type = 2;
+		repeated Constraint constraints = 3;
+
+		message ColumnType {
+			oneof types {
+				IntegerType integer_type = 1;
+				StringType string_type = 2;
+				FloatType float_type = 3;
+				BooleanType boolean_type = 4;
+				DateType date_type = 5;
+				FileType file_type = 6;
+				EnumType enum_type = 7;
+			}
+		}
+	
+		message StringType {
+			optional string default_value = 1;
+			bool is_text = 2;
+			repeated Format formats = 3;
+			repeated Condition conditions = 4;
+
+			enum Format {
+				EMAIL = 0;
+				HIRAGANA = 1;
+				KATAKANA = 2;
+				PHONE_NUMBER = 3;
+				URL = 4;
+			}
+
+			message Condition {
+				Operator operator = 1;
+				oneof operand {
+					int32 value = 2;
+					string column_name = 3;
+				}
+			}
+		}
+	
+		message IntegerType {
+			optional int32 default_value = 1;
+			repeated Condition conditions = 2;
+
+			message Condition {
+				Operator operator = 1;
+				oneof operand {
+					int32 value = 2;
+					string column_name = 3;
+				}
+			}
+		}
+
+		enum Operator {
+			GREATER_THAN = 0;
+			GREATER_THAN_OR_EQUAL = 1;
+			EQUAL = 2;
+			LESS_THAN = 3;
+			LESS_THAN_OR_EQUAL = 4;
+			NOT_EQUAL = 5;
+		}
+	
+		message FloatType {
+			optional float default_value = 1;
+			repeated Condition conditions = 2;
+
+			message Condition {
+				Operator operator = 1;
+				oneof operand {
+					float value = 2;
+					string column_name = 3;
+				}
+			}
+		}
+	
+		message BooleanType {
+			bool default_value = 1;
+		}
+
+		message DateType {
+			bool with_time = 1;
+			repeated Condition conditions = 2;
+			
+			enum Condition {
+				IN_PAST = 0;
+				IN_FUTURE = 1;
+			}
+		}
+
+		message FileType {
+			int32 maximum_size = 1;
+			NumberOfFiles number_of_files = 2;
+			repeated ContentType content_types = 3;
+
+
+			enum ContentType {
+				IMAGE = 0;
+				VIDEO = 1;
+				AUDIO = 2;
+				CSV = 3;
+				PDF = 4;
+				JSON = 5;
+			}
+
+			message NumberOfFiles {
+				int32 minimum = 1;
+				int32 maximum = 2;
+			}
+		}
+
+		 message EnumType {
+			string default_value = 1;
+			repeated string values = 2;
+		 }
+	}
+
+	message Constraint {
+		oneof relation_key {
+			PrimaryKey primary_key = 1;
+			ForeignKey foreign_key = 2;
+			NotNull not_null = 3;
+			Unique unique = 4;
+		}
+
+		message PrimaryKey {
+		}
+	
+		message ForeignKey {
+			string table_name = 1;
+			string primary_key = 2;
+		}
+	
+		message NotNull {
+		}
+	
+		message Unique {
+		}
+	}
+
+	message Index {
+		string name = 1;
+		bool unique = 2;
+		repeated string columns = 3;
+	}
+
+	message Relation {
+		oneof relation_type {
+			RelationHasOne has_one = 1;
+			RelationBelongTo belong_to = 2;
+			RelationOneMany one_many = 3;
+			RelationManyOne many_one = 4;
+			RelationManyMany many_many = 5;
+		}
+
+		message RelationHasOne {
+			string table_name = 1;
+			string column_name = 2;
+		}
+
+		message RelationBelongTo {
+			string table_name = 1;
+			string column_name = 2;
+		}
+
+		message RelationManyOne {
+			string table_name = 1;
+			string column_name = 2;
+		}
+
+		message RelationOneMany {
+			string table_name = 1;
+			string column_name = 2;
+		}
+
+		message RelationManyMany {
+			string table_name = 1;
+			string joined_name = 2;
+		}
+	}
+}
