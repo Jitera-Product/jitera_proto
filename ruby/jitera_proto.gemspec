@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "lib/jitera_proto"
+require_relative "lib/version"
 
 Gem::Specification.new do |spec|
   spec.name = "jitera_proto"
@@ -26,7 +26,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # Uncomment to register a new dependency of your gem
-  # spec.add_dependency "example-gem", "~> 1.0"
+  spec.add_dependency "grpc", "~> 1.50.0"
+  spec.add_dependency "google-protobuf", "~> 3.21.12"
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html

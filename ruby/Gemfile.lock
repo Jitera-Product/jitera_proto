@@ -2,6 +2,8 @@ PATH
   remote: .
   specs:
     jitera_proto (0.0.1)
+      google-protobuf (~> 3.21.12)
+      grpc (~> 1.50.0)
 
 GEM
   remote: https://rubygems.org/
@@ -19,9 +21,9 @@ PLATFORMS
   arm64-darwin-21
 
 DEPENDENCIES
-  google-protobuf
-  grpc
-  grpc-tools
+  google-protobuf (~> 3.21.12)
+  grpc (~> 1.50.0)
+  grpc-tools (~> 1.50.0)
   jitera_proto!
   rake (~> 13.0)
 
