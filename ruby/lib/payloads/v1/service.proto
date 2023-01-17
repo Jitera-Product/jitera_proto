@@ -11,6 +11,7 @@ service CoreService {
 	rpc ListAuthorizations (ListAuthorizationsRequest) returns (ListAuthorizationsResponse) {}
 	rpc ListLocalizations (ListLocalizationsRequest) returns (ListLocalizationsResponse) {}
 	rpc GetFrontend (GetFrontendRequest) returns (GetFrontendResponse) {}
+	rpc ListMigrations (ListMigrationsRequest) returns (ListMigrationsResponse) {}
 	rpc GetBackend (GetBackendRequest) returns (GetBackendResponse) {}
 }
 
@@ -36,6 +37,10 @@ message ListTablesRequest {
 
 message ListTablesResponse {
 	repeated Table tables = 1;
+}
+
+message ListMigrationsRequest {
+	int32 project_id = 1;
 }
 
 message ListControllersRequest {
@@ -68,4 +73,8 @@ message ListLocalizationsRequest {
 
 message ListLocalizationsResponse {
 	repeated Localization localizations = 1;
+}
+
+message ListMigrationsResponse {
+	repeated Migration migrations = 1;
 }

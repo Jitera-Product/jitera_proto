@@ -23,6 +23,9 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     add_message "schema.v1.ListTablesResponse" do
       repeated :tables, :message, 1, "schema.v1.Table"
     end
+    add_message "schema.v1.ListMigrationsRequest" do
+      optional :project_id, :int32, 1
+    end
     add_message "schema.v1.ListControllersRequest" do
       optional :project_id, :int32, 1
     end
@@ -47,6 +50,9 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     add_message "schema.v1.ListLocalizationsResponse" do
       repeated :localizations, :message, 1, "schema.v1.Localization"
     end
+    add_message "schema.v1.ListMigrationsResponse" do
+      repeated :migrations, :message, 1, "schema.v1.Migration"
+    end
   end
 end
 
@@ -58,6 +64,7 @@ module Schema
     GetBackendResponse = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.GetBackendResponse").msgclass
     ListTablesRequest = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.ListTablesRequest").msgclass
     ListTablesResponse = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.ListTablesResponse").msgclass
+    ListMigrationsRequest = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.ListMigrationsRequest").msgclass
     ListControllersRequest = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.ListControllersRequest").msgclass
     ListControllersResponse = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.ListControllersResponse").msgclass
     ListFeaturesRequest = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.ListFeaturesRequest").msgclass
@@ -66,5 +73,6 @@ module Schema
     ListAuthorizationsResponse = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.ListAuthorizationsResponse").msgclass
     ListLocalizationsRequest = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.ListLocalizationsRequest").msgclass
     ListLocalizationsResponse = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.ListLocalizationsResponse").msgclass
+    ListMigrationsResponse = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.ListMigrationsResponse").msgclass
   end
 end
