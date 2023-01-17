@@ -31,6 +31,7 @@ message Backend {
 	repeated Feature features = 6;
 	repeated Authorization authorizations = 7;
 	repeated Localization localizations = 8;
+	repeated Migration migrations = 9;
 }
 
 message Localization {
@@ -104,29 +105,29 @@ message Authorization {
 		RoleBinding role_binding = 4;
 		Rule rule = 5;
 		Scope scope = 6;
-	
+
 		message RoleBinding {
 			string table = 1;
 			string column = 2;
 			string role = 3;
 		}
-	
+
 		enum Scope {
 			ALL = 0;
 			ASSOCIATED = 1;
 		}
-	
+
 		message Rule {
 			repeated Operand operands = 1;
 			repeated Operator operators = 2;
-	
+
 			message Operand {
 				oneof operand {
 					Expr expr = 1;
 					Rule rule = 2;
 				}
 			}
-	
+
 			message Expr {
 				string column = 1;
 				oneof map_to {
@@ -137,7 +138,7 @@ message Authorization {
 				Operator operator = 5;
 			}
 		}
-	}	
+	}
 }
 
 message Feature {
@@ -200,7 +201,7 @@ message Feature {
 		string android_app_link = 6;
 		string firebase_domain = 7;
 	}
-	
+
 	message Stripe {
 		repeated string subscription_tables = 1;
 		repeated string user_tables = 2;
@@ -260,6 +261,7 @@ message Controller {
 		Authorization authorization = 11;
 		Response responses = 12;
 		RequestContent params = 13;
+		bool writable = 14;
 
 		message List {
 			RequestContent queries = 1;
@@ -391,7 +393,7 @@ message Table {
 				EnumType enum_type = 7;
 			}
 		}
-	
+
 		message StringType {
 			optional string default_value = 1;
 			bool is_text = 2;
@@ -414,7 +416,7 @@ message Table {
 				}
 			}
 		}
-	
+
 		message IntegerType {
 			optional int32 default_value = 1;
 			repeated Condition conditions = 2;
@@ -436,7 +438,7 @@ message Table {
 			LESS_THAN_OR_EQUAL = 4;
 			NOT_EQUAL = 5;
 		}
-	
+
 		message FloatType {
 			optional float default_value = 1;
 			repeated Condition conditions = 2;
@@ -449,7 +451,7 @@ message Table {
 				}
 			}
 		}
-	
+
 		message BooleanType {
 			bool default_value = 1;
 		}
@@ -457,7 +459,7 @@ message Table {
 		message DateType {
 			bool with_time = 1;
 			repeated Condition conditions = 2;
-			
+
 			enum Condition {
 				IN_PAST = 0;
 				IN_FUTURE = 1;
@@ -468,6 +470,7 @@ message Table {
 			int32 maximum_size = 1;
 			NumberOfFiles number_of_files = 2;
 			repeated ContentType content_types = 3;
+			bool multiple = 4;
 
 
 			enum ContentType {
@@ -501,15 +504,15 @@ message Table {
 
 		message PrimaryKey {
 		}
-	
+
 		message ForeignKey {
 			string table_name = 1;
 			string primary_key = 2;
 		}
-	
+
 		message NotNull {
 		}
-	
+
 		message Unique {
 		}
 	}
@@ -554,4 +557,214 @@ message Table {
 			string joined_name = 2;
 		}
 	}
+}
+message Migration {
+	string migration_id = 1;
+	repeated MigrationChange changes = 2;
+}
+message MigrationChange {
+	oneof methods {
+		CreateTable create_table  = 1;
+		ChangeTableName change_table_name = 2;
+		ChangeTableComment change_table_comment = 3;
+		AddColumn add_column = 4;
+		RenameColumn rename_column = 5;
+		ChangeColumnComment change_column_comment = 6;
+		ChangeColumn change_column = 7;
+		ChangeColumnDefault change_column_default = 8;
+		ChangeColumnNull change_column_null = 9;
+		RemoveTableIndex remove_table_index = 10;
+		RemoveTableRelation remove_table_relation = 11;
+		CreateTableRelation create_table_relation = 12;
+		RemoveColumn remove_column = 13;
+		DropTable drop_table = 14;
+		ChangeTableIndex change_table_index = 15;
+		CreateTableIndex create_table_index = 16;
+		AddUniqColumn add_uniq_column = 17;
+		ChangeColumnUnique change_column_unique = 18;
+	}
+}
+message CreateTable {
+	string key = 1;
+	CreateTableChange change_to = 2;
+	string prev_uuid = 3;
+	string next_uuid = 4;
+	CreateTableNextRecord next_record = 5;
+}
+message ChangeTableName {
+	string key = 1;
+	string change_from = 2;
+	string change_to = 3;
+	string prev_uuid = 4;
+	string next_uuid = 5;
+	CreateTableNextRecord prev_record = 6;
+	CreateTableNextRecord next_record = 7;
+}
+message ChangeTableComment {
+	string key = 1;
+	string change_from = 2;
+	string change_to = 3;
+	string prev_uuid = 4;
+	string next_uuid = 5;
+	CreateTableNextRecord prev_record = 6;
+	CreateTableNextRecord next_record = 7;
+}
+message CreateTableChange {
+	string name = 1;
+	string uuid = 2;
+	optional string comment = 3;
+}
+message AddColumn {
+	string key = 1;
+	MigrationColumnDefinition change_to = 2;
+	string prev_uuid = 3;
+	string next_uuid = 4;
+	MigrationColumnDefinition next_record = 5;
+}
+message RenameColumn {
+	string key = 1;
+	string change_from = 2;
+	string change_to = 3;
+	string prev_uuid = 4;
+	string next_uuid = 5;
+	MigrationColumnDefinition prev_record = 6;
+	MigrationColumnDefinition next_record = 7;
+}
+message ChangeColumnComment {
+	string key = 1;
+	string change_from = 2;
+	string change_to = 3;
+	string prev_uuid = 4;
+	string next_uuid = 5;
+	MigrationColumnDefinition prev_record = 6;
+	MigrationColumnDefinition next_record = 7;
+}
+message ChangeColumn {
+	string key = 1;
+	string change_from = 2;
+	string change_to = 3;
+	string prev_uuid = 4;
+	string next_uuid = 5;
+	MigrationColumnDefinition prev_record = 6;
+	MigrationColumnDefinition next_record = 7;
+}
+message ChangeColumnDefault {
+	string key = 1;
+	string change_from = 2;
+	string change_to = 3;
+	string prev_uuid = 4;
+	string next_uuid = 5;
+	MigrationColumnDefinition prev_record = 6;
+	MigrationColumnDefinition next_record = 7;
+}
+message ChangeColumnNull {
+	string key = 1;
+	string change_from = 2;
+	string change_to = 3;
+	string prev_uuid = 4;
+	string next_uuid = 5;
+	MigrationColumnDefinition prev_record = 6;
+	MigrationColumnDefinition next_record = 7;
+}
+message RemoveTableIndex {
+	string key = 1;
+	TableIndexMigration change_from = 2;
+	string prev_uuid = 4;
+	string next_uuid = 5;
+	TableIndexMigration prev_record = 6;
+}
+message RemoveTableRelation {
+	string key = 1;
+	TableRelationMigration change_from = 2;
+	string prev_uuid = 4;
+	string next_uuid = 5;
+	TableIndexMigration prev_record = 6;
+}
+message CreateTableRelation {
+	string key = 1;
+	TableRelationMigration change_to = 2;
+	string prev_uuid = 4;
+	string next_uuid = 5;
+	TableRelationMigration next_record = 6;
+}
+message RemoveColumn {
+	string key = 1;
+	MigrationColumnDefinition change_from = 2;
+	string prev_uuid = 4;
+	string next_uuid = 5;
+	MigrationColumnDefinition prev_record = 6;
+}
+message DropTable {
+	string key = 1;
+	CreateTableNextRecord change_from = 2;
+	string prev_uuid = 4;
+	string next_uuid = 5;
+	CreateTableNextRecord prev_record = 6;
+}
+message ChangeTableIndex {
+	string key = 1;
+	string change_from = 2;
+	string change_to = 3;
+	string prev_uuid = 4;
+	string next_uuid = 5;
+	TableIndexMigration prev_record = 6;
+	TableIndexMigration next_record = 7;
+}
+message CreateTableIndex {
+	string key = 1;
+	TableIndexMigration change_to = 2;
+	string next_uuid = 5;
+	TableIndexMigration next_record = 7;
+}
+message AddUniqColumn {
+	MigrationColumnDefinition next_record = 7;
+}
+message ChangeColumnUnique {
+	string key = 1;
+	bool change_from = 2;
+	bool change_to = 3;
+	string prev_uuid = 4;
+	string next_uuid = 5;
+	MigrationColumnDefinition prev_record = 6;
+	MigrationColumnDefinition next_record = 7;
+}
+message CreateTableNextRecord {
+	string name = 1;
+	string uuid = 2;
+	string comment = 3;
+	repeated MigrationColumnDefinition column_definitions = 4;
+}
+message MigrationColumnDefinition {
+	string name = 1;
+	string column_type = 2;
+	bool required = 3;
+	bool unique = 4;
+	string default_value = 5;
+	string comment = 6;
+	string uuid = 7;
+	string table_definition_uuid = 8;
+	optional bool custom_foreign_key = 9;
+	optional TableMetaDataMigration table_definition = 10;
+}
+message TableMetaDataMigration {
+	string name = 1;
+	string uuid = 2;
+}
+message TableIndexMigration {
+	string name = 1;
+	bool unique = 2;
+	string uuid = 3;
+	string table_definition_uuid = 4;
+	repeated MigrationColumnDefinition column_definitions = 5;
+}
+message TableRelationMigration {
+	string foreign_key = 1;
+	string relation_type = 2;
+	bool required = 3;
+	string uuid = 4;
+	string table_definition_uuid = 5;
+	string related_table_uuid = 6;
+	optional bool custom_foreign_key = 7;
+	CreateTableChange table_definition = 8;
+	CreateTableChange related_table = 9;
 }

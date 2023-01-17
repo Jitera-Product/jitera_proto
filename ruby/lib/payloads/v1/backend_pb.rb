@@ -30,6 +30,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       repeated :features, :message, 6, "schema.v1.Feature"
       repeated :authorizations, :message, 7, "schema.v1.Authorization"
       repeated :localizations, :message, 8, "schema.v1.Localization"
+      repeated :migrations, :message, 9, "schema.v1.Migration"
     end
     add_message "schema.v1.Localization" do
       optional :lang, :string, 1
@@ -183,6 +184,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :authorization, :message, 11, "schema.v1.Controller.Authorization"
       optional :responses, :message, 12, "schema.v1.Controller.Response"
       optional :params, :message, 13, "schema.v1.Controller.RequestContent"
+      optional :writable, :bool, 14
       oneof :resource do
         optional :table, :string, 3
         optional :feature, :enum, 4, "schema.v1.Feature.FeatureName"
@@ -363,6 +365,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :maximum_size, :int32, 1
       optional :number_of_files, :message, 2, "schema.v1.Table.Column.FileType.NumberOfFiles"
       repeated :content_types, :enum, 3, "schema.v1.Table.Column.FileType.ContentType"
+      optional :multiple, :bool, 4
     end
     add_message "schema.v1.Table.Column.FileType.NumberOfFiles" do
       optional :minimum, :int32, 1
@@ -439,6 +442,216 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     add_message "schema.v1.Table.Relation.RelationManyMany" do
       optional :table_name, :string, 1
       optional :joined_name, :string, 2
+    end
+    add_message "schema.v1.Migration" do
+      optional :migration_id, :string, 1
+      repeated :changes, :message, 2, "schema.v1.MigrationChange"
+    end
+    add_message "schema.v1.MigrationChange" do
+      oneof :methods do
+        optional :create_table, :message, 1, "schema.v1.CreateTable"
+        optional :change_table_name, :message, 2, "schema.v1.ChangeTableName"
+        optional :change_table_comment, :message, 3, "schema.v1.ChangeTableComment"
+        optional :add_column, :message, 4, "schema.v1.AddColumn"
+        optional :rename_column, :message, 5, "schema.v1.RenameColumn"
+        optional :change_column_comment, :message, 6, "schema.v1.ChangeColumnComment"
+        optional :change_column, :message, 7, "schema.v1.ChangeColumn"
+        optional :change_column_default, :message, 8, "schema.v1.ChangeColumnDefault"
+        optional :change_column_null, :message, 9, "schema.v1.ChangeColumnNull"
+        optional :remove_table_index, :message, 10, "schema.v1.RemoveTableIndex"
+        optional :remove_table_relation, :message, 11, "schema.v1.RemoveTableRelation"
+        optional :create_table_relation, :message, 12, "schema.v1.CreateTableRelation"
+        optional :remove_column, :message, 13, "schema.v1.RemoveColumn"
+        optional :drop_table, :message, 14, "schema.v1.DropTable"
+        optional :change_table_index, :message, 15, "schema.v1.ChangeTableIndex"
+        optional :create_table_index, :message, 16, "schema.v1.CreateTableIndex"
+        optional :add_uniq_column, :message, 17, "schema.v1.AddUniqColumn"
+        optional :change_column_unique, :message, 18, "schema.v1.ChangeColumnUnique"
+      end
+    end
+    add_message "schema.v1.CreateTable" do
+      optional :key, :string, 1
+      optional :change_to, :message, 2, "schema.v1.CreateTableChange"
+      optional :prev_uuid, :string, 3
+      optional :next_uuid, :string, 4
+      optional :next_record, :message, 5, "schema.v1.CreateTableNextRecord"
+    end
+    add_message "schema.v1.ChangeTableName" do
+      optional :key, :string, 1
+      optional :change_from, :string, 2
+      optional :change_to, :string, 3
+      optional :prev_uuid, :string, 4
+      optional :next_uuid, :string, 5
+      optional :prev_record, :message, 6, "schema.v1.CreateTableNextRecord"
+      optional :next_record, :message, 7, "schema.v1.CreateTableNextRecord"
+    end
+    add_message "schema.v1.ChangeTableComment" do
+      optional :key, :string, 1
+      optional :change_from, :string, 2
+      optional :change_to, :string, 3
+      optional :prev_uuid, :string, 4
+      optional :next_uuid, :string, 5
+      optional :prev_record, :message, 6, "schema.v1.CreateTableNextRecord"
+      optional :next_record, :message, 7, "schema.v1.CreateTableNextRecord"
+    end
+    add_message "schema.v1.CreateTableChange" do
+      optional :name, :string, 1
+      optional :uuid, :string, 2
+      proto3_optional :comment, :string, 3
+    end
+    add_message "schema.v1.AddColumn" do
+      optional :key, :string, 1
+      optional :change_to, :message, 2, "schema.v1.MigrationColumnDefinition"
+      optional :prev_uuid, :string, 3
+      optional :next_uuid, :string, 4
+      optional :next_record, :message, 5, "schema.v1.MigrationColumnDefinition"
+    end
+    add_message "schema.v1.RenameColumn" do
+      optional :key, :string, 1
+      optional :change_from, :string, 2
+      optional :change_to, :string, 3
+      optional :prev_uuid, :string, 4
+      optional :next_uuid, :string, 5
+      optional :prev_record, :message, 6, "schema.v1.MigrationColumnDefinition"
+      optional :next_record, :message, 7, "schema.v1.MigrationColumnDefinition"
+    end
+    add_message "schema.v1.ChangeColumnComment" do
+      optional :key, :string, 1
+      optional :change_from, :string, 2
+      optional :change_to, :string, 3
+      optional :prev_uuid, :string, 4
+      optional :next_uuid, :string, 5
+      optional :prev_record, :message, 6, "schema.v1.MigrationColumnDefinition"
+      optional :next_record, :message, 7, "schema.v1.MigrationColumnDefinition"
+    end
+    add_message "schema.v1.ChangeColumn" do
+      optional :key, :string, 1
+      optional :change_from, :string, 2
+      optional :change_to, :string, 3
+      optional :prev_uuid, :string, 4
+      optional :next_uuid, :string, 5
+      optional :prev_record, :message, 6, "schema.v1.MigrationColumnDefinition"
+      optional :next_record, :message, 7, "schema.v1.MigrationColumnDefinition"
+    end
+    add_message "schema.v1.ChangeColumnDefault" do
+      optional :key, :string, 1
+      optional :change_from, :string, 2
+      optional :change_to, :string, 3
+      optional :prev_uuid, :string, 4
+      optional :next_uuid, :string, 5
+      optional :prev_record, :message, 6, "schema.v1.MigrationColumnDefinition"
+      optional :next_record, :message, 7, "schema.v1.MigrationColumnDefinition"
+    end
+    add_message "schema.v1.ChangeColumnNull" do
+      optional :key, :string, 1
+      optional :change_from, :string, 2
+      optional :change_to, :string, 3
+      optional :prev_uuid, :string, 4
+      optional :next_uuid, :string, 5
+      optional :prev_record, :message, 6, "schema.v1.MigrationColumnDefinition"
+      optional :next_record, :message, 7, "schema.v1.MigrationColumnDefinition"
+    end
+    add_message "schema.v1.RemoveTableIndex" do
+      optional :key, :string, 1
+      optional :change_from, :message, 2, "schema.v1.TableIndexMigration"
+      optional :prev_uuid, :string, 4
+      optional :next_uuid, :string, 5
+      optional :prev_record, :message, 6, "schema.v1.TableIndexMigration"
+    end
+    add_message "schema.v1.RemoveTableRelation" do
+      optional :key, :string, 1
+      optional :change_from, :message, 2, "schema.v1.TableRelationMigration"
+      optional :prev_uuid, :string, 4
+      optional :next_uuid, :string, 5
+      optional :prev_record, :message, 6, "schema.v1.TableIndexMigration"
+    end
+    add_message "schema.v1.CreateTableRelation" do
+      optional :key, :string, 1
+      optional :change_to, :message, 2, "schema.v1.TableRelationMigration"
+      optional :prev_uuid, :string, 4
+      optional :next_uuid, :string, 5
+      optional :next_record, :message, 6, "schema.v1.TableRelationMigration"
+    end
+    add_message "schema.v1.RemoveColumn" do
+      optional :key, :string, 1
+      optional :change_from, :message, 2, "schema.v1.MigrationColumnDefinition"
+      optional :prev_uuid, :string, 4
+      optional :next_uuid, :string, 5
+      optional :prev_record, :message, 6, "schema.v1.MigrationColumnDefinition"
+    end
+    add_message "schema.v1.DropTable" do
+      optional :key, :string, 1
+      optional :change_from, :message, 2, "schema.v1.CreateTableNextRecord"
+      optional :prev_uuid, :string, 4
+      optional :next_uuid, :string, 5
+      optional :prev_record, :message, 6, "schema.v1.CreateTableNextRecord"
+    end
+    add_message "schema.v1.ChangeTableIndex" do
+      optional :key, :string, 1
+      optional :change_from, :string, 2
+      optional :change_to, :string, 3
+      optional :prev_uuid, :string, 4
+      optional :next_uuid, :string, 5
+      optional :prev_record, :message, 6, "schema.v1.TableIndexMigration"
+      optional :next_record, :message, 7, "schema.v1.TableIndexMigration"
+    end
+    add_message "schema.v1.CreateTableIndex" do
+      optional :key, :string, 1
+      optional :change_to, :message, 2, "schema.v1.TableIndexMigration"
+      optional :next_uuid, :string, 5
+      optional :next_record, :message, 7, "schema.v1.TableIndexMigration"
+    end
+    add_message "schema.v1.AddUniqColumn" do
+      optional :next_record, :message, 7, "schema.v1.MigrationColumnDefinition"
+    end
+    add_message "schema.v1.ChangeColumnUnique" do
+      optional :key, :string, 1
+      optional :change_from, :bool, 2
+      optional :change_to, :bool, 3
+      optional :prev_uuid, :string, 4
+      optional :next_uuid, :string, 5
+      optional :prev_record, :message, 6, "schema.v1.MigrationColumnDefinition"
+      optional :next_record, :message, 7, "schema.v1.MigrationColumnDefinition"
+    end
+    add_message "schema.v1.CreateTableNextRecord" do
+      optional :name, :string, 1
+      optional :uuid, :string, 2
+      optional :comment, :string, 3
+      repeated :column_definitions, :message, 4, "schema.v1.MigrationColumnDefinition"
+    end
+    add_message "schema.v1.MigrationColumnDefinition" do
+      optional :name, :string, 1
+      optional :column_type, :string, 2
+      optional :required, :bool, 3
+      optional :unique, :bool, 4
+      optional :default_value, :string, 5
+      optional :comment, :string, 6
+      optional :uuid, :string, 7
+      optional :table_definition_uuid, :string, 8
+      proto3_optional :custom_foreign_key, :bool, 9
+      proto3_optional :table_definition, :message, 10, "schema.v1.TableMetaDataMigration"
+    end
+    add_message "schema.v1.TableMetaDataMigration" do
+      optional :name, :string, 1
+      optional :uuid, :string, 2
+    end
+    add_message "schema.v1.TableIndexMigration" do
+      optional :name, :string, 1
+      optional :unique, :bool, 2
+      optional :uuid, :string, 3
+      optional :table_definition_uuid, :string, 4
+      repeated :column_definitions, :message, 5, "schema.v1.MigrationColumnDefinition"
+    end
+    add_message "schema.v1.TableRelationMigration" do
+      optional :foreign_key, :string, 1
+      optional :relation_type, :string, 2
+      optional :required, :bool, 3
+      optional :uuid, :string, 4
+      optional :table_definition_uuid, :string, 5
+      optional :related_table_uuid, :string, 6
+      proto3_optional :custom_foreign_key, :bool, 7
+      optional :table_definition, :message, 8, "schema.v1.CreateTableChange"
+      optional :related_table, :message, 9, "schema.v1.CreateTableChange"
     end
     add_enum "schema.v1.DataTypeName" do
       value :BOOLEAN, 0
@@ -558,6 +771,32 @@ module Schema
     Table::Relation::RelationManyOne = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Table.Relation.RelationManyOne").msgclass
     Table::Relation::RelationOneMany = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Table.Relation.RelationOneMany").msgclass
     Table::Relation::RelationManyMany = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Table.Relation.RelationManyMany").msgclass
+    Migration = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Migration").msgclass
+    MigrationChange = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.MigrationChange").msgclass
+    CreateTable = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.CreateTable").msgclass
+    ChangeTableName = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.ChangeTableName").msgclass
+    ChangeTableComment = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.ChangeTableComment").msgclass
+    CreateTableChange = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.CreateTableChange").msgclass
+    AddColumn = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.AddColumn").msgclass
+    RenameColumn = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.RenameColumn").msgclass
+    ChangeColumnComment = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.ChangeColumnComment").msgclass
+    ChangeColumn = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.ChangeColumn").msgclass
+    ChangeColumnDefault = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.ChangeColumnDefault").msgclass
+    ChangeColumnNull = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.ChangeColumnNull").msgclass
+    RemoveTableIndex = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.RemoveTableIndex").msgclass
+    RemoveTableRelation = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.RemoveTableRelation").msgclass
+    CreateTableRelation = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.CreateTableRelation").msgclass
+    RemoveColumn = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.RemoveColumn").msgclass
+    DropTable = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.DropTable").msgclass
+    ChangeTableIndex = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.ChangeTableIndex").msgclass
+    CreateTableIndex = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.CreateTableIndex").msgclass
+    AddUniqColumn = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.AddUniqColumn").msgclass
+    ChangeColumnUnique = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.ChangeColumnUnique").msgclass
+    CreateTableNextRecord = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.CreateTableNextRecord").msgclass
+    MigrationColumnDefinition = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.MigrationColumnDefinition").msgclass
+    TableMetaDataMigration = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.TableMetaDataMigration").msgclass
+    TableIndexMigration = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.TableIndexMigration").msgclass
+    TableRelationMigration = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.TableRelationMigration").msgclass
     DataTypeName = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.DataTypeName").enummodule
     Operator = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Operator").enummodule
   end
