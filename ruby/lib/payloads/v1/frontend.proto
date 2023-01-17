@@ -389,7 +389,7 @@ message NodeCustom {
 	optional bool ignore_prop_style = 2;
 	optional NodeReference form = 3;
 	optional NodeReference molecule = 4;
-	optional NodeMediaQuery media_queries = 5;
+	repeated NodeMediaQuery media_queries = 5;
 	optional NodeReference authentication = 6;
 	optional RenderCondition render_condition = 7;
 	repeated NodeVariable seo_title = 8;

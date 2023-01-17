@@ -356,7 +356,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       proto3_optional :ignore_prop_style, :bool, 2
       proto3_optional :form, :message, 3, "schema.v1.NodeReference"
       proto3_optional :molecule, :message, 4, "schema.v1.NodeReference"
-      proto3_optional :media_queries, :message, 5, "schema.v1.NodeMediaQuery"
+      repeated :media_queries, :message, 5, "schema.v1.NodeMediaQuery"
       proto3_optional :authentication, :message, 6, "schema.v1.NodeReference"
       proto3_optional :render_condition, :message, 7, "schema.v1.RenderCondition"
       repeated :seo_title, :message, 8, "schema.v1.NodeVariable"
