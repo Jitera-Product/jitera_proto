@@ -10,16 +10,16 @@ service CoreService {
 	rpc ListFeatures (ListFeaturesRequest) returns (ListFeaturesResponse) {}
 	rpc ListAuthorizations (ListAuthorizationsRequest) returns (ListAuthorizationsResponse) {}
 	rpc ListLocalizations (ListLocalizationsRequest) returns (ListLocalizationsResponse) {}
-	rpc ListAppPages (ListAppPagesRequest) returns (ListAppPagesResponse) {}
+	rpc GetFrontend (GetFrontendRequest) returns (GetFrontendResponse) {}
 	rpc GetBackend (GetBackendRequest) returns (GetBackendResponse) {}
 }
 
-message ListAppPagesRequest {
+message GetFrontendRequest {
 	int32 project_id = 1;
 }
 
-message ListAppPagesResponse {
-	repeated AppPage app_pages = 1;
+message GetFrontendResponse {
+	Frontend frontend = 1;
 }
 
 message GetBackendRequest {

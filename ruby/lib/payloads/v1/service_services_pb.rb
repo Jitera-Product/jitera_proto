@@ -19,7 +19,7 @@ module Schema
         rpc :ListFeatures, ::Schema::V1::ListFeaturesRequest, ::Schema::V1::ListFeaturesResponse
         rpc :ListAuthorizations, ::Schema::V1::ListAuthorizationsRequest, ::Schema::V1::ListAuthorizationsResponse
         rpc :ListLocalizations, ::Schema::V1::ListLocalizationsRequest, ::Schema::V1::ListLocalizationsResponse
-        rpc :ListAppPages, ::Schema::V1::ListAppPagesRequest, ::Schema::V1::ListAppPagesResponse
+        rpc :GetFrontend, ::Schema::V1::GetFrontendRequest, ::Schema::V1::GetFrontendResponse
         rpc :GetBackend, ::Schema::V1::GetBackendRequest, ::Schema::V1::GetBackendResponse
       end
 

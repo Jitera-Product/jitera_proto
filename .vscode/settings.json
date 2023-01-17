@@ -1,0 +1,6 @@
+{
+  "eslint.enable": true,
+  "protoc": {
+    "options": ["--proto_path=ruby/lib/payloads"]
+  }
+}

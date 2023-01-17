@@ -7,6 +7,9 @@ require 'google/protobuf/struct_pb'
 
 Google::Protobuf::DescriptorPool.generated_pool.build do
   add_file("v1/frontend.proto", :syntax => :proto3) do
+    add_message "schema.v1.Frontend" do
+      repeated :app_pages, :message, 1, "schema.v1.AppPage"
+    end
     add_message "schema.v1.AppPage" do
       optional :id, :string, 1
       optional :page_name, :string, 2
@@ -423,6 +426,7 @@ end
 
 module Schema
   module V1
+    Frontend = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Frontend").msgclass
     AppPage = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.AppPage").msgclass
     AppPage::PageType = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.AppPage.PageType").enummodule
     PageNode = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.PageNode").msgclass

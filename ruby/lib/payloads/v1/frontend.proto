@@ -3,6 +3,10 @@ package schema.v1;
 
 import "google/protobuf/struct.proto";
 
+message Frontend {
+	repeated AppPage app_pages = 1;
+}
+
 message AppPage {
 	string id = 1;
 	string page_name = 2;
