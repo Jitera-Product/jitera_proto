@@ -2,6 +2,7 @@
 # Source: v1/service.proto for package 'schema.v1'
 
 require 'grpc'
+require 'v1/service_pb'
 
 module Schema
   module V1
@@ -20,6 +21,7 @@ module Schema
         rpc :ListAuthorizations, ::Schema::V1::ListAuthorizationsRequest, ::Schema::V1::ListAuthorizationsResponse
         rpc :ListLocalizations, ::Schema::V1::ListLocalizationsRequest, ::Schema::V1::ListLocalizationsResponse
         rpc :GetFrontend, ::Schema::V1::GetFrontendRequest, ::Schema::V1::GetFrontendResponse
+        rpc :ListMigrations, ::Schema::V1::ListMigrationsRequest, ::Schema::V1::ListMigrationsResponse
         rpc :GetBackend, ::Schema::V1::GetBackendRequest, ::Schema::V1::GetBackendResponse
       end
 

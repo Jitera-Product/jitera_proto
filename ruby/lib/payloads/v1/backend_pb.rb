@@ -641,6 +641,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :uuid, :string, 3
       optional :table_definition_uuid, :string, 4
       repeated :column_definitions, :message, 5, "schema.v1.MigrationColumnDefinition"
+      optional :single_index, :bool, 6
     end
     add_message "schema.v1.TableRelationMigration" do
       optional :foreign_key, :string, 1
