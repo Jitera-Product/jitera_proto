@@ -756,6 +756,7 @@ message TableIndexMigration {
 	string uuid = 3;
 	string table_definition_uuid = 4;
 	repeated MigrationColumnDefinition column_definitions = 5;
+	bool single_index = 6;
 }
 message TableRelationMigration {
 	string foreign_key = 1;
