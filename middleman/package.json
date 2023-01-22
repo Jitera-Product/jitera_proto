@@ -1,10 +1,10 @@
 {
-  "name": "@jitera/proto",
-  "version": "0.0.1",
+  "name": "@jitera/middleman-proto",
+  "version": "0.0.1-beta.1",
   "description": "",
-  "main": "./cjs/index.js",
-  "module": "./esm/index.js",
-  "typings": "./types/index.d.ts",
+  "main": "./build/cjs/index.js",
+  "module": "./build/esm/index.js",
+  "typings": "./build/types/index.d.ts",
   "scripts": {
     "protobuf:generate": "grpc_tools_node_protoc --plugin=protoc-gen-ts_proto=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./lib/protos --ts_proto_opt=outputServices=nice-grpc,outputServices=generic-definitions,useExactTypes=false,fileSuffix=.proto,useSnakeTypeName=false,exportCommonSymbols=false --proto_path=./lib/protos ./lib/protos/**/*.proto",
     "build": "npm run build:esm && npm run build:cjs && npm run build:types",
@@ -25,6 +25,10 @@
   "dependencies": {
     "nice-grpc": "2.1.0"
   },
+  "files": [
+    "build/**/*",
+    "lib/**/*"
+  ],
   "resolutions": {
     "ts-proto@1.136.1": "patch:ts-proto@npm%3A1.136.1#./.yarn/patches/ts-proto-npm-1.136.1-c27de25407.patch"
   }
