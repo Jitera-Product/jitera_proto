@@ -18,11 +18,14 @@
   "devDependencies": {
     "grpc-tools": "1.12.3",
     "rimraf": "4.1.1",
-    "ts-proto": "1.138.0",
+    "ts-proto": "1.136.1",
     "typescript": "4.9.4"
   },
   "packageManager": "yarn@3.3.1",
   "dependencies": {
     "nice-grpc": "2.1.0"
+  },
+  "resolutions": {
+    "ts-proto@1.136.1": "patch:ts-proto@npm%3A1.136.1#./.yarn/patches/ts-proto-npm-1.136.1-c27de25407.patch"
   }
 }

@@ -1,0 +1,167 @@
+diff --git a/build/generate-generic-service-definition.js b/build/generate-generic-service-definition.js
+index 10a4b1e8ccd82293227436828a7188929d2c5014..34e26bfece9c486e33aad8523f0343c223eeb034 100644
+--- a/build/generate-generic-service-definition.js
++++ b/build/generate-generic-service-definition.js
+@@ -49,9 +49,9 @@ function generateMethodDefinition(ctx, methodDesc) {
+     return (0, ts_poet_1.code) `
+     {
+       name: '${methodDesc.name}',
+-      requestType: ${inputType},
++      requestType: ${inputType}Data,
+       requestStream: ${methodDesc.clientStreaming},
+-      responseType: ${outputType},
++      responseType: ${outputType}Data,
+       responseStream: ${methodDesc.serverStreaming},
+       options: ${generateMethodOptions(methodDesc.options)}
+     }
+diff --git a/build/main.js b/build/main.js
+index 611ec2e703757769119bc440fb28293c3ffb9307..59feda1671a3e8e6f144932c74e2b1d0e4f606ba 100644
+--- a/build/main.js
++++ b/build/main.js
+@@ -107,7 +107,7 @@ function generateFile(ctx, fileDesc) {
+             staticMembers.push(...generateWrap(ctx, fullTypeName, structFieldNames));
+             staticMembers.push(...generateUnwrap(ctx, fullTypeName, structFieldNames));
+             chunks.push((0, ts_poet_1.code) `
+-          export const ${(0, ts_poet_1.def)(fullName)} = {
++          export const ${(0, ts_poet_1.def)(fullName)}Data = {
+             ${(0, ts_poet_1.joinCode)(staticMembers, { on: ",\n\n" })}
+           };
+         `);
+@@ -509,7 +509,7 @@ function generateInterfaceDeclaration(ctx, fullName, messageDesc, sourceInfo, fu
+     const chunks = [];
+     (0, utils_1.maybeAddComment)(sourceInfo, chunks, (_a = messageDesc.options) === null || _a === void 0 ? void 0 : _a.deprecated);
+     // interface name should be defined to avoid import collisions
+-    chunks.push((0, ts_poet_1.code) `export interface ${(0, ts_poet_1.def)(fullName)} {`);
++    chunks.push((0, ts_poet_1.code) `export class ${(0, ts_poet_1.def)(fullName)} {`);
+     if (ctx.options.outputTypeRegistry) {
+         chunks.push((0, ts_poet_1.code) `$type: '${fullTypeName}',`);
+     }
+@@ -530,7 +530,7 @@ function generateInterfaceDeclaration(ctx, fullName, messageDesc, sourceInfo, fu
+         const name = (0, case_1.maybeSnakeToCamel)(fieldDesc.name, options);
+         const type = (0, types_1.toTypeName)(ctx, messageDesc, fieldDesc);
+         const q = (0, types_1.isOptionalProperty)(fieldDesc, messageDesc.options, options) ? "?" : "";
+-        chunks.push((0, ts_poet_1.code) `${maybeReadonly(options)}${name}${q}: ${type}, `);
++        chunks.push((0, ts_poet_1.code) `${maybeReadonly(options)}${name}${q}: ${type}; `);
+     });
+     chunks.push((0, ts_poet_1.code) `}`);
+     return (0, ts_poet_1.joinCode)(chunks, { on: "\n" });
+@@ -677,20 +677,20 @@ function generateDecode(ctx, fullName, messageDesc) {
+                 }
+                 return (0, ts_poet_1.code) `${decodedValue}.value`;
+             };
+-            const decoder = (0, ts_poet_1.code) `${type}.decode(reader, reader.uint32())`;
++            const decoder = (0, ts_poet_1.code) `${type}Data.decode(reader, reader.uint32())`;
+             readSnippet = (0, ts_poet_1.code) `${unwrap(decoder)}`;
+         }
+         else if ((0, types_1.isTimestamp)(field) && (options.useDate === options_1.DateOption.DATE || options.useDate === options_1.DateOption.STRING)) {
+             const type = (0, types_1.basicTypeName)(ctx, field, { keepValueType: true });
+-            readSnippet = (0, ts_poet_1.code) `${utils.fromTimestamp}(${type}.decode(reader, reader.uint32()))`;
++            readSnippet = (0, ts_poet_1.code) `${utils.fromTimestamp}(${type}Data.decode(reader, reader.uint32()))`;
+         }
+         else if ((0, types_1.isObjectId)(field) && options.useMongoObjectId) {
+             const type = (0, types_1.basicTypeName)(ctx, field, { keepValueType: true });
+-            readSnippet = (0, ts_poet_1.code) `${utils.fromProtoObjectId}(${type}.decode(reader, reader.uint32()))`;
++            readSnippet = (0, ts_poet_1.code) `${utils.fromProtoObjectId}(${type}Data.decode(reader, reader.uint32()))`;
+         }
+         else if ((0, types_1.isMessage)(field)) {
+             const type = (0, types_1.basicTypeName)(ctx, field);
+-            readSnippet = (0, ts_poet_1.code) `${type}.decode(reader, reader.uint32())`;
++            readSnippet = (0, ts_poet_1.code) `${type}Data.decode(reader, reader.uint32())`;
+         }
+         else {
+             throw new Error(`Unhandled field ${field}`);
+@@ -788,12 +788,12 @@ function generateEncode(ctx, fullName, messageDesc) {
+         else if ((0, types_1.isObjectId)(field) && options.useMongoObjectId) {
+             const tag = ((field.number << 3) | 2) >>> 0;
+             const type = (0, types_1.basicTypeName)(ctx, field, { keepValueType: true });
+-            writeSnippet = (place) => (0, ts_poet_1.code) `${type}.encode(${utils.toProtoObjectId}(${place}), writer.uint32(${tag}).fork()).ldelim()`;
++            writeSnippet = (place) => (0, ts_poet_1.code) `${type}Data.encode(${utils.toProtoObjectId}(${place}), writer.uint32(${tag}).fork()).ldelim()`;
+         }
+         else if ((0, types_1.isTimestamp)(field) && (options.useDate === options_1.DateOption.DATE || options.useDate === options_1.DateOption.STRING)) {
+             const tag = ((field.number << 3) | 2) >>> 0;
+             const type = (0, types_1.basicTypeName)(ctx, field, { keepValueType: true });
+-            writeSnippet = (place) => (0, ts_poet_1.code) `${type}.encode(${utils.toTimestamp}(${place}), writer.uint32(${tag}).fork()).ldelim()`;
++            writeSnippet = (place) => (0, ts_poet_1.code) `${type}Data.encode(${utils.toTimestamp}(${place}), writer.uint32(${tag}).fork()).ldelim()`;
+         }
+         else if ((0, types_1.isValueType)(ctx, field)) {
+             const maybeTypeField = options.outputTypeRegistry ? `$type: '${field.typeName.slice(1)}',` : "";
+@@ -805,12 +805,12 @@ function generateEncode(ctx, fullName, messageDesc) {
+                 return (0, ts_poet_1.code) `{${maybeTypeField} value: ${place}!}`;
+             };
+             const tag = ((field.number << 3) | 2) >>> 0;
+-            writeSnippet = (place) => (0, ts_poet_1.code) `${type}.encode(${wrappedValue(place)}, writer.uint32(${tag}).fork()).ldelim()`;
++            writeSnippet = (place) => (0, ts_poet_1.code) `${type}Data.encode(${wrappedValue(place)}, writer.uint32(${tag}).fork()).ldelim()`;
+         }
+         else if ((0, types_1.isMessage)(field)) {
+             const tag = ((field.number << 3) | 2) >>> 0;
+             const type = (0, types_1.basicTypeName)(ctx, field);
+-            writeSnippet = (place) => (0, ts_poet_1.code) `${type}.encode(${place}, writer.uint32(${tag}).fork()).ldelim()`;
++            writeSnippet = (place) => (0, ts_poet_1.code) `${type}Data.encode(${place}, writer.uint32(${tag}).fork()).ldelim()`;
+         }
+         else {
+             throw new Error(`Unhandled field ${field}`);
+@@ -1035,7 +1035,7 @@ function generateFromJson(ctx, fullName, fullTypeName, messageDesc) {
+             }
+             else if ((0, types_1.isFieldMaskType)(field)) {
+                 const type = (0, types_1.basicTypeName)(ctx, field, { keepValueType: true });
+-                return (0, ts_poet_1.code) `${type}.unwrap(${type}.fromJSON(${from}))`;
++                return (0, ts_poet_1.code) `${type}.unwrap(${type}Data.fromJSON(${from}))`;
+             }
+             else if ((0, types_1.isListValueType)(field)) {
+                 return (0, ts_poet_1.code) `[...${from}]`;
+@@ -1094,12 +1094,12 @@ function generateFromJson(ctx, fullName, fullTypeName, messageDesc) {
+                         return (0, ts_poet_1.code) `${from}`;
+                     }
+                     else {
+-                        return (0, ts_poet_1.code) `${valueType}.fromJSON(${from})`;
++                        return (0, ts_poet_1.code) `${valueType}Data.fromJSON(${from})`;
+                     }
+                 }
+                 else {
+                     const type = (0, types_1.basicTypeName)(ctx, field);
+-                    return (0, ts_poet_1.code) `${type}.fromJSON(${from})`;
++                    return (0, ts_poet_1.code) `${type}Data.fromJSON(${from})`;
+                 }
+             }
+             else {
+@@ -1278,7 +1278,7 @@ function generateToJson(ctx, fullName, fullProtobufTypeName, messageDesc) {
+                 }
+                 else {
+                     const type = (0, types_1.basicTypeName)(ctx, valueType);
+-                    return (0, ts_poet_1.code) `${type}.toJSON(${from})`;
++                    return (0, ts_poet_1.code) `${type}Data.toJSON(${from})`;
+                 }
+             }
+             else if ((0, types_1.isAnyValueType)(field)) {
+@@ -1286,11 +1286,11 @@ function generateToJson(ctx, fullName, fullProtobufTypeName, messageDesc) {
+             }
+             else if ((0, types_1.isFieldMaskType)(field)) {
+                 const type = (0, types_1.basicTypeName)(ctx, field, { keepValueType: true });
+-                return (0, ts_poet_1.code) `${type}.toJSON(${type}.wrap(${from}))`;
++                return (0, ts_poet_1.code) `${type}Data.toJSON(${type}.wrap(${from}))`;
+             }
+             else if ((0, types_1.isMessage)(field) && !(0, types_1.isValueType)(ctx, field) && !(0, types_1.isMapType)(ctx, messageDesc, field)) {
+                 const type = (0, types_1.basicTypeName)(ctx, field, { keepValueType: true });
+-                return (0, ts_poet_1.code) `${from} ? ${type}.toJSON(${from}) : ${(0, types_1.defaultValue)(ctx, field)}`;
++                return (0, ts_poet_1.code) `${from} ? ${type}Data.toJSON(${from}) : ${(0, types_1.defaultValue)(ctx, field)}`;
+             }
+             else if ((0, types_1.isBytes)(field)) {
+                 if ((0, types_1.isWithinOneOf)(field)) {
+@@ -1427,7 +1427,7 @@ function generateFromPartial(ctx, fullName, messageDesc) {
+                     }
+                     else {
+                         const type = (0, types_1.basicTypeName)(ctx, valueField);
+-                        return (0, ts_poet_1.code) `${type}.fromPartial(${from})`;
++                        return (0, ts_poet_1.code) `${type}Data.fromPartial(${from})`;
+                     }
+                 }
+                 else if ((0, types_1.isAnyValueType)(field)) {
+@@ -1435,7 +1435,7 @@ function generateFromPartial(ctx, fullName, messageDesc) {
+                 }
+                 else {
+                     const type = (0, types_1.basicTypeName)(ctx, field);
+-                    return (0, ts_poet_1.code) `${type}.fromPartial(${from})`;
++                    return (0, ts_poet_1.code) `${type}Data.fromPartial(${from})`;
+                 }
+             }
+             else {

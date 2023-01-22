@@ -1,5 +1,5 @@
 import * as _m0 from "protobufjs/minimal";
-export interface Report {
+export declare class Report {
     projectName: string;
     projectId: number;
     progress?: ReportProgress | undefined;
@@ -7,57 +7,52 @@ export interface Report {
     projectExport?: ReportProjectExport | undefined;
     projectPreview?: ReportProjectPreview | undefined;
 }
-export interface ReportProgress {
+export declare class ReportProgress {
     percentage: number;
     message: string;
 }
-export interface ReportComplete {
+export declare class ReportComplete {
     path: string;
 }
-export interface ReportProjectExport {
+export declare class ReportProjectExport {
     id: number;
 }
-export interface ReportProjectPreview {
+export declare class ReportProjectPreview {
     id: number;
 }
-export declare const Report: {
+export declare const ReportData: {
     encode(message: Report, writer?: _m0.Writer): _m0.Writer;
     decode(input: _m0.Reader | Uint8Array, length?: number): Report;
     fromJSON(object: any): Report;
     toJSON(message: Report): unknown;
-    create(base?: DeepPartial<Report>): Report;
     fromPartial(object: DeepPartial<Report>): Report;
 };
-export declare const ReportProgress: {
+export declare const ReportProgressData: {
     encode(message: ReportProgress, writer?: _m0.Writer): _m0.Writer;
     decode(input: _m0.Reader | Uint8Array, length?: number): ReportProgress;
     fromJSON(object: any): ReportProgress;
     toJSON(message: ReportProgress): unknown;
-    create(base?: DeepPartial<ReportProgress>): ReportProgress;
     fromPartial(object: DeepPartial<ReportProgress>): ReportProgress;
 };
-export declare const ReportComplete: {
+export declare const ReportCompleteData: {
     encode(message: ReportComplete, writer?: _m0.Writer): _m0.Writer;
     decode(input: _m0.Reader | Uint8Array, length?: number): ReportComplete;
     fromJSON(object: any): ReportComplete;
     toJSON(message: ReportComplete): unknown;
-    create(base?: DeepPartial<ReportComplete>): ReportComplete;
     fromPartial(object: DeepPartial<ReportComplete>): ReportComplete;
 };
-export declare const ReportProjectExport: {
+export declare const ReportProjectExportData: {
     encode(message: ReportProjectExport, writer?: _m0.Writer): _m0.Writer;
     decode(input: _m0.Reader | Uint8Array, length?: number): ReportProjectExport;
     fromJSON(object: any): ReportProjectExport;
     toJSON(message: ReportProjectExport): unknown;
-    create(base?: DeepPartial<ReportProjectExport>): ReportProjectExport;
     fromPartial(object: DeepPartial<ReportProjectExport>): ReportProjectExport;
 };
-export declare const ReportProjectPreview: {
+export declare const ReportProjectPreviewData: {
     encode(message: ReportProjectPreview, writer?: _m0.Writer): _m0.Writer;
     decode(input: _m0.Reader | Uint8Array, length?: number): ReportProjectPreview;
     fromJSON(object: any): ReportProjectPreview;
     toJSON(message: ReportProjectPreview): unknown;
-    create(base?: DeepPartial<ReportProjectPreview>): ReportProjectPreview;
     fromPartial(object: DeepPartial<ReportProjectPreview>): ReportProjectPreview;
 };
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

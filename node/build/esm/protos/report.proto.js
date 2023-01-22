@@ -1,5 +1,15 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
+export class Report {
+}
+export class ReportProgress {
+}
+export class ReportComplete {
+}
+export class ReportProjectExport {
+}
+export class ReportProjectPreview {
+}
 function createBaseReport() {
     return {
         projectName: "",
@@ -10,7 +20,7 @@ function createBaseReport() {
         projectPreview: undefined,
     };
 }
-export const Report = {
+export const ReportData = {
     encode(message, writer = _m0.Writer.create()) {
         if (message.projectName !== "") {
             writer.uint32(10).string(message.projectName);
@@ -19,16 +29,16 @@ export const Report = {
             writer.uint32(16).int32(message.projectId);
         }
         if (message.progress !== undefined) {
-            ReportProgress.encode(message.progress, writer.uint32(26).fork()).ldelim();
+            ReportProgressData.encode(message.progress, writer.uint32(26).fork()).ldelim();
         }
         if (message.complete !== undefined) {
-            ReportComplete.encode(message.complete, writer.uint32(34).fork()).ldelim();
+            ReportCompleteData.encode(message.complete, writer.uint32(34).fork()).ldelim();
         }
         if (message.projectExport !== undefined) {
-            ReportProjectExport.encode(message.projectExport, writer.uint32(42).fork()).ldelim();
+            ReportProjectExportData.encode(message.projectExport, writer.uint32(42).fork()).ldelim();
         }
         if (message.projectPreview !== undefined) {
-            ReportProjectPreview.encode(message.projectPreview, writer.uint32(50).fork()).ldelim();
+            ReportProjectPreviewData.encode(message.projectPreview, writer.uint32(50).fork()).ldelim();
         }
         return writer;
     },
@@ -46,16 +56,16 @@ export const Report = {
                     message.projectId = reader.int32();
                     break;
                 case 3:
-                    message.progress = ReportProgress.decode(reader, reader.uint32());
+                    message.progress = ReportProgressData.decode(reader, reader.uint32());
                     break;
                 case 4:
-                    message.complete = ReportComplete.decode(reader, reader.uint32());
+                    message.complete = ReportCompleteData.decode(reader, reader.uint32());
                     break;
                 case 5:
-                    message.projectExport = ReportProjectExport.decode(reader, reader.uint32());
+                    message.projectExport = ReportProjectExportData.decode(reader, reader.uint32());
                     break;
                 case 6:
-                    message.projectPreview = ReportProjectPreview.decode(reader, reader.uint32());
+                    message.projectPreview = ReportProjectPreviewData.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -68,10 +78,12 @@ export const Report = {
         return {
             projectName: isSet(object.projectName) ? String(object.projectName) : "",
             projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-            progress: isSet(object.progress) ? ReportProgress.fromJSON(object.progress) : undefined,
-            complete: isSet(object.complete) ? ReportComplete.fromJSON(object.complete) : undefined,
-            projectExport: isSet(object.projectExport) ? ReportProjectExport.fromJSON(object.projectExport) : undefined,
-            projectPreview: isSet(object.projectPreview) ? ReportProjectPreview.fromJSON(object.projectPreview) : undefined,
+            progress: isSet(object.progress) ? ReportProgressData.fromJSON(object.progress) : undefined,
+            complete: isSet(object.complete) ? ReportCompleteData.fromJSON(object.complete) : undefined,
+            projectExport: isSet(object.projectExport) ? ReportProjectExportData.fromJSON(object.projectExport) : undefined,
+            projectPreview: isSet(object.projectPreview)
+                ? ReportProjectPreviewData.fromJSON(object.projectPreview)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -79,17 +91,16 @@ export const Report = {
         message.projectName !== undefined && (obj.projectName = message.projectName);
         message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
         message.progress !== undefined &&
-            (obj.progress = message.progress ? ReportProgress.toJSON(message.progress) : undefined);
+            (obj.progress = message.progress ? ReportProgressData.toJSON(message.progress) : undefined);
         message.complete !== undefined &&
-            (obj.complete = message.complete ? ReportComplete.toJSON(message.complete) : undefined);
+            (obj.complete = message.complete ? ReportCompleteData.toJSON(message.complete) : undefined);
         message.projectExport !== undefined &&
-            (obj.projectExport = message.projectExport ? ReportProjectExport.toJSON(message.projectExport) : undefined);
+            (obj.projectExport = message.projectExport ? ReportProjectExportData.toJSON(message.projectExport) : undefined);
         message.projectPreview !== undefined &&
-            (obj.projectPreview = message.projectPreview ? ReportProjectPreview.toJSON(message.projectPreview) : undefined);
+            (obj.projectPreview = message.projectPreview
+                ? ReportProjectPreviewData.toJSON(message.projectPreview)
+                : undefined);
         return obj;
-    },
-    create(base) {
-        return Report.fromPartial(base !== null && base !== void 0 ? base : {});
     },
     fromPartial(object) {
         var _a, _b;
@@ -97,16 +108,16 @@ export const Report = {
         message.projectName = (_a = object.projectName) !== null && _a !== void 0 ? _a : "";
         message.projectId = (_b = object.projectId) !== null && _b !== void 0 ? _b : 0;
         message.progress = (object.progress !== undefined && object.progress !== null)
-            ? ReportProgress.fromPartial(object.progress)
+            ? ReportProgressData.fromPartial(object.progress)
             : undefined;
         message.complete = (object.complete !== undefined && object.complete !== null)
-            ? ReportComplete.fromPartial(object.complete)
+            ? ReportCompleteData.fromPartial(object.complete)
             : undefined;
         message.projectExport = (object.projectExport !== undefined && object.projectExport !== null)
-            ? ReportProjectExport.fromPartial(object.projectExport)
+            ? ReportProjectExportData.fromPartial(object.projectExport)
             : undefined;
         message.projectPreview = (object.projectPreview !== undefined && object.projectPreview !== null)
-            ? ReportProjectPreview.fromPartial(object.projectPreview)
+            ? ReportProjectPreviewData.fromPartial(object.projectPreview)
             : undefined;
         return message;
     },
@@ -114,7 +125,7 @@ export const Report = {
 function createBaseReportProgress() {
     return { percentage: 0, message: "" };
 }
-export const ReportProgress = {
+export const ReportProgressData = {
     encode(message, writer = _m0.Writer.create()) {
         if (message.percentage !== 0) {
             writer.uint32(13).float(message.percentage);
@@ -156,9 +167,6 @@ export const ReportProgress = {
         message.message !== undefined && (obj.message = message.message);
         return obj;
     },
-    create(base) {
-        return ReportProgress.fromPartial(base !== null && base !== void 0 ? base : {});
-    },
     fromPartial(object) {
         var _a, _b;
         const message = createBaseReportProgress();
@@ -170,7 +178,7 @@ export const ReportProgress = {
 function createBaseReportComplete() {
     return { path: "" };
 }
-export const ReportComplete = {
+export const ReportCompleteData = {
     encode(message, writer = _m0.Writer.create()) {
         if (message.path !== "") {
             writer.uint32(10).string(message.path);
@@ -202,9 +210,6 @@ export const ReportComplete = {
         message.path !== undefined && (obj.path = message.path);
         return obj;
     },
-    create(base) {
-        return ReportComplete.fromPartial(base !== null && base !== void 0 ? base : {});
-    },
     fromPartial(object) {
         var _a;
         const message = createBaseReportComplete();
@@ -215,7 +220,7 @@ export const ReportComplete = {
 function createBaseReportProjectExport() {
     return { id: 0 };
 }
-export const ReportProjectExport = {
+export const ReportProjectExportData = {
     encode(message, writer = _m0.Writer.create()) {
         if (message.id !== 0) {
             writer.uint32(8).int32(message.id);
@@ -247,9 +252,6 @@ export const ReportProjectExport = {
         message.id !== undefined && (obj.id = Math.round(message.id));
         return obj;
     },
-    create(base) {
-        return ReportProjectExport.fromPartial(base !== null && base !== void 0 ? base : {});
-    },
     fromPartial(object) {
         var _a;
         const message = createBaseReportProjectExport();
@@ -260,7 +262,7 @@ export const ReportProjectExport = {
 function createBaseReportProjectPreview() {
     return { id: 0 };
 }
-export const ReportProjectPreview = {
+export const ReportProjectPreviewData = {
     encode(message, writer = _m0.Writer.create()) {
         if (message.id !== 0) {
             writer.uint32(8).int32(message.id);
@@ -291,9 +293,6 @@ export const ReportProjectPreview = {
         const obj = {};
         message.id !== undefined && (obj.id = Math.round(message.id));
         return obj;
-    },
-    create(base) {
-        return ReportProjectPreview.fromPartial(base !== null && base !== void 0 ? base : {});
     },
     fromPartial(object) {
         var _a;
