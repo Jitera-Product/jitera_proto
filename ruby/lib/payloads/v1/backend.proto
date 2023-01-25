@@ -669,16 +669,16 @@ message ChangeColumnNull {
 message RemoveTableIndex {
 	string key = 1;
 	TableIndexMigration change_from = 2;
-	string prev_uuid = 4;
-	string next_uuid = 5;
-	TableIndexMigration prev_record = 6;
+	string prev_uuid = 3;
+	string next_uuid = 4;
+	TableIndexMigration prev_record = 5;
 }
 message RemoveTableRelation {
 	string key = 1;
 	TableRelationMigration change_from = 2;
-	string prev_uuid = 4;
-	string next_uuid = 5;
-	TableIndexMigration prev_record = 6;
+	string prev_uuid = 3;
+	string next_uuid = 4;
+	TableRelationMigration prev_record = 5;
 }
 message CreateTableRelation {
 	string key = 1;
