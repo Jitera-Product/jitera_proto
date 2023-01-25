@@ -642,6 +642,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :table_definition_uuid, :string, 4
       repeated :column_definitions, :message, 5, "schema.v1.MigrationColumnDefinition"
       optional :single_index, :bool, 6
+      proto3_optional :table_definition, :message, 7, "schema.v1.TableMetaDataMigration"
     end
     add_message "schema.v1.TableRelationMigration" do
       optional :foreign_key, :string, 1
