@@ -313,8 +313,8 @@ message Controller {
 			}
 			DataType data_type = 5;
 			repeated Field children = 6;
+			string category = 7;
 		}
-		string category = 7;
 	}
 
 	message ResourceCondition {
