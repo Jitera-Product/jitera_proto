@@ -561,7 +561,6 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     end
     add_message "schema.v1.RemoveTableRelation" do
       optional :key, :string, 1
-      optional :change_from, :message, 2, "schema.v1.TableRelationMigration"
       optional :prev_uuid, :string, 3
       optional :next_uuid, :string, 4
       optional :prev_record, :message, 5, "schema.v1.TableRelationMigration"
