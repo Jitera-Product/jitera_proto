@@ -313,6 +313,7 @@ message Controller {
 			}
 			DataType data_type = 5;
 			repeated Field children = 6;
+			string category = 7;
 		}
 	}
 
@@ -675,7 +676,6 @@ message RemoveTableIndex {
 }
 message RemoveTableRelation {
 	string key = 1;
-	TableRelationMigration change_from = 2;
 	string prev_uuid = 3;
 	string next_uuid = 4;
 	TableRelationMigration prev_record = 5;
