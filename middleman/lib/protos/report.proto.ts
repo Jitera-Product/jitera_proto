@@ -28,14 +28,7 @@ export class ReportProjectPreview {
 }
 
 function createBaseReport(): Report {
-  return {
-    projectName: "",
-    projectId: 0,
-    progress: undefined,
-    complete: undefined,
-    projectExport: undefined,
-    projectPreview: undefined,
-  };
+  return { projectName: "", projectId: 0 };
 }
 
 export const ReportData = {

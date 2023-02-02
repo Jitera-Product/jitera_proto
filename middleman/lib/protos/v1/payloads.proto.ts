@@ -293,8 +293,8 @@ export class Authorization {
 
 export class AuthorizationPolicy {
   resource: string;
-  roleBinding: AuthorizationPolicyRoleBinding | undefined;
-  rule: AuthorizationPolicyRule | undefined;
+  roleBinding?: AuthorizationPolicyRoleBinding;
+  rule?: AuthorizationPolicyRule;
   scope: AuthorizationPolicyScope;
 }
 
@@ -351,7 +351,7 @@ export class AuthorizationPolicyRuleExpr {
   column: string;
   value?: string | undefined;
   paths?: string | undefined;
-  dataType: DataType | undefined;
+  dataType?: DataType;
   operator: Operator;
 }
 
@@ -596,38 +596,38 @@ export class ControllerEndpoint {
   create?: ControllerEndpointCreate | undefined;
   update?: ControllerEndpointUpdate | undefined;
   delete?: ControllerEndpointDelete | undefined;
-  authentication: ControllerAuthentication | undefined;
-  authorization: ControllerAuthorization | undefined;
-  responses: ControllerResponse | undefined;
-  params: ControllerRequestContent | undefined;
+  authentication?: ControllerAuthentication;
+  authorization?: ControllerAuthorization;
+  responses?: ControllerResponse;
+  params?: ControllerRequestContent;
   writable: boolean;
 }
 
 export class ControllerEndpointList {
-  queries: ControllerRequestContent | undefined;
-  conditions: ControllerResourceCondition | undefined;
+  queries?: ControllerRequestContent;
+  conditions?: ControllerResourceCondition;
 }
 
 export class ControllerEndpointGet {
-  queries: ControllerRequestContent | undefined;
-  conditions: ControllerResourceCondition | undefined;
+  queries?: ControllerRequestContent;
+  conditions?: ControllerResourceCondition;
 }
 
 export class ControllerEndpointCreate {
-  body: ControllerRequestContent | undefined;
-  conditions: ControllerResourceCondition | undefined;
-  resources: ControllerResourceUpdate | undefined;
+  body?: ControllerRequestContent;
+  conditions?: ControllerResourceCondition;
+  resources?: ControllerResourceUpdate;
 }
 
 export class ControllerEndpointUpdate {
-  body: ControllerRequestContent | undefined;
-  conditions: ControllerResourceCondition | undefined;
-  resources: ControllerResourceUpdate | undefined;
+  body?: ControllerRequestContent;
+  conditions?: ControllerResourceCondition;
+  resources?: ControllerResourceUpdate;
 }
 
 export class ControllerEndpointDelete {
-  body: ControllerRequestContent | undefined;
-  conditions: ControllerResourceCondition | undefined;
+  body?: ControllerRequestContent;
+  conditions?: ControllerResourceCondition;
 }
 
 export class ControllerRequestContent {
@@ -636,7 +636,7 @@ export class ControllerRequestContent {
 
 export class ControllerRequestContentField {
   name: string;
-  dataType: DataType | undefined;
+  dataType?: DataType;
   children: ControllerRequestContentField[];
 }
 
@@ -649,7 +649,7 @@ export class ControllerResponseField {
   resource?: string | undefined;
   property?: string | undefined;
   value?: string | undefined;
-  dataType: DataType | undefined;
+  dataType?: DataType;
   children: ControllerResponseField[];
 }
 
@@ -697,7 +697,7 @@ export class ControllerResourceConditionExpr {
   body?: string | undefined;
   value?: string | undefined;
   system?: ControllerResourceConditionSystem | undefined;
-  dataType: DataType | undefined;
+  dataType?: DataType;
   operator: Operator;
 }
 
@@ -711,7 +711,7 @@ export class ControllerResourceUpdateField {
   params?: string | undefined;
   body?: string | undefined;
   value?: string | undefined;
-  dataType: DataType | undefined;
+  dataType?: DataType;
   children: ControllerResourceUpdateField[];
 }
 
@@ -733,7 +733,7 @@ export class Table {
 
 export class TableColumn {
   name: string;
-  type: TableColumnColumnType | undefined;
+  type?: TableColumnColumnType;
   constraints: TableConstraint[];
 }
 
@@ -934,7 +934,7 @@ export function tableColumnDateTypeConditionToJSON(object: TableColumnDateTypeCo
 
 export class TableColumnFileType {
   maximumSize: number;
-  numberOfFiles: TableColumnFileTypeNumberOfFiles | undefined;
+  numberOfFiles?: TableColumnFileTypeNumberOfFiles;
   contentTypes: TableColumnFileTypeContentType[];
   multiple: boolean;
 }
@@ -1094,10 +1094,10 @@ export class MigrationChange {
 
 export class CreateTable {
   key: string;
-  changeTo: CreateTableChange | undefined;
+  changeTo?: CreateTableChange;
   prevUuid: string;
   nextUuid: string;
-  nextRecord: CreateTableNextRecord | undefined;
+  nextRecord?: CreateTableNextRecord;
 }
 
 export class ChangeTableName {
@@ -1106,8 +1106,8 @@ export class ChangeTableName {
   changeTo: string;
   prevUuid: string;
   nextUuid: string;
-  prevRecord: CreateTableNextRecord | undefined;
-  nextRecord: CreateTableNextRecord | undefined;
+  prevRecord?: CreateTableNextRecord;
+  nextRecord?: CreateTableNextRecord;
 }
 
 export class ChangeTableComment {
@@ -1116,8 +1116,8 @@ export class ChangeTableComment {
   changeTo: string;
   prevUuid: string;
   nextUuid: string;
-  prevRecord: CreateTableNextRecord | undefined;
-  nextRecord: CreateTableNextRecord | undefined;
+  prevRecord?: CreateTableNextRecord;
+  nextRecord?: CreateTableNextRecord;
 }
 
 export class CreateTableChange {
@@ -1128,10 +1128,10 @@ export class CreateTableChange {
 
 export class AddColumn {
   key: string;
-  changeTo: MigrationColumnDefinition | undefined;
+  changeTo?: MigrationColumnDefinition;
   prevUuid: string;
   nextUuid: string;
-  nextRecord: MigrationColumnDefinition | undefined;
+  nextRecord?: MigrationColumnDefinition;
 }
 
 export class RenameColumn {
@@ -1140,8 +1140,8 @@ export class RenameColumn {
   changeTo: string;
   prevUuid: string;
   nextUuid: string;
-  prevRecord: MigrationColumnDefinition | undefined;
-  nextRecord: MigrationColumnDefinition | undefined;
+  prevRecord?: MigrationColumnDefinition;
+  nextRecord?: MigrationColumnDefinition;
 }
 
 export class ChangeColumnComment {
@@ -1150,8 +1150,8 @@ export class ChangeColumnComment {
   changeTo: string;
   prevUuid: string;
   nextUuid: string;
-  prevRecord: MigrationColumnDefinition | undefined;
-  nextRecord: MigrationColumnDefinition | undefined;
+  prevRecord?: MigrationColumnDefinition;
+  nextRecord?: MigrationColumnDefinition;
 }
 
 export class ChangeColumn {
@@ -1160,8 +1160,8 @@ export class ChangeColumn {
   changeTo: string;
   prevUuid: string;
   nextUuid: string;
-  prevRecord: MigrationColumnDefinition | undefined;
-  nextRecord: MigrationColumnDefinition | undefined;
+  prevRecord?: MigrationColumnDefinition;
+  nextRecord?: MigrationColumnDefinition;
 }
 
 export class ChangeColumnDefault {
@@ -1170,8 +1170,8 @@ export class ChangeColumnDefault {
   changeTo: string;
   prevUuid: string;
   nextUuid: string;
-  prevRecord: MigrationColumnDefinition | undefined;
-  nextRecord: MigrationColumnDefinition | undefined;
+  prevRecord?: MigrationColumnDefinition;
+  nextRecord?: MigrationColumnDefinition;
 }
 
 export class ChangeColumnNull {
@@ -1180,48 +1180,48 @@ export class ChangeColumnNull {
   changeTo: string;
   prevUuid: string;
   nextUuid: string;
-  prevRecord: MigrationColumnDefinition | undefined;
-  nextRecord: MigrationColumnDefinition | undefined;
+  prevRecord?: MigrationColumnDefinition;
+  nextRecord?: MigrationColumnDefinition;
 }
 
 export class RemoveTableIndex {
   key: string;
-  changeFrom: TableIndexMigration | undefined;
+  changeFrom?: TableIndexMigration;
   prevUuid: string;
   nextUuid: string;
-  prevRecord: TableIndexMigration | undefined;
+  prevRecord?: TableIndexMigration;
 }
 
 export class RemoveTableRelation {
   key: string;
-  changeFrom: TableRelationMigration | undefined;
+  changeFrom?: TableRelationMigration;
   prevUuid: string;
   nextUuid: string;
-  prevRecord: TableIndexMigration | undefined;
+  prevRecord?: TableIndexMigration;
 }
 
 export class CreateTableRelation {
   key: string;
-  changeTo: TableRelationMigration | undefined;
+  changeTo?: TableRelationMigration;
   prevUuid: string;
   nextUuid: string;
-  nextRecord: TableRelationMigration | undefined;
+  nextRecord?: TableRelationMigration;
 }
 
 export class RemoveColumn {
   key: string;
-  changeFrom: MigrationColumnDefinition | undefined;
+  changeFrom?: MigrationColumnDefinition;
   prevUuid: string;
   nextUuid: string;
-  prevRecord: MigrationColumnDefinition | undefined;
+  prevRecord?: MigrationColumnDefinition;
 }
 
 export class DropTable {
   key: string;
-  changeFrom: CreateTableNextRecord | undefined;
+  changeFrom?: CreateTableNextRecord;
   prevUuid: string;
   nextUuid: string;
-  prevRecord: CreateTableNextRecord | undefined;
+  prevRecord?: CreateTableNextRecord;
 }
 
 export class ChangeTableIndex {
@@ -1230,19 +1230,19 @@ export class ChangeTableIndex {
   changeTo: string;
   prevUuid: string;
   nextUuid: string;
-  prevRecord: TableIndexMigration | undefined;
-  nextRecord: TableIndexMigration | undefined;
+  prevRecord?: TableIndexMigration;
+  nextRecord?: TableIndexMigration;
 }
 
 export class CreateTableIndex {
   key: string;
-  changeTo: TableIndexMigration | undefined;
+  changeTo?: TableIndexMigration;
   nextUuid: string;
-  nextRecord: TableIndexMigration | undefined;
+  nextRecord?: TableIndexMigration;
 }
 
 export class AddUniqColumn {
-  nextRecord: MigrationColumnDefinition | undefined;
+  nextRecord?: MigrationColumnDefinition;
 }
 
 export class ChangeColumnUnique {
@@ -1251,8 +1251,8 @@ export class ChangeColumnUnique {
   changeTo: boolean;
   prevUuid: string;
   nextUuid: string;
-  prevRecord: MigrationColumnDefinition | undefined;
-  nextRecord: MigrationColumnDefinition | undefined;
+  prevRecord?: MigrationColumnDefinition;
+  nextRecord?: MigrationColumnDefinition;
 }
 
 export class CreateTableNextRecord {
@@ -1297,8 +1297,8 @@ export class TableRelationMigration {
   tableDefinitionUuid: string;
   relatedTableUuid: string;
   customForeignKey?: boolean | undefined;
-  tableDefinition: CreateTableChange | undefined;
-  relatedTable: CreateTableChange | undefined;
+  tableDefinition?: CreateTableChange;
+  relatedTable?: CreateTableChange;
 }
 
 export class GetBackendRequest {
@@ -1306,7 +1306,7 @@ export class GetBackendRequest {
 }
 
 export class GetBackendResponse {
-  backend: Backend | undefined;
+  backend?: Backend;
 }
 
 export class ListTablesRequest {
@@ -1358,14 +1358,7 @@ export class ListMigrationsResponse {
 }
 
 function createBaseProject(): Project {
-  return {
-    id: "",
-    projectName: "",
-    projectId: 0,
-    infra: undefined,
-    projectExport: undefined,
-    projectPreview: undefined,
-  };
+  return { id: "", projectName: "", projectId: 0 };
 }
 
 export const ProjectData = {
@@ -2035,7 +2028,7 @@ export const AuthorizationData = {
 };
 
 function createBaseAuthorizationPolicy(): AuthorizationPolicy {
-  return { resource: "", roleBinding: undefined, rule: undefined, scope: 0 };
+  return { resource: "", scope: 0 };
 }
 
 export const AuthorizationPolicyData = {
@@ -2264,7 +2257,7 @@ export const AuthorizationPolicyRuleData = {
 };
 
 function createBaseAuthorizationPolicyRuleOperand(): AuthorizationPolicyRuleOperand {
-  return { expr: undefined, rule: undefined };
+  return {};
 }
 
 export const AuthorizationPolicyRuleOperandData = {
@@ -2328,7 +2321,7 @@ export const AuthorizationPolicyRuleOperandData = {
 };
 
 function createBaseAuthorizationPolicyRuleExpr(): AuthorizationPolicyRuleExpr {
-  return { column: "", value: undefined, paths: undefined, dataType: undefined, operator: 0 };
+  return { column: "", operator: 0 };
 }
 
 export const AuthorizationPolicyRuleExprData = {
@@ -2416,18 +2409,7 @@ export const AuthorizationPolicyRuleExprData = {
 };
 
 function createBaseFeature(): Feature {
-  return {
-    name: 0,
-    env: 0,
-    emailLogin: undefined,
-    jpBankData: undefined,
-    basicAuth: undefined,
-    twilioLogin: undefined,
-    rollbar: undefined,
-    deepLink: undefined,
-    stripe: undefined,
-    lineLogin: undefined,
-  };
+  return { name: 0, env: 0 };
 }
 
 export const FeatureData = {
@@ -3337,22 +3319,7 @@ export const ControllerData = {
 };
 
 function createBaseControllerEndpoint(): ControllerEndpoint {
-  return {
-    path: "",
-    name: "",
-    table: undefined,
-    feature: undefined,
-    list: undefined,
-    get: undefined,
-    create: undefined,
-    update: undefined,
-    delete: undefined,
-    authentication: undefined,
-    authorization: undefined,
-    responses: undefined,
-    params: undefined,
-    writable: false,
-  };
+  return { path: "", name: "", writable: false };
 }
 
 export const ControllerEndpointData = {
@@ -3552,7 +3519,7 @@ export const ControllerEndpointData = {
 };
 
 function createBaseControllerEndpointList(): ControllerEndpointList {
-  return { queries: undefined, conditions: undefined };
+  return {};
 }
 
 export const ControllerEndpointListData = {
@@ -3616,7 +3583,7 @@ export const ControllerEndpointListData = {
 };
 
 function createBaseControllerEndpointGet(): ControllerEndpointGet {
-  return { queries: undefined, conditions: undefined };
+  return {};
 }
 
 export const ControllerEndpointGetData = {
@@ -3680,7 +3647,7 @@ export const ControllerEndpointGetData = {
 };
 
 function createBaseControllerEndpointCreate(): ControllerEndpointCreate {
-  return { body: undefined, conditions: undefined, resources: undefined };
+  return {};
 }
 
 export const ControllerEndpointCreateData = {
@@ -3756,7 +3723,7 @@ export const ControllerEndpointCreateData = {
 };
 
 function createBaseControllerEndpointUpdate(): ControllerEndpointUpdate {
-  return { body: undefined, conditions: undefined, resources: undefined };
+  return {};
 }
 
 export const ControllerEndpointUpdateData = {
@@ -3832,7 +3799,7 @@ export const ControllerEndpointUpdateData = {
 };
 
 function createBaseControllerEndpointDelete(): ControllerEndpointDelete {
-  return { body: undefined, conditions: undefined };
+  return {};
 }
 
 export const ControllerEndpointDeleteData = {
@@ -3951,7 +3918,7 @@ export const ControllerRequestContentData = {
 };
 
 function createBaseControllerRequestContentField(): ControllerRequestContentField {
-  return { name: "", dataType: undefined, children: [] };
+  return { name: "", children: [] };
 }
 
 export const ControllerRequestContentFieldData = {
@@ -4082,7 +4049,7 @@ export const ControllerResponseData = {
 };
 
 function createBaseControllerResponseField(): ControllerResponseField {
-  return { name: "", resource: undefined, property: undefined, value: undefined, dataType: undefined, children: [] };
+  return { name: "", children: [] };
 }
 
 export const ControllerResponseFieldData = {
@@ -4262,7 +4229,7 @@ export const ControllerResourceConditionData = {
 };
 
 function createBaseControllerResourceConditionOperand(): ControllerResourceConditionOperand {
-  return { expr: undefined, condition: undefined };
+  return {};
 }
 
 export const ControllerResourceConditionOperandData = {
@@ -4326,16 +4293,7 @@ export const ControllerResourceConditionOperandData = {
 };
 
 function createBaseControllerResourceConditionExpr(): ControllerResourceConditionExpr {
-  return {
-    paths: [],
-    query: undefined,
-    params: undefined,
-    body: undefined,
-    value: undefined,
-    system: undefined,
-    dataType: undefined,
-    operator: 0,
-  };
+  return { paths: [], operator: 0 };
 }
 
 export const ControllerResourceConditionExprData = {
@@ -4510,15 +4468,7 @@ export const ControllerResourceUpdateData = {
 };
 
 function createBaseControllerResourceUpdateField(): ControllerResourceUpdateField {
-  return {
-    name: "",
-    query: undefined,
-    params: undefined,
-    body: undefined,
-    value: undefined,
-    dataType: undefined,
-    children: [],
-  };
+  return { name: "", children: [] };
 }
 
 export const ControllerResourceUpdateFieldData = {
@@ -4825,7 +4775,7 @@ export const TableData = {
 };
 
 function createBaseTableColumn(): TableColumn {
-  return { name: "", type: undefined, constraints: [] };
+  return { name: "", constraints: [] };
 }
 
 export const TableColumnData = {
@@ -4901,15 +4851,7 @@ export const TableColumnData = {
 };
 
 function createBaseTableColumnColumnType(): TableColumnColumnType {
-  return {
-    integerType: undefined,
-    stringType: undefined,
-    floatType: undefined,
-    booleanType: undefined,
-    dateType: undefined,
-    fileType: undefined,
-    enumType: undefined,
-  };
+  return {};
 }
 
 export const TableColumnColumnTypeData = {
@@ -5033,7 +4975,7 @@ export const TableColumnColumnTypeData = {
 };
 
 function createBaseTableColumnStringType(): TableColumnStringType {
-  return { defaultValue: undefined, isText: false, formats: [], conditions: [] };
+  return { isText: false, formats: [], conditions: [] };
 }
 
 export const TableColumnStringTypeData = {
@@ -5130,7 +5072,7 @@ export const TableColumnStringTypeData = {
 };
 
 function createBaseTableColumnStringTypeCondition(): TableColumnStringTypeCondition {
-  return { operator: 0, value: undefined, columnName: undefined };
+  return { operator: 0 };
 }
 
 export const TableColumnStringTypeConditionData = {
@@ -5197,7 +5139,7 @@ export const TableColumnStringTypeConditionData = {
 };
 
 function createBaseTableColumnIntegerType(): TableColumnIntegerType {
-  return { defaultValue: undefined, conditions: [] };
+  return { conditions: [] };
 }
 
 export const TableColumnIntegerTypeData = {
@@ -5261,7 +5203,7 @@ export const TableColumnIntegerTypeData = {
 };
 
 function createBaseTableColumnIntegerTypeCondition(): TableColumnIntegerTypeCondition {
-  return { operator: 0, value: undefined, columnName: undefined };
+  return { operator: 0 };
 }
 
 export const TableColumnIntegerTypeConditionData = {
@@ -5328,7 +5270,7 @@ export const TableColumnIntegerTypeConditionData = {
 };
 
 function createBaseTableColumnFloatType(): TableColumnFloatType {
-  return { defaultValue: undefined, conditions: [] };
+  return { conditions: [] };
 }
 
 export const TableColumnFloatTypeData = {
@@ -5392,7 +5334,7 @@ export const TableColumnFloatTypeData = {
 };
 
 function createBaseTableColumnFloatTypeCondition(): TableColumnFloatTypeCondition {
-  return { operator: 0, value: undefined, columnName: undefined };
+  return { operator: 0 };
 }
 
 export const TableColumnFloatTypeConditionData = {
@@ -5579,7 +5521,7 @@ export const TableColumnDateTypeData = {
 };
 
 function createBaseTableColumnFileType(): TableColumnFileType {
-  return { maximumSize: 0, numberOfFiles: undefined, contentTypes: [], multiple: false };
+  return { maximumSize: 0, contentTypes: [], multiple: false };
 }
 
 export const TableColumnFileTypeData = {
@@ -5796,7 +5738,7 @@ export const TableColumnEnumTypeData = {
 };
 
 function createBaseTableConstraint(): TableConstraint {
-  return { primaryKey: undefined, foreignKey: undefined, notNull: undefined, unique: undefined };
+  return {};
 }
 
 export const TableConstraintData = {
@@ -6130,7 +6072,7 @@ export const TableIndexData = {
 };
 
 function createBaseTableRelation(): TableRelation {
-  return { hasOne: undefined, belongTo: undefined, oneMany: undefined, manyOne: undefined, manyMany: undefined };
+  return {};
 }
 
 export const TableRelationData = {
@@ -6582,26 +6524,7 @@ export const MigrationData = {
 };
 
 function createBaseMigrationChange(): MigrationChange {
-  return {
-    createTable: undefined,
-    changeTableName: undefined,
-    changeTableComment: undefined,
-    addColumn: undefined,
-    renameColumn: undefined,
-    changeColumnComment: undefined,
-    changeColumn: undefined,
-    changeColumnDefault: undefined,
-    changeColumnNull: undefined,
-    removeTableIndex: undefined,
-    removeTableRelation: undefined,
-    createTableRelation: undefined,
-    removeColumn: undefined,
-    dropTable: undefined,
-    changeTableIndex: undefined,
-    createTableIndex: undefined,
-    addUniqColumn: undefined,
-    changeColumnUnique: undefined,
-  };
+  return {};
 }
 
 export const MigrationChangeData = {
@@ -6887,7 +6810,7 @@ export const MigrationChangeData = {
 };
 
 function createBaseCreateTable(): CreateTable {
-  return { key: "", changeTo: undefined, prevUuid: "", nextUuid: "", nextRecord: undefined };
+  return { key: "", prevUuid: "", nextUuid: "" };
 }
 
 export const CreateTableData = {
@@ -6978,15 +6901,7 @@ export const CreateTableData = {
 };
 
 function createBaseChangeTableName(): ChangeTableName {
-  return {
-    key: "",
-    changeFrom: "",
-    changeTo: "",
-    prevUuid: "",
-    nextUuid: "",
-    prevRecord: undefined,
-    nextRecord: undefined,
-  };
+  return { key: "", changeFrom: "", changeTo: "", prevUuid: "", nextUuid: "" };
 }
 
 export const ChangeTableNameData = {
@@ -7095,15 +7010,7 @@ export const ChangeTableNameData = {
 };
 
 function createBaseChangeTableComment(): ChangeTableComment {
-  return {
-    key: "",
-    changeFrom: "",
-    changeTo: "",
-    prevUuid: "",
-    nextUuid: "",
-    prevRecord: undefined,
-    nextRecord: undefined,
-  };
+  return { key: "", changeFrom: "", changeTo: "", prevUuid: "", nextUuid: "" };
 }
 
 export const ChangeTableCommentData = {
@@ -7212,7 +7119,7 @@ export const ChangeTableCommentData = {
 };
 
 function createBaseCreateTableChange(): CreateTableChange {
-  return { name: "", uuid: "", comment: undefined };
+  return { name: "", uuid: "" };
 }
 
 export const CreateTableChangeData = {
@@ -7279,7 +7186,7 @@ export const CreateTableChangeData = {
 };
 
 function createBaseAddColumn(): AddColumn {
-  return { key: "", changeTo: undefined, prevUuid: "", nextUuid: "", nextRecord: undefined };
+  return { key: "", prevUuid: "", nextUuid: "" };
 }
 
 export const AddColumnData = {
@@ -7370,15 +7277,7 @@ export const AddColumnData = {
 };
 
 function createBaseRenameColumn(): RenameColumn {
-  return {
-    key: "",
-    changeFrom: "",
-    changeTo: "",
-    prevUuid: "",
-    nextUuid: "",
-    prevRecord: undefined,
-    nextRecord: undefined,
-  };
+  return { key: "", changeFrom: "", changeTo: "", prevUuid: "", nextUuid: "" };
 }
 
 export const RenameColumnData = {
@@ -7487,15 +7386,7 @@ export const RenameColumnData = {
 };
 
 function createBaseChangeColumnComment(): ChangeColumnComment {
-  return {
-    key: "",
-    changeFrom: "",
-    changeTo: "",
-    prevUuid: "",
-    nextUuid: "",
-    prevRecord: undefined,
-    nextRecord: undefined,
-  };
+  return { key: "", changeFrom: "", changeTo: "", prevUuid: "", nextUuid: "" };
 }
 
 export const ChangeColumnCommentData = {
@@ -7604,15 +7495,7 @@ export const ChangeColumnCommentData = {
 };
 
 function createBaseChangeColumn(): ChangeColumn {
-  return {
-    key: "",
-    changeFrom: "",
-    changeTo: "",
-    prevUuid: "",
-    nextUuid: "",
-    prevRecord: undefined,
-    nextRecord: undefined,
-  };
+  return { key: "", changeFrom: "", changeTo: "", prevUuid: "", nextUuid: "" };
 }
 
 export const ChangeColumnData = {
@@ -7721,15 +7604,7 @@ export const ChangeColumnData = {
 };
 
 function createBaseChangeColumnDefault(): ChangeColumnDefault {
-  return {
-    key: "",
-    changeFrom: "",
-    changeTo: "",
-    prevUuid: "",
-    nextUuid: "",
-    prevRecord: undefined,
-    nextRecord: undefined,
-  };
+  return { key: "", changeFrom: "", changeTo: "", prevUuid: "", nextUuid: "" };
 }
 
 export const ChangeColumnDefaultData = {
@@ -7838,15 +7713,7 @@ export const ChangeColumnDefaultData = {
 };
 
 function createBaseChangeColumnNull(): ChangeColumnNull {
-  return {
-    key: "",
-    changeFrom: "",
-    changeTo: "",
-    prevUuid: "",
-    nextUuid: "",
-    prevRecord: undefined,
-    nextRecord: undefined,
-  };
+  return { key: "", changeFrom: "", changeTo: "", prevUuid: "", nextUuid: "" };
 }
 
 export const ChangeColumnNullData = {
@@ -7955,7 +7822,7 @@ export const ChangeColumnNullData = {
 };
 
 function createBaseRemoveTableIndex(): RemoveTableIndex {
-  return { key: "", changeFrom: undefined, prevUuid: "", nextUuid: "", prevRecord: undefined };
+  return { key: "", prevUuid: "", nextUuid: "" };
 }
 
 export const RemoveTableIndexData = {
@@ -8046,7 +7913,7 @@ export const RemoveTableIndexData = {
 };
 
 function createBaseRemoveTableRelation(): RemoveTableRelation {
-  return { key: "", changeFrom: undefined, prevUuid: "", nextUuid: "", prevRecord: undefined };
+  return { key: "", prevUuid: "", nextUuid: "" };
 }
 
 export const RemoveTableRelationData = {
@@ -8137,7 +8004,7 @@ export const RemoveTableRelationData = {
 };
 
 function createBaseCreateTableRelation(): CreateTableRelation {
-  return { key: "", changeTo: undefined, prevUuid: "", nextUuid: "", nextRecord: undefined };
+  return { key: "", prevUuid: "", nextUuid: "" };
 }
 
 export const CreateTableRelationData = {
@@ -8228,7 +8095,7 @@ export const CreateTableRelationData = {
 };
 
 function createBaseRemoveColumn(): RemoveColumn {
-  return { key: "", changeFrom: undefined, prevUuid: "", nextUuid: "", prevRecord: undefined };
+  return { key: "", prevUuid: "", nextUuid: "" };
 }
 
 export const RemoveColumnData = {
@@ -8319,7 +8186,7 @@ export const RemoveColumnData = {
 };
 
 function createBaseDropTable(): DropTable {
-  return { key: "", changeFrom: undefined, prevUuid: "", nextUuid: "", prevRecord: undefined };
+  return { key: "", prevUuid: "", nextUuid: "" };
 }
 
 export const DropTableData = {
@@ -8410,15 +8277,7 @@ export const DropTableData = {
 };
 
 function createBaseChangeTableIndex(): ChangeTableIndex {
-  return {
-    key: "",
-    changeFrom: "",
-    changeTo: "",
-    prevUuid: "",
-    nextUuid: "",
-    prevRecord: undefined,
-    nextRecord: undefined,
-  };
+  return { key: "", changeFrom: "", changeTo: "", prevUuid: "", nextUuid: "" };
 }
 
 export const ChangeTableIndexData = {
@@ -8527,7 +8386,7 @@ export const ChangeTableIndexData = {
 };
 
 function createBaseCreateTableIndex(): CreateTableIndex {
-  return { key: "", changeTo: undefined, nextUuid: "", nextRecord: undefined };
+  return { key: "", nextUuid: "" };
 }
 
 export const CreateTableIndexData = {
@@ -8609,7 +8468,7 @@ export const CreateTableIndexData = {
 };
 
 function createBaseAddUniqColumn(): AddUniqColumn {
-  return { nextRecord: undefined };
+  return {};
 }
 
 export const AddUniqColumnData = {
@@ -8661,15 +8520,7 @@ export const AddUniqColumnData = {
 };
 
 function createBaseChangeColumnUnique(): ChangeColumnUnique {
-  return {
-    key: "",
-    changeFrom: false,
-    changeTo: false,
-    prevUuid: "",
-    nextUuid: "",
-    prevRecord: undefined,
-    nextRecord: undefined,
-  };
+  return { key: "", changeFrom: false, changeTo: false, prevUuid: "", nextUuid: "" };
 }
 
 export const ChangeColumnUniqueData = {
@@ -8872,8 +8723,6 @@ function createBaseMigrationColumnDefinition(): MigrationColumnDefinition {
     comment: "",
     uuid: "",
     tableDefinitionUuid: "",
-    customForeignKey: undefined,
-    tableDefinition: undefined,
   };
 }
 
@@ -9168,17 +9017,7 @@ export const TableIndexMigrationData = {
 };
 
 function createBaseTableRelationMigration(): TableRelationMigration {
-  return {
-    foreignKey: "",
-    relationType: "",
-    required: false,
-    uuid: "",
-    tableDefinitionUuid: "",
-    relatedTableUuid: "",
-    customForeignKey: undefined,
-    tableDefinition: undefined,
-    relatedTable: undefined,
-  };
+  return { foreignKey: "", relationType: "", required: false, uuid: "", tableDefinitionUuid: "", relatedTableUuid: "" };
 }
 
 export const TableRelationMigrationData = {
@@ -9356,7 +9195,7 @@ export const GetBackendRequestData = {
 };
 
 function createBaseGetBackendResponse(): GetBackendResponse {
-  return { backend: undefined };
+  return {};
 }
 
 export const GetBackendResponseData = {
