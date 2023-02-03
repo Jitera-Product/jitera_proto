@@ -64,6 +64,7 @@ enum DataTypeName {
 	FILE = 11;
 	TABLE = 12;
 	ENUM = 13;
+	CURRENT_USER=14;
 }
 
 message DataType {
@@ -313,6 +314,7 @@ message Controller {
 			}
 			DataType data_type = 5;
 			repeated Field children = 6;
+			string category = 7;
 		}
 	}
 
@@ -669,16 +671,15 @@ message ChangeColumnNull {
 message RemoveTableIndex {
 	string key = 1;
 	TableIndexMigration change_from = 2;
-	string prev_uuid = 4;
-	string next_uuid = 5;
-	TableIndexMigration prev_record = 6;
+	string prev_uuid = 3;
+	string next_uuid = 4;
+	TableIndexMigration prev_record = 5;
 }
 message RemoveTableRelation {
 	string key = 1;
-	TableRelationMigration change_from = 2;
-	string prev_uuid = 4;
-	string next_uuid = 5;
-	TableIndexMigration prev_record = 6;
+	string prev_uuid = 3;
+	string next_uuid = 4;
+	TableRelationMigration prev_record = 5;
 }
 message CreateTableRelation {
 	string key = 1;
@@ -745,6 +746,7 @@ message MigrationColumnDefinition {
 	string table_definition_uuid = 8;
 	optional bool custom_foreign_key = 9;
 	optional TableMetaDataMigration table_definition = 10;
+	int32 id = 11;
 }
 message TableMetaDataMigration {
 	string name = 1;
@@ -757,6 +759,8 @@ message TableIndexMigration {
 	string table_definition_uuid = 4;
 	repeated MigrationColumnDefinition column_definitions = 5;
 	bool single_index = 6;
+	optional TableMetaDataMigration table_definition = 7;
+	int32 id = 8;
 }
 message TableRelationMigration {
 	string foreign_key = 1;
@@ -768,8 +772,8 @@ message TableRelationMigration {
 	optional bool custom_foreign_key = 7;
 	CreateTableChange table_definition = 8;
 	CreateTableChange related_table = 9;
+	int32 id = 10;
 }
-
 
 service CoreService {
   rpc ListTables (ListTablesRequest) returns (ListTablesResponse) {}

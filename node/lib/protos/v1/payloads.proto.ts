@@ -17,6 +17,7 @@ export enum DataTypeName {
   FILE = 11,
   TABLE = 12,
   ENUM = 13,
+  CURRENT_USER = 14,
   UNRECOGNIZED = -1,
 }
 
@@ -64,6 +65,9 @@ export function dataTypeNameFromJSON(object: any): DataTypeName {
     case 13:
     case "ENUM":
       return DataTypeName.ENUM;
+    case 14:
+    case "CURRENT_USER":
+      return DataTypeName.CURRENT_USER;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -101,6 +105,8 @@ export function dataTypeNameToJSON(object: DataTypeName): string {
       return "TABLE";
     case DataTypeName.ENUM:
       return "ENUM";
+    case DataTypeName.CURRENT_USER:
+      return "CURRENT_USER";
     case DataTypeName.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -651,6 +657,7 @@ export interface ControllerResponseField {
   value?: string | undefined;
   dataType?: DataType;
   children: ControllerResponseField[];
+  category: string;
 }
 
 export interface ControllerResourceCondition {
@@ -1194,10 +1201,9 @@ export interface RemoveTableIndex {
 
 export interface RemoveTableRelation {
   key: string;
-  changeFrom?: TableRelationMigration;
   prevUuid: string;
   nextUuid: string;
-  prevRecord?: TableIndexMigration;
+  prevRecord?: TableRelationMigration;
 }
 
 export interface CreateTableRelation {
@@ -1273,6 +1279,7 @@ export interface MigrationColumnDefinition {
   tableDefinitionUuid: string;
   customForeignKey?: boolean | undefined;
   tableDefinition?: TableMetaDataMigration | undefined;
+  id: number;
 }
 
 export interface TableMetaDataMigration {
@@ -1287,6 +1294,8 @@ export interface TableIndexMigration {
   tableDefinitionUuid: string;
   columnDefinitions: MigrationColumnDefinition[];
   singleIndex: boolean;
+  tableDefinition?: TableMetaDataMigration | undefined;
+  id: number;
 }
 
 export interface TableRelationMigration {
@@ -1299,6 +1308,7 @@ export interface TableRelationMigration {
   customForeignKey?: boolean | undefined;
   tableDefinition?: CreateTableChange;
   relatedTable?: CreateTableChange;
+  id: number;
 }
 
 export interface GetBackendRequest {
@@ -4026,7 +4036,7 @@ export const ControllerResponse = {
 };
 
 function createBaseControllerResponseField(): ControllerResponseField {
-  return { name: "", children: [] };
+  return { name: "", children: [], category: "" };
 }
 
 export const ControllerResponseField = {
@@ -4048,6 +4058,9 @@ export const ControllerResponseField = {
     }
     for (const v of message.children) {
       ControllerResponseField.encode(v!, writer.uint32(50).fork()).ldelim();
+    }
+    if (message.category !== "") {
+      writer.uint32(58).string(message.category);
     }
     return writer;
   },
@@ -4077,6 +4090,9 @@ export const ControllerResponseField = {
         case 6:
           message.children.push(ControllerResponseField.decode(reader, reader.uint32()));
           break;
+        case 7:
+          message.category = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -4095,6 +4111,7 @@ export const ControllerResponseField = {
       children: Array.isArray(object?.children)
         ? object.children.map((e: any) => ControllerResponseField.fromJSON(e))
         : [],
+      category: isSet(object.category) ? String(object.category) : "",
     };
   },
 
@@ -4110,6 +4127,7 @@ export const ControllerResponseField = {
     } else {
       obj.children = [];
     }
+    message.category !== undefined && (obj.category = message.category);
     return obj;
   },
 
@@ -4123,6 +4141,7 @@ export const ControllerResponseField = {
       ? DataType.fromPartial(object.dataType)
       : undefined;
     message.children = object.children?.map((e) => ControllerResponseField.fromPartial(e)) || [];
+    message.category = object.category ?? "";
     return message;
   },
 };
@@ -7793,13 +7812,13 @@ export const RemoveTableIndex = {
       TableIndexMigration.encode(message.changeFrom, writer.uint32(18).fork()).ldelim();
     }
     if (message.prevUuid !== "") {
-      writer.uint32(34).string(message.prevUuid);
+      writer.uint32(26).string(message.prevUuid);
     }
     if (message.nextUuid !== "") {
-      writer.uint32(42).string(message.nextUuid);
+      writer.uint32(34).string(message.nextUuid);
     }
     if (message.prevRecord !== undefined) {
-      TableIndexMigration.encode(message.prevRecord, writer.uint32(50).fork()).ldelim();
+      TableIndexMigration.encode(message.prevRecord, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -7817,13 +7836,13 @@ export const RemoveTableIndex = {
         case 2:
           message.changeFrom = TableIndexMigration.decode(reader, reader.uint32());
           break;
-        case 4:
+        case 3:
           message.prevUuid = reader.string();
           break;
-        case 5:
+        case 4:
           message.nextUuid = reader.string();
           break;
-        case 6:
+        case 5:
           message.prevRecord = TableIndexMigration.decode(reader, reader.uint32());
           break;
         default:
@@ -7880,17 +7899,14 @@ export const RemoveTableRelation = {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
     }
-    if (message.changeFrom !== undefined) {
-      TableRelationMigration.encode(message.changeFrom, writer.uint32(18).fork()).ldelim();
-    }
     if (message.prevUuid !== "") {
-      writer.uint32(34).string(message.prevUuid);
+      writer.uint32(26).string(message.prevUuid);
     }
     if (message.nextUuid !== "") {
-      writer.uint32(42).string(message.nextUuid);
+      writer.uint32(34).string(message.nextUuid);
     }
     if (message.prevRecord !== undefined) {
-      TableIndexMigration.encode(message.prevRecord, writer.uint32(50).fork()).ldelim();
+      TableRelationMigration.encode(message.prevRecord, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -7905,17 +7921,14 @@ export const RemoveTableRelation = {
         case 1:
           message.key = reader.string();
           break;
-        case 2:
-          message.changeFrom = TableRelationMigration.decode(reader, reader.uint32());
-          break;
-        case 4:
+        case 3:
           message.prevUuid = reader.string();
           break;
-        case 5:
+        case 4:
           message.nextUuid = reader.string();
           break;
-        case 6:
-          message.prevRecord = TableIndexMigration.decode(reader, reader.uint32());
+        case 5:
+          message.prevRecord = TableRelationMigration.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -7928,35 +7941,29 @@ export const RemoveTableRelation = {
   fromJSON(object: any): RemoveTableRelation {
     return {
       key: isSet(object.key) ? String(object.key) : "",
-      changeFrom: isSet(object.changeFrom) ? TableRelationMigration.fromJSON(object.changeFrom) : undefined,
       prevUuid: isSet(object.prevUuid) ? String(object.prevUuid) : "",
       nextUuid: isSet(object.nextUuid) ? String(object.nextUuid) : "",
-      prevRecord: isSet(object.prevRecord) ? TableIndexMigration.fromJSON(object.prevRecord) : undefined,
+      prevRecord: isSet(object.prevRecord) ? TableRelationMigration.fromJSON(object.prevRecord) : undefined,
     };
   },
 
   toJSON(message: RemoveTableRelation): unknown {
     const obj: any = {};
     message.key !== undefined && (obj.key = message.key);
-    message.changeFrom !== undefined &&
-      (obj.changeFrom = message.changeFrom ? TableRelationMigration.toJSON(message.changeFrom) : undefined);
     message.prevUuid !== undefined && (obj.prevUuid = message.prevUuid);
     message.nextUuid !== undefined && (obj.nextUuid = message.nextUuid);
     message.prevRecord !== undefined &&
-      (obj.prevRecord = message.prevRecord ? TableIndexMigration.toJSON(message.prevRecord) : undefined);
+      (obj.prevRecord = message.prevRecord ? TableRelationMigration.toJSON(message.prevRecord) : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<RemoveTableRelation>): RemoveTableRelation {
     const message = createBaseRemoveTableRelation();
     message.key = object.key ?? "";
-    message.changeFrom = (object.changeFrom !== undefined && object.changeFrom !== null)
-      ? TableRelationMigration.fromPartial(object.changeFrom)
-      : undefined;
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
     message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
-      ? TableIndexMigration.fromPartial(object.prevRecord)
+      ? TableRelationMigration.fromPartial(object.prevRecord)
       : undefined;
     return message;
   },
@@ -8677,6 +8684,7 @@ function createBaseMigrationColumnDefinition(): MigrationColumnDefinition {
     comment: "",
     uuid: "",
     tableDefinitionUuid: "",
+    id: 0,
   };
 }
 
@@ -8711,6 +8719,9 @@ export const MigrationColumnDefinition = {
     }
     if (message.tableDefinition !== undefined) {
       TableMetaDataMigration.encode(message.tableDefinition, writer.uint32(82).fork()).ldelim();
+    }
+    if (message.id !== 0) {
+      writer.uint32(88).int32(message.id);
     }
     return writer;
   },
@@ -8752,6 +8763,9 @@ export const MigrationColumnDefinition = {
         case 10:
           message.tableDefinition = TableMetaDataMigration.decode(reader, reader.uint32());
           break;
+        case 11:
+          message.id = reader.int32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -8774,6 +8788,7 @@ export const MigrationColumnDefinition = {
       tableDefinition: isSet(object.tableDefinition)
         ? TableMetaDataMigration.fromJSON(object.tableDefinition)
         : undefined,
+      id: isSet(object.id) ? Number(object.id) : 0,
     };
   },
 
@@ -8791,6 +8806,7 @@ export const MigrationColumnDefinition = {
     message.tableDefinition !== undefined && (obj.tableDefinition = message.tableDefinition
       ? TableMetaDataMigration.toJSON(message.tableDefinition)
       : undefined);
+    message.id !== undefined && (obj.id = Math.round(message.id));
     return obj;
   },
 
@@ -8808,6 +8824,7 @@ export const MigrationColumnDefinition = {
     message.tableDefinition = (object.tableDefinition !== undefined && object.tableDefinition !== null)
       ? TableMetaDataMigration.fromPartial(object.tableDefinition)
       : undefined;
+    message.id = object.id ?? 0;
     return message;
   },
 };
@@ -8868,7 +8885,15 @@ export const TableMetaDataMigration = {
 };
 
 function createBaseTableIndexMigration(): TableIndexMigration {
-  return { name: "", unique: false, uuid: "", tableDefinitionUuid: "", columnDefinitions: [], singleIndex: false };
+  return {
+    name: "",
+    unique: false,
+    uuid: "",
+    tableDefinitionUuid: "",
+    columnDefinitions: [],
+    singleIndex: false,
+    id: 0,
+  };
 }
 
 export const TableIndexMigration = {
@@ -8890,6 +8915,12 @@ export const TableIndexMigration = {
     }
     if (message.singleIndex === true) {
       writer.uint32(48).bool(message.singleIndex);
+    }
+    if (message.tableDefinition !== undefined) {
+      TableMetaDataMigration.encode(message.tableDefinition, writer.uint32(58).fork()).ldelim();
+    }
+    if (message.id !== 0) {
+      writer.uint32(64).int32(message.id);
     }
     return writer;
   },
@@ -8919,6 +8950,12 @@ export const TableIndexMigration = {
         case 6:
           message.singleIndex = reader.bool();
           break;
+        case 7:
+          message.tableDefinition = TableMetaDataMigration.decode(reader, reader.uint32());
+          break;
+        case 8:
+          message.id = reader.int32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -8937,6 +8974,10 @@ export const TableIndexMigration = {
         ? object.columnDefinitions.map((e: any) => MigrationColumnDefinition.fromJSON(e))
         : [],
       singleIndex: isSet(object.singleIndex) ? Boolean(object.singleIndex) : false,
+      tableDefinition: isSet(object.tableDefinition)
+        ? TableMetaDataMigration.fromJSON(object.tableDefinition)
+        : undefined,
+      id: isSet(object.id) ? Number(object.id) : 0,
     };
   },
 
@@ -8952,6 +8993,10 @@ export const TableIndexMigration = {
       obj.columnDefinitions = [];
     }
     message.singleIndex !== undefined && (obj.singleIndex = message.singleIndex);
+    message.tableDefinition !== undefined && (obj.tableDefinition = message.tableDefinition
+      ? TableMetaDataMigration.toJSON(message.tableDefinition)
+      : undefined);
+    message.id !== undefined && (obj.id = Math.round(message.id));
     return obj;
   },
 
@@ -8963,12 +9008,24 @@ export const TableIndexMigration = {
     message.tableDefinitionUuid = object.tableDefinitionUuid ?? "";
     message.columnDefinitions = object.columnDefinitions?.map((e) => MigrationColumnDefinition.fromPartial(e)) || [];
     message.singleIndex = object.singleIndex ?? false;
+    message.tableDefinition = (object.tableDefinition !== undefined && object.tableDefinition !== null)
+      ? TableMetaDataMigration.fromPartial(object.tableDefinition)
+      : undefined;
+    message.id = object.id ?? 0;
     return message;
   },
 };
 
 function createBaseTableRelationMigration(): TableRelationMigration {
-  return { foreignKey: "", relationType: "", required: false, uuid: "", tableDefinitionUuid: "", relatedTableUuid: "" };
+  return {
+    foreignKey: "",
+    relationType: "",
+    required: false,
+    uuid: "",
+    tableDefinitionUuid: "",
+    relatedTableUuid: "",
+    id: 0,
+  };
 }
 
 export const TableRelationMigration = {
@@ -8999,6 +9056,9 @@ export const TableRelationMigration = {
     }
     if (message.relatedTable !== undefined) {
       CreateTableChange.encode(message.relatedTable, writer.uint32(74).fork()).ldelim();
+    }
+    if (message.id !== 0) {
+      writer.uint32(80).int32(message.id);
     }
     return writer;
   },
@@ -9037,6 +9097,9 @@ export const TableRelationMigration = {
         case 9:
           message.relatedTable = CreateTableChange.decode(reader, reader.uint32());
           break;
+        case 10:
+          message.id = reader.int32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -9056,6 +9119,7 @@ export const TableRelationMigration = {
       customForeignKey: isSet(object.customForeignKey) ? Boolean(object.customForeignKey) : undefined,
       tableDefinition: isSet(object.tableDefinition) ? CreateTableChange.fromJSON(object.tableDefinition) : undefined,
       relatedTable: isSet(object.relatedTable) ? CreateTableChange.fromJSON(object.relatedTable) : undefined,
+      id: isSet(object.id) ? Number(object.id) : 0,
     };
   },
 
@@ -9072,6 +9136,7 @@ export const TableRelationMigration = {
       (obj.tableDefinition = message.tableDefinition ? CreateTableChange.toJSON(message.tableDefinition) : undefined);
     message.relatedTable !== undefined &&
       (obj.relatedTable = message.relatedTable ? CreateTableChange.toJSON(message.relatedTable) : undefined);
+    message.id !== undefined && (obj.id = Math.round(message.id));
     return obj;
   },
 
@@ -9090,6 +9155,7 @@ export const TableRelationMigration = {
     message.relatedTable = (object.relatedTable !== undefined && object.relatedTable !== null)
       ? CreateTableChange.fromPartial(object.relatedTable)
       : undefined;
+    message.id = object.id ?? 0;
     return message;
   },
 };
