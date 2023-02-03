@@ -64,6 +64,7 @@ enum DataTypeName {
 	FILE = 11;
 	TABLE = 12;
 	ENUM = 13;
+	CURRENT_USER=14;
 }
 
 message DataType {
@@ -745,6 +746,7 @@ message MigrationColumnDefinition {
 	string table_definition_uuid = 8;
 	optional bool custom_foreign_key = 9;
 	optional TableMetaDataMigration table_definition = 10;
+	int32 id = 11;
 }
 message TableMetaDataMigration {
 	string name = 1;

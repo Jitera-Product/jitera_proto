@@ -630,6 +630,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :table_definition_uuid, :string, 8
       proto3_optional :custom_foreign_key, :bool, 9
       proto3_optional :table_definition, :message, 10, "schema.v1.TableMetaDataMigration"
+      optional :id, :int32, 11
     end
     add_message "schema.v1.TableMetaDataMigration" do
       optional :name, :string, 1
@@ -670,6 +671,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       value :FILE, 11
       value :TABLE, 12
       value :ENUM, 13
+      value :CURRENT_USER, 14
     end
     add_enum "schema.v1.Operator" do
       value :WHERE, 0
