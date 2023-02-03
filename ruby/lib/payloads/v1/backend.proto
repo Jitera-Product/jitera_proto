@@ -760,6 +760,7 @@ message TableIndexMigration {
 	repeated MigrationColumnDefinition column_definitions = 5;
 	bool single_index = 6;
 	optional TableMetaDataMigration table_definition = 7;
+	int32 id = 8;
 }
 message TableRelationMigration {
 	string foreign_key = 1;
@@ -771,4 +772,5 @@ message TableRelationMigration {
 	optional bool custom_foreign_key = 7;
 	CreateTableChange table_definition = 8;
 	CreateTableChange related_table = 9;
+	int32 id = 10;
 }

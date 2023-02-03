@@ -644,6 +644,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       repeated :column_definitions, :message, 5, "schema.v1.MigrationColumnDefinition"
       optional :single_index, :bool, 6
       proto3_optional :table_definition, :message, 7, "schema.v1.TableMetaDataMigration"
+      optional :id, :int32, 8
     end
     add_message "schema.v1.TableRelationMigration" do
       optional :foreign_key, :string, 1
@@ -655,6 +656,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       proto3_optional :custom_foreign_key, :bool, 7
       optional :table_definition, :message, 8, "schema.v1.CreateTableChange"
       optional :related_table, :message, 9, "schema.v1.CreateTableChange"
+      optional :id, :int32, 10
     end
     add_enum "schema.v1.DataTypeName" do
       value :BOOLEAN, 0
