@@ -171,6 +171,15 @@ message WebNodeProps {
 
 	repeated NodeAction on_pagination_change = 127;
 	repeated NodeAction on_data_sorting_change = 128;
+
+	message TableColumn {
+		RenderMolecule molecule = 1;
+		repeated bool sortable = 2;
+		repeated bool filterable = 3;
+		repeated int32 column_index = 4;
+		repeated string column_name = 5;
+		repeated string column_path = 6;
+	}
 }
 
 message MobileNodeProps {
@@ -377,15 +386,6 @@ message NodePayload {
 message MoleculeComponent {
 	NodeReference reference = 1;
 	repeated NodeParam props = 2;
-}
-
-message TableColumn {
-	RenderMolecule molecule = 1;
-	repeated bool sortable = 2;
-	repeated bool filterable = 3;
-	repeated int32 column_index = 4;
-	repeated string column_name = 5;
-	repeated string column_path = 6;
 }
 
 message NodeCustom {

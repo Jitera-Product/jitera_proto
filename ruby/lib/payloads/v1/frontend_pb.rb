@@ -155,10 +155,18 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       repeated :children_data, :message, 122, "schema.v1.NodeVariable"
       repeated :responsive_visibility, :message, 123, "schema.v1.NodeVariable"
       repeated :data_source, :message, 124, "schema.v1.NodeVariable"
-      repeated :table_columns, :message, 125, "schema.v1.TableColumn"
-      repeated :table_actions, :message, 126, "schema.v1.TableColumn"
+      repeated :table_columns, :message, 125, "schema.v1.WebNodeProps.TableColumn"
+      repeated :table_actions, :message, 126, "schema.v1.WebNodeProps.TableColumn"
       repeated :on_pagination_change, :message, 127, "schema.v1.NodeAction"
       repeated :on_data_sorting_change, :message, 128, "schema.v1.NodeAction"
+    end
+    add_message "schema.v1.WebNodeProps.TableColumn" do
+      optional :molecule, :message, 1, "schema.v1.RenderMolecule"
+      repeated :sortable, :bool, 2
+      repeated :filterable, :bool, 3
+      repeated :column_index, :int32, 4
+      repeated :column_name, :string, 5
+      repeated :column_path, :string, 6
     end
     add_message "schema.v1.MobileNodeProps" do
       optional :element_key, :string, 1
@@ -346,14 +354,6 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :reference, :message, 1, "schema.v1.NodeReference"
       repeated :props, :message, 2, "schema.v1.NodeParam"
     end
-    add_message "schema.v1.TableColumn" do
-      optional :molecule, :message, 1, "schema.v1.RenderMolecule"
-      repeated :sortable, :bool, 2
-      repeated :filterable, :bool, 3
-      repeated :column_index, :int32, 4
-      repeated :column_name, :string, 5
-      repeated :column_path, :string, 6
-    end
     add_message "schema.v1.NodeCustom" do
       proto3_optional :use_prop_style, :bool, 1
       proto3_optional :ignore_prop_style, :bool, 2
@@ -431,6 +431,7 @@ module Schema
     AppPage::PageType = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.AppPage.PageType").enummodule
     PageNode = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.PageNode").msgclass
     WebNodeProps = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.WebNodeProps").msgclass
+    WebNodeProps::TableColumn = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.WebNodeProps.TableColumn").msgclass
     MobileNodeProps = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.MobileNodeProps").msgclass
     RenderMolecule = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.RenderMolecule").msgclass
     NodeReference = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.NodeReference").msgclass
@@ -446,7 +447,6 @@ module Schema
     NodeAction::ActionSource = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.NodeAction.ActionSource").enummodule
     NodePayload = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.NodePayload").msgclass
     MoleculeComponent = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.MoleculeComponent").msgclass
-    TableColumn = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.TableColumn").msgclass
     NodeCustom = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.NodeCustom").msgclass
     NodeMediaQuery = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.NodeMediaQuery").msgclass
     RenderCondition = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.RenderCondition").msgclass
