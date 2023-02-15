@@ -6,6 +6,9 @@ message Project {
 	string project_name = 2;
 	int32 project_id = 3;
 	optional Infra infra = 4;
+	string time_zone = 5;
+	string default_language_code = 6;
+	repeated string language_codes = 7;
 
 	oneof generate_type {
 		ProjectExport project_export = 9;

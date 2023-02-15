@@ -10,6 +10,9 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :project_name, :string, 2
       optional :project_id, :int32, 3
       proto3_optional :infra, :message, 4, "schema.v1.Infra"
+      optional :time_zone, :string, 5
+      optional :default_language_code, :string, 6
+      repeated :language_codes, :string, 7
       oneof :generate_type do
         optional :project_export, :message, 9, "schema.v1.ProjectExport"
         optional :project_preview, :message, 10, "schema.v1.ProjectPreview"
