@@ -10,17 +10,17 @@ service CoreService {
 	rpc ListFeatures (ListFeaturesRequest) returns (ListFeaturesResponse) {}
 	rpc ListAuthorizations (ListAuthorizationsRequest) returns (ListAuthorizationsResponse) {}
 	rpc ListLocalizations (ListLocalizationsRequest) returns (ListLocalizationsResponse) {}
-	rpc GetFrontend (GetFrontendRequest) returns (GetFrontendResponse) {}
+	rpc GetWebApp (GetWebAppRequest) returns (GetWebAppResponse) {}
 	rpc ListMigrations (ListMigrationsRequest) returns (ListMigrationsResponse) {}
 	rpc GetBackend (GetBackendRequest) returns (GetBackendResponse) {}
 }
 
-message GetFrontendRequest {
+message GetWebAppRequest {
 	int32 project_id = 1;
 }
 
-message GetFrontendResponse {
-	Frontend frontend = 1;
+message GetWebAppResponse {
+	WebApp web_app = 1;
 }
 
 message GetBackendRequest {

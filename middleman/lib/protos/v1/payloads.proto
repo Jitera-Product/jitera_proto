@@ -803,8 +803,17 @@ message TableRelationMigration {
 	int32 id = 10;
 }
 
-message Frontend {
+message WebApp {
 	repeated AppPage app_pages = 1;
+	repeated Asset assets = 2;
+}
+
+message Asset {
+	string id = 1;
+	string url = 2;
+	string file_name = 3;
+	int32 file_size = 4;
+	string content_type = 5;
 }
 
 message AppPage {
@@ -1273,15 +1282,15 @@ service CoreService {
 	rpc ListLocalizations (ListLocalizationsRequest) returns (ListLocalizationsResponse) {}
 	rpc ListMigrations (ListMigrationsRequest) returns (ListMigrationsResponse) {}
 	rpc GetBackend (GetBackendRequest) returns (GetBackendResponse) {}
-	rpc GetFrontend (GetFrontendRequest) returns (GetFrontendResponse) {}
+	rpc GetWebApp (GetWebAppRequest) returns (GetWebAppResponse) {}
 }
 
-message GetFrontendRequest {
+message GetWebAppRequest {
 	int32 project_id = 1;
 }
 
-message GetFrontendResponse {
-	Frontend frontend = 1;
+message GetWebAppResponse {
+	WebApp frontend = 1;
 }
 
 message GetBackendRequest {

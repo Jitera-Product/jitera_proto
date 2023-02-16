@@ -540,7 +540,8 @@ export function featureEmailLoginUnlockStrategyToJSON(object: FeatureEmailLoginU
   }
 }
 
-export class FeatureJPBankData {}
+export class FeatureJPBankData {
+}
 
 export class FeatureBasicAuth {
   username: string;
@@ -1020,16 +1021,19 @@ export class TableConstraint {
   unique?: TableConstraintUnique | undefined;
 }
 
-export class TableConstraintPrimaryKey {}
+export class TableConstraintPrimaryKey {
+}
 
 export class TableConstraintForeignKey {
   tableName: string;
   primaryKey: string;
 }
 
-export class TableConstraintNotNull {}
+export class TableConstraintNotNull {
+}
 
-export class TableConstraintUnique {}
+export class TableConstraintUnique {
+}
 
 export class TableIndex {
   name: string;
@@ -1308,8 +1312,17 @@ export class TableRelationMigration {
   id: number;
 }
 
-export class Frontend {
+export class WebApp {
   appPages: AppPage[];
+  assets: Asset[];
+}
+
+export class Asset {
+  id: string;
+  url: string;
+  fileName: string;
+  fileSize: number;
+  contentType: string;
 }
 
 export class AppPage {
@@ -2271,12 +2284,12 @@ export class FormValidationFormValidationsRule {
   errorMessages: NodeVariable[];
 }
 
-export class GetFrontendRequest {
+export class GetWebAppRequest {
   projectId: number;
 }
 
-export class GetFrontendResponse {
-  frontend?: Frontend;
+export class GetWebAppResponse {
+  frontend?: WebApp;
 }
 
 export class GetBackendRequest {
@@ -2424,15 +2437,15 @@ export const ProjectData = {
     message.id = object.id ?? "";
     message.projectName = object.projectName ?? "";
     message.projectId = object.projectId ?? 0;
-    message.infra = object.infra !== undefined && object.infra !== null ? InfraData.fromPartial(object.infra) : undefined;
-    message.projectExport =
-      object.projectExport !== undefined && object.projectExport !== null
-        ? ProjectExportData.fromPartial(object.projectExport)
-        : undefined;
-    message.projectPreview =
-      object.projectPreview !== undefined && object.projectPreview !== null
-        ? ProjectPreviewData.fromPartial(object.projectPreview)
-        : undefined;
+    message.infra = (object.infra !== undefined && object.infra !== null)
+      ? InfraData.fromPartial(object.infra)
+      : undefined;
+    message.projectExport = (object.projectExport !== undefined && object.projectExport !== null)
+      ? ProjectExportData.fromPartial(object.projectExport)
+      : undefined;
+    message.projectPreview = (object.projectPreview !== undefined && object.projectPreview !== null)
+      ? ProjectPreviewData.fromPartial(object.projectPreview)
+      : undefined;
     return message;
   },
 };
@@ -2641,7 +2654,9 @@ export const BackendData = {
   fromJSON(object: any): Backend {
     return {
       tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => TableData.fromJSON(e)) : [],
-      controllers: Array.isArray(object?.controllers) ? object.controllers.map((e: any) => ControllerData.fromJSON(e)) : [],
+      controllers: Array.isArray(object?.controllers)
+        ? object.controllers.map((e: any) => ControllerData.fromJSON(e))
+        : [],
       features: Array.isArray(object?.features) ? object.features.map((e: any) => FeatureData.fromJSON(e)) : [],
       authorizations: Array.isArray(object?.authorizations)
         ? object.authorizations.map((e: any) => AuthorizationData.fromJSON(e))
@@ -2656,32 +2671,32 @@ export const BackendData = {
   toJSON(message: Backend): unknown {
     const obj: any = {};
     if (message.tables) {
-      obj.tables = message.tables.map((e) => (e ? TableData.toJSON(e) : undefined));
+      obj.tables = message.tables.map((e) => e ? TableData.toJSON(e) : undefined);
     } else {
       obj.tables = [];
     }
     if (message.controllers) {
-      obj.controllers = message.controllers.map((e) => (e ? ControllerData.toJSON(e) : undefined));
+      obj.controllers = message.controllers.map((e) => e ? ControllerData.toJSON(e) : undefined);
     } else {
       obj.controllers = [];
     }
     if (message.features) {
-      obj.features = message.features.map((e) => (e ? FeatureData.toJSON(e) : undefined));
+      obj.features = message.features.map((e) => e ? FeatureData.toJSON(e) : undefined);
     } else {
       obj.features = [];
     }
     if (message.authorizations) {
-      obj.authorizations = message.authorizations.map((e) => (e ? AuthorizationData.toJSON(e) : undefined));
+      obj.authorizations = message.authorizations.map((e) => e ? AuthorizationData.toJSON(e) : undefined);
     } else {
       obj.authorizations = [];
     }
     if (message.localizations) {
-      obj.localizations = message.localizations.map((e) => (e ? LocalizationData.toJSON(e) : undefined));
+      obj.localizations = message.localizations.map((e) => e ? LocalizationData.toJSON(e) : undefined);
     } else {
       obj.localizations = [];
     }
     if (message.migrations) {
-      obj.migrations = message.migrations.map((e) => (e ? MigrationData.toJSON(e) : undefined));
+      obj.migrations = message.migrations.map((e) => e ? MigrationData.toJSON(e) : undefined);
     } else {
       obj.migrations = [];
     }
@@ -2749,7 +2764,7 @@ export const LocalizationData = {
     const obj: any = {};
     message.lang !== undefined && (obj.lang = message.lang);
     if (message.namespaces) {
-      obj.namespaces = message.namespaces.map((e) => (e ? LocalizationNamespaceData.toJSON(e) : undefined));
+      obj.namespaces = message.namespaces.map((e) => e ? LocalizationNamespaceData.toJSON(e) : undefined);
     } else {
       obj.namespaces = [];
     }
@@ -2813,7 +2828,7 @@ export const LocalizationNamespaceData = {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
     if (message.translates) {
-      obj.translates = message.translates.map((e) => (e ? LocalizationTranslateData.toJSON(e) : undefined));
+      obj.translates = message.translates.map((e) => e ? LocalizationTranslateData.toJSON(e) : undefined);
     } else {
       obj.translates = [];
     }
@@ -2976,7 +2991,9 @@ export const AuthorizationData = {
     return {
       name: isSet(object.name) ? String(object.name) : "",
       id: isSet(object.id) ? Number(object.id) : 0,
-      policies: Array.isArray(object?.policies) ? object.policies.map((e: any) => AuthorizationPolicyData.fromJSON(e)) : [],
+      policies: Array.isArray(object?.policies)
+        ? object.policies.map((e: any) => AuthorizationPolicyData.fromJSON(e))
+        : [],
     };
   },
 
@@ -2985,7 +3002,7 @@ export const AuthorizationData = {
     message.name !== undefined && (obj.name = message.name);
     message.id !== undefined && (obj.id = Math.round(message.id));
     if (message.policies) {
-      obj.policies = message.policies.map((e) => (e ? AuthorizationPolicyData.toJSON(e) : undefined));
+      obj.policies = message.policies.map((e) => e ? AuthorizationPolicyData.toJSON(e) : undefined);
     } else {
       obj.policies = [];
     }
@@ -3052,7 +3069,9 @@ export const AuthorizationPolicyData = {
   fromJSON(object: any): AuthorizationPolicy {
     return {
       resource: isSet(object.resource) ? String(object.resource) : "",
-      roleBinding: isSet(object.roleBinding) ? AuthorizationPolicyRoleBindingData.fromJSON(object.roleBinding) : undefined,
+      roleBinding: isSet(object.roleBinding)
+        ? AuthorizationPolicyRoleBindingData.fromJSON(object.roleBinding)
+        : undefined,
       rule: isSet(object.rule) ? AuthorizationPolicyRuleData.fromJSON(object.rule) : undefined,
       scope: isSet(object.scope) ? authorizationPolicyScopeFromJSON(object.scope) : 0,
     };
@@ -3061,9 +3080,11 @@ export const AuthorizationPolicyData = {
   toJSON(message: AuthorizationPolicy): unknown {
     const obj: any = {};
     message.resource !== undefined && (obj.resource = message.resource);
-    message.roleBinding !== undefined &&
-      (obj.roleBinding = message.roleBinding ? AuthorizationPolicyRoleBindingData.toJSON(message.roleBinding) : undefined);
-    message.rule !== undefined && (obj.rule = message.rule ? AuthorizationPolicyRuleData.toJSON(message.rule) : undefined);
+    message.roleBinding !== undefined && (obj.roleBinding = message.roleBinding
+      ? AuthorizationPolicyRoleBindingData.toJSON(message.roleBinding)
+      : undefined);
+    message.rule !== undefined &&
+      (obj.rule = message.rule ? AuthorizationPolicyRuleData.toJSON(message.rule) : undefined);
     message.scope !== undefined && (obj.scope = authorizationPolicyScopeToJSON(message.scope));
     return obj;
   },
@@ -3071,12 +3092,12 @@ export const AuthorizationPolicyData = {
   fromPartial(object: DeepPartial<AuthorizationPolicy>): AuthorizationPolicy {
     const message = createBaseAuthorizationPolicy();
     message.resource = object.resource ?? "";
-    message.roleBinding =
-      object.roleBinding !== undefined && object.roleBinding !== null
-        ? AuthorizationPolicyRoleBindingData.fromPartial(object.roleBinding)
-        : undefined;
-    message.rule =
-      object.rule !== undefined && object.rule !== null ? AuthorizationPolicyRuleData.fromPartial(object.rule) : undefined;
+    message.roleBinding = (object.roleBinding !== undefined && object.roleBinding !== null)
+      ? AuthorizationPolicyRoleBindingData.fromPartial(object.roleBinding)
+      : undefined;
+    message.rule = (object.rule !== undefined && object.rule !== null)
+      ? AuthorizationPolicyRuleData.fromPartial(object.rule)
+      : undefined;
     message.scope = object.scope ?? 0;
     return message;
   },
@@ -3206,7 +3227,7 @@ export const AuthorizationPolicyRuleData = {
   toJSON(message: AuthorizationPolicyRule): unknown {
     const obj: any = {};
     if (message.operands) {
-      obj.operands = message.operands.map((e) => (e ? AuthorizationPolicyRuleOperandData.toJSON(e) : undefined));
+      obj.operands = message.operands.map((e) => e ? AuthorizationPolicyRuleOperandData.toJSON(e) : undefined);
     } else {
       obj.operands = [];
     }
@@ -3271,17 +3292,21 @@ export const AuthorizationPolicyRuleOperandData = {
 
   toJSON(message: AuthorizationPolicyRuleOperand): unknown {
     const obj: any = {};
-    message.expr !== undefined && (obj.expr = message.expr ? AuthorizationPolicyRuleExprData.toJSON(message.expr) : undefined);
-    message.rule !== undefined && (obj.rule = message.rule ? AuthorizationPolicyRuleData.toJSON(message.rule) : undefined);
+    message.expr !== undefined &&
+      (obj.expr = message.expr ? AuthorizationPolicyRuleExprData.toJSON(message.expr) : undefined);
+    message.rule !== undefined &&
+      (obj.rule = message.rule ? AuthorizationPolicyRuleData.toJSON(message.rule) : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<AuthorizationPolicyRuleOperand>): AuthorizationPolicyRuleOperand {
     const message = createBaseAuthorizationPolicyRuleOperand();
-    message.expr =
-      object.expr !== undefined && object.expr !== null ? AuthorizationPolicyRuleExprData.fromPartial(object.expr) : undefined;
-    message.rule =
-      object.rule !== undefined && object.rule !== null ? AuthorizationPolicyRuleData.fromPartial(object.rule) : undefined;
+    message.expr = (object.expr !== undefined && object.expr !== null)
+      ? AuthorizationPolicyRuleExprData.fromPartial(object.expr)
+      : undefined;
+    message.rule = (object.rule !== undefined && object.rule !== null)
+      ? AuthorizationPolicyRuleData.fromPartial(object.rule)
+      : undefined;
     return message;
   },
 };
@@ -3355,7 +3380,8 @@ export const AuthorizationPolicyRuleExprData = {
     message.column !== undefined && (obj.column = message.column);
     message.value !== undefined && (obj.value = message.value);
     message.paths !== undefined && (obj.paths = message.paths);
-    message.dataType !== undefined && (obj.dataType = message.dataType ? DataTypeData.toJSON(message.dataType) : undefined);
+    message.dataType !== undefined &&
+      (obj.dataType = message.dataType ? DataTypeData.toJSON(message.dataType) : undefined);
     message.operator !== undefined && (obj.operator = operatorToJSON(message.operator));
     return obj;
   },
@@ -3365,8 +3391,9 @@ export const AuthorizationPolicyRuleExprData = {
     message.column = object.column ?? "";
     message.value = object.value ?? undefined;
     message.paths = object.paths ?? undefined;
-    message.dataType =
-      object.dataType !== undefined && object.dataType !== null ? DataTypeData.fromPartial(object.dataType) : undefined;
+    message.dataType = (object.dataType !== undefined && object.dataType !== null)
+      ? DataTypeData.fromPartial(object.dataType)
+      : undefined;
     message.operator = object.operator ?? 0;
     return message;
   },
@@ -3483,10 +3510,12 @@ export const FeatureData = {
       (obj.basicAuth = message.basicAuth ? FeatureBasicAuthData.toJSON(message.basicAuth) : undefined);
     message.twilioLogin !== undefined &&
       (obj.twilioLogin = message.twilioLogin ? FeatureTwilioLoginData.toJSON(message.twilioLogin) : undefined);
-    message.rollbar !== undefined && (obj.rollbar = message.rollbar ? FeatureRollbarData.toJSON(message.rollbar) : undefined);
+    message.rollbar !== undefined &&
+      (obj.rollbar = message.rollbar ? FeatureRollbarData.toJSON(message.rollbar) : undefined);
     message.deepLink !== undefined &&
       (obj.deepLink = message.deepLink ? FeatureDeepLinkData.toJSON(message.deepLink) : undefined);
-    message.stripe !== undefined && (obj.stripe = message.stripe ? FeatureStripeData.toJSON(message.stripe) : undefined);
+    message.stripe !== undefined &&
+      (obj.stripe = message.stripe ? FeatureStripeData.toJSON(message.stripe) : undefined);
     message.lineLogin !== undefined &&
       (obj.lineLogin = message.lineLogin ? FeatureLineLoginData.toJSON(message.lineLogin) : undefined);
     return obj;
@@ -3496,32 +3525,30 @@ export const FeatureData = {
     const message = createBaseFeature();
     message.name = object.name ?? 0;
     message.env = object.env ?? 0;
-    message.emailLogin =
-      object.emailLogin !== undefined && object.emailLogin !== null
-        ? FeatureEmailLoginData.fromPartial(object.emailLogin)
-        : undefined;
-    message.jpBankData =
-      object.jpBankData !== undefined && object.jpBankData !== null
-        ? FeatureJPBankDataData.fromPartial(object.jpBankData)
-        : undefined;
-    message.basicAuth =
-      object.basicAuth !== undefined && object.basicAuth !== null
-        ? FeatureBasicAuthData.fromPartial(object.basicAuth)
-        : undefined;
-    message.twilioLogin =
-      object.twilioLogin !== undefined && object.twilioLogin !== null
-        ? FeatureTwilioLoginData.fromPartial(object.twilioLogin)
-        : undefined;
-    message.rollbar =
-      object.rollbar !== undefined && object.rollbar !== null ? FeatureRollbarData.fromPartial(object.rollbar) : undefined;
-    message.deepLink =
-      object.deepLink !== undefined && object.deepLink !== null ? FeatureDeepLinkData.fromPartial(object.deepLink) : undefined;
-    message.stripe =
-      object.stripe !== undefined && object.stripe !== null ? FeatureStripeData.fromPartial(object.stripe) : undefined;
-    message.lineLogin =
-      object.lineLogin !== undefined && object.lineLogin !== null
-        ? FeatureLineLoginData.fromPartial(object.lineLogin)
-        : undefined;
+    message.emailLogin = (object.emailLogin !== undefined && object.emailLogin !== null)
+      ? FeatureEmailLoginData.fromPartial(object.emailLogin)
+      : undefined;
+    message.jpBankData = (object.jpBankData !== undefined && object.jpBankData !== null)
+      ? FeatureJPBankDataData.fromPartial(object.jpBankData)
+      : undefined;
+    message.basicAuth = (object.basicAuth !== undefined && object.basicAuth !== null)
+      ? FeatureBasicAuthData.fromPartial(object.basicAuth)
+      : undefined;
+    message.twilioLogin = (object.twilioLogin !== undefined && object.twilioLogin !== null)
+      ? FeatureTwilioLoginData.fromPartial(object.twilioLogin)
+      : undefined;
+    message.rollbar = (object.rollbar !== undefined && object.rollbar !== null)
+      ? FeatureRollbarData.fromPartial(object.rollbar)
+      : undefined;
+    message.deepLink = (object.deepLink !== undefined && object.deepLink !== null)
+      ? FeatureDeepLinkData.fromPartial(object.deepLink)
+      : undefined;
+    message.stripe = (object.stripe !== undefined && object.stripe !== null)
+      ? FeatureStripeData.fromPartial(object.stripe)
+      : undefined;
+    message.lineLogin = (object.lineLogin !== undefined && object.lineLogin !== null)
+      ? FeatureLineLoginData.fromPartial(object.lineLogin)
+      : undefined;
     return message;
   },
 };
@@ -4096,7 +4123,9 @@ export const FeatureStripeData = {
 
   fromJSON(object: any): FeatureStripe {
     return {
-      subscriptionTables: Array.isArray(object?.subscriptionTables) ? object.subscriptionTables.map((e: any) => String(e)) : [],
+      subscriptionTables: Array.isArray(object?.subscriptionTables)
+        ? object.subscriptionTables.map((e: any) => String(e))
+        : [],
       userTables: Array.isArray(object?.userTables) ? object.userTables.map((e: any) => String(e)) : [],
       publicKey: isSet(object.publicKey) ? String(object.publicKey) : "",
       secretKey: isSet(object.secretKey) ? String(object.secretKey) : "",
@@ -4255,7 +4284,9 @@ export const ControllerData = {
   fromJSON(object: any): Controller {
     return {
       name: isSet(object.name) ? String(object.name) : "",
-      endpoints: Array.isArray(object?.endpoints) ? object.endpoints.map((e: any) => ControllerEndpointData.fromJSON(e)) : [],
+      endpoints: Array.isArray(object?.endpoints)
+        ? object.endpoints.map((e: any) => ControllerEndpointData.fromJSON(e))
+        : [],
     };
   },
 
@@ -4263,7 +4294,7 @@ export const ControllerData = {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
     if (message.endpoints) {
-      obj.endpoints = message.endpoints.map((e) => (e ? ControllerEndpointData.toJSON(e) : undefined));
+      obj.endpoints = message.endpoints.map((e) => e ? ControllerEndpointData.toJSON(e) : undefined);
     } else {
       obj.endpoints = [];
     }
@@ -4397,8 +4428,12 @@ export const ControllerEndpointData = {
       create: isSet(object.create) ? ControllerEndpointCreateData.fromJSON(object.create) : undefined,
       update: isSet(object.update) ? ControllerEndpointUpdateData.fromJSON(object.update) : undefined,
       delete: isSet(object.delete) ? ControllerEndpointDeleteData.fromJSON(object.delete) : undefined,
-      authentication: isSet(object.authentication) ? ControllerAuthenticationData.fromJSON(object.authentication) : undefined,
-      authorization: isSet(object.authorization) ? ControllerAuthorizationData.fromJSON(object.authorization) : undefined,
+      authentication: isSet(object.authentication)
+        ? ControllerAuthenticationData.fromJSON(object.authentication)
+        : undefined,
+      authorization: isSet(object.authorization)
+        ? ControllerAuthorizationData.fromJSON(object.authorization)
+        : undefined,
       responses: isSet(object.responses) ? ControllerResponseData.fromJSON(object.responses) : undefined,
       params: isSet(object.params) ? ControllerRequestContentData.fromJSON(object.params) : undefined,
       writable: isSet(object.writable) ? Boolean(object.writable) : false,
@@ -4412,7 +4447,8 @@ export const ControllerEndpointData = {
     message.table !== undefined && (obj.table = message.table);
     message.feature !== undefined &&
       (obj.feature = message.feature !== undefined ? featureFeatureNameToJSON(message.feature) : undefined);
-    message.list !== undefined && (obj.list = message.list ? ControllerEndpointListData.toJSON(message.list) : undefined);
+    message.list !== undefined &&
+      (obj.list = message.list ? ControllerEndpointListData.toJSON(message.list) : undefined);
     message.get !== undefined && (obj.get = message.get ? ControllerEndpointGetData.toJSON(message.get) : undefined);
     message.create !== undefined &&
       (obj.create = message.create ? ControllerEndpointCreateData.toJSON(message.create) : undefined);
@@ -4420,10 +4456,13 @@ export const ControllerEndpointData = {
       (obj.update = message.update ? ControllerEndpointUpdateData.toJSON(message.update) : undefined);
     message.delete !== undefined &&
       (obj.delete = message.delete ? ControllerEndpointDeleteData.toJSON(message.delete) : undefined);
-    message.authentication !== undefined &&
-      (obj.authentication = message.authentication ? ControllerAuthenticationData.toJSON(message.authentication) : undefined);
+    message.authentication !== undefined && (obj.authentication = message.authentication
+      ? ControllerAuthenticationData.toJSON(message.authentication)
+      : undefined);
     message.authorization !== undefined &&
-      (obj.authorization = message.authorization ? ControllerAuthorizationData.toJSON(message.authorization) : undefined);
+      (obj.authorization = message.authorization
+        ? ControllerAuthorizationData.toJSON(message.authorization)
+        : undefined);
     message.responses !== undefined &&
       (obj.responses = message.responses ? ControllerResponseData.toJSON(message.responses) : undefined);
     message.params !== undefined &&
@@ -4438,38 +4477,33 @@ export const ControllerEndpointData = {
     message.name = object.name ?? "";
     message.table = object.table ?? undefined;
     message.feature = object.feature ?? undefined;
-    message.list =
-      object.list !== undefined && object.list !== null ? ControllerEndpointListData.fromPartial(object.list) : undefined;
-    message.get =
-      object.get !== undefined && object.get !== null ? ControllerEndpointGetData.fromPartial(object.get) : undefined;
-    message.create =
-      object.create !== undefined && object.create !== null
-        ? ControllerEndpointCreateData.fromPartial(object.create)
-        : undefined;
-    message.update =
-      object.update !== undefined && object.update !== null
-        ? ControllerEndpointUpdateData.fromPartial(object.update)
-        : undefined;
-    message.delete =
-      object.delete !== undefined && object.delete !== null
-        ? ControllerEndpointDeleteData.fromPartial(object.delete)
-        : undefined;
-    message.authentication =
-      object.authentication !== undefined && object.authentication !== null
-        ? ControllerAuthenticationData.fromPartial(object.authentication)
-        : undefined;
-    message.authorization =
-      object.authorization !== undefined && object.authorization !== null
-        ? ControllerAuthorizationData.fromPartial(object.authorization)
-        : undefined;
-    message.responses =
-      object.responses !== undefined && object.responses !== null
-        ? ControllerResponseData.fromPartial(object.responses)
-        : undefined;
-    message.params =
-      object.params !== undefined && object.params !== null
-        ? ControllerRequestContentData.fromPartial(object.params)
-        : undefined;
+    message.list = (object.list !== undefined && object.list !== null)
+      ? ControllerEndpointListData.fromPartial(object.list)
+      : undefined;
+    message.get = (object.get !== undefined && object.get !== null)
+      ? ControllerEndpointGetData.fromPartial(object.get)
+      : undefined;
+    message.create = (object.create !== undefined && object.create !== null)
+      ? ControllerEndpointCreateData.fromPartial(object.create)
+      : undefined;
+    message.update = (object.update !== undefined && object.update !== null)
+      ? ControllerEndpointUpdateData.fromPartial(object.update)
+      : undefined;
+    message.delete = (object.delete !== undefined && object.delete !== null)
+      ? ControllerEndpointDeleteData.fromPartial(object.delete)
+      : undefined;
+    message.authentication = (object.authentication !== undefined && object.authentication !== null)
+      ? ControllerAuthenticationData.fromPartial(object.authentication)
+      : undefined;
+    message.authorization = (object.authorization !== undefined && object.authorization !== null)
+      ? ControllerAuthorizationData.fromPartial(object.authorization)
+      : undefined;
+    message.responses = (object.responses !== undefined && object.responses !== null)
+      ? ControllerResponseData.fromPartial(object.responses)
+      : undefined;
+    message.params = (object.params !== undefined && object.params !== null)
+      ? ControllerRequestContentData.fromPartial(object.params)
+      : undefined;
     message.writable = object.writable ?? false;
     return message;
   },
@@ -4529,14 +4563,12 @@ export const ControllerEndpointListData = {
 
   fromPartial(object: DeepPartial<ControllerEndpointList>): ControllerEndpointList {
     const message = createBaseControllerEndpointList();
-    message.queries =
-      object.queries !== undefined && object.queries !== null
-        ? ControllerRequestContentData.fromPartial(object.queries)
-        : undefined;
-    message.conditions =
-      object.conditions !== undefined && object.conditions !== null
-        ? ControllerResourceConditionData.fromPartial(object.conditions)
-        : undefined;
+    message.queries = (object.queries !== undefined && object.queries !== null)
+      ? ControllerRequestContentData.fromPartial(object.queries)
+      : undefined;
+    message.conditions = (object.conditions !== undefined && object.conditions !== null)
+      ? ControllerResourceConditionData.fromPartial(object.conditions)
+      : undefined;
     return message;
   },
 };
@@ -4595,14 +4627,12 @@ export const ControllerEndpointGetData = {
 
   fromPartial(object: DeepPartial<ControllerEndpointGet>): ControllerEndpointGet {
     const message = createBaseControllerEndpointGet();
-    message.queries =
-      object.queries !== undefined && object.queries !== null
-        ? ControllerRequestContentData.fromPartial(object.queries)
-        : undefined;
-    message.conditions =
-      object.conditions !== undefined && object.conditions !== null
-        ? ControllerResourceConditionData.fromPartial(object.conditions)
-        : undefined;
+    message.queries = (object.queries !== undefined && object.queries !== null)
+      ? ControllerRequestContentData.fromPartial(object.queries)
+      : undefined;
+    message.conditions = (object.conditions !== undefined && object.conditions !== null)
+      ? ControllerResourceConditionData.fromPartial(object.conditions)
+      : undefined;
     return message;
   },
 };
@@ -4659,7 +4689,8 @@ export const ControllerEndpointCreateData = {
 
   toJSON(message: ControllerEndpointCreate): unknown {
     const obj: any = {};
-    message.body !== undefined && (obj.body = message.body ? ControllerRequestContentData.toJSON(message.body) : undefined);
+    message.body !== undefined &&
+      (obj.body = message.body ? ControllerRequestContentData.toJSON(message.body) : undefined);
     message.conditions !== undefined &&
       (obj.conditions = message.conditions ? ControllerResourceConditionData.toJSON(message.conditions) : undefined);
     message.resources !== undefined &&
@@ -4669,16 +4700,15 @@ export const ControllerEndpointCreateData = {
 
   fromPartial(object: DeepPartial<ControllerEndpointCreate>): ControllerEndpointCreate {
     const message = createBaseControllerEndpointCreate();
-    message.body =
-      object.body !== undefined && object.body !== null ? ControllerRequestContentData.fromPartial(object.body) : undefined;
-    message.conditions =
-      object.conditions !== undefined && object.conditions !== null
-        ? ControllerResourceConditionData.fromPartial(object.conditions)
-        : undefined;
-    message.resources =
-      object.resources !== undefined && object.resources !== null
-        ? ControllerResourceUpdateData.fromPartial(object.resources)
-        : undefined;
+    message.body = (object.body !== undefined && object.body !== null)
+      ? ControllerRequestContentData.fromPartial(object.body)
+      : undefined;
+    message.conditions = (object.conditions !== undefined && object.conditions !== null)
+      ? ControllerResourceConditionData.fromPartial(object.conditions)
+      : undefined;
+    message.resources = (object.resources !== undefined && object.resources !== null)
+      ? ControllerResourceUpdateData.fromPartial(object.resources)
+      : undefined;
     return message;
   },
 };
@@ -4735,7 +4765,8 @@ export const ControllerEndpointUpdateData = {
 
   toJSON(message: ControllerEndpointUpdate): unknown {
     const obj: any = {};
-    message.body !== undefined && (obj.body = message.body ? ControllerRequestContentData.toJSON(message.body) : undefined);
+    message.body !== undefined &&
+      (obj.body = message.body ? ControllerRequestContentData.toJSON(message.body) : undefined);
     message.conditions !== undefined &&
       (obj.conditions = message.conditions ? ControllerResourceConditionData.toJSON(message.conditions) : undefined);
     message.resources !== undefined &&
@@ -4745,16 +4776,15 @@ export const ControllerEndpointUpdateData = {
 
   fromPartial(object: DeepPartial<ControllerEndpointUpdate>): ControllerEndpointUpdate {
     const message = createBaseControllerEndpointUpdate();
-    message.body =
-      object.body !== undefined && object.body !== null ? ControllerRequestContentData.fromPartial(object.body) : undefined;
-    message.conditions =
-      object.conditions !== undefined && object.conditions !== null
-        ? ControllerResourceConditionData.fromPartial(object.conditions)
-        : undefined;
-    message.resources =
-      object.resources !== undefined && object.resources !== null
-        ? ControllerResourceUpdateData.fromPartial(object.resources)
-        : undefined;
+    message.body = (object.body !== undefined && object.body !== null)
+      ? ControllerRequestContentData.fromPartial(object.body)
+      : undefined;
+    message.conditions = (object.conditions !== undefined && object.conditions !== null)
+      ? ControllerResourceConditionData.fromPartial(object.conditions)
+      : undefined;
+    message.resources = (object.resources !== undefined && object.resources !== null)
+      ? ControllerResourceUpdateData.fromPartial(object.resources)
+      : undefined;
     return message;
   },
 };
@@ -4804,7 +4834,8 @@ export const ControllerEndpointDeleteData = {
 
   toJSON(message: ControllerEndpointDelete): unknown {
     const obj: any = {};
-    message.body !== undefined && (obj.body = message.body ? ControllerRequestContentData.toJSON(message.body) : undefined);
+    message.body !== undefined &&
+      (obj.body = message.body ? ControllerRequestContentData.toJSON(message.body) : undefined);
     message.conditions !== undefined &&
       (obj.conditions = message.conditions ? ControllerResourceConditionData.toJSON(message.conditions) : undefined);
     return obj;
@@ -4812,12 +4843,12 @@ export const ControllerEndpointDeleteData = {
 
   fromPartial(object: DeepPartial<ControllerEndpointDelete>): ControllerEndpointDelete {
     const message = createBaseControllerEndpointDelete();
-    message.body =
-      object.body !== undefined && object.body !== null ? ControllerRequestContentData.fromPartial(object.body) : undefined;
-    message.conditions =
-      object.conditions !== undefined && object.conditions !== null
-        ? ControllerResourceConditionData.fromPartial(object.conditions)
-        : undefined;
+    message.body = (object.body !== undefined && object.body !== null)
+      ? ControllerRequestContentData.fromPartial(object.body)
+      : undefined;
+    message.conditions = (object.conditions !== undefined && object.conditions !== null)
+      ? ControllerResourceConditionData.fromPartial(object.conditions)
+      : undefined;
     return message;
   },
 };
@@ -4854,14 +4885,16 @@ export const ControllerRequestContentData = {
 
   fromJSON(object: any): ControllerRequestContent {
     return {
-      fields: Array.isArray(object?.fields) ? object.fields.map((e: any) => ControllerRequestContentFieldData.fromJSON(e)) : [],
+      fields: Array.isArray(object?.fields)
+        ? object.fields.map((e: any) => ControllerRequestContentFieldData.fromJSON(e))
+        : [],
     };
   },
 
   toJSON(message: ControllerRequestContent): unknown {
     const obj: any = {};
     if (message.fields) {
-      obj.fields = message.fields.map((e) => (e ? ControllerRequestContentFieldData.toJSON(e) : undefined));
+      obj.fields = message.fields.map((e) => e ? ControllerRequestContentFieldData.toJSON(e) : undefined);
     } else {
       obj.fields = [];
     }
@@ -4930,9 +4963,10 @@ export const ControllerRequestContentFieldData = {
   toJSON(message: ControllerRequestContentField): unknown {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
-    message.dataType !== undefined && (obj.dataType = message.dataType ? DataTypeData.toJSON(message.dataType) : undefined);
+    message.dataType !== undefined &&
+      (obj.dataType = message.dataType ? DataTypeData.toJSON(message.dataType) : undefined);
     if (message.children) {
-      obj.children = message.children.map((e) => (e ? ControllerRequestContentFieldData.toJSON(e) : undefined));
+      obj.children = message.children.map((e) => e ? ControllerRequestContentFieldData.toJSON(e) : undefined);
     } else {
       obj.children = [];
     }
@@ -4942,8 +4976,9 @@ export const ControllerRequestContentFieldData = {
   fromPartial(object: DeepPartial<ControllerRequestContentField>): ControllerRequestContentField {
     const message = createBaseControllerRequestContentField();
     message.name = object.name ?? "";
-    message.dataType =
-      object.dataType !== undefined && object.dataType !== null ? DataTypeData.fromPartial(object.dataType) : undefined;
+    message.dataType = (object.dataType !== undefined && object.dataType !== null)
+      ? DataTypeData.fromPartial(object.dataType)
+      : undefined;
     message.children = object.children?.map((e) => ControllerRequestContentFieldData.fromPartial(e)) || [];
     return message;
   },
@@ -4981,14 +5016,16 @@ export const ControllerResponseData = {
 
   fromJSON(object: any): ControllerResponse {
     return {
-      fields: Array.isArray(object?.fields) ? object.fields.map((e: any) => ControllerResponseFieldData.fromJSON(e)) : [],
+      fields: Array.isArray(object?.fields)
+        ? object.fields.map((e: any) => ControllerResponseFieldData.fromJSON(e))
+        : [],
     };
   },
 
   toJSON(message: ControllerResponse): unknown {
     const obj: any = {};
     if (message.fields) {
-      obj.fields = message.fields.map((e) => (e ? ControllerResponseFieldData.toJSON(e) : undefined));
+      obj.fields = message.fields.map((e) => e ? ControllerResponseFieldData.toJSON(e) : undefined);
     } else {
       obj.fields = [];
     }
@@ -5075,7 +5112,9 @@ export const ControllerResponseFieldData = {
       property: isSet(object.property) ? String(object.property) : undefined,
       value: isSet(object.value) ? String(object.value) : undefined,
       dataType: isSet(object.dataType) ? DataTypeData.fromJSON(object.dataType) : undefined,
-      children: Array.isArray(object?.children) ? object.children.map((e: any) => ControllerResponseFieldData.fromJSON(e)) : [],
+      children: Array.isArray(object?.children)
+        ? object.children.map((e: any) => ControllerResponseFieldData.fromJSON(e))
+        : [],
       category: isSet(object.category) ? String(object.category) : "",
     };
   },
@@ -5086,9 +5125,10 @@ export const ControllerResponseFieldData = {
     message.resource !== undefined && (obj.resource = message.resource);
     message.property !== undefined && (obj.property = message.property);
     message.value !== undefined && (obj.value = message.value);
-    message.dataType !== undefined && (obj.dataType = message.dataType ? DataTypeData.toJSON(message.dataType) : undefined);
+    message.dataType !== undefined &&
+      (obj.dataType = message.dataType ? DataTypeData.toJSON(message.dataType) : undefined);
     if (message.children) {
-      obj.children = message.children.map((e) => (e ? ControllerResponseFieldData.toJSON(e) : undefined));
+      obj.children = message.children.map((e) => e ? ControllerResponseFieldData.toJSON(e) : undefined);
     } else {
       obj.children = [];
     }
@@ -5102,8 +5142,9 @@ export const ControllerResponseFieldData = {
     message.resource = object.resource ?? undefined;
     message.property = object.property ?? undefined;
     message.value = object.value ?? undefined;
-    message.dataType =
-      object.dataType !== undefined && object.dataType !== null ? DataTypeData.fromPartial(object.dataType) : undefined;
+    message.dataType = (object.dataType !== undefined && object.dataType !== null)
+      ? DataTypeData.fromPartial(object.dataType)
+      : undefined;
     message.children = object.children?.map((e) => ControllerResponseFieldData.fromPartial(e)) || [];
     message.category = object.category ?? "";
     return message;
@@ -5167,7 +5208,7 @@ export const ControllerResourceConditionData = {
   toJSON(message: ControllerResourceCondition): unknown {
     const obj: any = {};
     if (message.operands) {
-      obj.operands = message.operands.map((e) => (e ? ControllerResourceConditionOperandData.toJSON(e) : undefined));
+      obj.operands = message.operands.map((e) => e ? ControllerResourceConditionOperandData.toJSON(e) : undefined);
     } else {
       obj.operands = [];
     }
@@ -5241,14 +5282,12 @@ export const ControllerResourceConditionOperandData = {
 
   fromPartial(object: DeepPartial<ControllerResourceConditionOperand>): ControllerResourceConditionOperand {
     const message = createBaseControllerResourceConditionOperand();
-    message.expr =
-      object.expr !== undefined && object.expr !== null
-        ? ControllerResourceConditionExprData.fromPartial(object.expr)
-        : undefined;
-    message.condition =
-      object.condition !== undefined && object.condition !== null
-        ? ControllerResourceConditionData.fromPartial(object.condition)
-        : undefined;
+    message.expr = (object.expr !== undefined && object.expr !== null)
+      ? ControllerResourceConditionExprData.fromPartial(object.expr)
+      : undefined;
+    message.condition = (object.condition !== undefined && object.condition !== null)
+      ? ControllerResourceConditionData.fromPartial(object.condition)
+      : undefined;
     return message;
   },
 };
@@ -5351,7 +5390,8 @@ export const ControllerResourceConditionExprData = {
     message.value !== undefined && (obj.value = message.value);
     message.system !== undefined &&
       (obj.system = message.system !== undefined ? controllerResourceConditionSystemToJSON(message.system) : undefined);
-    message.dataType !== undefined && (obj.dataType = message.dataType ? DataTypeData.toJSON(message.dataType) : undefined);
+    message.dataType !== undefined &&
+      (obj.dataType = message.dataType ? DataTypeData.toJSON(message.dataType) : undefined);
     message.operator !== undefined && (obj.operator = operatorToJSON(message.operator));
     return obj;
   },
@@ -5364,8 +5404,9 @@ export const ControllerResourceConditionExprData = {
     message.body = object.body ?? undefined;
     message.value = object.value ?? undefined;
     message.system = object.system ?? undefined;
-    message.dataType =
-      object.dataType !== undefined && object.dataType !== null ? DataTypeData.fromPartial(object.dataType) : undefined;
+    message.dataType = (object.dataType !== undefined && object.dataType !== null)
+      ? DataTypeData.fromPartial(object.dataType)
+      : undefined;
     message.operator = object.operator ?? 0;
     return message;
   },
@@ -5403,14 +5444,16 @@ export const ControllerResourceUpdateData = {
 
   fromJSON(object: any): ControllerResourceUpdate {
     return {
-      fields: Array.isArray(object?.fields) ? object.fields.map((e: any) => ControllerResourceUpdateFieldData.fromJSON(e)) : [],
+      fields: Array.isArray(object?.fields)
+        ? object.fields.map((e: any) => ControllerResourceUpdateFieldData.fromJSON(e))
+        : [],
     };
   },
 
   toJSON(message: ControllerResourceUpdate): unknown {
     const obj: any = {};
     if (message.fields) {
-      obj.fields = message.fields.map((e) => (e ? ControllerResourceUpdateFieldData.toJSON(e) : undefined));
+      obj.fields = message.fields.map((e) => e ? ControllerResourceUpdateFieldData.toJSON(e) : undefined);
     } else {
       obj.fields = [];
     }
@@ -5511,9 +5554,10 @@ export const ControllerResourceUpdateFieldData = {
     message.params !== undefined && (obj.params = message.params);
     message.body !== undefined && (obj.body = message.body);
     message.value !== undefined && (obj.value = message.value);
-    message.dataType !== undefined && (obj.dataType = message.dataType ? DataTypeData.toJSON(message.dataType) : undefined);
+    message.dataType !== undefined &&
+      (obj.dataType = message.dataType ? DataTypeData.toJSON(message.dataType) : undefined);
     if (message.children) {
-      obj.children = message.children.map((e) => (e ? ControllerResourceUpdateFieldData.toJSON(e) : undefined));
+      obj.children = message.children.map((e) => e ? ControllerResourceUpdateFieldData.toJSON(e) : undefined);
     } else {
       obj.children = [];
     }
@@ -5527,8 +5571,9 @@ export const ControllerResourceUpdateFieldData = {
     message.params = object.params ?? undefined;
     message.body = object.body ?? undefined;
     message.value = object.value ?? undefined;
-    message.dataType =
-      object.dataType !== undefined && object.dataType !== null ? DataTypeData.fromPartial(object.dataType) : undefined;
+    message.dataType = (object.dataType !== undefined && object.dataType !== null)
+      ? DataTypeData.fromPartial(object.dataType)
+      : undefined;
     message.children = object.children?.map((e) => ControllerResourceUpdateFieldData.fromPartial(e)) || [];
     return message;
   },
@@ -5691,7 +5736,9 @@ export const TableData = {
     return {
       name: isSet(object.name) ? String(object.name) : "",
       columns: Array.isArray(object?.columns) ? object.columns.map((e: any) => TableColumnData.fromJSON(e)) : [],
-      relations: Array.isArray(object?.relations) ? object.relations.map((e: any) => TableRelationData.fromJSON(e)) : [],
+      relations: Array.isArray(object?.relations)
+        ? object.relations.map((e: any) => TableRelationData.fromJSON(e))
+        : [],
       indexes: Array.isArray(object?.indexes) ? object.indexes.map((e: any) => TableIndexData.fromJSON(e)) : [],
     };
   },
@@ -5700,17 +5747,17 @@ export const TableData = {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
     if (message.columns) {
-      obj.columns = message.columns.map((e) => (e ? TableColumnData.toJSON(e) : undefined));
+      obj.columns = message.columns.map((e) => e ? TableColumnData.toJSON(e) : undefined);
     } else {
       obj.columns = [];
     }
     if (message.relations) {
-      obj.relations = message.relations.map((e) => (e ? TableRelationData.toJSON(e) : undefined));
+      obj.relations = message.relations.map((e) => e ? TableRelationData.toJSON(e) : undefined);
     } else {
       obj.relations = [];
     }
     if (message.indexes) {
-      obj.indexes = message.indexes.map((e) => (e ? TableIndexData.toJSON(e) : undefined));
+      obj.indexes = message.indexes.map((e) => e ? TableIndexData.toJSON(e) : undefined);
     } else {
       obj.indexes = [];
     }
@@ -5782,9 +5829,10 @@ export const TableColumnData = {
   toJSON(message: TableColumn): unknown {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
-    message.type !== undefined && (obj.type = message.type ? TableColumnColumnTypeData.toJSON(message.type) : undefined);
+    message.type !== undefined &&
+      (obj.type = message.type ? TableColumnColumnTypeData.toJSON(message.type) : undefined);
     if (message.constraints) {
-      obj.constraints = message.constraints.map((e) => (e ? TableConstraintData.toJSON(e) : undefined));
+      obj.constraints = message.constraints.map((e) => e ? TableConstraintData.toJSON(e) : undefined);
     } else {
       obj.constraints = [];
     }
@@ -5794,8 +5842,9 @@ export const TableColumnData = {
   fromPartial(object: DeepPartial<TableColumn>): TableColumn {
     const message = createBaseTableColumn();
     message.name = object.name ?? "";
-    message.type =
-      object.type !== undefined && object.type !== null ? TableColumnColumnTypeData.fromPartial(object.type) : undefined;
+    message.type = (object.type !== undefined && object.type !== null)
+      ? TableColumnColumnTypeData.fromPartial(object.type)
+      : undefined;
     message.constraints = object.constraints?.map((e) => TableConstraintData.fromPartial(e)) || [];
     return message;
   },
@@ -5900,34 +5949,27 @@ export const TableColumnColumnTypeData = {
 
   fromPartial(object: DeepPartial<TableColumnColumnType>): TableColumnColumnType {
     const message = createBaseTableColumnColumnType();
-    message.integerType =
-      object.integerType !== undefined && object.integerType !== null
-        ? TableColumnIntegerTypeData.fromPartial(object.integerType)
-        : undefined;
-    message.stringType =
-      object.stringType !== undefined && object.stringType !== null
-        ? TableColumnStringTypeData.fromPartial(object.stringType)
-        : undefined;
-    message.floatType =
-      object.floatType !== undefined && object.floatType !== null
-        ? TableColumnFloatTypeData.fromPartial(object.floatType)
-        : undefined;
-    message.booleanType =
-      object.booleanType !== undefined && object.booleanType !== null
-        ? TableColumnBooleanTypeData.fromPartial(object.booleanType)
-        : undefined;
-    message.dateType =
-      object.dateType !== undefined && object.dateType !== null
-        ? TableColumnDateTypeData.fromPartial(object.dateType)
-        : undefined;
-    message.fileType =
-      object.fileType !== undefined && object.fileType !== null
-        ? TableColumnFileTypeData.fromPartial(object.fileType)
-        : undefined;
-    message.enumType =
-      object.enumType !== undefined && object.enumType !== null
-        ? TableColumnEnumTypeData.fromPartial(object.enumType)
-        : undefined;
+    message.integerType = (object.integerType !== undefined && object.integerType !== null)
+      ? TableColumnIntegerTypeData.fromPartial(object.integerType)
+      : undefined;
+    message.stringType = (object.stringType !== undefined && object.stringType !== null)
+      ? TableColumnStringTypeData.fromPartial(object.stringType)
+      : undefined;
+    message.floatType = (object.floatType !== undefined && object.floatType !== null)
+      ? TableColumnFloatTypeData.fromPartial(object.floatType)
+      : undefined;
+    message.booleanType = (object.booleanType !== undefined && object.booleanType !== null)
+      ? TableColumnBooleanTypeData.fromPartial(object.booleanType)
+      : undefined;
+    message.dateType = (object.dateType !== undefined && object.dateType !== null)
+      ? TableColumnDateTypeData.fromPartial(object.dateType)
+      : undefined;
+    message.fileType = (object.fileType !== undefined && object.fileType !== null)
+      ? TableColumnFileTypeData.fromPartial(object.fileType)
+      : undefined;
+    message.enumType = (object.enumType !== undefined && object.enumType !== null)
+      ? TableColumnEnumTypeData.fromPartial(object.enumType)
+      : undefined;
     return message;
   },
 };
@@ -5993,7 +6035,9 @@ export const TableColumnStringTypeData = {
     return {
       defaultValue: isSet(object.defaultValue) ? String(object.defaultValue) : undefined,
       isText: isSet(object.isText) ? Boolean(object.isText) : false,
-      formats: Array.isArray(object?.formats) ? object.formats.map((e: any) => tableColumnStringTypeFormatFromJSON(e)) : [],
+      formats: Array.isArray(object?.formats)
+        ? object.formats.map((e: any) => tableColumnStringTypeFormatFromJSON(e))
+        : [],
       conditions: Array.isArray(object?.conditions)
         ? object.conditions.map((e: any) => TableColumnStringTypeConditionData.fromJSON(e))
         : [],
@@ -6010,7 +6054,7 @@ export const TableColumnStringTypeData = {
       obj.formats = [];
     }
     if (message.conditions) {
-      obj.conditions = message.conditions.map((e) => (e ? TableColumnStringTypeConditionData.toJSON(e) : undefined));
+      obj.conditions = message.conditions.map((e) => e ? TableColumnStringTypeConditionData.toJSON(e) : undefined);
     } else {
       obj.conditions = [];
     }
@@ -6143,7 +6187,7 @@ export const TableColumnIntegerTypeData = {
     const obj: any = {};
     message.defaultValue !== undefined && (obj.defaultValue = Math.round(message.defaultValue));
     if (message.conditions) {
-      obj.conditions = message.conditions.map((e) => (e ? TableColumnIntegerTypeConditionData.toJSON(e) : undefined));
+      obj.conditions = message.conditions.map((e) => e ? TableColumnIntegerTypeConditionData.toJSON(e) : undefined);
     } else {
       obj.conditions = [];
     }
@@ -6274,7 +6318,7 @@ export const TableColumnFloatTypeData = {
     const obj: any = {};
     message.defaultValue !== undefined && (obj.defaultValue = message.defaultValue);
     if (message.conditions) {
-      obj.conditions = message.conditions.map((e) => (e ? TableColumnFloatTypeConditionData.toJSON(e) : undefined));
+      obj.conditions = message.conditions.map((e) => e ? TableColumnFloatTypeConditionData.toJSON(e) : undefined);
     } else {
       obj.conditions = [];
     }
@@ -6549,10 +6593,9 @@ export const TableColumnFileTypeData = {
   toJSON(message: TableColumnFileType): unknown {
     const obj: any = {};
     message.maximumSize !== undefined && (obj.maximumSize = Math.round(message.maximumSize));
-    message.numberOfFiles !== undefined &&
-      (obj.numberOfFiles = message.numberOfFiles
-        ? TableColumnFileTypeNumberOfFilesData.toJSON(message.numberOfFiles)
-        : undefined);
+    message.numberOfFiles !== undefined && (obj.numberOfFiles = message.numberOfFiles
+      ? TableColumnFileTypeNumberOfFilesData.toJSON(message.numberOfFiles)
+      : undefined);
     if (message.contentTypes) {
       obj.contentTypes = message.contentTypes.map((e) => tableColumnFileTypeContentTypeToJSON(e));
     } else {
@@ -6565,10 +6608,9 @@ export const TableColumnFileTypeData = {
   fromPartial(object: DeepPartial<TableColumnFileType>): TableColumnFileType {
     const message = createBaseTableColumnFileType();
     message.maximumSize = object.maximumSize ?? 0;
-    message.numberOfFiles =
-      object.numberOfFiles !== undefined && object.numberOfFiles !== null
-        ? TableColumnFileTypeNumberOfFilesData.fromPartial(object.numberOfFiles)
-        : undefined;
+    message.numberOfFiles = (object.numberOfFiles !== undefined && object.numberOfFiles !== null)
+      ? TableColumnFileTypeNumberOfFilesData.fromPartial(object.numberOfFiles)
+      : undefined;
     message.contentTypes = object.contentTypes?.map((e) => e) || [];
     message.multiple = object.multiple ?? false;
     return message;
@@ -6767,20 +6809,18 @@ export const TableConstraintData = {
 
   fromPartial(object: DeepPartial<TableConstraint>): TableConstraint {
     const message = createBaseTableConstraint();
-    message.primaryKey =
-      object.primaryKey !== undefined && object.primaryKey !== null
-        ? TableConstraintPrimaryKeyData.fromPartial(object.primaryKey)
-        : undefined;
-    message.foreignKey =
-      object.foreignKey !== undefined && object.foreignKey !== null
-        ? TableConstraintForeignKeyData.fromPartial(object.foreignKey)
-        : undefined;
-    message.notNull =
-      object.notNull !== undefined && object.notNull !== null
-        ? TableConstraintNotNullData.fromPartial(object.notNull)
-        : undefined;
-    message.unique =
-      object.unique !== undefined && object.unique !== null ? TableConstraintUniqueData.fromPartial(object.unique) : undefined;
+    message.primaryKey = (object.primaryKey !== undefined && object.primaryKey !== null)
+      ? TableConstraintPrimaryKeyData.fromPartial(object.primaryKey)
+      : undefined;
+    message.foreignKey = (object.foreignKey !== undefined && object.foreignKey !== null)
+      ? TableConstraintForeignKeyData.fromPartial(object.foreignKey)
+      : undefined;
+    message.notNull = (object.notNull !== undefined && object.notNull !== null)
+      ? TableConstraintNotNullData.fromPartial(object.notNull)
+      : undefined;
+    message.unique = (object.unique !== undefined && object.unique !== null)
+      ? TableConstraintUniqueData.fromPartial(object.unique)
+      : undefined;
     return message;
   },
 };
@@ -7112,26 +7152,21 @@ export const TableRelationData = {
 
   fromPartial(object: DeepPartial<TableRelation>): TableRelation {
     const message = createBaseTableRelation();
-    message.hasOne =
-      object.hasOne !== undefined && object.hasOne !== null
-        ? TableRelationRelationHasOneData.fromPartial(object.hasOne)
-        : undefined;
-    message.belongTo =
-      object.belongTo !== undefined && object.belongTo !== null
-        ? TableRelationRelationBelongToData.fromPartial(object.belongTo)
-        : undefined;
-    message.oneMany =
-      object.oneMany !== undefined && object.oneMany !== null
-        ? TableRelationRelationOneManyData.fromPartial(object.oneMany)
-        : undefined;
-    message.manyOne =
-      object.manyOne !== undefined && object.manyOne !== null
-        ? TableRelationRelationManyOneData.fromPartial(object.manyOne)
-        : undefined;
-    message.manyMany =
-      object.manyMany !== undefined && object.manyMany !== null
-        ? TableRelationRelationManyManyData.fromPartial(object.manyMany)
-        : undefined;
+    message.hasOne = (object.hasOne !== undefined && object.hasOne !== null)
+      ? TableRelationRelationHasOneData.fromPartial(object.hasOne)
+      : undefined;
+    message.belongTo = (object.belongTo !== undefined && object.belongTo !== null)
+      ? TableRelationRelationBelongToData.fromPartial(object.belongTo)
+      : undefined;
+    message.oneMany = (object.oneMany !== undefined && object.oneMany !== null)
+      ? TableRelationRelationOneManyData.fromPartial(object.oneMany)
+      : undefined;
+    message.manyOne = (object.manyOne !== undefined && object.manyOne !== null)
+      ? TableRelationRelationManyOneData.fromPartial(object.manyOne)
+      : undefined;
+    message.manyMany = (object.manyMany !== undefined && object.manyMany !== null)
+      ? TableRelationRelationManyManyData.fromPartial(object.manyMany)
+      : undefined;
     return message;
   },
 };
@@ -7473,7 +7508,7 @@ export const MigrationData = {
     const obj: any = {};
     message.migrationId !== undefined && (obj.migrationId = message.migrationId);
     if (message.changes) {
-      obj.changes = message.changes.map((e) => (e ? MigrationChangeData.toJSON(e) : undefined));
+      obj.changes = message.changes.map((e) => e ? MigrationChangeData.toJSON(e) : undefined);
     } else {
       obj.changes = [];
     }
@@ -7636,8 +7671,12 @@ export const MigrationChangeData = {
       changeColumnDefault: isSet(object.changeColumnDefault)
         ? ChangeColumnDefaultData.fromJSON(object.changeColumnDefault)
         : undefined,
-      changeColumnNull: isSet(object.changeColumnNull) ? ChangeColumnNullData.fromJSON(object.changeColumnNull) : undefined,
-      removeTableIndex: isSet(object.removeTableIndex) ? RemoveTableIndexData.fromJSON(object.removeTableIndex) : undefined,
+      changeColumnNull: isSet(object.changeColumnNull)
+        ? ChangeColumnNullData.fromJSON(object.changeColumnNull)
+        : undefined,
+      removeTableIndex: isSet(object.removeTableIndex)
+        ? RemoveTableIndexData.fromJSON(object.removeTableIndex)
+        : undefined,
       removeTableRelation: isSet(object.removeTableRelation)
         ? RemoveTableRelationData.fromJSON(object.removeTableRelation)
         : undefined,
@@ -7646,8 +7685,12 @@ export const MigrationChangeData = {
         : undefined,
       removeColumn: isSet(object.removeColumn) ? RemoveColumnData.fromJSON(object.removeColumn) : undefined,
       dropTable: isSet(object.dropTable) ? DropTableData.fromJSON(object.dropTable) : undefined,
-      changeTableIndex: isSet(object.changeTableIndex) ? ChangeTableIndexData.fromJSON(object.changeTableIndex) : undefined,
-      createTableIndex: isSet(object.createTableIndex) ? CreateTableIndexData.fromJSON(object.createTableIndex) : undefined,
+      changeTableIndex: isSet(object.changeTableIndex)
+        ? ChangeTableIndexData.fromJSON(object.changeTableIndex)
+        : undefined,
+      createTableIndex: isSet(object.createTableIndex)
+        ? CreateTableIndexData.fromJSON(object.createTableIndex)
+        : undefined,
       addUniqColumn: isSet(object.addUniqColumn) ? AddUniqColumnData.fromJSON(object.addUniqColumn) : undefined,
       changeColumnUnique: isSet(object.changeColumnUnique)
         ? ChangeColumnUniqueData.fromJSON(object.changeColumnUnique)
@@ -7661,123 +7704,107 @@ export const MigrationChangeData = {
       (obj.createTable = message.createTable ? CreateTableData.toJSON(message.createTable) : undefined);
     message.changeTableName !== undefined &&
       (obj.changeTableName = message.changeTableName ? ChangeTableNameData.toJSON(message.changeTableName) : undefined);
-    message.changeTableComment !== undefined &&
-      (obj.changeTableComment = message.changeTableComment
-        ? ChangeTableCommentData.toJSON(message.changeTableComment)
-        : undefined);
+    message.changeTableComment !== undefined && (obj.changeTableComment = message.changeTableComment
+      ? ChangeTableCommentData.toJSON(message.changeTableComment)
+      : undefined);
     message.addColumn !== undefined &&
       (obj.addColumn = message.addColumn ? AddColumnData.toJSON(message.addColumn) : undefined);
     message.renameColumn !== undefined &&
       (obj.renameColumn = message.renameColumn ? RenameColumnData.toJSON(message.renameColumn) : undefined);
-    message.changeColumnComment !== undefined &&
-      (obj.changeColumnComment = message.changeColumnComment
-        ? ChangeColumnCommentData.toJSON(message.changeColumnComment)
-        : undefined);
+    message.changeColumnComment !== undefined && (obj.changeColumnComment = message.changeColumnComment
+      ? ChangeColumnCommentData.toJSON(message.changeColumnComment)
+      : undefined);
     message.changeColumn !== undefined &&
       (obj.changeColumn = message.changeColumn ? ChangeColumnData.toJSON(message.changeColumn) : undefined);
-    message.changeColumnDefault !== undefined &&
-      (obj.changeColumnDefault = message.changeColumnDefault
-        ? ChangeColumnDefaultData.toJSON(message.changeColumnDefault)
-        : undefined);
-    message.changeColumnNull !== undefined &&
-      (obj.changeColumnNull = message.changeColumnNull ? ChangeColumnNullData.toJSON(message.changeColumnNull) : undefined);
-    message.removeTableIndex !== undefined &&
-      (obj.removeTableIndex = message.removeTableIndex ? RemoveTableIndexData.toJSON(message.removeTableIndex) : undefined);
-    message.removeTableRelation !== undefined &&
-      (obj.removeTableRelation = message.removeTableRelation
-        ? RemoveTableRelationData.toJSON(message.removeTableRelation)
-        : undefined);
-    message.createTableRelation !== undefined &&
-      (obj.createTableRelation = message.createTableRelation
-        ? CreateTableRelationData.toJSON(message.createTableRelation)
-        : undefined);
+    message.changeColumnDefault !== undefined && (obj.changeColumnDefault = message.changeColumnDefault
+      ? ChangeColumnDefaultData.toJSON(message.changeColumnDefault)
+      : undefined);
+    message.changeColumnNull !== undefined && (obj.changeColumnNull = message.changeColumnNull
+      ? ChangeColumnNullData.toJSON(message.changeColumnNull)
+      : undefined);
+    message.removeTableIndex !== undefined && (obj.removeTableIndex = message.removeTableIndex
+      ? RemoveTableIndexData.toJSON(message.removeTableIndex)
+      : undefined);
+    message.removeTableRelation !== undefined && (obj.removeTableRelation = message.removeTableRelation
+      ? RemoveTableRelationData.toJSON(message.removeTableRelation)
+      : undefined);
+    message.createTableRelation !== undefined && (obj.createTableRelation = message.createTableRelation
+      ? CreateTableRelationData.toJSON(message.createTableRelation)
+      : undefined);
     message.removeColumn !== undefined &&
       (obj.removeColumn = message.removeColumn ? RemoveColumnData.toJSON(message.removeColumn) : undefined);
     message.dropTable !== undefined &&
       (obj.dropTable = message.dropTable ? DropTableData.toJSON(message.dropTable) : undefined);
-    message.changeTableIndex !== undefined &&
-      (obj.changeTableIndex = message.changeTableIndex ? ChangeTableIndexData.toJSON(message.changeTableIndex) : undefined);
-    message.createTableIndex !== undefined &&
-      (obj.createTableIndex = message.createTableIndex ? CreateTableIndexData.toJSON(message.createTableIndex) : undefined);
+    message.changeTableIndex !== undefined && (obj.changeTableIndex = message.changeTableIndex
+      ? ChangeTableIndexData.toJSON(message.changeTableIndex)
+      : undefined);
+    message.createTableIndex !== undefined && (obj.createTableIndex = message.createTableIndex
+      ? CreateTableIndexData.toJSON(message.createTableIndex)
+      : undefined);
     message.addUniqColumn !== undefined &&
       (obj.addUniqColumn = message.addUniqColumn ? AddUniqColumnData.toJSON(message.addUniqColumn) : undefined);
-    message.changeColumnUnique !== undefined &&
-      (obj.changeColumnUnique = message.changeColumnUnique
-        ? ChangeColumnUniqueData.toJSON(message.changeColumnUnique)
-        : undefined);
+    message.changeColumnUnique !== undefined && (obj.changeColumnUnique = message.changeColumnUnique
+      ? ChangeColumnUniqueData.toJSON(message.changeColumnUnique)
+      : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<MigrationChange>): MigrationChange {
     const message = createBaseMigrationChange();
-    message.createTable =
-      object.createTable !== undefined && object.createTable !== null
-        ? CreateTableData.fromPartial(object.createTable)
-        : undefined;
-    message.changeTableName =
-      object.changeTableName !== undefined && object.changeTableName !== null
-        ? ChangeTableNameData.fromPartial(object.changeTableName)
-        : undefined;
-    message.changeTableComment =
-      object.changeTableComment !== undefined && object.changeTableComment !== null
-        ? ChangeTableCommentData.fromPartial(object.changeTableComment)
-        : undefined;
-    message.addColumn =
-      object.addColumn !== undefined && object.addColumn !== null ? AddColumnData.fromPartial(object.addColumn) : undefined;
-    message.renameColumn =
-      object.renameColumn !== undefined && object.renameColumn !== null
-        ? RenameColumnData.fromPartial(object.renameColumn)
-        : undefined;
-    message.changeColumnComment =
-      object.changeColumnComment !== undefined && object.changeColumnComment !== null
-        ? ChangeColumnCommentData.fromPartial(object.changeColumnComment)
-        : undefined;
-    message.changeColumn =
-      object.changeColumn !== undefined && object.changeColumn !== null
-        ? ChangeColumnData.fromPartial(object.changeColumn)
-        : undefined;
-    message.changeColumnDefault =
-      object.changeColumnDefault !== undefined && object.changeColumnDefault !== null
-        ? ChangeColumnDefaultData.fromPartial(object.changeColumnDefault)
-        : undefined;
-    message.changeColumnNull =
-      object.changeColumnNull !== undefined && object.changeColumnNull !== null
-        ? ChangeColumnNullData.fromPartial(object.changeColumnNull)
-        : undefined;
-    message.removeTableIndex =
-      object.removeTableIndex !== undefined && object.removeTableIndex !== null
-        ? RemoveTableIndexData.fromPartial(object.removeTableIndex)
-        : undefined;
-    message.removeTableRelation =
-      object.removeTableRelation !== undefined && object.removeTableRelation !== null
-        ? RemoveTableRelationData.fromPartial(object.removeTableRelation)
-        : undefined;
-    message.createTableRelation =
-      object.createTableRelation !== undefined && object.createTableRelation !== null
-        ? CreateTableRelationData.fromPartial(object.createTableRelation)
-        : undefined;
-    message.removeColumn =
-      object.removeColumn !== undefined && object.removeColumn !== null
-        ? RemoveColumnData.fromPartial(object.removeColumn)
-        : undefined;
-    message.dropTable =
-      object.dropTable !== undefined && object.dropTable !== null ? DropTableData.fromPartial(object.dropTable) : undefined;
-    message.changeTableIndex =
-      object.changeTableIndex !== undefined && object.changeTableIndex !== null
-        ? ChangeTableIndexData.fromPartial(object.changeTableIndex)
-        : undefined;
-    message.createTableIndex =
-      object.createTableIndex !== undefined && object.createTableIndex !== null
-        ? CreateTableIndexData.fromPartial(object.createTableIndex)
-        : undefined;
-    message.addUniqColumn =
-      object.addUniqColumn !== undefined && object.addUniqColumn !== null
-        ? AddUniqColumnData.fromPartial(object.addUniqColumn)
-        : undefined;
-    message.changeColumnUnique =
-      object.changeColumnUnique !== undefined && object.changeColumnUnique !== null
-        ? ChangeColumnUniqueData.fromPartial(object.changeColumnUnique)
-        : undefined;
+    message.createTable = (object.createTable !== undefined && object.createTable !== null)
+      ? CreateTableData.fromPartial(object.createTable)
+      : undefined;
+    message.changeTableName = (object.changeTableName !== undefined && object.changeTableName !== null)
+      ? ChangeTableNameData.fromPartial(object.changeTableName)
+      : undefined;
+    message.changeTableComment = (object.changeTableComment !== undefined && object.changeTableComment !== null)
+      ? ChangeTableCommentData.fromPartial(object.changeTableComment)
+      : undefined;
+    message.addColumn = (object.addColumn !== undefined && object.addColumn !== null)
+      ? AddColumnData.fromPartial(object.addColumn)
+      : undefined;
+    message.renameColumn = (object.renameColumn !== undefined && object.renameColumn !== null)
+      ? RenameColumnData.fromPartial(object.renameColumn)
+      : undefined;
+    message.changeColumnComment = (object.changeColumnComment !== undefined && object.changeColumnComment !== null)
+      ? ChangeColumnCommentData.fromPartial(object.changeColumnComment)
+      : undefined;
+    message.changeColumn = (object.changeColumn !== undefined && object.changeColumn !== null)
+      ? ChangeColumnData.fromPartial(object.changeColumn)
+      : undefined;
+    message.changeColumnDefault = (object.changeColumnDefault !== undefined && object.changeColumnDefault !== null)
+      ? ChangeColumnDefaultData.fromPartial(object.changeColumnDefault)
+      : undefined;
+    message.changeColumnNull = (object.changeColumnNull !== undefined && object.changeColumnNull !== null)
+      ? ChangeColumnNullData.fromPartial(object.changeColumnNull)
+      : undefined;
+    message.removeTableIndex = (object.removeTableIndex !== undefined && object.removeTableIndex !== null)
+      ? RemoveTableIndexData.fromPartial(object.removeTableIndex)
+      : undefined;
+    message.removeTableRelation = (object.removeTableRelation !== undefined && object.removeTableRelation !== null)
+      ? RemoveTableRelationData.fromPartial(object.removeTableRelation)
+      : undefined;
+    message.createTableRelation = (object.createTableRelation !== undefined && object.createTableRelation !== null)
+      ? CreateTableRelationData.fromPartial(object.createTableRelation)
+      : undefined;
+    message.removeColumn = (object.removeColumn !== undefined && object.removeColumn !== null)
+      ? RemoveColumnData.fromPartial(object.removeColumn)
+      : undefined;
+    message.dropTable = (object.dropTable !== undefined && object.dropTable !== null)
+      ? DropTableData.fromPartial(object.dropTable)
+      : undefined;
+    message.changeTableIndex = (object.changeTableIndex !== undefined && object.changeTableIndex !== null)
+      ? ChangeTableIndexData.fromPartial(object.changeTableIndex)
+      : undefined;
+    message.createTableIndex = (object.createTableIndex !== undefined && object.createTableIndex !== null)
+      ? CreateTableIndexData.fromPartial(object.createTableIndex)
+      : undefined;
+    message.addUniqColumn = (object.addUniqColumn !== undefined && object.addUniqColumn !== null)
+      ? AddUniqColumnData.fromPartial(object.addUniqColumn)
+      : undefined;
+    message.changeColumnUnique = (object.changeColumnUnique !== undefined && object.changeColumnUnique !== null)
+      ? ChangeColumnUniqueData.fromPartial(object.changeColumnUnique)
+      : undefined;
     return message;
   },
 };
@@ -7861,16 +7888,14 @@ export const CreateTableData = {
   fromPartial(object: DeepPartial<CreateTable>): CreateTable {
     const message = createBaseCreateTable();
     message.key = object.key ?? "";
-    message.changeTo =
-      object.changeTo !== undefined && object.changeTo !== null
-        ? CreateTableChangeData.fromPartial(object.changeTo)
-        : undefined;
+    message.changeTo = (object.changeTo !== undefined && object.changeTo !== null)
+      ? CreateTableChangeData.fromPartial(object.changeTo)
+      : undefined;
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
-    message.nextRecord =
-      object.nextRecord !== undefined && object.nextRecord !== null
-        ? CreateTableNextRecordData.fromPartial(object.nextRecord)
-        : undefined;
+    message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
+      ? CreateTableNextRecordData.fromPartial(object.nextRecord)
+      : undefined;
     return message;
   },
 };
@@ -7974,14 +7999,12 @@ export const ChangeTableNameData = {
     message.changeTo = object.changeTo ?? "";
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
-    message.prevRecord =
-      object.prevRecord !== undefined && object.prevRecord !== null
-        ? CreateTableNextRecordData.fromPartial(object.prevRecord)
-        : undefined;
-    message.nextRecord =
-      object.nextRecord !== undefined && object.nextRecord !== null
-        ? CreateTableNextRecordData.fromPartial(object.nextRecord)
-        : undefined;
+    message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
+      ? CreateTableNextRecordData.fromPartial(object.prevRecord)
+      : undefined;
+    message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
+      ? CreateTableNextRecordData.fromPartial(object.nextRecord)
+      : undefined;
     return message;
   },
 };
@@ -8085,14 +8108,12 @@ export const ChangeTableCommentData = {
     message.changeTo = object.changeTo ?? "";
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
-    message.prevRecord =
-      object.prevRecord !== undefined && object.prevRecord !== null
-        ? CreateTableNextRecordData.fromPartial(object.prevRecord)
-        : undefined;
-    message.nextRecord =
-      object.nextRecord !== undefined && object.nextRecord !== null
-        ? CreateTableNextRecordData.fromPartial(object.nextRecord)
-        : undefined;
+    message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
+      ? CreateTableNextRecordData.fromPartial(object.prevRecord)
+      : undefined;
+    message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
+      ? CreateTableNextRecordData.fromPartial(object.nextRecord)
+      : undefined;
     return message;
   },
 };
@@ -8243,16 +8264,14 @@ export const AddColumnData = {
   fromPartial(object: DeepPartial<AddColumn>): AddColumn {
     const message = createBaseAddColumn();
     message.key = object.key ?? "";
-    message.changeTo =
-      object.changeTo !== undefined && object.changeTo !== null
-        ? MigrationColumnDefinitionData.fromPartial(object.changeTo)
-        : undefined;
+    message.changeTo = (object.changeTo !== undefined && object.changeTo !== null)
+      ? MigrationColumnDefinitionData.fromPartial(object.changeTo)
+      : undefined;
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
-    message.nextRecord =
-      object.nextRecord !== undefined && object.nextRecord !== null
-        ? MigrationColumnDefinitionData.fromPartial(object.nextRecord)
-        : undefined;
+    message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
+      ? MigrationColumnDefinitionData.fromPartial(object.nextRecord)
+      : undefined;
     return message;
   },
 };
@@ -8356,14 +8375,12 @@ export const RenameColumnData = {
     message.changeTo = object.changeTo ?? "";
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
-    message.prevRecord =
-      object.prevRecord !== undefined && object.prevRecord !== null
-        ? MigrationColumnDefinitionData.fromPartial(object.prevRecord)
-        : undefined;
-    message.nextRecord =
-      object.nextRecord !== undefined && object.nextRecord !== null
-        ? MigrationColumnDefinitionData.fromPartial(object.nextRecord)
-        : undefined;
+    message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
+      ? MigrationColumnDefinitionData.fromPartial(object.prevRecord)
+      : undefined;
+    message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
+      ? MigrationColumnDefinitionData.fromPartial(object.nextRecord)
+      : undefined;
     return message;
   },
 };
@@ -8467,14 +8484,12 @@ export const ChangeColumnCommentData = {
     message.changeTo = object.changeTo ?? "";
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
-    message.prevRecord =
-      object.prevRecord !== undefined && object.prevRecord !== null
-        ? MigrationColumnDefinitionData.fromPartial(object.prevRecord)
-        : undefined;
-    message.nextRecord =
-      object.nextRecord !== undefined && object.nextRecord !== null
-        ? MigrationColumnDefinitionData.fromPartial(object.nextRecord)
-        : undefined;
+    message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
+      ? MigrationColumnDefinitionData.fromPartial(object.prevRecord)
+      : undefined;
+    message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
+      ? MigrationColumnDefinitionData.fromPartial(object.nextRecord)
+      : undefined;
     return message;
   },
 };
@@ -8578,14 +8593,12 @@ export const ChangeColumnData = {
     message.changeTo = object.changeTo ?? "";
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
-    message.prevRecord =
-      object.prevRecord !== undefined && object.prevRecord !== null
-        ? MigrationColumnDefinitionData.fromPartial(object.prevRecord)
-        : undefined;
-    message.nextRecord =
-      object.nextRecord !== undefined && object.nextRecord !== null
-        ? MigrationColumnDefinitionData.fromPartial(object.nextRecord)
-        : undefined;
+    message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
+      ? MigrationColumnDefinitionData.fromPartial(object.prevRecord)
+      : undefined;
+    message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
+      ? MigrationColumnDefinitionData.fromPartial(object.nextRecord)
+      : undefined;
     return message;
   },
 };
@@ -8689,14 +8702,12 @@ export const ChangeColumnDefaultData = {
     message.changeTo = object.changeTo ?? "";
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
-    message.prevRecord =
-      object.prevRecord !== undefined && object.prevRecord !== null
-        ? MigrationColumnDefinitionData.fromPartial(object.prevRecord)
-        : undefined;
-    message.nextRecord =
-      object.nextRecord !== undefined && object.nextRecord !== null
-        ? MigrationColumnDefinitionData.fromPartial(object.nextRecord)
-        : undefined;
+    message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
+      ? MigrationColumnDefinitionData.fromPartial(object.prevRecord)
+      : undefined;
+    message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
+      ? MigrationColumnDefinitionData.fromPartial(object.nextRecord)
+      : undefined;
     return message;
   },
 };
@@ -8800,14 +8811,12 @@ export const ChangeColumnNullData = {
     message.changeTo = object.changeTo ?? "";
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
-    message.prevRecord =
-      object.prevRecord !== undefined && object.prevRecord !== null
-        ? MigrationColumnDefinitionData.fromPartial(object.prevRecord)
-        : undefined;
-    message.nextRecord =
-      object.nextRecord !== undefined && object.nextRecord !== null
-        ? MigrationColumnDefinitionData.fromPartial(object.nextRecord)
-        : undefined;
+    message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
+      ? MigrationColumnDefinitionData.fromPartial(object.prevRecord)
+      : undefined;
+    message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
+      ? MigrationColumnDefinitionData.fromPartial(object.nextRecord)
+      : undefined;
     return message;
   },
 };
@@ -8891,16 +8900,14 @@ export const RemoveTableIndexData = {
   fromPartial(object: DeepPartial<RemoveTableIndex>): RemoveTableIndex {
     const message = createBaseRemoveTableIndex();
     message.key = object.key ?? "";
-    message.changeFrom =
-      object.changeFrom !== undefined && object.changeFrom !== null
-        ? TableIndexMigrationData.fromPartial(object.changeFrom)
-        : undefined;
+    message.changeFrom = (object.changeFrom !== undefined && object.changeFrom !== null)
+      ? TableIndexMigrationData.fromPartial(object.changeFrom)
+      : undefined;
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
-    message.prevRecord =
-      object.prevRecord !== undefined && object.prevRecord !== null
-        ? TableIndexMigrationData.fromPartial(object.prevRecord)
-        : undefined;
+    message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
+      ? TableIndexMigrationData.fromPartial(object.prevRecord)
+      : undefined;
     return message;
   },
 };
@@ -8977,10 +8984,9 @@ export const RemoveTableRelationData = {
     message.key = object.key ?? "";
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
-    message.prevRecord =
-      object.prevRecord !== undefined && object.prevRecord !== null
-        ? TableRelationMigrationData.fromPartial(object.prevRecord)
-        : undefined;
+    message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
+      ? TableRelationMigrationData.fromPartial(object.prevRecord)
+      : undefined;
     return message;
   },
 };
@@ -9064,16 +9070,14 @@ export const CreateTableRelationData = {
   fromPartial(object: DeepPartial<CreateTableRelation>): CreateTableRelation {
     const message = createBaseCreateTableRelation();
     message.key = object.key ?? "";
-    message.changeTo =
-      object.changeTo !== undefined && object.changeTo !== null
-        ? TableRelationMigrationData.fromPartial(object.changeTo)
-        : undefined;
+    message.changeTo = (object.changeTo !== undefined && object.changeTo !== null)
+      ? TableRelationMigrationData.fromPartial(object.changeTo)
+      : undefined;
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
-    message.nextRecord =
-      object.nextRecord !== undefined && object.nextRecord !== null
-        ? TableRelationMigrationData.fromPartial(object.nextRecord)
-        : undefined;
+    message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
+      ? TableRelationMigrationData.fromPartial(object.nextRecord)
+      : undefined;
     return message;
   },
 };
@@ -9157,16 +9161,14 @@ export const RemoveColumnData = {
   fromPartial(object: DeepPartial<RemoveColumn>): RemoveColumn {
     const message = createBaseRemoveColumn();
     message.key = object.key ?? "";
-    message.changeFrom =
-      object.changeFrom !== undefined && object.changeFrom !== null
-        ? MigrationColumnDefinitionData.fromPartial(object.changeFrom)
-        : undefined;
+    message.changeFrom = (object.changeFrom !== undefined && object.changeFrom !== null)
+      ? MigrationColumnDefinitionData.fromPartial(object.changeFrom)
+      : undefined;
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
-    message.prevRecord =
-      object.prevRecord !== undefined && object.prevRecord !== null
-        ? MigrationColumnDefinitionData.fromPartial(object.prevRecord)
-        : undefined;
+    message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
+      ? MigrationColumnDefinitionData.fromPartial(object.prevRecord)
+      : undefined;
     return message;
   },
 };
@@ -9250,16 +9252,14 @@ export const DropTableData = {
   fromPartial(object: DeepPartial<DropTable>): DropTable {
     const message = createBaseDropTable();
     message.key = object.key ?? "";
-    message.changeFrom =
-      object.changeFrom !== undefined && object.changeFrom !== null
-        ? CreateTableNextRecordData.fromPartial(object.changeFrom)
-        : undefined;
+    message.changeFrom = (object.changeFrom !== undefined && object.changeFrom !== null)
+      ? CreateTableNextRecordData.fromPartial(object.changeFrom)
+      : undefined;
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
-    message.prevRecord =
-      object.prevRecord !== undefined && object.prevRecord !== null
-        ? CreateTableNextRecordData.fromPartial(object.prevRecord)
-        : undefined;
+    message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
+      ? CreateTableNextRecordData.fromPartial(object.prevRecord)
+      : undefined;
     return message;
   },
 };
@@ -9363,14 +9363,12 @@ export const ChangeTableIndexData = {
     message.changeTo = object.changeTo ?? "";
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
-    message.prevRecord =
-      object.prevRecord !== undefined && object.prevRecord !== null
-        ? TableIndexMigrationData.fromPartial(object.prevRecord)
-        : undefined;
-    message.nextRecord =
-      object.nextRecord !== undefined && object.nextRecord !== null
-        ? TableIndexMigrationData.fromPartial(object.nextRecord)
-        : undefined;
+    message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
+      ? TableIndexMigrationData.fromPartial(object.prevRecord)
+      : undefined;
+    message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
+      ? TableIndexMigrationData.fromPartial(object.nextRecord)
+      : undefined;
     return message;
   },
 };
@@ -9446,15 +9444,13 @@ export const CreateTableIndexData = {
   fromPartial(object: DeepPartial<CreateTableIndex>): CreateTableIndex {
     const message = createBaseCreateTableIndex();
     message.key = object.key ?? "";
-    message.changeTo =
-      object.changeTo !== undefined && object.changeTo !== null
-        ? TableIndexMigrationData.fromPartial(object.changeTo)
-        : undefined;
+    message.changeTo = (object.changeTo !== undefined && object.changeTo !== null)
+      ? TableIndexMigrationData.fromPartial(object.changeTo)
+      : undefined;
     message.nextUuid = object.nextUuid ?? "";
-    message.nextRecord =
-      object.nextRecord !== undefined && object.nextRecord !== null
-        ? TableIndexMigrationData.fromPartial(object.nextRecord)
-        : undefined;
+    message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
+      ? TableIndexMigrationData.fromPartial(object.nextRecord)
+      : undefined;
     return message;
   },
 };
@@ -9504,10 +9500,9 @@ export const AddUniqColumnData = {
 
   fromPartial(object: DeepPartial<AddUniqColumn>): AddUniqColumn {
     const message = createBaseAddUniqColumn();
-    message.nextRecord =
-      object.nextRecord !== undefined && object.nextRecord !== null
-        ? MigrationColumnDefinitionData.fromPartial(object.nextRecord)
-        : undefined;
+    message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
+      ? MigrationColumnDefinitionData.fromPartial(object.nextRecord)
+      : undefined;
     return message;
   },
 };
@@ -9611,14 +9606,12 @@ export const ChangeColumnUniqueData = {
     message.changeTo = object.changeTo ?? false;
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
-    message.prevRecord =
-      object.prevRecord !== undefined && object.prevRecord !== null
-        ? MigrationColumnDefinitionData.fromPartial(object.prevRecord)
-        : undefined;
-    message.nextRecord =
-      object.nextRecord !== undefined && object.nextRecord !== null
-        ? MigrationColumnDefinitionData.fromPartial(object.nextRecord)
-        : undefined;
+    message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
+      ? MigrationColumnDefinitionData.fromPartial(object.prevRecord)
+      : undefined;
+    message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
+      ? MigrationColumnDefinitionData.fromPartial(object.nextRecord)
+      : undefined;
     return message;
   },
 };
@@ -9688,7 +9681,9 @@ export const CreateTableNextRecordData = {
     message.uuid !== undefined && (obj.uuid = message.uuid);
     message.comment !== undefined && (obj.comment = message.comment);
     if (message.columnDefinitions) {
-      obj.columnDefinitions = message.columnDefinitions.map((e) => (e ? MigrationColumnDefinitionData.toJSON(e) : undefined));
+      obj.columnDefinitions = message.columnDefinitions.map((e) =>
+        e ? MigrationColumnDefinitionData.toJSON(e) : undefined
+      );
     } else {
       obj.columnDefinitions = [];
     }
@@ -9700,7 +9695,8 @@ export const CreateTableNextRecordData = {
     message.name = object.name ?? "";
     message.uuid = object.uuid ?? "";
     message.comment = object.comment ?? "";
-    message.columnDefinitions = object.columnDefinitions?.map((e) => MigrationColumnDefinitionData.fromPartial(e)) || [];
+    message.columnDefinitions = object.columnDefinitions?.map((e) => MigrationColumnDefinitionData.fromPartial(e)) ||
+      [];
     return message;
   },
 };
@@ -9816,7 +9812,9 @@ export const MigrationColumnDefinitionData = {
       uuid: isSet(object.uuid) ? String(object.uuid) : "",
       tableDefinitionUuid: isSet(object.tableDefinitionUuid) ? String(object.tableDefinitionUuid) : "",
       customForeignKey: isSet(object.customForeignKey) ? Boolean(object.customForeignKey) : undefined,
-      tableDefinition: isSet(object.tableDefinition) ? TableMetaDataMigrationData.fromJSON(object.tableDefinition) : undefined,
+      tableDefinition: isSet(object.tableDefinition)
+        ? TableMetaDataMigrationData.fromJSON(object.tableDefinition)
+        : undefined,
       id: isSet(object.id) ? Number(object.id) : 0,
     };
   },
@@ -9832,8 +9830,9 @@ export const MigrationColumnDefinitionData = {
     message.uuid !== undefined && (obj.uuid = message.uuid);
     message.tableDefinitionUuid !== undefined && (obj.tableDefinitionUuid = message.tableDefinitionUuid);
     message.customForeignKey !== undefined && (obj.customForeignKey = message.customForeignKey);
-    message.tableDefinition !== undefined &&
-      (obj.tableDefinition = message.tableDefinition ? TableMetaDataMigrationData.toJSON(message.tableDefinition) : undefined);
+    message.tableDefinition !== undefined && (obj.tableDefinition = message.tableDefinition
+      ? TableMetaDataMigrationData.toJSON(message.tableDefinition)
+      : undefined);
     message.id !== undefined && (obj.id = Math.round(message.id));
     return obj;
   },
@@ -9849,10 +9848,9 @@ export const MigrationColumnDefinitionData = {
     message.uuid = object.uuid ?? "";
     message.tableDefinitionUuid = object.tableDefinitionUuid ?? "";
     message.customForeignKey = object.customForeignKey ?? undefined;
-    message.tableDefinition =
-      object.tableDefinition !== undefined && object.tableDefinition !== null
-        ? TableMetaDataMigrationData.fromPartial(object.tableDefinition)
-        : undefined;
+    message.tableDefinition = (object.tableDefinition !== undefined && object.tableDefinition !== null)
+      ? TableMetaDataMigrationData.fromPartial(object.tableDefinition)
+      : undefined;
     message.id = object.id ?? 0;
     return message;
   },
@@ -10003,7 +10001,9 @@ export const TableIndexMigrationData = {
         ? object.columnDefinitions.map((e: any) => MigrationColumnDefinitionData.fromJSON(e))
         : [],
       singleIndex: isSet(object.singleIndex) ? Boolean(object.singleIndex) : false,
-      tableDefinition: isSet(object.tableDefinition) ? TableMetaDataMigrationData.fromJSON(object.tableDefinition) : undefined,
+      tableDefinition: isSet(object.tableDefinition)
+        ? TableMetaDataMigrationData.fromJSON(object.tableDefinition)
+        : undefined,
       id: isSet(object.id) ? Number(object.id) : 0,
     };
   },
@@ -10015,13 +10015,16 @@ export const TableIndexMigrationData = {
     message.uuid !== undefined && (obj.uuid = message.uuid);
     message.tableDefinitionUuid !== undefined && (obj.tableDefinitionUuid = message.tableDefinitionUuid);
     if (message.columnDefinitions) {
-      obj.columnDefinitions = message.columnDefinitions.map((e) => (e ? MigrationColumnDefinitionData.toJSON(e) : undefined));
+      obj.columnDefinitions = message.columnDefinitions.map((e) =>
+        e ? MigrationColumnDefinitionData.toJSON(e) : undefined
+      );
     } else {
       obj.columnDefinitions = [];
     }
     message.singleIndex !== undefined && (obj.singleIndex = message.singleIndex);
-    message.tableDefinition !== undefined &&
-      (obj.tableDefinition = message.tableDefinition ? TableMetaDataMigrationData.toJSON(message.tableDefinition) : undefined);
+    message.tableDefinition !== undefined && (obj.tableDefinition = message.tableDefinition
+      ? TableMetaDataMigrationData.toJSON(message.tableDefinition)
+      : undefined);
     message.id !== undefined && (obj.id = Math.round(message.id));
     return obj;
   },
@@ -10032,12 +10035,12 @@ export const TableIndexMigrationData = {
     message.unique = object.unique ?? false;
     message.uuid = object.uuid ?? "";
     message.tableDefinitionUuid = object.tableDefinitionUuid ?? "";
-    message.columnDefinitions = object.columnDefinitions?.map((e) => MigrationColumnDefinitionData.fromPartial(e)) || [];
+    message.columnDefinitions = object.columnDefinitions?.map((e) => MigrationColumnDefinitionData.fromPartial(e)) ||
+      [];
     message.singleIndex = object.singleIndex ?? false;
-    message.tableDefinition =
-      object.tableDefinition !== undefined && object.tableDefinition !== null
-        ? TableMetaDataMigrationData.fromPartial(object.tableDefinition)
-        : undefined;
+    message.tableDefinition = (object.tableDefinition !== undefined && object.tableDefinition !== null)
+      ? TableMetaDataMigrationData.fromPartial(object.tableDefinition)
+      : undefined;
     message.id = object.id ?? 0;
     return message;
   },
@@ -10144,7 +10147,9 @@ export const TableRelationMigrationData = {
       tableDefinitionUuid: isSet(object.tableDefinitionUuid) ? String(object.tableDefinitionUuid) : "",
       relatedTableUuid: isSet(object.relatedTableUuid) ? String(object.relatedTableUuid) : "",
       customForeignKey: isSet(object.customForeignKey) ? Boolean(object.customForeignKey) : undefined,
-      tableDefinition: isSet(object.tableDefinition) ? CreateTableChangeData.fromJSON(object.tableDefinition) : undefined,
+      tableDefinition: isSet(object.tableDefinition)
+        ? CreateTableChangeData.fromJSON(object.tableDefinition)
+        : undefined,
       relatedTable: isSet(object.relatedTable) ? CreateTableChangeData.fromJSON(object.relatedTable) : undefined,
       id: isSet(object.id) ? Number(object.id) : 0,
     };
@@ -10160,7 +10165,9 @@ export const TableRelationMigrationData = {
     message.relatedTableUuid !== undefined && (obj.relatedTableUuid = message.relatedTableUuid);
     message.customForeignKey !== undefined && (obj.customForeignKey = message.customForeignKey);
     message.tableDefinition !== undefined &&
-      (obj.tableDefinition = message.tableDefinition ? CreateTableChangeData.toJSON(message.tableDefinition) : undefined);
+      (obj.tableDefinition = message.tableDefinition
+        ? CreateTableChangeData.toJSON(message.tableDefinition)
+        : undefined);
     message.relatedTable !== undefined &&
       (obj.relatedTable = message.relatedTable ? CreateTableChangeData.toJSON(message.relatedTable) : undefined);
     message.id !== undefined && (obj.id = Math.round(message.id));
@@ -10176,40 +10183,44 @@ export const TableRelationMigrationData = {
     message.tableDefinitionUuid = object.tableDefinitionUuid ?? "";
     message.relatedTableUuid = object.relatedTableUuid ?? "";
     message.customForeignKey = object.customForeignKey ?? undefined;
-    message.tableDefinition =
-      object.tableDefinition !== undefined && object.tableDefinition !== null
-        ? CreateTableChangeData.fromPartial(object.tableDefinition)
-        : undefined;
-    message.relatedTable =
-      object.relatedTable !== undefined && object.relatedTable !== null
-        ? CreateTableChangeData.fromPartial(object.relatedTable)
-        : undefined;
+    message.tableDefinition = (object.tableDefinition !== undefined && object.tableDefinition !== null)
+      ? CreateTableChangeData.fromPartial(object.tableDefinition)
+      : undefined;
+    message.relatedTable = (object.relatedTable !== undefined && object.relatedTable !== null)
+      ? CreateTableChangeData.fromPartial(object.relatedTable)
+      : undefined;
     message.id = object.id ?? 0;
     return message;
   },
 };
 
-function createBaseFrontend(): Frontend {
-  return { appPages: [] };
+function createBaseWebApp(): WebApp {
+  return { appPages: [], assets: [] };
 }
 
-export const FrontendData = {
-  encode(message: Frontend, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const WebAppData = {
+  encode(message: WebApp, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.appPages) {
       AppPageData.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    for (const v of message.assets) {
+      AssetData.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): Frontend {
+  decode(input: _m0.Reader | Uint8Array, length?: number): WebApp {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseFrontend();
+    const message = createBaseWebApp();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
           message.appPages.push(AppPageData.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.assets.push(AssetData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -10219,25 +10230,117 @@ export const FrontendData = {
     return message;
   },
 
-  fromJSON(object: any): Frontend {
+  fromJSON(object: any): WebApp {
     return {
       appPages: Array.isArray(object?.appPages) ? object.appPages.map((e: any) => AppPageData.fromJSON(e)) : [],
+      assets: Array.isArray(object?.assets) ? object.assets.map((e: any) => AssetData.fromJSON(e)) : [],
     };
   },
 
-  toJSON(message: Frontend): unknown {
+  toJSON(message: WebApp): unknown {
     const obj: any = {};
     if (message.appPages) {
-      obj.appPages = message.appPages.map((e) => (e ? AppPageData.toJSON(e) : undefined));
+      obj.appPages = message.appPages.map((e) => e ? AppPageData.toJSON(e) : undefined);
     } else {
       obj.appPages = [];
+    }
+    if (message.assets) {
+      obj.assets = message.assets.map((e) => e ? AssetData.toJSON(e) : undefined);
+    } else {
+      obj.assets = [];
     }
     return obj;
   },
 
-  fromPartial(object: DeepPartial<Frontend>): Frontend {
-    const message = createBaseFrontend();
+  fromPartial(object: DeepPartial<WebApp>): WebApp {
+    const message = createBaseWebApp();
     message.appPages = object.appPages?.map((e) => AppPageData.fromPartial(e)) || [];
+    message.assets = object.assets?.map((e) => AssetData.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseAsset(): Asset {
+  return { id: "", url: "", fileName: "", fileSize: 0, contentType: "" };
+}
+
+export const AssetData = {
+  encode(message: Asset, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.url !== "") {
+      writer.uint32(18).string(message.url);
+    }
+    if (message.fileName !== "") {
+      writer.uint32(26).string(message.fileName);
+    }
+    if (message.fileSize !== 0) {
+      writer.uint32(32).int32(message.fileSize);
+    }
+    if (message.contentType !== "") {
+      writer.uint32(42).string(message.contentType);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Asset {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAsset();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.string();
+          break;
+        case 2:
+          message.url = reader.string();
+          break;
+        case 3:
+          message.fileName = reader.string();
+          break;
+        case 4:
+          message.fileSize = reader.int32();
+          break;
+        case 5:
+          message.contentType = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Asset {
+    return {
+      id: isSet(object.id) ? String(object.id) : "",
+      url: isSet(object.url) ? String(object.url) : "",
+      fileName: isSet(object.fileName) ? String(object.fileName) : "",
+      fileSize: isSet(object.fileSize) ? Number(object.fileSize) : 0,
+      contentType: isSet(object.contentType) ? String(object.contentType) : "",
+    };
+  },
+
+  toJSON(message: Asset): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    message.url !== undefined && (obj.url = message.url);
+    message.fileName !== undefined && (obj.fileName = message.fileName);
+    message.fileSize !== undefined && (obj.fileSize = Math.round(message.fileSize));
+    message.contentType !== undefined && (obj.contentType = message.contentType);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<Asset>): Asset {
+    const message = createBaseAsset();
+    message.id = object.id ?? "";
+    message.url = object.url ?? "";
+    message.fileName = object.fileName ?? "";
+    message.fileSize = object.fileSize ?? 0;
+    message.contentType = object.contentType ?? "";
     return message;
   },
 };
@@ -10313,7 +10416,7 @@ export const AppPageData = {
     message.slug !== undefined && (obj.slug = message.slug);
     message.pageType !== undefined && (obj.pageType = appPagePageTypeToJSON(message.pageType));
     if (message.nodes) {
-      obj.nodes = message.nodes.map((e) => (e ? PageNodeData.toJSON(e) : undefined));
+      obj.nodes = message.nodes.map((e) => e ? PageNodeData.toJSON(e) : undefined);
     } else {
       obj.nodes = [];
     }
@@ -10427,9 +10530,9 @@ export const PageNodeData = {
       nodes: Array.isArray(object?.nodes) ? object.nodes.map((e: any) => String(e)) : [],
       linkedNodes: isObject(object.linkedNodes)
         ? Object.entries(object.linkedNodes).reduce<{ [key: string]: string }>((acc, [key, value]) => {
-            acc[key] = String(value);
-            return acc;
-          }, {})
+          acc[key] = String(value);
+          return acc;
+        }, {})
         : {},
       componentName: isSet(object.componentName) ? String(object.componentName) : "",
       custom: isSet(object.custom) ? NodeCustomData.fromJSON(object.custom) : undefined,
@@ -10457,7 +10560,8 @@ export const PageNodeData = {
     }
     message.componentName !== undefined && (obj.componentName = message.componentName);
     message.custom !== undefined && (obj.custom = message.custom ? NodeCustomData.toJSON(message.custom) : undefined);
-    message.webProps !== undefined && (obj.webProps = message.webProps ? WebNodePropsData.toJSON(message.webProps) : undefined);
+    message.webProps !== undefined &&
+      (obj.webProps = message.webProps ? WebNodePropsData.toJSON(message.webProps) : undefined);
     message.mobileProps !== undefined &&
       (obj.mobileProps = message.mobileProps ? MobileNodePropsData.toJSON(message.mobileProps) : undefined);
     return obj;
@@ -10470,21 +10574,25 @@ export const PageNodeData = {
     message.name = object.name ?? "";
     message.parent = object.parent ?? "";
     message.nodes = object.nodes?.map((e) => e) || [];
-    message.linkedNodes = Object.entries(object.linkedNodes ?? {}).reduce<{ [key: string]: string }>((acc, [key, value]) => {
-      if (value !== undefined) {
-        acc[key] = String(value);
-      }
-      return acc;
-    }, {});
+    message.linkedNodes = Object.entries(object.linkedNodes ?? {}).reduce<{ [key: string]: string }>(
+      (acc, [key, value]) => {
+        if (value !== undefined) {
+          acc[key] = String(value);
+        }
+        return acc;
+      },
+      {},
+    );
     message.componentName = object.componentName ?? "";
-    message.custom =
-      object.custom !== undefined && object.custom !== null ? NodeCustomData.fromPartial(object.custom) : undefined;
-    message.webProps =
-      object.webProps !== undefined && object.webProps !== null ? WebNodePropsData.fromPartial(object.webProps) : undefined;
-    message.mobileProps =
-      object.mobileProps !== undefined && object.mobileProps !== null
-        ? MobileNodePropsData.fromPartial(object.mobileProps)
-        : undefined;
+    message.custom = (object.custom !== undefined && object.custom !== null)
+      ? NodeCustomData.fromPartial(object.custom)
+      : undefined;
+    message.webProps = (object.webProps !== undefined && object.webProps !== null)
+      ? WebNodePropsData.fromPartial(object.webProps)
+      : undefined;
+    message.mobileProps = (object.mobileProps !== undefined && object.mobileProps !== null)
+      ? MobileNodePropsData.fromPartial(object.mobileProps)
+      : undefined;
     return message;
   },
 };
@@ -11367,7 +11475,9 @@ export const WebNodePropsData = {
       timeFormat: isSet(object.timeFormat) ? String(object.timeFormat) : undefined,
       mode: isSet(object.mode) ? String(object.mode) : undefined,
       spaceBetween: isSet(object.spaceBetween) ? Number(object.spaceBetween) : undefined,
-      isRequiredAuthentication: isSet(object.isRequiredAuthentication) ? Boolean(object.isRequiredAuthentication) : undefined,
+      isRequiredAuthentication: isSet(object.isRequiredAuthentication)
+        ? Boolean(object.isRequiredAuthentication)
+        : undefined,
       redirectUrl: isSet(object.redirectUrl) ? String(object.redirectUrl) : undefined,
       flex: isSet(object.flex) ? String(object.flex) : undefined,
       sourceType: isSet(object.sourceType) ? String(object.sourceType) : undefined,
@@ -11433,7 +11543,9 @@ export const WebNodePropsData = {
       paginationWrapperStyle: isObject(object.paginationWrapperStyle) ? object.paginationWrapperStyle : undefined,
       labelStyle: isObject(object.labelStyle) ? object.labelStyle : undefined,
       inputStyle: isObject(object.inputStyle) ? object.inputStyle : undefined,
-      ascendingIconProps: isSet(object.ascendingIconProps) ? WebNodePropsData.fromJSON(object.ascendingIconProps) : undefined,
+      ascendingIconProps: isSet(object.ascendingIconProps)
+        ? WebNodePropsData.fromJSON(object.ascendingIconProps)
+        : undefined,
       descendingIconProps: isSet(object.descendingIconProps)
         ? WebNodePropsData.fromJSON(object.descendingIconProps)
         : undefined,
@@ -11445,17 +11557,27 @@ export const WebNodePropsData = {
       renderItem: isSet(object.renderItem) ? RenderMoleculeData.fromJSON(object.renderItem) : undefined,
       header: isSet(object.header) ? MoleculeComponentData.fromJSON(object.header) : undefined,
       footer: isSet(object.footer) ? MoleculeComponentData.fromJSON(object.footer) : undefined,
-      drawerTitle: Array.isArray(object?.drawerTitle) ? object.drawerTitle.map((e: any) => NodeVariableData.fromJSON(e)) : [],
-      placeholder: Array.isArray(object?.placeholder) ? object.placeholder.map((e: any) => NodeVariableData.fromJSON(e)) : [],
-      inputLabel: Array.isArray(object?.inputLabel) ? object.inputLabel.map((e: any) => NodeVariableData.fromJSON(e)) : [],
-      href: Array.isArray(object?.href) ? object.href.map((e: any) => NodeVariableData.fromJSON(e)) : [],
+      drawerTitle: Array.isArray(object?.drawerTitle)
+        ? object.drawerTitle.map((e: any) => NodeVariableData.fromJSON(e))
+        : [],
+      placeholder: Array.isArray(object?.placeholder)
+        ? object.placeholder.map((e: any) => NodeVariableData.fromJSON(e))
+        : [],
+      inputLabel: Array.isArray(object?.inputLabel)
+        ? object.inputLabel.map((e: any) => NodeVariableData.fromJSON(e))
+        : [],
+      href: Array.isArray(object?.href)
+        ? object.href.map((e: any) => NodeVariableData.fromJSON(e))
+        : [],
       action: Array.isArray(object?.action) ? object.action.map((e: any) => NodeVariableData.fromJSON(e)) : [],
       data: Array.isArray(object?.data) ? object.data.map((e: any) => NodeVariableData.fromJSON(e)) : [],
       totalPage: Array.isArray(object?.totalPage) ? object.totalPage.map((e: any) => NodeVariableData.fromJSON(e)) : [],
       defaultValue: Array.isArray(object?.defaultValue)
         ? object.defaultValue.map((e: any) => NodeVariableData.fromJSON(e))
         : [],
-      source: Array.isArray(object?.source) ? object.source.map((e: any) => NodeVariableData.fromJSON(e)) : [],
+      source: Array.isArray(object?.source)
+        ? object.source.map((e: any) => NodeVariableData.fromJSON(e))
+        : [],
       title: Array.isArray(object?.title) ? object.title.map((e: any) => NodeVariableData.fromJSON(e)) : [],
       childrenData: Array.isArray(object?.childrenData)
         ? object.childrenData.map((e: any) => NodeVariableData.fromJSON(e))
@@ -11463,7 +11585,9 @@ export const WebNodePropsData = {
       responsiveVisibility: Array.isArray(object?.responsiveVisibility)
         ? object.responsiveVisibility.map((e: any) => NodeVariableData.fromJSON(e))
         : [],
-      dataSource: Array.isArray(object?.dataSource) ? object.dataSource.map((e: any) => NodeVariableData.fromJSON(e)) : [],
+      dataSource: Array.isArray(object?.dataSource)
+        ? object.dataSource.map((e: any) => NodeVariableData.fromJSON(e))
+        : [],
       tableColumns: Array.isArray(object?.tableColumns)
         ? object.tableColumns.map((e: any) => WebNodePropsTableColumnData.fromJSON(e))
         : [],
@@ -11581,12 +11705,12 @@ export const WebNodePropsData = {
     message.paginationWrapperStyle !== undefined && (obj.paginationWrapperStyle = message.paginationWrapperStyle);
     message.labelStyle !== undefined && (obj.labelStyle = message.labelStyle);
     message.inputStyle !== undefined && (obj.inputStyle = message.inputStyle);
-    message.ascendingIconProps !== undefined &&
-      (obj.ascendingIconProps = message.ascendingIconProps ? WebNodePropsData.toJSON(message.ascendingIconProps) : undefined);
-    message.descendingIconProps !== undefined &&
-      (obj.descendingIconProps = message.descendingIconProps
-        ? WebNodePropsData.toJSON(message.descendingIconProps)
-        : undefined);
+    message.ascendingIconProps !== undefined && (obj.ascendingIconProps = message.ascendingIconProps
+      ? WebNodePropsData.toJSON(message.ascendingIconProps)
+      : undefined);
+    message.descendingIconProps !== undefined && (obj.descendingIconProps = message.descendingIconProps
+      ? WebNodePropsData.toJSON(message.descendingIconProps)
+      : undefined);
     message.iconProps !== undefined &&
       (obj.iconProps = message.iconProps ? WebNodePropsData.toJSON(message.iconProps) : undefined);
     message.drawerProps !== undefined &&
@@ -11599,90 +11723,92 @@ export const WebNodePropsData = {
       (obj.suffixIconProps = message.suffixIconProps ? WebNodePropsData.toJSON(message.suffixIconProps) : undefined);
     message.renderItem !== undefined &&
       (obj.renderItem = message.renderItem ? RenderMoleculeData.toJSON(message.renderItem) : undefined);
-    message.header !== undefined && (obj.header = message.header ? MoleculeComponentData.toJSON(message.header) : undefined);
-    message.footer !== undefined && (obj.footer = message.footer ? MoleculeComponentData.toJSON(message.footer) : undefined);
+    message.header !== undefined &&
+      (obj.header = message.header ? MoleculeComponentData.toJSON(message.header) : undefined);
+    message.footer !== undefined &&
+      (obj.footer = message.footer ? MoleculeComponentData.toJSON(message.footer) : undefined);
     if (message.drawerTitle) {
-      obj.drawerTitle = message.drawerTitle.map((e) => (e ? NodeVariableData.toJSON(e) : undefined));
+      obj.drawerTitle = message.drawerTitle.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
     } else {
       obj.drawerTitle = [];
     }
     if (message.placeholder) {
-      obj.placeholder = message.placeholder.map((e) => (e ? NodeVariableData.toJSON(e) : undefined));
+      obj.placeholder = message.placeholder.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
     } else {
       obj.placeholder = [];
     }
     if (message.inputLabel) {
-      obj.inputLabel = message.inputLabel.map((e) => (e ? NodeVariableData.toJSON(e) : undefined));
+      obj.inputLabel = message.inputLabel.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
     } else {
       obj.inputLabel = [];
     }
     if (message.href) {
-      obj.href = message.href.map((e) => (e ? NodeVariableData.toJSON(e) : undefined));
+      obj.href = message.href.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
     } else {
       obj.href = [];
     }
     if (message.action) {
-      obj.action = message.action.map((e) => (e ? NodeVariableData.toJSON(e) : undefined));
+      obj.action = message.action.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
     } else {
       obj.action = [];
     }
     if (message.data) {
-      obj.data = message.data.map((e) => (e ? NodeVariableData.toJSON(e) : undefined));
+      obj.data = message.data.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
     } else {
       obj.data = [];
     }
     if (message.totalPage) {
-      obj.totalPage = message.totalPage.map((e) => (e ? NodeVariableData.toJSON(e) : undefined));
+      obj.totalPage = message.totalPage.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
     } else {
       obj.totalPage = [];
     }
     if (message.defaultValue) {
-      obj.defaultValue = message.defaultValue.map((e) => (e ? NodeVariableData.toJSON(e) : undefined));
+      obj.defaultValue = message.defaultValue.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
     } else {
       obj.defaultValue = [];
     }
     if (message.source) {
-      obj.source = message.source.map((e) => (e ? NodeVariableData.toJSON(e) : undefined));
+      obj.source = message.source.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
     } else {
       obj.source = [];
     }
     if (message.title) {
-      obj.title = message.title.map((e) => (e ? NodeVariableData.toJSON(e) : undefined));
+      obj.title = message.title.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
     } else {
       obj.title = [];
     }
     if (message.childrenData) {
-      obj.childrenData = message.childrenData.map((e) => (e ? NodeVariableData.toJSON(e) : undefined));
+      obj.childrenData = message.childrenData.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
     } else {
       obj.childrenData = [];
     }
     if (message.responsiveVisibility) {
-      obj.responsiveVisibility = message.responsiveVisibility.map((e) => (e ? NodeVariableData.toJSON(e) : undefined));
+      obj.responsiveVisibility = message.responsiveVisibility.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
     } else {
       obj.responsiveVisibility = [];
     }
     if (message.dataSource) {
-      obj.dataSource = message.dataSource.map((e) => (e ? NodeVariableData.toJSON(e) : undefined));
+      obj.dataSource = message.dataSource.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
     } else {
       obj.dataSource = [];
     }
     if (message.tableColumns) {
-      obj.tableColumns = message.tableColumns.map((e) => (e ? WebNodePropsTableColumnData.toJSON(e) : undefined));
+      obj.tableColumns = message.tableColumns.map((e) => e ? WebNodePropsTableColumnData.toJSON(e) : undefined);
     } else {
       obj.tableColumns = [];
     }
     if (message.tableActions) {
-      obj.tableActions = message.tableActions.map((e) => (e ? WebNodePropsTableColumnData.toJSON(e) : undefined));
+      obj.tableActions = message.tableActions.map((e) => e ? WebNodePropsTableColumnData.toJSON(e) : undefined);
     } else {
       obj.tableActions = [];
     }
     if (message.onPaginationChange) {
-      obj.onPaginationChange = message.onPaginationChange.map((e) => (e ? NodeActionData.toJSON(e) : undefined));
+      obj.onPaginationChange = message.onPaginationChange.map((e) => e ? NodeActionData.toJSON(e) : undefined);
     } else {
       obj.onPaginationChange = [];
     }
     if (message.onDataSortingChange) {
-      obj.onDataSortingChange = message.onDataSortingChange.map((e) => (e ? NodeActionData.toJSON(e) : undefined));
+      obj.onDataSortingChange = message.onDataSortingChange.map((e) => e ? NodeActionData.toJSON(e) : undefined);
     } else {
       obj.onDataSortingChange = [];
     }
@@ -11787,40 +11913,36 @@ export const WebNodePropsData = {
     message.paginationWrapperStyle = object.paginationWrapperStyle ?? undefined;
     message.labelStyle = object.labelStyle ?? undefined;
     message.inputStyle = object.inputStyle ?? undefined;
-    message.ascendingIconProps =
-      object.ascendingIconProps !== undefined && object.ascendingIconProps !== null
-        ? WebNodePropsData.fromPartial(object.ascendingIconProps)
-        : undefined;
-    message.descendingIconProps =
-      object.descendingIconProps !== undefined && object.descendingIconProps !== null
-        ? WebNodePropsData.fromPartial(object.descendingIconProps)
-        : undefined;
-    message.iconProps =
-      object.iconProps !== undefined && object.iconProps !== null ? WebNodePropsData.fromPartial(object.iconProps) : undefined;
-    message.drawerProps =
-      object.drawerProps !== undefined && object.drawerProps !== null
-        ? WebNodePropsData.fromPartial(object.drawerProps)
-        : undefined;
-    message.buttonProps =
-      object.buttonProps !== undefined && object.buttonProps !== null
-        ? WebNodePropsData.fromPartial(object.buttonProps)
-        : undefined;
-    message.prefixIconProps =
-      object.prefixIconProps !== undefined && object.prefixIconProps !== null
-        ? WebNodePropsData.fromPartial(object.prefixIconProps)
-        : undefined;
-    message.suffixIconProps =
-      object.suffixIconProps !== undefined && object.suffixIconProps !== null
-        ? WebNodePropsData.fromPartial(object.suffixIconProps)
-        : undefined;
-    message.renderItem =
-      object.renderItem !== undefined && object.renderItem !== null
-        ? RenderMoleculeData.fromPartial(object.renderItem)
-        : undefined;
-    message.header =
-      object.header !== undefined && object.header !== null ? MoleculeComponentData.fromPartial(object.header) : undefined;
-    message.footer =
-      object.footer !== undefined && object.footer !== null ? MoleculeComponentData.fromPartial(object.footer) : undefined;
+    message.ascendingIconProps = (object.ascendingIconProps !== undefined && object.ascendingIconProps !== null)
+      ? WebNodePropsData.fromPartial(object.ascendingIconProps)
+      : undefined;
+    message.descendingIconProps = (object.descendingIconProps !== undefined && object.descendingIconProps !== null)
+      ? WebNodePropsData.fromPartial(object.descendingIconProps)
+      : undefined;
+    message.iconProps = (object.iconProps !== undefined && object.iconProps !== null)
+      ? WebNodePropsData.fromPartial(object.iconProps)
+      : undefined;
+    message.drawerProps = (object.drawerProps !== undefined && object.drawerProps !== null)
+      ? WebNodePropsData.fromPartial(object.drawerProps)
+      : undefined;
+    message.buttonProps = (object.buttonProps !== undefined && object.buttonProps !== null)
+      ? WebNodePropsData.fromPartial(object.buttonProps)
+      : undefined;
+    message.prefixIconProps = (object.prefixIconProps !== undefined && object.prefixIconProps !== null)
+      ? WebNodePropsData.fromPartial(object.prefixIconProps)
+      : undefined;
+    message.suffixIconProps = (object.suffixIconProps !== undefined && object.suffixIconProps !== null)
+      ? WebNodePropsData.fromPartial(object.suffixIconProps)
+      : undefined;
+    message.renderItem = (object.renderItem !== undefined && object.renderItem !== null)
+      ? RenderMoleculeData.fromPartial(object.renderItem)
+      : undefined;
+    message.header = (object.header !== undefined && object.header !== null)
+      ? MoleculeComponentData.fromPartial(object.header)
+      : undefined;
+    message.footer = (object.footer !== undefined && object.footer !== null)
+      ? MoleculeComponentData.fromPartial(object.footer)
+      : undefined;
     message.drawerTitle = object.drawerTitle?.map((e) => NodeVariableData.fromPartial(e)) || [];
     message.placeholder = object.placeholder?.map((e) => NodeVariableData.fromPartial(e)) || [];
     message.inputLabel = object.inputLabel?.map((e) => NodeVariableData.fromPartial(e)) || [];
@@ -11974,8 +12096,9 @@ export const WebNodePropsTableColumnData = {
 
   fromPartial(object: DeepPartial<WebNodePropsTableColumn>): WebNodePropsTableColumn {
     const message = createBaseWebNodePropsTableColumn();
-    message.molecule =
-      object.molecule !== undefined && object.molecule !== null ? RenderMoleculeData.fromPartial(object.molecule) : undefined;
+    message.molecule = (object.molecule !== undefined && object.molecule !== null)
+      ? RenderMoleculeData.fromPartial(object.molecule)
+      : undefined;
     message.sortable = object.sortable?.map((e) => e) || [];
     message.filterable = object.filterable?.map((e) => e) || [];
     message.columnIndex = object.columnIndex?.map((e) => e) || [];
@@ -12490,8 +12613,12 @@ export const MobileNodePropsData = {
         ? MoleculeComponentData.fromJSON(object.itemSeparatorComponent)
         : undefined,
       keyExtractor: isSet(object.keyExtractor) ? NodeReferenceData.fromJSON(object.keyExtractor) : undefined,
-      placeholder: Array.isArray(object?.placeholder) ? object.placeholder.map((e: any) => NodeVariableData.fromJSON(e)) : [],
-      data: Array.isArray(object?.data) ? object.data.map((e: any) => NodeVariableData.fromJSON(e)) : [],
+      placeholder: Array.isArray(object?.placeholder)
+        ? object.placeholder.map((e: any) => NodeVariableData.fromJSON(e))
+        : [],
+      data: Array.isArray(object?.data)
+        ? object.data.map((e: any) => NodeVariableData.fromJSON(e))
+        : [],
       source: Array.isArray(object?.source) ? object.source.map((e: any) => NodeVariableData.fromJSON(e)) : [],
       title: Array.isArray(object?.title) ? object.title.map((e: any) => NodeVariableData.fromJSON(e)) : [],
       childrenData: Array.isArray(object?.childrenData)
@@ -12559,49 +12686,46 @@ export const MobileNodePropsData = {
     message.titleStyle !== undefined && (obj.titleStyle = message.titleStyle);
     message.renderItem !== undefined &&
       (obj.renderItem = message.renderItem ? RenderMoleculeData.toJSON(message.renderItem) : undefined);
-    message.preview !== undefined && (obj.preview = message.preview ? RenderMoleculeData.toJSON(message.preview) : undefined);
+    message.preview !== undefined &&
+      (obj.preview = message.preview ? RenderMoleculeData.toJSON(message.preview) : undefined);
     message.component !== undefined &&
       (obj.component = message.component ? RenderMoleculeData.toJSON(message.component) : undefined);
-    message.listEmptyComponent !== undefined &&
-      (obj.listEmptyComponent = message.listEmptyComponent
-        ? MoleculeComponentData.toJSON(message.listEmptyComponent)
-        : undefined);
-    message.listHeaderComponent !== undefined &&
-      (obj.listHeaderComponent = message.listHeaderComponent
-        ? MoleculeComponentData.toJSON(message.listHeaderComponent)
-        : undefined);
-    message.listFooterComponent !== undefined &&
-      (obj.listFooterComponent = message.listFooterComponent
-        ? MoleculeComponentData.toJSON(message.listFooterComponent)
-        : undefined);
-    message.itemSeparatorComponent !== undefined &&
-      (obj.itemSeparatorComponent = message.itemSeparatorComponent
-        ? MoleculeComponentData.toJSON(message.itemSeparatorComponent)
-        : undefined);
+    message.listEmptyComponent !== undefined && (obj.listEmptyComponent = message.listEmptyComponent
+      ? MoleculeComponentData.toJSON(message.listEmptyComponent)
+      : undefined);
+    message.listHeaderComponent !== undefined && (obj.listHeaderComponent = message.listHeaderComponent
+      ? MoleculeComponentData.toJSON(message.listHeaderComponent)
+      : undefined);
+    message.listFooterComponent !== undefined && (obj.listFooterComponent = message.listFooterComponent
+      ? MoleculeComponentData.toJSON(message.listFooterComponent)
+      : undefined);
+    message.itemSeparatorComponent !== undefined && (obj.itemSeparatorComponent = message.itemSeparatorComponent
+      ? MoleculeComponentData.toJSON(message.itemSeparatorComponent)
+      : undefined);
     message.keyExtractor !== undefined &&
       (obj.keyExtractor = message.keyExtractor ? NodeReferenceData.toJSON(message.keyExtractor) : undefined);
     if (message.placeholder) {
-      obj.placeholder = message.placeholder.map((e) => (e ? NodeVariableData.toJSON(e) : undefined));
+      obj.placeholder = message.placeholder.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
     } else {
       obj.placeholder = [];
     }
     if (message.data) {
-      obj.data = message.data.map((e) => (e ? NodeVariableData.toJSON(e) : undefined));
+      obj.data = message.data.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
     } else {
       obj.data = [];
     }
     if (message.source) {
-      obj.source = message.source.map((e) => (e ? NodeVariableData.toJSON(e) : undefined));
+      obj.source = message.source.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
     } else {
       obj.source = [];
     }
     if (message.title) {
-      obj.title = message.title.map((e) => (e ? NodeVariableData.toJSON(e) : undefined));
+      obj.title = message.title.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
     } else {
       obj.title = [];
     }
     if (message.childrenData) {
-      obj.childrenData = message.childrenData.map((e) => (e ? NodeVariableData.toJSON(e) : undefined));
+      obj.childrenData = message.childrenData.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
     } else {
       obj.childrenData = [];
     }
@@ -12665,36 +12789,31 @@ export const MobileNodePropsData = {
     message.cellStyle = object.cellStyle ?? undefined;
     message.cellTextStyle = object.cellTextStyle ?? undefined;
     message.titleStyle = object.titleStyle ?? undefined;
-    message.renderItem =
-      object.renderItem !== undefined && object.renderItem !== null
-        ? RenderMoleculeData.fromPartial(object.renderItem)
-        : undefined;
-    message.preview =
-      object.preview !== undefined && object.preview !== null ? RenderMoleculeData.fromPartial(object.preview) : undefined;
-    message.component =
-      object.component !== undefined && object.component !== null
-        ? RenderMoleculeData.fromPartial(object.component)
-        : undefined;
-    message.listEmptyComponent =
-      object.listEmptyComponent !== undefined && object.listEmptyComponent !== null
-        ? MoleculeComponentData.fromPartial(object.listEmptyComponent)
-        : undefined;
-    message.listHeaderComponent =
-      object.listHeaderComponent !== undefined && object.listHeaderComponent !== null
-        ? MoleculeComponentData.fromPartial(object.listHeaderComponent)
-        : undefined;
-    message.listFooterComponent =
-      object.listFooterComponent !== undefined && object.listFooterComponent !== null
-        ? MoleculeComponentData.fromPartial(object.listFooterComponent)
-        : undefined;
+    message.renderItem = (object.renderItem !== undefined && object.renderItem !== null)
+      ? RenderMoleculeData.fromPartial(object.renderItem)
+      : undefined;
+    message.preview = (object.preview !== undefined && object.preview !== null)
+      ? RenderMoleculeData.fromPartial(object.preview)
+      : undefined;
+    message.component = (object.component !== undefined && object.component !== null)
+      ? RenderMoleculeData.fromPartial(object.component)
+      : undefined;
+    message.listEmptyComponent = (object.listEmptyComponent !== undefined && object.listEmptyComponent !== null)
+      ? MoleculeComponentData.fromPartial(object.listEmptyComponent)
+      : undefined;
+    message.listHeaderComponent = (object.listHeaderComponent !== undefined && object.listHeaderComponent !== null)
+      ? MoleculeComponentData.fromPartial(object.listHeaderComponent)
+      : undefined;
+    message.listFooterComponent = (object.listFooterComponent !== undefined && object.listFooterComponent !== null)
+      ? MoleculeComponentData.fromPartial(object.listFooterComponent)
+      : undefined;
     message.itemSeparatorComponent =
-      object.itemSeparatorComponent !== undefined && object.itemSeparatorComponent !== null
+      (object.itemSeparatorComponent !== undefined && object.itemSeparatorComponent !== null)
         ? MoleculeComponentData.fromPartial(object.itemSeparatorComponent)
         : undefined;
-    message.keyExtractor =
-      object.keyExtractor !== undefined && object.keyExtractor !== null
-        ? NodeReferenceData.fromPartial(object.keyExtractor)
-        : undefined;
+    message.keyExtractor = (object.keyExtractor !== undefined && object.keyExtractor !== null)
+      ? NodeReferenceData.fromPartial(object.keyExtractor)
+      : undefined;
     message.placeholder = object.placeholder?.map((e) => NodeVariableData.fromPartial(e)) || [];
     message.data = object.data?.map((e) => NodeVariableData.fromPartial(e)) || [];
     message.source = object.source?.map((e) => NodeVariableData.fromPartial(e)) || [];
@@ -12749,7 +12868,9 @@ export const RenderMoleculeData = {
   fromJSON(object: any): RenderMolecule {
     return {
       reference: isSet(object.reference) ? NodeReferenceData.fromJSON(object.reference) : undefined,
-      arguments: Array.isArray(object?.arguments) ? object.arguments.map((e: any) => FunctionArgumentData.fromJSON(e)) : [],
+      arguments: Array.isArray(object?.arguments)
+        ? object.arguments.map((e: any) => FunctionArgumentData.fromJSON(e))
+        : [],
       props: Array.isArray(object?.props) ? object.props.map((e: any) => NodeParamData.fromJSON(e)) : [],
     };
   },
@@ -12759,12 +12880,12 @@ export const RenderMoleculeData = {
     message.reference !== undefined &&
       (obj.reference = message.reference ? NodeReferenceData.toJSON(message.reference) : undefined);
     if (message.arguments) {
-      obj.arguments = message.arguments.map((e) => (e ? FunctionArgumentData.toJSON(e) : undefined));
+      obj.arguments = message.arguments.map((e) => e ? FunctionArgumentData.toJSON(e) : undefined);
     } else {
       obj.arguments = [];
     }
     if (message.props) {
-      obj.props = message.props.map((e) => (e ? NodeParamData.toJSON(e) : undefined));
+      obj.props = message.props.map((e) => e ? NodeParamData.toJSON(e) : undefined);
     } else {
       obj.props = [];
     }
@@ -12773,8 +12894,9 @@ export const RenderMoleculeData = {
 
   fromPartial(object: DeepPartial<RenderMolecule>): RenderMolecule {
     const message = createBaseRenderMolecule();
-    message.reference =
-      object.reference !== undefined && object.reference !== null ? NodeReferenceData.fromPartial(object.reference) : undefined;
+    message.reference = (object.reference !== undefined && object.reference !== null)
+      ? NodeReferenceData.fromPartial(object.reference)
+      : undefined;
     message.arguments = object.arguments?.map((e) => FunctionArgumentData.fromPartial(e)) || [];
     message.props = object.props?.map((e) => NodeParamData.fromPartial(e)) || [];
     return message;
@@ -12938,8 +13060,9 @@ export const FunctionArgumentData = {
     message.name = object.name ?? "";
     message.argumentType = object.argumentType ?? "";
     message.plural = object.plural ?? false;
-    message.reference =
-      object.reference !== undefined && object.reference !== null ? NodeReferenceData.fromPartial(object.reference) : undefined;
+    message.reference = (object.reference !== undefined && object.reference !== null)
+      ? NodeReferenceData.fromPartial(object.reference)
+      : undefined;
     return message;
   },
 };
@@ -13070,12 +13193,12 @@ export const NodeParamData = {
       (obj.reference = message.reference ? NodeReferenceData.toJSON(message.reference) : undefined);
     message.value !== undefined && (obj.value = message.value ? NodeVariableData.toJSON(message.value) : undefined);
     if (message.actions) {
-      obj.actions = message.actions.map((e) => (e ? NodeActionData.toJSON(e) : undefined));
+      obj.actions = message.actions.map((e) => e ? NodeActionData.toJSON(e) : undefined);
     } else {
       obj.actions = [];
     }
     if (message.functionArguments) {
-      obj.functionArguments = message.functionArguments.map((e) => (e ? FunctionArgumentData.toJSON(e) : undefined));
+      obj.functionArguments = message.functionArguments.map((e) => e ? FunctionArgumentData.toJSON(e) : undefined);
     } else {
       obj.functionArguments = [];
     }
@@ -13090,10 +13213,12 @@ export const NodeParamData = {
     message.defaultValue = object.defaultValue ?? "";
     message.plural = object.plural ?? false;
     message.automated = object.automated ?? false;
-    message.reference =
-      object.reference !== undefined && object.reference !== null ? NodeReferenceData.fromPartial(object.reference) : undefined;
-    message.value =
-      object.value !== undefined && object.value !== null ? NodeVariableData.fromPartial(object.value) : undefined;
+    message.reference = (object.reference !== undefined && object.reference !== null)
+      ? NodeReferenceData.fromPartial(object.reference)
+      : undefined;
+    message.value = (object.value !== undefined && object.value !== null)
+      ? NodeVariableData.fromPartial(object.value)
+      : undefined;
     message.actions = object.actions?.map((e) => NodeActionData.fromPartial(e)) || [];
     message.functionArguments = object.functionArguments?.map((e) => FunctionArgumentData.fromPartial(e)) || [];
     return message;
@@ -13222,7 +13347,7 @@ export const NodeVariableData = {
     message.source !== undefined && (obj.source = nodeVariableVariableSourceToJSON(message.source));
     message.variableType !== undefined && (obj.variableType = nodeVariableVariableTypeToJSON(message.variableType));
     if (message.values) {
-      obj.values = message.values.map((e) => (e ? NodeReferenceData.toJSON(e) : undefined));
+      obj.values = message.values.map((e) => e ? NodeReferenceData.toJSON(e) : undefined);
     } else {
       obj.values = [];
     }
@@ -13345,7 +13470,9 @@ export const NodeActionData = {
       successActions: Array.isArray(object?.successActions)
         ? object.successActions.map((e: any) => NodeActionData.fromJSON(e))
         : [],
-      errorActions: Array.isArray(object?.errorActions) ? object.errorActions.map((e: any) => NodeActionData.fromJSON(e)) : [],
+      errorActions: Array.isArray(object?.errorActions)
+        ? object.errorActions.map((e: any) => NodeActionData.fromJSON(e))
+        : [],
     };
   },
 
@@ -13356,27 +13483,27 @@ export const NodeActionData = {
     message.actionType !== undefined && (obj.actionType = nodeActionActionTypeToJSON(message.actionType));
     message.source !== undefined && (obj.source = nodeActionActionSourceToJSON(message.source));
     if (message.payload) {
-      obj.payload = message.payload.map((e) => (e ? NodePayloadData.toJSON(e) : undefined));
+      obj.payload = message.payload.map((e) => e ? NodePayloadData.toJSON(e) : undefined);
     } else {
       obj.payload = [];
     }
     if (message.response) {
-      obj.response = message.response.map((e) => (e ? NodePayloadData.toJSON(e) : undefined));
+      obj.response = message.response.map((e) => e ? NodePayloadData.toJSON(e) : undefined);
     } else {
       obj.response = [];
     }
     if (message.values) {
-      obj.values = message.values.map((e) => (e ? NodeReferenceData.toJSON(e) : undefined));
+      obj.values = message.values.map((e) => e ? NodeReferenceData.toJSON(e) : undefined);
     } else {
       obj.values = [];
     }
     if (message.successActions) {
-      obj.successActions = message.successActions.map((e) => (e ? NodeActionData.toJSON(e) : undefined));
+      obj.successActions = message.successActions.map((e) => e ? NodeActionData.toJSON(e) : undefined);
     } else {
       obj.successActions = [];
     }
     if (message.errorActions) {
-      obj.errorActions = message.errorActions.map((e) => (e ? NodeActionData.toJSON(e) : undefined));
+      obj.errorActions = message.errorActions.map((e) => e ? NodeActionData.toJSON(e) : undefined);
     } else {
       obj.errorActions = [];
     }
@@ -13454,7 +13581,7 @@ export const NodePayloadData = {
     message.reference !== undefined &&
       (obj.reference = message.reference ? NodeReferenceData.toJSON(message.reference) : undefined);
     if (message.actions) {
-      obj.actions = message.actions.map((e) => (e ? NodeActionData.toJSON(e) : undefined));
+      obj.actions = message.actions.map((e) => e ? NodeActionData.toJSON(e) : undefined);
     } else {
       obj.actions = [];
     }
@@ -13463,10 +13590,12 @@ export const NodePayloadData = {
 
   fromPartial(object: DeepPartial<NodePayload>): NodePayload {
     const message = createBaseNodePayload();
-    message.value =
-      object.value !== undefined && object.value !== null ? NodeVariableData.fromPartial(object.value) : undefined;
-    message.reference =
-      object.reference !== undefined && object.reference !== null ? NodeReferenceData.fromPartial(object.reference) : undefined;
+    message.value = (object.value !== undefined && object.value !== null)
+      ? NodeVariableData.fromPartial(object.value)
+      : undefined;
+    message.reference = (object.reference !== undefined && object.reference !== null)
+      ? NodeReferenceData.fromPartial(object.reference)
+      : undefined;
     message.actions = object.actions?.map((e) => NodeActionData.fromPartial(e)) || [];
     return message;
   },
@@ -13520,7 +13649,7 @@ export const MoleculeComponentData = {
     message.reference !== undefined &&
       (obj.reference = message.reference ? NodeReferenceData.toJSON(message.reference) : undefined);
     if (message.props) {
-      obj.props = message.props.map((e) => (e ? NodeParamData.toJSON(e) : undefined));
+      obj.props = message.props.map((e) => e ? NodeParamData.toJSON(e) : undefined);
     } else {
       obj.props = [];
     }
@@ -13529,8 +13658,9 @@ export const MoleculeComponentData = {
 
   fromPartial(object: DeepPartial<MoleculeComponent>): MoleculeComponent {
     const message = createBaseMoleculeComponent();
-    message.reference =
-      object.reference !== undefined && object.reference !== null ? NodeReferenceData.fromPartial(object.reference) : undefined;
+    message.reference = (object.reference !== undefined && object.reference !== null)
+      ? NodeReferenceData.fromPartial(object.reference)
+      : undefined;
     message.props = object.props?.map((e) => NodeParamData.fromPartial(e)) || [];
     return message;
   },
@@ -13688,7 +13818,7 @@ export const NodeCustomData = {
     message.molecule !== undefined &&
       (obj.molecule = message.molecule ? NodeReferenceData.toJSON(message.molecule) : undefined);
     if (message.mediaQueries) {
-      obj.mediaQueries = message.mediaQueries.map((e) => (e ? NodeMediaQueryData.toJSON(e) : undefined));
+      obj.mediaQueries = message.mediaQueries.map((e) => e ? NodeMediaQueryData.toJSON(e) : undefined);
     } else {
       obj.mediaQueries = [];
     }
@@ -13697,37 +13827,37 @@ export const NodeCustomData = {
     message.renderCondition !== undefined &&
       (obj.renderCondition = message.renderCondition ? RenderConditionData.toJSON(message.renderCondition) : undefined);
     if (message.seoTitle) {
-      obj.seoTitle = message.seoTitle.map((e) => (e ? NodeVariableData.toJSON(e) : undefined));
+      obj.seoTitle = message.seoTitle.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
     } else {
       obj.seoTitle = [];
     }
     if (message.seoDescription) {
-      obj.seoDescription = message.seoDescription.map((e) => (e ? NodeVariableData.toJSON(e) : undefined));
+      obj.seoDescription = message.seoDescription.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
     } else {
       obj.seoDescription = [];
     }
     if (message.actions) {
-      obj.actions = message.actions.map((e) => (e ? NodeActionData.toJSON(e) : undefined));
+      obj.actions = message.actions.map((e) => e ? NodeActionData.toJSON(e) : undefined);
     } else {
       obj.actions = [];
     }
     if (message.params) {
-      obj.params = message.params.map((e) => (e ? NodeParamData.toJSON(e) : undefined));
+      obj.params = message.params.map((e) => e ? NodeParamData.toJSON(e) : undefined);
     } else {
       obj.params = [];
     }
     if (message.props) {
-      obj.props = message.props.map((e) => (e ? NodeParamData.toJSON(e) : undefined));
+      obj.props = message.props.map((e) => e ? NodeParamData.toJSON(e) : undefined);
     } else {
       obj.props = [];
     }
     if (message.childrenData) {
-      obj.childrenData = message.childrenData.map((e) => (e ? NodeVariableData.toJSON(e) : undefined));
+      obj.childrenData = message.childrenData.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
     } else {
       obj.childrenData = [];
     }
     if (message.formValidations) {
-      obj.formValidations = message.formValidations.map((e) => (e ? FormValidationData.toJSON(e) : undefined));
+      obj.formValidations = message.formValidations.map((e) => e ? FormValidationData.toJSON(e) : undefined);
     } else {
       obj.formValidations = [];
     }
@@ -13738,18 +13868,19 @@ export const NodeCustomData = {
     const message = createBaseNodeCustom();
     message.usePropStyle = object.usePropStyle ?? undefined;
     message.ignorePropStyle = object.ignorePropStyle ?? undefined;
-    message.form = object.form !== undefined && object.form !== null ? NodeReferenceData.fromPartial(object.form) : undefined;
-    message.molecule =
-      object.molecule !== undefined && object.molecule !== null ? NodeReferenceData.fromPartial(object.molecule) : undefined;
+    message.form = (object.form !== undefined && object.form !== null)
+      ? NodeReferenceData.fromPartial(object.form)
+      : undefined;
+    message.molecule = (object.molecule !== undefined && object.molecule !== null)
+      ? NodeReferenceData.fromPartial(object.molecule)
+      : undefined;
     message.mediaQueries = object.mediaQueries?.map((e) => NodeMediaQueryData.fromPartial(e)) || [];
-    message.authentication =
-      object.authentication !== undefined && object.authentication !== null
-        ? NodeReferenceData.fromPartial(object.authentication)
-        : undefined;
-    message.renderCondition =
-      object.renderCondition !== undefined && object.renderCondition !== null
-        ? RenderConditionData.fromPartial(object.renderCondition)
-        : undefined;
+    message.authentication = (object.authentication !== undefined && object.authentication !== null)
+      ? NodeReferenceData.fromPartial(object.authentication)
+      : undefined;
+    message.renderCondition = (object.renderCondition !== undefined && object.renderCondition !== null)
+      ? RenderConditionData.fromPartial(object.renderCondition)
+      : undefined;
     message.seoTitle = object.seoTitle?.map((e) => NodeVariableData.fromPartial(e)) || [];
     message.seoDescription = object.seoDescription?.map((e) => NodeVariableData.fromPartial(e)) || [];
     message.actions = object.actions?.map((e) => NodeActionData.fromPartial(e)) || [];
@@ -13877,7 +14008,7 @@ export const RenderConditionData = {
     const obj: any = {};
     message.enabled !== undefined && (obj.enabled = message.enabled);
     if (message.conditions) {
-      obj.conditions = message.conditions.map((e) => (e ? RenderConditionConditionData.toJSON(e) : undefined));
+      obj.conditions = message.conditions.map((e) => e ? RenderConditionConditionData.toJSON(e) : undefined);
     } else {
       obj.conditions = [];
     }
@@ -13962,9 +14093,12 @@ export const RenderConditionConditionData = {
     const message = createBaseRenderConditionCondition();
     message.source = object.source ?? 0;
     message.operator = object.operator ?? 0;
-    message.left = object.left !== undefined && object.left !== null ? NodeVariableData.fromPartial(object.left) : undefined;
-    message.right =
-      object.right !== undefined && object.right !== null ? NodeVariableData.fromPartial(object.right) : undefined;
+    message.left = (object.left !== undefined && object.left !== null)
+      ? NodeVariableData.fromPartial(object.left)
+      : undefined;
+    message.right = (object.right !== undefined && object.right !== null)
+      ? NodeVariableData.fromPartial(object.right)
+      : undefined;
     return message;
   },
 };
@@ -14016,7 +14150,8 @@ export const FormValidationData = {
 
   toJSON(message: FormValidation): unknown {
     const obj: any = {};
-    message.validationType !== undefined && (obj.validationType = formValidationValidationTypeToJSON(message.validationType));
+    message.validationType !== undefined &&
+      (obj.validationType = formValidationValidationTypeToJSON(message.validationType));
     if (message.validationRules) {
       obj.validationRules = message.validationRules.map((e) =>
         e ? FormValidationFormValidationsRuleData.toJSON(e) : undefined
@@ -14030,7 +14165,8 @@ export const FormValidationData = {
   fromPartial(object: DeepPartial<FormValidation>): FormValidation {
     const message = createBaseFormValidation();
     message.validationType = object.validationType ?? 0;
-    message.validationRules = object.validationRules?.map((e) => FormValidationFormValidationsRuleData.fromPartial(e)) || [];
+    message.validationRules =
+      object.validationRules?.map((e) => FormValidationFormValidationsRuleData.fromPartial(e)) || [];
     return message;
   },
 };
@@ -14092,7 +14228,7 @@ export const FormValidationFormValidationsRuleData = {
     message.value !== undefined && (obj.value = message.value);
     message.valueType !== undefined && (obj.valueType = message.valueType);
     if (message.errorMessages) {
-      obj.errorMessages = message.errorMessages.map((e) => (e ? NodeVariableData.toJSON(e) : undefined));
+      obj.errorMessages = message.errorMessages.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
     } else {
       obj.errorMessages = [];
     }
@@ -14108,22 +14244,22 @@ export const FormValidationFormValidationsRuleData = {
   },
 };
 
-function createBaseGetFrontendRequest(): GetFrontendRequest {
+function createBaseGetWebAppRequest(): GetWebAppRequest {
   return { projectId: 0 };
 }
 
-export const GetFrontendRequestData = {
-  encode(message: GetFrontendRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const GetWebAppRequestData = {
+  encode(message: GetWebAppRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectId !== 0) {
       writer.uint32(8).int32(message.projectId);
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetFrontendRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetWebAppRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetFrontendRequest();
+    const message = createBaseGetWebAppRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -14138,44 +14274,44 @@ export const GetFrontendRequestData = {
     return message;
   },
 
-  fromJSON(object: any): GetFrontendRequest {
+  fromJSON(object: any): GetWebAppRequest {
     return { projectId: isSet(object.projectId) ? Number(object.projectId) : 0 };
   },
 
-  toJSON(message: GetFrontendRequest): unknown {
+  toJSON(message: GetWebAppRequest): unknown {
     const obj: any = {};
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     return obj;
   },
 
-  fromPartial(object: DeepPartial<GetFrontendRequest>): GetFrontendRequest {
-    const message = createBaseGetFrontendRequest();
+  fromPartial(object: DeepPartial<GetWebAppRequest>): GetWebAppRequest {
+    const message = createBaseGetWebAppRequest();
     message.projectId = object.projectId ?? 0;
     return message;
   },
 };
 
-function createBaseGetFrontendResponse(): GetFrontendResponse {
+function createBaseGetWebAppResponse(): GetWebAppResponse {
   return {};
 }
 
-export const GetFrontendResponseData = {
-  encode(message: GetFrontendResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const GetWebAppResponseData = {
+  encode(message: GetWebAppResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.frontend !== undefined) {
-      FrontendData.encode(message.frontend, writer.uint32(10).fork()).ldelim();
+      WebAppData.encode(message.frontend, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetFrontendResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetWebAppResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetFrontendResponse();
+    const message = createBaseGetWebAppResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.frontend = FrontendData.decode(reader, reader.uint32());
+          message.frontend = WebAppData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -14185,20 +14321,22 @@ export const GetFrontendResponseData = {
     return message;
   },
 
-  fromJSON(object: any): GetFrontendResponse {
-    return { frontend: isSet(object.frontend) ? FrontendData.fromJSON(object.frontend) : undefined };
+  fromJSON(object: any): GetWebAppResponse {
+    return { frontend: isSet(object.frontend) ? WebAppData.fromJSON(object.frontend) : undefined };
   },
 
-  toJSON(message: GetFrontendResponse): unknown {
+  toJSON(message: GetWebAppResponse): unknown {
     const obj: any = {};
-    message.frontend !== undefined && (obj.frontend = message.frontend ? FrontendData.toJSON(message.frontend) : undefined);
+    message.frontend !== undefined &&
+      (obj.frontend = message.frontend ? WebAppData.toJSON(message.frontend) : undefined);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<GetFrontendResponse>): GetFrontendResponse {
-    const message = createBaseGetFrontendResponse();
-    message.frontend =
-      object.frontend !== undefined && object.frontend !== null ? FrontendData.fromPartial(object.frontend) : undefined;
+  fromPartial(object: DeepPartial<GetWebAppResponse>): GetWebAppResponse {
+    const message = createBaseGetWebAppResponse();
+    message.frontend = (object.frontend !== undefined && object.frontend !== null)
+      ? WebAppData.fromPartial(object.frontend)
+      : undefined;
     return message;
   },
 };
@@ -14292,8 +14430,9 @@ export const GetBackendResponseData = {
 
   fromPartial(object: DeepPartial<GetBackendResponse>): GetBackendResponse {
     const message = createBaseGetBackendResponse();
-    message.backend =
-      object.backend !== undefined && object.backend !== null ? BackendData.fromPartial(object.backend) : undefined;
+    message.backend = (object.backend !== undefined && object.backend !== null)
+      ? BackendData.fromPartial(object.backend)
+      : undefined;
     return message;
   },
 };
@@ -14382,7 +14521,7 @@ export const ListTablesResponseData = {
   toJSON(message: ListTablesResponse): unknown {
     const obj: any = {};
     if (message.tables) {
-      obj.tables = message.tables.map((e) => (e ? TableData.toJSON(e) : undefined));
+      obj.tables = message.tables.map((e) => e ? TableData.toJSON(e) : undefined);
     } else {
       obj.tables = [];
     }
@@ -14522,14 +14661,16 @@ export const ListControllersResponseData = {
 
   fromJSON(object: any): ListControllersResponse {
     return {
-      controllers: Array.isArray(object?.controllers) ? object.controllers.map((e: any) => ControllerData.fromJSON(e)) : [],
+      controllers: Array.isArray(object?.controllers)
+        ? object.controllers.map((e: any) => ControllerData.fromJSON(e))
+        : [],
     };
   },
 
   toJSON(message: ListControllersResponse): unknown {
     const obj: any = {};
     if (message.controllers) {
-      obj.controllers = message.controllers.map((e) => (e ? ControllerData.toJSON(e) : undefined));
+      obj.controllers = message.controllers.map((e) => e ? ControllerData.toJSON(e) : undefined);
     } else {
       obj.controllers = [];
     }
@@ -14629,7 +14770,7 @@ export const ListFeaturesResponseData = {
   toJSON(message: ListFeaturesResponse): unknown {
     const obj: any = {};
     if (message.features) {
-      obj.features = message.features.map((e) => (e ? FeatureData.toJSON(e) : undefined));
+      obj.features = message.features.map((e) => e ? FeatureData.toJSON(e) : undefined);
     } else {
       obj.features = [];
     }
@@ -14731,7 +14872,7 @@ export const ListAuthorizationsResponseData = {
   toJSON(message: ListAuthorizationsResponse): unknown {
     const obj: any = {};
     if (message.authorizations) {
-      obj.authorizations = message.authorizations.map((e) => (e ? AuthorizationData.toJSON(e) : undefined));
+      obj.authorizations = message.authorizations.map((e) => e ? AuthorizationData.toJSON(e) : undefined);
     } else {
       obj.authorizations = [];
     }
@@ -14833,7 +14974,7 @@ export const ListLocalizationsResponseData = {
   toJSON(message: ListLocalizationsResponse): unknown {
     const obj: any = {};
     if (message.localizations) {
-      obj.localizations = message.localizations.map((e) => (e ? LocalizationData.toJSON(e) : undefined));
+      obj.localizations = message.localizations.map((e) => e ? LocalizationData.toJSON(e) : undefined);
     } else {
       obj.localizations = [];
     }
@@ -14886,7 +15027,7 @@ export const ListMigrationsResponseData = {
   toJSON(message: ListMigrationsResponse): unknown {
     const obj: any = {};
     if (message.migrations) {
-      obj.migrations = message.migrations.map((e) => (e ? MigrationData.toJSON(e) : undefined));
+      obj.migrations = message.migrations.map((e) => e ? MigrationData.toJSON(e) : undefined);
     } else {
       obj.migrations = [];
     }
@@ -14961,11 +15102,11 @@ export const CoreServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    getFrontend: {
-      name: "GetFrontend",
-      requestType: GetFrontendRequestData,
+    getWebApp: {
+      name: "GetWebApp",
+      requestType: GetWebAppRequestData,
       requestStream: false,
-      responseType: GetFrontendResponseData,
+      responseType: GetWebAppResponseData,
       responseStream: false,
       options: {},
     },
@@ -14973,64 +15114,74 @@ export const CoreServiceDefinition = {
 } as const;
 
 export interface CoreServiceImplementation<CallContextExt = {}> {
-  listTables(request: ListTablesRequest, context: CallContext & CallContextExt): Promise<DeepPartial<ListTablesResponse>>;
+  listTables(
+    request: ListTablesRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<DeepPartial<ListTablesResponse>>;
   listControllers(
     request: ListControllersRequest,
-    context: CallContext & CallContextExt
+    context: CallContext & CallContextExt,
   ): Promise<DeepPartial<ListControllersResponse>>;
-  listFeatures(request: ListFeaturesRequest, context: CallContext & CallContextExt): Promise<DeepPartial<ListFeaturesResponse>>;
+  listFeatures(
+    request: ListFeaturesRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<DeepPartial<ListFeaturesResponse>>;
   listAuthorizations(
     request: ListAuthorizationsRequest,
-    context: CallContext & CallContextExt
+    context: CallContext & CallContextExt,
   ): Promise<DeepPartial<ListAuthorizationsResponse>>;
   listLocalizations(
     request: ListLocalizationsRequest,
-    context: CallContext & CallContextExt
+    context: CallContext & CallContextExt,
   ): Promise<DeepPartial<ListLocalizationsResponse>>;
   listMigrations(
     request: ListMigrationsRequest,
-    context: CallContext & CallContextExt
+    context: CallContext & CallContextExt,
   ): Promise<DeepPartial<ListMigrationsResponse>>;
-  getBackend(request: GetBackendRequest, context: CallContext & CallContextExt): Promise<DeepPartial<GetBackendResponse>>;
-  getFrontend(request: GetFrontendRequest, context: CallContext & CallContextExt): Promise<DeepPartial<GetFrontendResponse>>;
+  getBackend(
+    request: GetBackendRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<DeepPartial<GetBackendResponse>>;
+  getWebApp(request: GetWebAppRequest, context: CallContext & CallContextExt): Promise<DeepPartial<GetWebAppResponse>>;
 }
 
 export interface CoreServiceClient<CallOptionsExt = {}> {
-  listTables(request: DeepPartial<ListTablesRequest>, options?: CallOptions & CallOptionsExt): Promise<ListTablesResponse>;
+  listTables(
+    request: DeepPartial<ListTablesRequest>,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<ListTablesResponse>;
   listControllers(
     request: DeepPartial<ListControllersRequest>,
-    options?: CallOptions & CallOptionsExt
+    options?: CallOptions & CallOptionsExt,
   ): Promise<ListControllersResponse>;
   listFeatures(
     request: DeepPartial<ListFeaturesRequest>,
-    options?: CallOptions & CallOptionsExt
+    options?: CallOptions & CallOptionsExt,
   ): Promise<ListFeaturesResponse>;
   listAuthorizations(
     request: DeepPartial<ListAuthorizationsRequest>,
-    options?: CallOptions & CallOptionsExt
+    options?: CallOptions & CallOptionsExt,
   ): Promise<ListAuthorizationsResponse>;
   listLocalizations(
     request: DeepPartial<ListLocalizationsRequest>,
-    options?: CallOptions & CallOptionsExt
+    options?: CallOptions & CallOptionsExt,
   ): Promise<ListLocalizationsResponse>;
   listMigrations(
     request: DeepPartial<ListMigrationsRequest>,
-    options?: CallOptions & CallOptionsExt
+    options?: CallOptions & CallOptionsExt,
   ): Promise<ListMigrationsResponse>;
-  getBackend(request: DeepPartial<GetBackendRequest>, options?: CallOptions & CallOptionsExt): Promise<GetBackendResponse>;
-  getFrontend(request: DeepPartial<GetFrontendRequest>, options?: CallOptions & CallOptionsExt): Promise<GetFrontendResponse>;
+  getBackend(
+    request: DeepPartial<GetBackendRequest>,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<GetBackendResponse>;
+  getWebApp(request: DeepPartial<GetWebAppRequest>, options?: CallOptions & CallOptionsExt): Promise<GetWebAppResponse>;
 }
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
-type DeepPartial<T> = T extends Builtin
-  ? T
-  : T extends Array<infer U>
-  ? Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U>
-  ? ReadonlyArray<DeepPartial<U>>
-  : T extends {}
-  ? { [K in keyof T]?: DeepPartial<T[K]> }
+type DeepPartial<T> = T extends Builtin ? T
+  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
 function isObject(value: any): boolean {

@@ -3,13 +3,16 @@
 
 require 'google/protobuf'
 
+require 'v1/backend_pb'
+require 'v1/frontend_pb'
+
 Google::Protobuf::DescriptorPool.generated_pool.build do
   add_file("v1/service.proto", :syntax => :proto3) do
-    add_message "schema.v1.GetFrontendRequest" do
+    add_message "schema.v1.GetWebAppRequest" do
       optional :project_id, :int32, 1
     end
-    add_message "schema.v1.GetFrontendResponse" do
-      optional :frontend, :message, 1, "schema.v1.Frontend"
+    add_message "schema.v1.GetWebAppResponse" do
+      optional :web_app, :message, 1, "schema.v1.WebApp"
     end
     add_message "schema.v1.GetBackendRequest" do
       optional :project_id, :int32, 1
@@ -58,8 +61,8 @@ end
 
 module Schema
   module V1
-    GetFrontendRequest = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.GetFrontendRequest").msgclass
-    GetFrontendResponse = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.GetFrontendResponse").msgclass
+    GetWebAppRequest = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.GetWebAppRequest").msgclass
+    GetWebAppResponse = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.GetWebAppResponse").msgclass
     GetBackendRequest = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.GetBackendRequest").msgclass
     GetBackendResponse = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.GetBackendResponse").msgclass
     ListTablesRequest = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.ListTablesRequest").msgclass

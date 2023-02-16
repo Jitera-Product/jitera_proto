@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    jitera_proto (0.0.2)
+    jitera_proto (0.0.3)
       google-protobuf (~> 3.21.12)
       grpc (~> 1.50.0)
 

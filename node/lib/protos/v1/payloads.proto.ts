@@ -1312,8 +1312,17 @@ export interface TableRelationMigration {
   id: number;
 }
 
-export interface Frontend {
+export interface WebApp {
   appPages: AppPage[];
+  assets: Asset[];
+}
+
+export interface Asset {
+  id: string;
+  url: string;
+  fileName: string;
+  fileSize: number;
+  contentType: string;
 }
 
 export interface AppPage {
@@ -2277,12 +2286,12 @@ export interface FormValidationFormValidationsRule {
   errorMessages: NodeVariable[];
 }
 
-export interface GetFrontendRequest {
+export interface GetWebAppRequest {
   projectId: number;
 }
 
-export interface GetFrontendResponse {
-  frontend?: Frontend;
+export interface GetWebAppResponse {
+  webApp?: WebApp;
 }
 
 export interface GetBackendRequest {
@@ -10134,27 +10143,33 @@ export const TableRelationMigration = {
   },
 };
 
-function createBaseFrontend(): Frontend {
-  return { appPages: [] };
+function createBaseWebApp(): WebApp {
+  return { appPages: [], assets: [] };
 }
 
-export const Frontend = {
-  encode(message: Frontend, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const WebApp = {
+  encode(message: WebApp, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.appPages) {
       AppPage.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    for (const v of message.assets) {
+      Asset.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): Frontend {
+  decode(input: _m0.Reader | Uint8Array, length?: number): WebApp {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseFrontend();
+    const message = createBaseWebApp();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
           message.appPages.push(AppPage.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.assets.push(Asset.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -10164,23 +10179,117 @@ export const Frontend = {
     return message;
   },
 
-  fromJSON(object: any): Frontend {
-    return { appPages: Array.isArray(object?.appPages) ? object.appPages.map((e: any) => AppPage.fromJSON(e)) : [] };
+  fromJSON(object: any): WebApp {
+    return {
+      appPages: Array.isArray(object?.appPages) ? object.appPages.map((e: any) => AppPage.fromJSON(e)) : [],
+      assets: Array.isArray(object?.assets) ? object.assets.map((e: any) => Asset.fromJSON(e)) : [],
+    };
   },
 
-  toJSON(message: Frontend): unknown {
+  toJSON(message: WebApp): unknown {
     const obj: any = {};
     if (message.appPages) {
       obj.appPages = message.appPages.map((e) => e ? AppPage.toJSON(e) : undefined);
     } else {
       obj.appPages = [];
     }
+    if (message.assets) {
+      obj.assets = message.assets.map((e) => e ? Asset.toJSON(e) : undefined);
+    } else {
+      obj.assets = [];
+    }
     return obj;
   },
 
-  fromPartial(object: DeepPartial<Frontend>): Frontend {
-    const message = createBaseFrontend();
+  fromPartial(object: DeepPartial<WebApp>): WebApp {
+    const message = createBaseWebApp();
     message.appPages = object.appPages?.map((e) => AppPage.fromPartial(e)) || [];
+    message.assets = object.assets?.map((e) => Asset.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseAsset(): Asset {
+  return { id: "", url: "", fileName: "", fileSize: 0, contentType: "" };
+}
+
+export const Asset = {
+  encode(message: Asset, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.url !== "") {
+      writer.uint32(18).string(message.url);
+    }
+    if (message.fileName !== "") {
+      writer.uint32(26).string(message.fileName);
+    }
+    if (message.fileSize !== 0) {
+      writer.uint32(32).int32(message.fileSize);
+    }
+    if (message.contentType !== "") {
+      writer.uint32(42).string(message.contentType);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Asset {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAsset();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.string();
+          break;
+        case 2:
+          message.url = reader.string();
+          break;
+        case 3:
+          message.fileName = reader.string();
+          break;
+        case 4:
+          message.fileSize = reader.int32();
+          break;
+        case 5:
+          message.contentType = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Asset {
+    return {
+      id: isSet(object.id) ? String(object.id) : "",
+      url: isSet(object.url) ? String(object.url) : "",
+      fileName: isSet(object.fileName) ? String(object.fileName) : "",
+      fileSize: isSet(object.fileSize) ? Number(object.fileSize) : 0,
+      contentType: isSet(object.contentType) ? String(object.contentType) : "",
+    };
+  },
+
+  toJSON(message: Asset): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    message.url !== undefined && (obj.url = message.url);
+    message.fileName !== undefined && (obj.fileName = message.fileName);
+    message.fileSize !== undefined && (obj.fileSize = Math.round(message.fileSize));
+    message.contentType !== undefined && (obj.contentType = message.contentType);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<Asset>): Asset {
+    const message = createBaseAsset();
+    message.id = object.id ?? "";
+    message.url = object.url ?? "";
+    message.fileName = object.fileName ?? "";
+    message.fileSize = object.fileSize ?? 0;
+    message.contentType = object.contentType ?? "";
     return message;
   },
 };
@@ -14073,22 +14182,22 @@ export const FormValidationFormValidationsRule = {
   },
 };
 
-function createBaseGetFrontendRequest(): GetFrontendRequest {
+function createBaseGetWebAppRequest(): GetWebAppRequest {
   return { projectId: 0 };
 }
 
-export const GetFrontendRequest = {
-  encode(message: GetFrontendRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const GetWebAppRequest = {
+  encode(message: GetWebAppRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectId !== 0) {
       writer.uint32(8).int32(message.projectId);
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetFrontendRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetWebAppRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetFrontendRequest();
+    const message = createBaseGetWebAppRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -14103,44 +14212,44 @@ export const GetFrontendRequest = {
     return message;
   },
 
-  fromJSON(object: any): GetFrontendRequest {
+  fromJSON(object: any): GetWebAppRequest {
     return { projectId: isSet(object.projectId) ? Number(object.projectId) : 0 };
   },
 
-  toJSON(message: GetFrontendRequest): unknown {
+  toJSON(message: GetWebAppRequest): unknown {
     const obj: any = {};
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     return obj;
   },
 
-  fromPartial(object: DeepPartial<GetFrontendRequest>): GetFrontendRequest {
-    const message = createBaseGetFrontendRequest();
+  fromPartial(object: DeepPartial<GetWebAppRequest>): GetWebAppRequest {
+    const message = createBaseGetWebAppRequest();
     message.projectId = object.projectId ?? 0;
     return message;
   },
 };
 
-function createBaseGetFrontendResponse(): GetFrontendResponse {
+function createBaseGetWebAppResponse(): GetWebAppResponse {
   return {};
 }
 
-export const GetFrontendResponse = {
-  encode(message: GetFrontendResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.frontend !== undefined) {
-      Frontend.encode(message.frontend, writer.uint32(10).fork()).ldelim();
+export const GetWebAppResponse = {
+  encode(message: GetWebAppResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.webApp !== undefined) {
+      WebApp.encode(message.webApp, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetFrontendResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetWebAppResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetFrontendResponse();
+    const message = createBaseGetWebAppResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.frontend = Frontend.decode(reader, reader.uint32());
+          message.webApp = WebApp.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -14150,20 +14259,20 @@ export const GetFrontendResponse = {
     return message;
   },
 
-  fromJSON(object: any): GetFrontendResponse {
-    return { frontend: isSet(object.frontend) ? Frontend.fromJSON(object.frontend) : undefined };
+  fromJSON(object: any): GetWebAppResponse {
+    return { webApp: isSet(object.webApp) ? WebApp.fromJSON(object.webApp) : undefined };
   },
 
-  toJSON(message: GetFrontendResponse): unknown {
+  toJSON(message: GetWebAppResponse): unknown {
     const obj: any = {};
-    message.frontend !== undefined && (obj.frontend = message.frontend ? Frontend.toJSON(message.frontend) : undefined);
+    message.webApp !== undefined && (obj.webApp = message.webApp ? WebApp.toJSON(message.webApp) : undefined);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<GetFrontendResponse>): GetFrontendResponse {
-    const message = createBaseGetFrontendResponse();
-    message.frontend = (object.frontend !== undefined && object.frontend !== null)
-      ? Frontend.fromPartial(object.frontend)
+  fromPartial(object: DeepPartial<GetWebAppResponse>): GetWebAppResponse {
+    const message = createBaseGetWebAppResponse();
+    message.webApp = (object.webApp !== undefined && object.webApp !== null)
+      ? WebApp.fromPartial(object.webApp)
       : undefined;
     return message;
   },
@@ -14926,11 +15035,11 @@ export const CoreServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    getFrontend: {
-      name: "GetFrontend",
-      requestType: GetFrontendRequest,
+    getWebApp: {
+      name: "GetWebApp",
+      requestType: GetWebAppRequest,
       requestStream: false,
-      responseType: GetFrontendResponse,
+      responseType: GetWebAppResponse,
       responseStream: false,
       options: {},
     },
@@ -14966,10 +15075,7 @@ export interface CoreServiceImplementation<CallContextExt = {}> {
     request: GetBackendRequest,
     context: CallContext & CallContextExt,
   ): Promise<DeepPartial<GetBackendResponse>>;
-  getFrontend(
-    request: GetFrontendRequest,
-    context: CallContext & CallContextExt,
-  ): Promise<DeepPartial<GetFrontendResponse>>;
+  getWebApp(request: GetWebAppRequest, context: CallContext & CallContextExt): Promise<DeepPartial<GetWebAppResponse>>;
 }
 
 export interface CoreServiceClient<CallOptionsExt = {}> {
@@ -15001,10 +15107,7 @@ export interface CoreServiceClient<CallOptionsExt = {}> {
     request: DeepPartial<GetBackendRequest>,
     options?: CallOptions & CallOptionsExt,
   ): Promise<GetBackendResponse>;
-  getFrontend(
-    request: DeepPartial<GetFrontendRequest>,
-    options?: CallOptions & CallOptionsExt,
-  ): Promise<GetFrontendResponse>;
+  getWebApp(request: DeepPartial<GetWebAppRequest>, options?: CallOptions & CallOptionsExt): Promise<GetWebAppResponse>;
 }
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
