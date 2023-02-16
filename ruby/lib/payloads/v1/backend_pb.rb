@@ -10,6 +10,9 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :project_name, :string, 2
       optional :project_id, :int32, 3
       proto3_optional :infra, :message, 4, "schema.v1.Infra"
+      optional :time_zone, :string, 5
+      optional :default_language_code, :string, 6
+      repeated :language_codes, :string, 7
       oneof :generate_type do
         optional :project_export, :message, 9, "schema.v1.ProjectExport"
         optional :project_preview, :message, 10, "schema.v1.ProjectPreview"
@@ -158,14 +161,15 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :secret_key, :string, 3
     end
     add_enum "schema.v1.Feature.FeatureName" do
-      value :EMAIL_LOGIN, 0
-      value :JP_BANKS_DATA, 1
-      value :BASIC_AUTH, 2
-      value :TWILIO_LOGIN, 3
-      value :ROLLBAR, 4
-      value :DEEP_LINK, 5
-      value :STRIPE, 6
-      value :LINE_LOGIN, 7
+      value :NIL, 0
+      value :EMAIL_LOGIN, 1
+      value :JP_BANKS_DATA, 2
+      value :BASIC_AUTH, 3
+      value :TWILIO_LOGIN, 4
+      value :ROLLBAR, 5
+      value :DEEP_LINK, 6
+      value :STRIPE, 7
+      value :LINE_LOGIN, 8
     end
     add_enum "schema.v1.Feature.Environment" do
       value :DEVELOPMENT, 0
