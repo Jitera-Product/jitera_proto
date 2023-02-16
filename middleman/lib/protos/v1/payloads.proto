@@ -1290,7 +1290,7 @@ message GetWebAppRequest {
 }
 
 message GetWebAppResponse {
-	WebApp frontend = 1;
+	WebApp web_app = 1;
 }
 
 message GetBackendRequest {

@@ -2289,7 +2289,7 @@ export class GetWebAppRequest {
 }
 
 export class GetWebAppResponse {
-  frontend?: WebApp;
+  webApp?: WebApp;
 }
 
 export class GetBackendRequest {
@@ -14297,8 +14297,8 @@ function createBaseGetWebAppResponse(): GetWebAppResponse {
 
 export const GetWebAppResponseData = {
   encode(message: GetWebAppResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.frontend !== undefined) {
-      WebAppData.encode(message.frontend, writer.uint32(10).fork()).ldelim();
+    if (message.webApp !== undefined) {
+      WebAppData.encode(message.webApp, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -14311,7 +14311,7 @@ export const GetWebAppResponseData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.frontend = WebAppData.decode(reader, reader.uint32());
+          message.webApp = WebAppData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -14322,20 +14322,19 @@ export const GetWebAppResponseData = {
   },
 
   fromJSON(object: any): GetWebAppResponse {
-    return { frontend: isSet(object.frontend) ? WebAppData.fromJSON(object.frontend) : undefined };
+    return { webApp: isSet(object.webApp) ? WebAppData.fromJSON(object.webApp) : undefined };
   },
 
   toJSON(message: GetWebAppResponse): unknown {
     const obj: any = {};
-    message.frontend !== undefined &&
-      (obj.frontend = message.frontend ? WebAppData.toJSON(message.frontend) : undefined);
+    message.webApp !== undefined && (obj.webApp = message.webApp ? WebAppData.toJSON(message.webApp) : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<GetWebAppResponse>): GetWebAppResponse {
     const message = createBaseGetWebAppResponse();
-    message.frontend = (object.frontend !== undefined && object.frontend !== null)
-      ? WebAppData.fromPartial(object.frontend)
+    message.webApp = (object.webApp !== undefined && object.webApp !== null)
+      ? WebAppData.fromPartial(object.webApp)
       : undefined;
     return message;
   },
