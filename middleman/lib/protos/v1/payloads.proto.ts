@@ -248,6 +248,9 @@ export class Project {
   projectName: string;
   projectId: number;
   infra?: Infra | undefined;
+  timeZone: string;
+  defaultLanguageCode: string;
+  languageCodes: string[];
   projectExport?: ProjectExport | undefined;
   projectPreview?: ProjectPreview | undefined;
 }
@@ -376,41 +379,45 @@ export class Feature {
 }
 
 export enum FeatureFeatureName {
-  EMAIL_LOGIN = 0,
-  JP_BANKS_DATA = 1,
-  BASIC_AUTH = 2,
-  TWILIO_LOGIN = 3,
-  ROLLBAR = 4,
-  DEEP_LINK = 5,
-  STRIPE = 6,
-  LINE_LOGIN = 7,
+  NIL = 0,
+  EMAIL_LOGIN = 1,
+  JP_BANKS_DATA = 2,
+  BASIC_AUTH = 3,
+  TWILIO_LOGIN = 4,
+  ROLLBAR = 5,
+  DEEP_LINK = 6,
+  STRIPE = 7,
+  LINE_LOGIN = 8,
   UNRECOGNIZED = -1,
 }
 
 export function featureFeatureNameFromJSON(object: any): FeatureFeatureName {
   switch (object) {
     case 0:
+    case "NIL":
+      return FeatureFeatureName.NIL;
+    case 1:
     case "EMAIL_LOGIN":
       return FeatureFeatureName.EMAIL_LOGIN;
-    case 1:
+    case 2:
     case "JP_BANKS_DATA":
       return FeatureFeatureName.JP_BANKS_DATA;
-    case 2:
+    case 3:
     case "BASIC_AUTH":
       return FeatureFeatureName.BASIC_AUTH;
-    case 3:
+    case 4:
     case "TWILIO_LOGIN":
       return FeatureFeatureName.TWILIO_LOGIN;
-    case 4:
+    case 5:
     case "ROLLBAR":
       return FeatureFeatureName.ROLLBAR;
-    case 5:
+    case 6:
     case "DEEP_LINK":
       return FeatureFeatureName.DEEP_LINK;
-    case 6:
+    case 7:
     case "STRIPE":
       return FeatureFeatureName.STRIPE;
-    case 7:
+    case 8:
     case "LINE_LOGIN":
       return FeatureFeatureName.LINE_LOGIN;
     case -1:
@@ -422,6 +429,8 @@ export function featureFeatureNameFromJSON(object: any): FeatureFeatureName {
 
 export function featureFeatureNameToJSON(object: FeatureFeatureName): string {
   switch (object) {
+    case FeatureFeatureName.NIL:
+      return "NIL";
     case FeatureFeatureName.EMAIL_LOGIN:
       return "EMAIL_LOGIN";
     case FeatureFeatureName.JP_BANKS_DATA:
@@ -2349,7 +2358,7 @@ export class ListMigrationsResponse {
 }
 
 function createBaseProject(): Project {
-  return { id: "", projectName: "", projectId: 0 };
+  return { id: "", projectName: "", projectId: 0, timeZone: "", defaultLanguageCode: "", languageCodes: [] };
 }
 
 export const ProjectData = {
@@ -2365,6 +2374,15 @@ export const ProjectData = {
     }
     if (message.infra !== undefined) {
       InfraData.encode(message.infra, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.timeZone !== "") {
+      writer.uint32(42).string(message.timeZone);
+    }
+    if (message.defaultLanguageCode !== "") {
+      writer.uint32(50).string(message.defaultLanguageCode);
+    }
+    for (const v of message.languageCodes) {
+      writer.uint32(58).string(v!);
     }
     if (message.projectExport !== undefined) {
       ProjectExportData.encode(message.projectExport, writer.uint32(74).fork()).ldelim();
@@ -2394,6 +2412,15 @@ export const ProjectData = {
         case 4:
           message.infra = InfraData.decode(reader, reader.uint32());
           break;
+        case 5:
+          message.timeZone = reader.string();
+          break;
+        case 6:
+          message.defaultLanguageCode = reader.string();
+          break;
+        case 7:
+          message.languageCodes.push(reader.string());
+          break;
         case 9:
           message.projectExport = ProjectExportData.decode(reader, reader.uint32());
           break;
@@ -2414,6 +2441,9 @@ export const ProjectData = {
       projectName: isSet(object.projectName) ? String(object.projectName) : "",
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       infra: isSet(object.infra) ? InfraData.fromJSON(object.infra) : undefined,
+      timeZone: isSet(object.timeZone) ? String(object.timeZone) : "",
+      defaultLanguageCode: isSet(object.defaultLanguageCode) ? String(object.defaultLanguageCode) : "",
+      languageCodes: Array.isArray(object?.languageCodes) ? object.languageCodes.map((e: any) => String(e)) : [],
       projectExport: isSet(object.projectExport) ? ProjectExportData.fromJSON(object.projectExport) : undefined,
       projectPreview: isSet(object.projectPreview) ? ProjectPreviewData.fromJSON(object.projectPreview) : undefined,
     };
@@ -2425,6 +2455,13 @@ export const ProjectData = {
     message.projectName !== undefined && (obj.projectName = message.projectName);
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     message.infra !== undefined && (obj.infra = message.infra ? InfraData.toJSON(message.infra) : undefined);
+    message.timeZone !== undefined && (obj.timeZone = message.timeZone);
+    message.defaultLanguageCode !== undefined && (obj.defaultLanguageCode = message.defaultLanguageCode);
+    if (message.languageCodes) {
+      obj.languageCodes = message.languageCodes.map((e) => e);
+    } else {
+      obj.languageCodes = [];
+    }
     message.projectExport !== undefined &&
       (obj.projectExport = message.projectExport ? ProjectExportData.toJSON(message.projectExport) : undefined);
     message.projectPreview !== undefined &&
@@ -2440,6 +2477,9 @@ export const ProjectData = {
     message.infra = (object.infra !== undefined && object.infra !== null)
       ? InfraData.fromPartial(object.infra)
       : undefined;
+    message.timeZone = object.timeZone ?? "";
+    message.defaultLanguageCode = object.defaultLanguageCode ?? "";
+    message.languageCodes = object.languageCodes?.map((e) => e) || [];
     message.projectExport = (object.projectExport !== undefined && object.projectExport !== null)
       ? ProjectExportData.fromPartial(object.projectExport)
       : undefined;
