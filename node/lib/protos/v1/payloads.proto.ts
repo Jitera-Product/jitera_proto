@@ -617,6 +617,7 @@ export interface ControllerEndpoint {
   responses?: ControllerResponse;
   params?: ControllerRequestContent;
   writable: boolean;
+  action?: string | undefined;
 }
 
 export interface ControllerEndpointList {
@@ -4386,6 +4387,9 @@ export const ControllerEndpoint = {
     if (message.writable === true) {
       writer.uint32(112).bool(message.writable);
     }
+    if (message.action !== undefined) {
+      writer.uint32(122).string(message.action);
+    }
     return writer;
   },
 
@@ -4438,6 +4442,9 @@ export const ControllerEndpoint = {
         case 14:
           message.writable = reader.bool();
           break;
+        case 15:
+          message.action = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -4464,6 +4471,7 @@ export const ControllerEndpoint = {
       responses: isSet(object.responses) ? ControllerResponse.fromJSON(object.responses) : undefined,
       params: isSet(object.params) ? ControllerRequestContent.fromJSON(object.params) : undefined,
       writable: isSet(object.writable) ? Boolean(object.writable) : false,
+      action: isSet(object.action) ? String(object.action) : undefined,
     };
   },
 
@@ -4493,6 +4501,7 @@ export const ControllerEndpoint = {
     message.params !== undefined &&
       (obj.params = message.params ? ControllerRequestContent.toJSON(message.params) : undefined);
     message.writable !== undefined && (obj.writable = message.writable);
+    message.action !== undefined && (obj.action = message.action);
     return obj;
   },
 
@@ -4530,6 +4539,7 @@ export const ControllerEndpoint = {
       ? ControllerRequestContent.fromPartial(object.params)
       : undefined;
     message.writable = object.writable ?? false;
+    message.action = object.action ?? undefined;
     return message;
   },
 };
