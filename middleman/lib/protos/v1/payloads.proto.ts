@@ -1,7 +1,7 @@
 /* eslint-disable */
 import type { CallContext, CallOptions } from "nice-grpc-common";
 import * as _m0 from "protobufjs/minimal";
-import { Struct, StructData } from "../google/protobuf/structData.proto";
+import { Struct, StructData } from "../google/protobuf/struct.proto";
 
 export enum DataTypeName {
   BOOLEAN = 0,
