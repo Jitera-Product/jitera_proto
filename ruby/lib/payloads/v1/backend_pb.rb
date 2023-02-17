@@ -189,6 +189,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :responses, :message, 12, "schema.v1.Controller.Response"
       optional :params, :message, 13, "schema.v1.Controller.RequestContent"
       optional :writable, :bool, 14
+      proto3_optional :action, :string, 15
       oneof :resource do
         optional :table, :string, 3
         optional :feature, :enum, 4, "schema.v1.Feature.FeatureName"
