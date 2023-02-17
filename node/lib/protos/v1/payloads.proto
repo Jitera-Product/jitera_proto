@@ -6,6 +6,9 @@ message Project {
 	string project_name = 2;
 	int32 project_id = 3;
 	optional Infra infra = 4;
+	string time_zone = 5;
+	string default_language_code = 6;
+	repeated string language_codes = 7;
 
 	oneof generate_type {
 		ProjectExport project_export = 9;
@@ -222,14 +225,15 @@ message Feature {
 	}
 
 	enum FeatureName {
-		EMAIL_LOGIN = 0;
-		JP_BANKS_DATA = 1;
-		BASIC_AUTH = 2;
-		TWILIO_LOGIN = 3;
-		ROLLBAR = 4;
-		DEEP_LINK = 5;
-		STRIPE = 6;
-		LINE_LOGIN = 7;
+		NIL = 0;
+		EMAIL_LOGIN = 1;
+		JP_BANKS_DATA = 2;
+		BASIC_AUTH = 3;
+		TWILIO_LOGIN = 4;
+		ROLLBAR = 5;
+		DEEP_LINK = 6;
+		STRIPE = 7;
+		LINE_LOGIN = 8;
 	}
 
 	enum Environment {
