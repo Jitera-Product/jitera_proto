@@ -267,6 +267,7 @@ message Controller {
 		Response responses = 12;
 		RequestContent params = 13;
 		bool writable = 14;
+		optional string action = 15;
 
 		message List {
 			RequestContent queries = 1;

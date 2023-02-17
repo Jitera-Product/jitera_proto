@@ -269,6 +269,7 @@ message Controller {
 		Response responses = 12;
 		RequestContent params = 13;
 		bool writable = 14;
+		optional string action = 15;
 
 		message List {
 			RequestContent queries = 1;
@@ -1080,7 +1081,7 @@ message RenderMolecule {
 message NodeReference {
 	string name = 1;
 	string ref_id = 2;
-	google.protobuf.Struct ref_data = 3;	
+	google.protobuf.Struct ref_data = 3;
 	string value = 4;
 	ReferenceRefType ref_type = 5;
 
@@ -1088,7 +1089,7 @@ message NodeReference {
 		NONE = 0;
 		API_REQUEST = 1;
 		API_REQUEST_PARAM = 2;
-		API_BUSINESS_PROCESS = 3; 
+		API_BUSINESS_PROCESS = 3;
 		API_RESPONSE_DATA = 4;
 		COLUMN_DEFINITION = 5;
 		MOBILE_APP_ASSET = 6;
@@ -1140,7 +1141,7 @@ message NodeVariable {
 		STRING = 0;
 		VARIABLE = 1;
 	}
-	
+
 	enum VariableSource {
 		PARAMS = 0;
 		FORM_VALUES = 1;
@@ -1153,7 +1154,7 @@ message NodeVariable {
 		LOCAL_CONTEXT_RESPONSE = 8;
 		FORM_VALIDATION_ERROR_MESSAGE = 9;
 	}
-	
+
 	enum VariableType {
 		STATIC = 0;
 		DYNAMIC = 1;
@@ -1175,7 +1176,7 @@ message NodeAction {
 		API = 0;
 		GENERAL = 1;
 	}
-	
+
 	enum ActionSource {
 		AUTHENTICATION = 0;
 		BACKEND_CALL = 1;
@@ -1240,8 +1241,8 @@ message RenderCondition {
 		GLOBAL = 1;
 	}
 
-	enum Operator { 
-		LESS_THAN = 0; 
+	enum Operator {
+		LESS_THAN = 0;
 		LESS_EQUAL_THAN = 1;
 		EQUAL = 2;
 		NOT_EQUAL = 3;
@@ -1270,7 +1271,7 @@ message FormValidation {
 		PHONE_NUMBER = 4;
 	}
 
-	enum RuleType { 
+	enum RuleType {
 		REQUIRED = 0;
 		MAXIMUM = 1;
 		MINIMUM = 2;
