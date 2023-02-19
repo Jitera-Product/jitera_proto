@@ -10,6 +10,16 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     add_message "schema.v1.WebApp" do
       repeated :app_pages, :message, 1, "schema.v1.AppPage"
       repeated :assets, :message, 2, "schema.v1.Asset"
+      repeated :variables, :message, 3, "schema.v1.WebApp.Variable"
+    end
+    add_message "schema.v1.WebApp.Variable" do
+      optional :type, :enum, 1, "schema.v1.WebApp.VariableType"
+      optional :name, :string, 2
+      optional :value, :string, 3
+    end
+    add_enum "schema.v1.WebApp.VariableType" do
+      value :JS, 0
+      value :CSS, 1
     end
     add_message "schema.v1.Asset" do
       optional :id, :string, 1
@@ -435,6 +445,8 @@ end
 module Schema
   module V1
     WebApp = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.WebApp").msgclass
+    WebApp::Variable = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.WebApp.Variable").msgclass
+    WebApp::VariableType = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.WebApp.VariableType").enummodule
     Asset = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Asset").msgclass
     AppPage = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.AppPage").msgclass
     AppPage::PageType = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.AppPage.PageType").enummodule

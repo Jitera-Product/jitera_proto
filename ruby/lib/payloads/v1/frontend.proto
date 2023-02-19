@@ -6,6 +6,18 @@ import "google/protobuf/struct.proto";
 message WebApp {
 	repeated AppPage app_pages = 1;
 	repeated Asset assets = 2;
+	repeated Variable variables = 3;
+
+	message Variable {
+		VariableType type = 1;
+		string name = 2;
+		string value = 3;
+	}
+
+	enum VariableType {
+		JS = 0;
+		CSS = 1;
+	}
 }
 
 message Asset {

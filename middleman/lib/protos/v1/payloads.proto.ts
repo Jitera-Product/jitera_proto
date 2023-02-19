@@ -1325,6 +1325,46 @@ export class TableRelationMigration {
 export class WebApp {
   appPages: AppPage[];
   assets: Asset[];
+  variables: WebAppVariable[];
+}
+
+export enum WebAppVariableType {
+  JS = 0,
+  CSS = 1,
+  UNRECOGNIZED = -1,
+}
+
+export function webAppVariableTypeFromJSON(object: any): WebAppVariableType {
+  switch (object) {
+    case 0:
+    case "JS":
+      return WebAppVariableType.JS;
+    case 1:
+    case "CSS":
+      return WebAppVariableType.CSS;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return WebAppVariableType.UNRECOGNIZED;
+  }
+}
+
+export function webAppVariableTypeToJSON(object: WebAppVariableType): string {
+  switch (object) {
+    case WebAppVariableType.JS:
+      return "JS";
+    case WebAppVariableType.CSS:
+      return "CSS";
+    case WebAppVariableType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export class WebAppVariable {
+  type: WebAppVariableType;
+  name: string;
+  value: string;
 }
 
 export class Asset {
@@ -10245,7 +10285,7 @@ export const TableRelationMigrationData = {
 };
 
 function createBaseWebApp(): WebApp {
-  return { appPages: [], assets: [] };
+  return { appPages: [], assets: [], variables: [] };
 }
 
 export const WebAppData = {
@@ -10255,6 +10295,9 @@ export const WebAppData = {
     }
     for (const v of message.assets) {
       AssetData.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    for (const v of message.variables) {
+      WebAppVariableData.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -10272,6 +10315,9 @@ export const WebAppData = {
         case 2:
           message.assets.push(AssetData.decode(reader, reader.uint32()));
           break;
+        case 3:
+          message.variables.push(WebAppVariableData.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -10284,6 +10330,9 @@ export const WebAppData = {
     return {
       appPages: Array.isArray(object?.appPages) ? object.appPages.map((e: any) => AppPageData.fromJSON(e)) : [],
       assets: Array.isArray(object?.assets) ? object.assets.map((e: any) => AssetData.fromJSON(e)) : [],
+      variables: Array.isArray(object?.variables)
+        ? object.variables.map((e: any) => WebAppVariableData.fromJSON(e))
+        : [],
     };
   },
 
@@ -10299,6 +10348,11 @@ export const WebAppData = {
     } else {
       obj.assets = [];
     }
+    if (message.variables) {
+      obj.variables = message.variables.map((e) => e ? WebAppVariableData.toJSON(e) : undefined);
+    } else {
+      obj.variables = [];
+    }
     return obj;
   },
 
@@ -10306,6 +10360,74 @@ export const WebAppData = {
     const message = createBaseWebApp();
     message.appPages = object.appPages?.map((e) => AppPageData.fromPartial(e)) || [];
     message.assets = object.assets?.map((e) => AssetData.fromPartial(e)) || [];
+    message.variables = object.variables?.map((e) => WebAppVariableData.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseWebAppVariable(): WebAppVariable {
+  return { type: 0, name: "", value: "" };
+}
+
+export const WebAppVariableData = {
+  encode(message: WebAppVariable, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.type !== 0) {
+      writer.uint32(8).int32(message.type);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
+    if (message.value !== "") {
+      writer.uint32(26).string(message.value);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): WebAppVariable {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseWebAppVariable();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.type = reader.int32() as any;
+          break;
+        case 2:
+          message.name = reader.string();
+          break;
+        case 3:
+          message.value = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): WebAppVariable {
+    return {
+      type: isSet(object.type) ? webAppVariableTypeFromJSON(object.type) : 0,
+      name: isSet(object.name) ? String(object.name) : "",
+      value: isSet(object.value) ? String(object.value) : "",
+    };
+  },
+
+  toJSON(message: WebAppVariable): unknown {
+    const obj: any = {};
+    message.type !== undefined && (obj.type = webAppVariableTypeToJSON(message.type));
+    message.name !== undefined && (obj.name = message.name);
+    message.value !== undefined && (obj.value = message.value);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<WebAppVariable>): WebAppVariable {
+    const message = createBaseWebAppVariable();
+    message.type = object.type ?? 0;
+    message.name = object.name ?? "";
+    message.value = object.value ?? "";
     return message;
   },
 };
