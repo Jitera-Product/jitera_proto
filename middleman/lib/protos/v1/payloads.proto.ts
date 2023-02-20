@@ -617,7 +617,7 @@ export class ControllerEndpoint {
   responses?: ControllerResponse;
   params?: ControllerRequestContent;
   writable: boolean;
-  action?: string | undefined;
+  featureAction?: string | undefined;
 }
 
 export class ControllerEndpointList {
@@ -4398,8 +4398,8 @@ export const ControllerEndpointData = {
     if (message.writable === true) {
       writer.uint32(112).bool(message.writable);
     }
-    if (message.action !== undefined) {
-      writer.uint32(122).string(message.action);
+    if (message.featureAction !== undefined) {
+      writer.uint32(122).string(message.featureAction);
     }
     return writer;
   },
@@ -4454,7 +4454,7 @@ export const ControllerEndpointData = {
           message.writable = reader.bool();
           break;
         case 15:
-          message.action = reader.string();
+          message.featureAction = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -4484,7 +4484,7 @@ export const ControllerEndpointData = {
       responses: isSet(object.responses) ? ControllerResponseData.fromJSON(object.responses) : undefined,
       params: isSet(object.params) ? ControllerRequestContentData.fromJSON(object.params) : undefined,
       writable: isSet(object.writable) ? Boolean(object.writable) : false,
-      action: isSet(object.action) ? String(object.action) : undefined,
+      featureAction: isSet(object.featureAction) ? String(object.featureAction) : undefined,
     };
   },
 
@@ -4516,7 +4516,7 @@ export const ControllerEndpointData = {
     message.params !== undefined &&
       (obj.params = message.params ? ControllerRequestContentData.toJSON(message.params) : undefined);
     message.writable !== undefined && (obj.writable = message.writable);
-    message.action !== undefined && (obj.action = message.action);
+    message.featureAction !== undefined && (obj.featureAction = message.featureAction);
     return obj;
   },
 
@@ -4554,7 +4554,7 @@ export const ControllerEndpointData = {
       ? ControllerRequestContentData.fromPartial(object.params)
       : undefined;
     message.writable = object.writable ?? false;
-    message.action = object.action ?? undefined;
+    message.featureAction = object.featureAction ?? undefined;
     return message;
   },
 };
