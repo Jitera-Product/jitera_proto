@@ -618,6 +618,7 @@ export interface ControllerEndpoint {
   params?: ControllerRequestContent;
   writable: boolean;
   featureAction?: string | undefined;
+  featureTable?: string | undefined;
 }
 
 export interface ControllerEndpointList {
@@ -4430,6 +4431,9 @@ export const ControllerEndpoint = {
     if (message.featureAction !== undefined) {
       writer.uint32(122).string(message.featureAction);
     }
+    if (message.featureTable !== undefined) {
+      writer.uint32(130).string(message.featureTable);
+    }
     return writer;
   },
 
@@ -4485,6 +4489,9 @@ export const ControllerEndpoint = {
         case 15:
           message.featureAction = reader.string();
           break;
+        case 16:
+          message.featureTable = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -4512,6 +4519,7 @@ export const ControllerEndpoint = {
       params: isSet(object.params) ? ControllerRequestContent.fromJSON(object.params) : undefined,
       writable: isSet(object.writable) ? Boolean(object.writable) : false,
       featureAction: isSet(object.featureAction) ? String(object.featureAction) : undefined,
+      featureTable: isSet(object.featureTable) ? String(object.featureTable) : undefined,
     };
   },
 
@@ -4542,6 +4550,7 @@ export const ControllerEndpoint = {
       (obj.params = message.params ? ControllerRequestContent.toJSON(message.params) : undefined);
     message.writable !== undefined && (obj.writable = message.writable);
     message.featureAction !== undefined && (obj.featureAction = message.featureAction);
+    message.featureTable !== undefined && (obj.featureTable = message.featureTable);
     return obj;
   },
 
@@ -4580,6 +4589,7 @@ export const ControllerEndpoint = {
       : undefined;
     message.writable = object.writable ?? false;
     message.featureAction = object.featureAction ?? undefined;
+    message.featureTable = object.featureTable ?? undefined;
     return message;
   },
 };
