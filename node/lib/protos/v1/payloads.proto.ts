@@ -1326,6 +1326,7 @@ export interface WebApp {
   appPages: AppPage[];
   assets: Asset[];
   variables: WebAppVariable[];
+  categories: AppPageCategory[];
 }
 
 export enum WebAppVariableType {
@@ -1381,6 +1382,7 @@ export interface AppPage {
   slug: string;
   pageType: AppPagePageType;
   nodes: PageNode[];
+  categoryId: string;
 }
 
 export enum AppPagePageType {
@@ -1414,6 +1416,11 @@ export function appPagePageTypeToJSON(object: AppPagePageType): string {
     default:
       return "UNRECOGNIZED";
   }
+}
+
+export interface AppPageCategory {
+  id: string;
+  name: string;
 }
 
 export interface PageNode {
@@ -10234,7 +10241,7 @@ export const TableRelationMigration = {
 };
 
 function createBaseWebApp(): WebApp {
-  return { appPages: [], assets: [], variables: [] };
+  return { appPages: [], assets: [], variables: [], categories: [] };
 }
 
 export const WebApp = {
@@ -10247,6 +10254,9 @@ export const WebApp = {
     }
     for (const v of message.variables) {
       WebAppVariable.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    for (const v of message.categories) {
+      AppPageCategory.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -10267,6 +10277,9 @@ export const WebApp = {
         case 3:
           message.variables.push(WebAppVariable.decode(reader, reader.uint32()));
           break;
+        case 4:
+          message.categories.push(AppPageCategory.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -10280,6 +10293,9 @@ export const WebApp = {
       appPages: Array.isArray(object?.appPages) ? object.appPages.map((e: any) => AppPage.fromJSON(e)) : [],
       assets: Array.isArray(object?.assets) ? object.assets.map((e: any) => Asset.fromJSON(e)) : [],
       variables: Array.isArray(object?.variables) ? object.variables.map((e: any) => WebAppVariable.fromJSON(e)) : [],
+      categories: Array.isArray(object?.categories)
+        ? object.categories.map((e: any) => AppPageCategory.fromJSON(e))
+        : [],
     };
   },
 
@@ -10300,6 +10316,11 @@ export const WebApp = {
     } else {
       obj.variables = [];
     }
+    if (message.categories) {
+      obj.categories = message.categories.map((e) => e ? AppPageCategory.toJSON(e) : undefined);
+    } else {
+      obj.categories = [];
+    }
     return obj;
   },
 
@@ -10308,6 +10329,7 @@ export const WebApp = {
     message.appPages = object.appPages?.map((e) => AppPage.fromPartial(e)) || [];
     message.assets = object.assets?.map((e) => Asset.fromPartial(e)) || [];
     message.variables = object.variables?.map((e) => WebAppVariable.fromPartial(e)) || [];
+    message.categories = object.categories?.map((e) => AppPageCategory.fromPartial(e)) || [];
     return message;
   },
 };
@@ -10465,7 +10487,7 @@ export const Asset = {
 };
 
 function createBaseAppPage(): AppPage {
-  return { id: "", pageName: "", slug: "", pageType: 0, nodes: [] };
+  return { id: "", pageName: "", slug: "", pageType: 0, nodes: [], categoryId: "" };
 }
 
 export const AppPage = {
@@ -10484,6 +10506,9 @@ export const AppPage = {
     }
     for (const v of message.nodes) {
       PageNode.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
+    if (message.categoryId !== "") {
+      writer.uint32(50).string(message.categoryId);
     }
     return writer;
   },
@@ -10510,6 +10535,9 @@ export const AppPage = {
         case 5:
           message.nodes.push(PageNode.decode(reader, reader.uint32()));
           break;
+        case 6:
+          message.categoryId = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -10525,6 +10553,7 @@ export const AppPage = {
       slug: isSet(object.slug) ? String(object.slug) : "",
       pageType: isSet(object.pageType) ? appPagePageTypeFromJSON(object.pageType) : 0,
       nodes: Array.isArray(object?.nodes) ? object.nodes.map((e: any) => PageNode.fromJSON(e)) : [],
+      categoryId: isSet(object.categoryId) ? String(object.categoryId) : "",
     };
   },
 
@@ -10539,6 +10568,7 @@ export const AppPage = {
     } else {
       obj.nodes = [];
     }
+    message.categoryId !== undefined && (obj.categoryId = message.categoryId);
     return obj;
   },
 
@@ -10549,6 +10579,62 @@ export const AppPage = {
     message.slug = object.slug ?? "";
     message.pageType = object.pageType ?? 0;
     message.nodes = object.nodes?.map((e) => PageNode.fromPartial(e)) || [];
+    message.categoryId = object.categoryId ?? "";
+    return message;
+  },
+};
+
+function createBaseAppPageCategory(): AppPageCategory {
+  return { id: "", name: "" };
+}
+
+export const AppPageCategory = {
+  encode(message: AppPageCategory, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): AppPageCategory {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAppPageCategory();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.string();
+          break;
+        case 2:
+          message.name = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AppPageCategory {
+    return { id: isSet(object.id) ? String(object.id) : "", name: isSet(object.name) ? String(object.name) : "" };
+  },
+
+  toJSON(message: AppPageCategory): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    message.name !== undefined && (obj.name = message.name);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<AppPageCategory>): AppPageCategory {
+    const message = createBaseAppPageCategory();
+    message.id = object.id ?? "";
+    message.name = object.name ?? "";
     return message;
   },
 };
