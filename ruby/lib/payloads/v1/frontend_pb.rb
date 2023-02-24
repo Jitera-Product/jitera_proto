@@ -11,6 +11,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       repeated :app_pages, :message, 1, "schema.v1.AppPage"
       repeated :assets, :message, 2, "schema.v1.Asset"
       repeated :variables, :message, 3, "schema.v1.WebApp.Variable"
+      repeated :categories, :message, 4, "schema.v1.AppPageCategory"
     end
     add_message "schema.v1.WebApp.Variable" do
       optional :type, :enum, 1, "schema.v1.WebApp.VariableType"
@@ -34,10 +35,15 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :slug, :string, 3
       optional :page_type, :enum, 4, "schema.v1.AppPage.PageType"
       repeated :nodes, :message, 5, "schema.v1.PageNode"
+      optional :category_id, :string, 6
     end
     add_enum "schema.v1.AppPage.PageType" do
       value :SCREEN, 0
       value :MOLECULE, 1
+    end
+    add_message "schema.v1.AppPageCategory" do
+      optional :id, :string, 1
+      optional :name, :string, 2
     end
     add_message "schema.v1.PageNode" do
       optional :id, :string, 1
@@ -450,6 +456,7 @@ module Schema
     Asset = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Asset").msgclass
     AppPage = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.AppPage").msgclass
     AppPage::PageType = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.AppPage.PageType").enummodule
+    AppPageCategory = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.AppPageCategory").msgclass
     PageNode = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.PageNode").msgclass
     WebNodeProps = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.WebNodeProps").msgclass
     WebNodeProps::TableColumn = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.WebNodeProps.TableColumn").msgclass
