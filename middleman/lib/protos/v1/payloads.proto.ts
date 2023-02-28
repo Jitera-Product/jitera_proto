@@ -1,7 +1,7 @@
 /* eslint-disable */
 import type { CallContext, CallOptions } from "nice-grpc-common";
 import * as _m0 from "protobufjs/minimal";
-import { Struct, StructData } from "../google/protobuf/struct.proto";
+import { Struct } from "../google/protobuf/struct.proto";
 
 export enum DataTypeName {
   BOOLEAN = 0,
@@ -376,6 +376,7 @@ export class Feature {
   deepLink?: FeatureDeepLink | undefined;
   stripe?: FeatureStripe | undefined;
   lineLogin?: FeatureLineLogin | undefined;
+  googleAnalytics?: FeatureGoogleAnalytics | undefined;
 }
 
 export enum FeatureFeatureName {
@@ -388,6 +389,7 @@ export enum FeatureFeatureName {
   DEEP_LINK = 6,
   STRIPE = 7,
   LINE_LOGIN = 8,
+  GOOGLE_ANALYTICS = 9,
   UNRECOGNIZED = -1,
 }
 
@@ -420,6 +422,9 @@ export function featureFeatureNameFromJSON(object: any): FeatureFeatureName {
     case 8:
     case "LINE_LOGIN":
       return FeatureFeatureName.LINE_LOGIN;
+    case 9:
+    case "GOOGLE_ANALYTICS":
+      return FeatureFeatureName.GOOGLE_ANALYTICS;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -447,6 +452,8 @@ export function featureFeatureNameToJSON(object: FeatureFeatureName): string {
       return "STRIPE";
     case FeatureFeatureName.LINE_LOGIN:
       return "LINE_LOGIN";
+    case FeatureFeatureName.GOOGLE_ANALYTICS:
+      return "GOOGLE_ANALYTICS";
     case FeatureFeatureName.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -595,6 +602,10 @@ export class FeatureLineLogin {
   userTables: string[];
   clientId: string;
   secretKey: string;
+}
+
+export class FeatureGoogleAnalytics {
+  measurementId: string;
 }
 
 export class Controller {
@@ -3524,6 +3535,9 @@ export const FeatureData = {
     if (message.lineLogin !== undefined) {
       FeatureLineLoginData.encode(message.lineLogin, writer.uint32(82).fork()).ldelim();
     }
+    if (message.googleAnalytics !== undefined) {
+      FeatureGoogleAnalyticsData.encode(message.googleAnalytics, writer.uint32(90).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -3564,6 +3578,9 @@ export const FeatureData = {
         case 10:
           message.lineLogin = FeatureLineLoginData.decode(reader, reader.uint32());
           break;
+        case 11:
+          message.googleAnalytics = FeatureGoogleAnalyticsData.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3584,6 +3601,9 @@ export const FeatureData = {
       deepLink: isSet(object.deepLink) ? FeatureDeepLinkData.fromJSON(object.deepLink) : undefined,
       stripe: isSet(object.stripe) ? FeatureStripeData.fromJSON(object.stripe) : undefined,
       lineLogin: isSet(object.lineLogin) ? FeatureLineLoginData.fromJSON(object.lineLogin) : undefined,
+      googleAnalytics: isSet(object.googleAnalytics)
+        ? FeatureGoogleAnalyticsData.fromJSON(object.googleAnalytics)
+        : undefined,
     };
   },
 
@@ -3607,6 +3627,9 @@ export const FeatureData = {
       (obj.stripe = message.stripe ? FeatureStripeData.toJSON(message.stripe) : undefined);
     message.lineLogin !== undefined &&
       (obj.lineLogin = message.lineLogin ? FeatureLineLoginData.toJSON(message.lineLogin) : undefined);
+    message.googleAnalytics !== undefined && (obj.googleAnalytics = message.googleAnalytics
+      ? FeatureGoogleAnalyticsData.toJSON(message.googleAnalytics)
+      : undefined);
     return obj;
   },
 
@@ -3637,6 +3660,9 @@ export const FeatureData = {
       : undefined;
     message.lineLogin = (object.lineLogin !== undefined && object.lineLogin !== null)
       ? FeatureLineLoginData.fromPartial(object.lineLogin)
+      : undefined;
+    message.googleAnalytics = (object.googleAnalytics !== undefined && object.googleAnalytics !== null)
+      ? FeatureGoogleAnalyticsData.fromPartial(object.googleAnalytics)
       : undefined;
     return message;
   },
@@ -4330,6 +4356,53 @@ export const FeatureLineLoginData = {
     message.userTables = object.userTables?.map((e) => e) || [];
     message.clientId = object.clientId ?? "";
     message.secretKey = object.secretKey ?? "";
+    return message;
+  },
+};
+
+function createBaseFeatureGoogleAnalytics(): FeatureGoogleAnalytics {
+  return { measurementId: "" };
+}
+
+export const FeatureGoogleAnalyticsData = {
+  encode(message: FeatureGoogleAnalytics, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.measurementId !== "") {
+      writer.uint32(10).string(message.measurementId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): FeatureGoogleAnalytics {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseFeatureGoogleAnalytics();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.measurementId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): FeatureGoogleAnalytics {
+    return { measurementId: isSet(object.measurementId) ? String(object.measurementId) : "" };
+  },
+
+  toJSON(message: FeatureGoogleAnalytics): unknown {
+    const obj: any = {};
+    message.measurementId !== undefined && (obj.measurementId = message.measurementId);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<FeatureGoogleAnalytics>): FeatureGoogleAnalytics {
+    const message = createBaseFeatureGoogleAnalytics();
+    message.measurementId = object.measurementId ?? "";
     return message;
   },
 };
@@ -11078,16 +11151,16 @@ export const WebNodePropsData = {
       writer.uint32(344).int32(message.xxl);
     }
     if (message.grid !== undefined) {
-      StructData.encode(StructData.wrap(message.grid), writer.uint32(354).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.grid), writer.uint32(354).fork()).ldelim();
     }
     if (message.xlResponsive !== undefined) {
-      StructData.encode(StructData.wrap(message.xlResponsive), writer.uint32(362).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.xlResponsive), writer.uint32(362).fork()).ldelim();
     }
     if (message.mdResponsive !== undefined) {
-      StructData.encode(StructData.wrap(message.mdResponsive), writer.uint32(370).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.mdResponsive), writer.uint32(370).fork()).ldelim();
     }
     if (message.xsResponsive !== undefined) {
-      StructData.encode(StructData.wrap(message.xsResponsive), writer.uint32(378).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.xsResponsive), writer.uint32(378).fork()).ldelim();
     }
     if (message.picker !== undefined) {
       writer.uint32(386).string(message.picker);
@@ -11144,10 +11217,10 @@ export const WebNodePropsData = {
       writer.uint32(522).string(message.tabPosition);
     }
     if (message.tabs !== undefined) {
-      StructData.encode(StructData.wrap(message.tabs), writer.uint32(530).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.tabs), writer.uint32(530).fork()).ldelim();
     }
     if (message.tabLabelStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.tabLabelStyle), writer.uint32(538).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.tabLabelStyle), writer.uint32(538).fork()).ldelim();
     }
     if (message.defaultActiveKey !== undefined) {
       writer.uint32(546).string(message.defaultActiveKey);
@@ -11171,70 +11244,70 @@ export const WebNodePropsData = {
       writer.uint32(592).int32(message.pageSize);
     }
     if (message.bodyStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.bodyStyle), writer.uint32(602).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.bodyStyle), writer.uint32(602).fork()).ldelim();
     }
     if (message.placeholderStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.placeholderStyle), writer.uint32(610).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.placeholderStyle), writer.uint32(610).fork()).ldelim();
     }
     if (message.containerStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.containerStyle), writer.uint32(618).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.containerStyle), writer.uint32(618).fork()).ldelim();
     }
     if (message.dropdownStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.dropdownStyle), writer.uint32(626).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.dropdownStyle), writer.uint32(626).fork()).ldelim();
     }
     if (message.optionStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.optionStyle), writer.uint32(634).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.optionStyle), writer.uint32(634).fork()).ldelim();
     }
     if (message.cellStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.cellStyle), writer.uint32(642).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.cellStyle), writer.uint32(642).fork()).ldelim();
     }
     if (message.cellTextStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.cellTextStyle), writer.uint32(650).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.cellTextStyle), writer.uint32(650).fork()).ldelim();
     }
     if (message.style !== undefined) {
-      StructData.encode(StructData.wrap(message.style), writer.uint32(658).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.style), writer.uint32(658).fork()).ldelim();
     }
     if (message.buttonStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.buttonStyle), writer.uint32(666).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.buttonStyle), writer.uint32(666).fork()).ldelim();
     }
     if (message.headerStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.headerStyle), writer.uint32(674).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.headerStyle), writer.uint32(674).fork()).ldelim();
     }
     if (message.wrapperStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.wrapperStyle), writer.uint32(682).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.wrapperStyle), writer.uint32(682).fork()).ldelim();
     }
     if (message.tableStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.tableStyle), writer.uint32(690).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.tableStyle), writer.uint32(690).fork()).ldelim();
     }
     if (message.headerRowStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.headerRowStyle), writer.uint32(698).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.headerRowStyle), writer.uint32(698).fork()).ldelim();
     }
     if (message.headerColumnStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.headerColumnStyle), writer.uint32(706).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.headerColumnStyle), writer.uint32(706).fork()).ldelim();
     }
     if (message.bodyRowStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.bodyRowStyle), writer.uint32(714).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.bodyRowStyle), writer.uint32(714).fork()).ldelim();
     }
     if (message.bodyColumnStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.bodyColumnStyle), writer.uint32(722).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.bodyColumnStyle), writer.uint32(722).fork()).ldelim();
     }
     if (message.sortColumnStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.sortColumnStyle), writer.uint32(730).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.sortColumnStyle), writer.uint32(730).fork()).ldelim();
     }
     if (message.footerRowStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.footerRowStyle), writer.uint32(738).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.footerRowStyle), writer.uint32(738).fork()).ldelim();
     }
     if (message.footerColumnStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.footerColumnStyle), writer.uint32(746).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.footerColumnStyle), writer.uint32(746).fork()).ldelim();
     }
     if (message.paginationWrapperStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.paginationWrapperStyle), writer.uint32(754).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.paginationWrapperStyle), writer.uint32(754).fork()).ldelim();
     }
     if (message.labelStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.labelStyle), writer.uint32(762).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.labelStyle), writer.uint32(762).fork()).ldelim();
     }
     if (message.inputStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.inputStyle), writer.uint32(770).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.inputStyle), writer.uint32(770).fork()).ldelim();
     }
     if (message.ascendingIconProps !== undefined) {
       WebNodePropsData.encode(message.ascendingIconProps, writer.uint32(778).fork()).ldelim();
@@ -11464,16 +11537,16 @@ export const WebNodePropsData = {
           message.xxl = reader.int32();
           break;
         case 44:
-          message.grid = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.grid = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 45:
-          message.xlResponsive = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.xlResponsive = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 46:
-          message.mdResponsive = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.mdResponsive = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 47:
-          message.xsResponsive = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.xsResponsive = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 48:
           message.picker = reader.string();
@@ -11530,10 +11603,10 @@ export const WebNodePropsData = {
           message.tabPosition = reader.string();
           break;
         case 66:
-          message.tabs = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.tabs = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 67:
-          message.tabLabelStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.tabLabelStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 68:
           message.defaultActiveKey = reader.string();
@@ -11557,70 +11630,70 @@ export const WebNodePropsData = {
           message.pageSize = reader.int32();
           break;
         case 75:
-          message.bodyStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.bodyStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 76:
-          message.placeholderStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.placeholderStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 77:
-          message.containerStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.containerStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 78:
-          message.dropdownStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.dropdownStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 79:
-          message.optionStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.optionStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 80:
-          message.cellStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.cellStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 81:
-          message.cellTextStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.cellTextStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 82:
-          message.style = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.style = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 83:
-          message.buttonStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.buttonStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 84:
-          message.headerStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.headerStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 85:
-          message.wrapperStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.wrapperStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 86:
-          message.tableStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.tableStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 87:
-          message.headerRowStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.headerRowStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 88:
-          message.headerColumnStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.headerColumnStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 89:
-          message.bodyRowStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.bodyRowStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 90:
-          message.bodyColumnStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.bodyColumnStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 91:
-          message.sortColumnStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.sortColumnStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 92:
-          message.footerRowStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.footerRowStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 93:
-          message.footerColumnStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.footerColumnStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 94:
-          message.paginationWrapperStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.paginationWrapperStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 95:
-          message.labelStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.labelStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 96:
-          message.inputStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.inputStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 97:
           message.ascendingIconProps = WebNodePropsData.decode(reader, reader.uint32());
@@ -12524,28 +12597,28 @@ export const MobileNodePropsData = {
       writer.uint32(378).string(message.borderBottomColor);
     }
     if (message.style !== undefined) {
-      StructData.encode(StructData.wrap(message.style), writer.uint32(386).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.style), writer.uint32(386).fork()).ldelim();
     }
     if (message.contentContainerStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.contentContainerStyle), writer.uint32(394).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.contentContainerStyle), writer.uint32(394).fork()).ldelim();
     }
     if (message.inputStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.inputStyle), writer.uint32(402).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.inputStyle), writer.uint32(402).fork()).ldelim();
     }
     if (message.labelStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.labelStyle), writer.uint32(410).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.labelStyle), writer.uint32(410).fork()).ldelim();
     }
     if (message.characterCounterStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.characterCounterStyle), writer.uint32(418).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.characterCounterStyle), writer.uint32(418).fork()).ldelim();
     }
     if (message.cellStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.cellStyle), writer.uint32(426).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.cellStyle), writer.uint32(426).fork()).ldelim();
     }
     if (message.cellTextStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.cellTextStyle), writer.uint32(434).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.cellTextStyle), writer.uint32(434).fork()).ldelim();
     }
     if (message.titleStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.titleStyle), writer.uint32(442).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.titleStyle), writer.uint32(442).fork()).ldelim();
     }
     if (message.renderItem !== undefined) {
       RenderMoleculeData.encode(message.renderItem, writer.uint32(450).fork()).ldelim();
@@ -12738,28 +12811,28 @@ export const MobileNodePropsData = {
           message.borderBottomColor = reader.string();
           break;
         case 48:
-          message.style = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.style = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 49:
-          message.contentContainerStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.contentContainerStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 50:
-          message.inputStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.inputStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 51:
-          message.labelStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.labelStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 52:
-          message.characterCounterStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.characterCounterStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 53:
-          message.cellStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.cellStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 54:
-          message.cellTextStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.cellTextStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 55:
-          message.titleStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.titleStyle = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 56:
           message.renderItem = RenderMoleculeData.decode(reader, reader.uint32());
@@ -13184,7 +13257,7 @@ export const NodeReferenceData = {
       writer.uint32(18).string(message.refId);
     }
     if (message.refData !== undefined) {
-      StructData.encode(StructData.wrap(message.refData), writer.uint32(26).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.refData), writer.uint32(26).fork()).ldelim();
     }
     if (message.value !== "") {
       writer.uint32(34).string(message.value);
@@ -13209,7 +13282,7 @@ export const NodeReferenceData = {
           message.refId = reader.string();
           break;
         case 3:
-          message.refData = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.refData = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 4:
           message.value = reader.string();
@@ -14173,7 +14246,7 @@ export const NodeMediaQueryData = {
       writer.uint32(16).int32(message.upper);
     }
     if (message.style !== undefined) {
-      StructData.encode(StructData.wrap(message.style), writer.uint32(26).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.style), writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -14192,7 +14265,7 @@ export const NodeMediaQueryData = {
           message.upper = reader.int32();
           break;
         case 3:
-          message.style = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.style = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);

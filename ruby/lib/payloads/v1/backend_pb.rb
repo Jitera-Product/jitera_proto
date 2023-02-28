@@ -101,6 +101,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
         optional :deep_link, :message, 8, "schema.v1.Feature.DeepLink"
         optional :stripe, :message, 9, "schema.v1.Feature.Stripe"
         optional :line_login, :message, 10, "schema.v1.Feature.LineLogin"
+        optional :google_analytics, :message, 11, "schema.v1.Feature.GoogleAnalytics"
       end
     end
     add_message "schema.v1.Feature.EmailLogin" do
@@ -160,6 +161,9 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :client_id, :string, 2
       optional :secret_key, :string, 3
     end
+    add_message "schema.v1.Feature.GoogleAnalytics" do
+      optional :measurement_id, :string, 1
+    end
     add_enum "schema.v1.Feature.FeatureName" do
       value :NIL, 0
       value :EMAIL_LOGIN, 1
@@ -170,6 +174,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       value :DEEP_LINK, 6
       value :STRIPE, 7
       value :LINE_LOGIN, 8
+      value :GOOGLE_ANALYTICS, 9
     end
     add_enum "schema.v1.Feature.Environment" do
       value :DEVELOPMENT, 0
@@ -732,6 +737,7 @@ module Schema
     Feature::DeepLink = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Feature.DeepLink").msgclass
     Feature::Stripe = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Feature.Stripe").msgclass
     Feature::LineLogin = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Feature.LineLogin").msgclass
+    Feature::GoogleAnalytics = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Feature.GoogleAnalytics").msgclass
     Feature::FeatureName = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Feature.FeatureName").enummodule
     Feature::Environment = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Feature.Environment").enummodule
     Controller = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Controller").msgclass

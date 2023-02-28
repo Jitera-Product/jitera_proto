@@ -159,6 +159,7 @@ message Feature {
 		DeepLink deep_link = 8;
 		Stripe stripe = 9;
 		LineLogin line_login = 10;
+		GoogleAnalytics google_analytics = 11;
 	}
 
 	message EmailLogin {
@@ -226,6 +227,10 @@ message Feature {
 		string secret_key = 3;
 	}
 
+	message GoogleAnalytics {
+		string measurement_id = 1;
+	}
+
 	enum FeatureName {
 		NIL = 0;
 		EMAIL_LOGIN = 1;
@@ -236,6 +241,7 @@ message Feature {
 		DEEP_LINK = 6;
 		STRIPE = 7;
 		LINE_LOGIN = 8;
+		GOOGLE_ANALYTICS = 9;
 	}
 
 	enum Environment {

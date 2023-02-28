@@ -3,6 +3,9 @@
 
 require 'google/protobuf'
 
+require 'v1/backend_pb'
+require 'v1/frontend_pb'
+
 Google::Protobuf::DescriptorPool.generated_pool.build do
   add_file("v1/service.proto", :syntax => :proto3) do
     add_message "schema.v1.GetWebAppRequest" do

@@ -2,6 +2,7 @@
 # Source: v1/service.proto for package 'schema.v1'
 
 require 'grpc'
+require 'v1/service_pb'
 
 module Schema
   module V1
