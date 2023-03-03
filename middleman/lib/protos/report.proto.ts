@@ -6,6 +6,7 @@ export class Report {
   projectId: number;
   progress?: ReportProgress | undefined;
   complete?: ReportComplete | undefined;
+  error?: ReportError | undefined;
   projectExport?: ReportProjectExport | undefined;
   projectPreview?: ReportProjectPreview | undefined;
 }
@@ -27,6 +28,10 @@ export class ReportProjectPreview {
   id: number;
 }
 
+export class ReportError {
+  message: string;
+}
+
 function createBaseReport(): Report {
   return { projectName: "", projectId: 0 };
 }
@@ -45,11 +50,14 @@ export const ReportData = {
     if (message.complete !== undefined) {
       ReportCompleteData.encode(message.complete, writer.uint32(34).fork()).ldelim();
     }
+    if (message.error !== undefined) {
+      ReportErrorData.encode(message.error, writer.uint32(42).fork()).ldelim();
+    }
     if (message.projectExport !== undefined) {
-      ReportProjectExportData.encode(message.projectExport, writer.uint32(42).fork()).ldelim();
+      ReportProjectExportData.encode(message.projectExport, writer.uint32(50).fork()).ldelim();
     }
     if (message.projectPreview !== undefined) {
-      ReportProjectPreviewData.encode(message.projectPreview, writer.uint32(50).fork()).ldelim();
+      ReportProjectPreviewData.encode(message.projectPreview, writer.uint32(58).fork()).ldelim();
     }
     return writer;
   },
@@ -74,9 +82,12 @@ export const ReportData = {
           message.complete = ReportCompleteData.decode(reader, reader.uint32());
           break;
         case 5:
-          message.projectExport = ReportProjectExportData.decode(reader, reader.uint32());
+          message.error = ReportErrorData.decode(reader, reader.uint32());
           break;
         case 6:
+          message.projectExport = ReportProjectExportData.decode(reader, reader.uint32());
+          break;
+        case 7:
           message.projectPreview = ReportProjectPreviewData.decode(reader, reader.uint32());
           break;
         default:
@@ -93,6 +104,7 @@ export const ReportData = {
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       progress: isSet(object.progress) ? ReportProgressData.fromJSON(object.progress) : undefined,
       complete: isSet(object.complete) ? ReportCompleteData.fromJSON(object.complete) : undefined,
+      error: isSet(object.error) ? ReportErrorData.fromJSON(object.error) : undefined,
       projectExport: isSet(object.projectExport) ? ReportProjectExportData.fromJSON(object.projectExport) : undefined,
       projectPreview: isSet(object.projectPreview)
         ? ReportProjectPreviewData.fromJSON(object.projectPreview)
@@ -108,6 +120,7 @@ export const ReportData = {
       (obj.progress = message.progress ? ReportProgressData.toJSON(message.progress) : undefined);
     message.complete !== undefined &&
       (obj.complete = message.complete ? ReportCompleteData.toJSON(message.complete) : undefined);
+    message.error !== undefined && (obj.error = message.error ? ReportErrorData.toJSON(message.error) : undefined);
     message.projectExport !== undefined &&
       (obj.projectExport = message.projectExport ? ReportProjectExportData.toJSON(message.projectExport) : undefined);
     message.projectPreview !== undefined &&
@@ -126,6 +139,9 @@ export const ReportData = {
       : undefined;
     message.complete = (object.complete !== undefined && object.complete !== null)
       ? ReportCompleteData.fromPartial(object.complete)
+      : undefined;
+    message.error = (object.error !== undefined && object.error !== null)
+      ? ReportErrorData.fromPartial(object.error)
       : undefined;
     message.projectExport = (object.projectExport !== undefined && object.projectExport !== null)
       ? ReportProjectExportData.fromPartial(object.projectExport)
@@ -332,6 +348,53 @@ export const ReportProjectPreviewData = {
   fromPartial(object: DeepPartial<ReportProjectPreview>): ReportProjectPreview {
     const message = createBaseReportProjectPreview();
     message.id = object.id ?? 0;
+    return message;
+  },
+};
+
+function createBaseReportError(): ReportError {
+  return { message: "" };
+}
+
+export const ReportErrorData = {
+  encode(message: ReportError, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.message !== "") {
+      writer.uint32(10).string(message.message);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ReportError {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReportError();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.message = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReportError {
+    return { message: isSet(object.message) ? String(object.message) : "" };
+  },
+
+  toJSON(message: ReportError): unknown {
+    const obj: any = {};
+    message.message !== undefined && (obj.message = message.message);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ReportError>): ReportError {
+    const message = createBaseReportError();
+    message.message = object.message ?? "";
     return message;
   },
 };

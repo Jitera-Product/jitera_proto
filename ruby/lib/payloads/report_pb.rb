@@ -11,10 +11,11 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       oneof :state do
         optional :progress, :message, 3, "schema.v1.Report.Progress"
         optional :complete, :message, 4, "schema.v1.Report.Complete"
+        optional :error, :message, 5, "schema.v1.Report.Error"
       end
       oneof :report_type do
-        optional :project_export, :message, 5, "schema.v1.Report.ProjectExport"
-        optional :project_preview, :message, 6, "schema.v1.Report.ProjectPreview"
+        optional :project_export, :message, 6, "schema.v1.Report.ProjectExport"
+        optional :project_preview, :message, 7, "schema.v1.Report.ProjectPreview"
       end
     end
     add_message "schema.v1.Report.Progress" do
@@ -30,6 +31,9 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     add_message "schema.v1.Report.ProjectPreview" do
       optional :id, :int32, 1
     end
+    add_message "schema.v1.Report.Error" do
+      optional :message, :string, 1
+    end
   end
 end
 
@@ -40,5 +44,6 @@ module Schema
     Report::Complete = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Report.Complete").msgclass
     Report::ProjectExport = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Report.ProjectExport").msgclass
     Report::ProjectPreview = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Report.ProjectPreview").msgclass
+    Report::Error = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Report.Error").msgclass
   end
 end

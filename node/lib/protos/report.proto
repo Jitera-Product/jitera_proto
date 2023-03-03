@@ -8,11 +8,12 @@ message Report {
 	oneof state {
 		Progress progress = 3;
 		Complete complete = 4;
+		Error error = 5;
 	}
 
 	oneof report_type {
-		ProjectExport project_export = 5;
-		ProjectPreview project_preview = 6;
+		ProjectExport project_export = 6;
+		ProjectPreview project_preview = 7;
 	}
 
 	message Progress {
@@ -30,5 +31,9 @@ message Report {
 
 	message ProjectPreview {
 		int32 id = 1;
+	}
+
+	message Error {
+		string message = 1;
 	}
 }
