@@ -391,6 +391,8 @@ message Table {
 		string name = 1;
 		ColumnType type = 2;
 		repeated Constraint constraints = 3;
+		optional bool hidden = 4;
+		optional ColumnValidation column_validation = 5;
 
 		message ColumnType {
 			oneof types {
@@ -502,6 +504,51 @@ message Table {
 			string default_value = 1;
 			repeated string values = 2;
 		 }
+	}
+
+	message ColumnValidation {
+		repeated ColumnValidationOption column_validation_options = 1;
+		bool presence = 2;
+		bool uniqueness = 3;
+		bool allow_nil = 4;
+	}
+
+	message ColumnValidationOption {
+		oneof validation_type {
+			LengthValidation length_validation = 1;
+			CharValidation char_validation = 2;
+			DateValidation  date_validation = 3;
+			DateValidation date_time_validation = 4;
+			NumericalityValidation numericality_validation = 5;
+			FileValidation file_validation = 6;
+		}
+		message LengthValidation {
+			int32 maximum = 1;
+			int32 minimum = 2;
+			int32 is = 3;
+		}
+		message CharValidation {
+			bool email = 1;
+			bool hiragana = 2;
+			bool katakana = 3;
+			bool phone_number = 4;
+			bool url = 5;
+		}
+		message DateValidation {
+			bool past = 1;
+			bool future = 2;
+		}
+		message NumericalityValidation {
+			int32 greater_than = 1;
+			int32 greater_than_or_equal_to = 2;
+			int32 less_than = 3;
+			int32 less_than_or_equal_to = 4;
+		}
+
+		message FileValidation {
+			bool single = 1;
+			repeated string content_types = 2;
+		}
 	}
 
 	message Constraint {
