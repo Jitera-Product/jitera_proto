@@ -376,6 +376,7 @@ export class Feature {
   deepLink?: FeatureDeepLink | undefined;
   stripe?: FeatureStripe | undefined;
   lineLogin?: FeatureLineLogin | undefined;
+  googleAnalytics?: FeatureGoogleAnalytics | undefined;
 }
 
 export enum FeatureFeatureName {
@@ -388,6 +389,7 @@ export enum FeatureFeatureName {
   DEEP_LINK = 6,
   STRIPE = 7,
   LINE_LOGIN = 8,
+  GOOGLE_ANALYTICS = 9,
   UNRECOGNIZED = -1,
 }
 
@@ -420,6 +422,9 @@ export function featureFeatureNameFromJSON(object: any): FeatureFeatureName {
     case 8:
     case "LINE_LOGIN":
       return FeatureFeatureName.LINE_LOGIN;
+    case 9:
+    case "GOOGLE_ANALYTICS":
+      return FeatureFeatureName.GOOGLE_ANALYTICS;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -447,6 +452,8 @@ export function featureFeatureNameToJSON(object: FeatureFeatureName): string {
       return "STRIPE";
     case FeatureFeatureName.LINE_LOGIN:
       return "LINE_LOGIN";
+    case FeatureFeatureName.GOOGLE_ANALYTICS:
+      return "GOOGLE_ANALYTICS";
     case FeatureFeatureName.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -595,6 +602,10 @@ export class FeatureLineLogin {
   userTables: string[];
   clientId: string;
   secretKey: string;
+}
+
+export class FeatureGoogleAnalytics {
+  measurementId: string;
 }
 
 export class Controller {
@@ -3573,6 +3584,9 @@ export const FeatureData = {
     if (message.lineLogin !== undefined) {
       FeatureLineLoginData.encode(message.lineLogin, writer.uint32(82).fork()).ldelim();
     }
+    if (message.googleAnalytics !== undefined) {
+      FeatureGoogleAnalyticsData.encode(message.googleAnalytics, writer.uint32(90).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -3613,6 +3627,9 @@ export const FeatureData = {
         case 10:
           message.lineLogin = FeatureLineLoginData.decode(reader, reader.uint32());
           break;
+        case 11:
+          message.googleAnalytics = FeatureGoogleAnalyticsData.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3633,6 +3650,9 @@ export const FeatureData = {
       deepLink: isSet(object.deepLink) ? FeatureDeepLinkData.fromJSON(object.deepLink) : undefined,
       stripe: isSet(object.stripe) ? FeatureStripeData.fromJSON(object.stripe) : undefined,
       lineLogin: isSet(object.lineLogin) ? FeatureLineLoginData.fromJSON(object.lineLogin) : undefined,
+      googleAnalytics: isSet(object.googleAnalytics)
+        ? FeatureGoogleAnalyticsData.fromJSON(object.googleAnalytics)
+        : undefined,
     };
   },
 
@@ -3656,6 +3676,9 @@ export const FeatureData = {
       (obj.stripe = message.stripe ? FeatureStripeData.toJSON(message.stripe) : undefined);
     message.lineLogin !== undefined &&
       (obj.lineLogin = message.lineLogin ? FeatureLineLoginData.toJSON(message.lineLogin) : undefined);
+    message.googleAnalytics !== undefined && (obj.googleAnalytics = message.googleAnalytics
+      ? FeatureGoogleAnalyticsData.toJSON(message.googleAnalytics)
+      : undefined);
     return obj;
   },
 
@@ -3686,6 +3709,9 @@ export const FeatureData = {
       : undefined;
     message.lineLogin = (object.lineLogin !== undefined && object.lineLogin !== null)
       ? FeatureLineLoginData.fromPartial(object.lineLogin)
+      : undefined;
+    message.googleAnalytics = (object.googleAnalytics !== undefined && object.googleAnalytics !== null)
+      ? FeatureGoogleAnalyticsData.fromPartial(object.googleAnalytics)
       : undefined;
     return message;
   },
@@ -4379,6 +4405,53 @@ export const FeatureLineLoginData = {
     message.userTables = object.userTables?.map((e) => e) || [];
     message.clientId = object.clientId ?? "";
     message.secretKey = object.secretKey ?? "";
+    return message;
+  },
+};
+
+function createBaseFeatureGoogleAnalytics(): FeatureGoogleAnalytics {
+  return { measurementId: "" };
+}
+
+export const FeatureGoogleAnalyticsData = {
+  encode(message: FeatureGoogleAnalytics, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.measurementId !== "") {
+      writer.uint32(10).string(message.measurementId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): FeatureGoogleAnalytics {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseFeatureGoogleAnalytics();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.measurementId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): FeatureGoogleAnalytics {
+    return { measurementId: isSet(object.measurementId) ? String(object.measurementId) : "" };
+  },
+
+  toJSON(message: FeatureGoogleAnalytics): unknown {
+    const obj: any = {};
+    message.measurementId !== undefined && (obj.measurementId = message.measurementId);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<FeatureGoogleAnalytics>): FeatureGoogleAnalytics {
+    const message = createBaseFeatureGoogleAnalytics();
+    message.measurementId = object.measurementId ?? "";
     return message;
   },
 };
