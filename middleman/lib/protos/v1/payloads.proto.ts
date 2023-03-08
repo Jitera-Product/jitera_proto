@@ -1583,11 +1583,11 @@ export class WebNodeProps {
 
 export class WebNodePropsTableColumn {
   molecule?: RenderMolecule;
-  sortable: boolean[];
-  filterable: boolean[];
-  columnIndex: number[];
-  columnName: string[];
-  columnPath: string[];
+  sortable: boolean;
+  filterable: boolean;
+  columnIndex: number;
+  columnName: { [key: string]: any }[];
+  columnPath: { [key: string]: any }[];
 }
 
 export class MobileNodeProps {
@@ -12306,7 +12306,7 @@ export const WebNodePropsData = {
 };
 
 function createBaseWebNodePropsTableColumn(): WebNodePropsTableColumn {
-  return { sortable: [], filterable: [], columnIndex: [], columnName: [], columnPath: [] };
+  return { sortable: false, filterable: false, columnIndex: 0, columnName: [], columnPath: [] };
 }
 
 export const WebNodePropsTableColumnData = {
@@ -12314,26 +12314,20 @@ export const WebNodePropsTableColumnData = {
     if (message.molecule !== undefined) {
       RenderMoleculeData.encode(message.molecule, writer.uint32(10).fork()).ldelim();
     }
-    writer.uint32(18).fork();
-    for (const v of message.sortable) {
-      writer.bool(v);
+    if (message.sortable === true) {
+      writer.uint32(16).bool(message.sortable);
     }
-    writer.ldelim();
-    writer.uint32(26).fork();
-    for (const v of message.filterable) {
-      writer.bool(v);
+    if (message.filterable === true) {
+      writer.uint32(24).bool(message.filterable);
     }
-    writer.ldelim();
-    writer.uint32(34).fork();
-    for (const v of message.columnIndex) {
-      writer.int32(v);
+    if (message.columnIndex !== 0) {
+      writer.uint32(32).int32(message.columnIndex);
     }
-    writer.ldelim();
     for (const v of message.columnName) {
-      writer.uint32(42).string(v!);
+      StructData.encode(StructData.wrap(v!), writer.uint32(42).fork()).ldelim();
     }
     for (const v of message.columnPath) {
-      writer.uint32(50).string(v!);
+      StructData.encode(StructData.wrap(v!), writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -12349,40 +12343,19 @@ export const WebNodePropsTableColumnData = {
           message.molecule = RenderMoleculeData.decode(reader, reader.uint32());
           break;
         case 2:
-          if ((tag & 7) === 2) {
-            const end2 = reader.uint32() + reader.pos;
-            while (reader.pos < end2) {
-              message.sortable.push(reader.bool());
-            }
-          } else {
-            message.sortable.push(reader.bool());
-          }
+          message.sortable = reader.bool();
           break;
         case 3:
-          if ((tag & 7) === 2) {
-            const end2 = reader.uint32() + reader.pos;
-            while (reader.pos < end2) {
-              message.filterable.push(reader.bool());
-            }
-          } else {
-            message.filterable.push(reader.bool());
-          }
+          message.filterable = reader.bool();
           break;
         case 4:
-          if ((tag & 7) === 2) {
-            const end2 = reader.uint32() + reader.pos;
-            while (reader.pos < end2) {
-              message.columnIndex.push(reader.int32());
-            }
-          } else {
-            message.columnIndex.push(reader.int32());
-          }
+          message.columnIndex = reader.int32();
           break;
         case 5:
-          message.columnName.push(reader.string());
+          message.columnName.push(StructData.unwrap(StructData.decode(reader, reader.uint32())));
           break;
         case 6:
-          message.columnPath.push(reader.string());
+          message.columnPath.push(StructData.unwrap(StructData.decode(reader, reader.uint32())));
           break;
         default:
           reader.skipType(tag & 7);
@@ -12395,11 +12368,11 @@ export const WebNodePropsTableColumnData = {
   fromJSON(object: any): WebNodePropsTableColumn {
     return {
       molecule: isSet(object.molecule) ? RenderMoleculeData.fromJSON(object.molecule) : undefined,
-      sortable: Array.isArray(object?.sortable) ? object.sortable.map((e: any) => Boolean(e)) : [],
-      filterable: Array.isArray(object?.filterable) ? object.filterable.map((e: any) => Boolean(e)) : [],
-      columnIndex: Array.isArray(object?.columnIndex) ? object.columnIndex.map((e: any) => Number(e)) : [],
-      columnName: Array.isArray(object?.columnName) ? object.columnName.map((e: any) => String(e)) : [],
-      columnPath: Array.isArray(object?.columnPath) ? object.columnPath.map((e: any) => String(e)) : [],
+      sortable: isSet(object.sortable) ? Boolean(object.sortable) : false,
+      filterable: isSet(object.filterable) ? Boolean(object.filterable) : false,
+      columnIndex: isSet(object.columnIndex) ? Number(object.columnIndex) : 0,
+      columnName: Array.isArray(object?.columnName) ? [...object.columnName] : [],
+      columnPath: Array.isArray(object?.columnPath) ? [...object.columnPath] : [],
     };
   },
 
@@ -12407,21 +12380,9 @@ export const WebNodePropsTableColumnData = {
     const obj: any = {};
     message.molecule !== undefined &&
       (obj.molecule = message.molecule ? RenderMoleculeData.toJSON(message.molecule) : undefined);
-    if (message.sortable) {
-      obj.sortable = message.sortable.map((e) => e);
-    } else {
-      obj.sortable = [];
-    }
-    if (message.filterable) {
-      obj.filterable = message.filterable.map((e) => e);
-    } else {
-      obj.filterable = [];
-    }
-    if (message.columnIndex) {
-      obj.columnIndex = message.columnIndex.map((e) => Math.round(e));
-    } else {
-      obj.columnIndex = [];
-    }
+    message.sortable !== undefined && (obj.sortable = message.sortable);
+    message.filterable !== undefined && (obj.filterable = message.filterable);
+    message.columnIndex !== undefined && (obj.columnIndex = Math.round(message.columnIndex));
     if (message.columnName) {
       obj.columnName = message.columnName.map((e) => e);
     } else {
@@ -12440,9 +12401,9 @@ export const WebNodePropsTableColumnData = {
     message.molecule = (object.molecule !== undefined && object.molecule !== null)
       ? RenderMoleculeData.fromPartial(object.molecule)
       : undefined;
-    message.sortable = object.sortable?.map((e) => e) || [];
-    message.filterable = object.filterable?.map((e) => e) || [];
-    message.columnIndex = object.columnIndex?.map((e) => e) || [];
+    message.sortable = object.sortable ?? false;
+    message.filterable = object.filterable ?? false;
+    message.columnIndex = object.columnIndex ?? 0;
     message.columnName = object.columnName?.map((e) => e) || [];
     message.columnPath = object.columnPath?.map((e) => e) || [];
     return message;

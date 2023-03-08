@@ -1014,11 +1014,11 @@ message WebNodeProps {
 
 	message TableColumn {
 		RenderMolecule molecule = 1;
-		repeated bool sortable = 2;
-		repeated bool filterable = 3;
-		repeated int32 column_index = 4;
-		repeated string column_name = 5;
-		repeated string column_path = 6;
+		bool sortable = 2;
+		bool filterable = 3;
+		int32 column_index = 4;
+		repeated google.protobuf.Struct column_name = 5;
+		repeated google.protobuf.Struct column_path = 6;
 	}
 }
 
