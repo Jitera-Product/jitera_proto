@@ -765,6 +765,8 @@ export interface TableColumn {
   name: string;
   type?: TableColumnColumnType;
   constraints: TableConstraint[];
+  hidden?: boolean | undefined;
+  columnValidation?: TableColumnValidation | undefined;
 }
 
 export enum TableColumnOperator {
@@ -1034,6 +1036,53 @@ export interface TableColumnFileTypeNumberOfFiles {
 export interface TableColumnEnumType {
   defaultValue: string;
   values: string[];
+}
+
+export interface TableColumnValidation {
+  columnValidationOptions: TableColumnValidationOption[];
+  presence: boolean;
+  uniqueness: boolean;
+  allowNil: boolean;
+}
+
+export interface TableColumnValidationOption {
+  lengthValidation?: TableColumnValidationOptionLengthValidation | undefined;
+  charValidation?: TableColumnValidationOptionCharValidation | undefined;
+  dateValidation?: TableColumnValidationOptionDateValidation | undefined;
+  dateTimeValidation?: TableColumnValidationOptionDateValidation | undefined;
+  numericalityValidation?: TableColumnValidationOptionNumericalityValidation | undefined;
+  fileValidation?: TableColumnValidationOptionFileValidation | undefined;
+}
+
+export interface TableColumnValidationOptionLengthValidation {
+  maximum: number;
+  minimum: number;
+  is: number;
+}
+
+export interface TableColumnValidationOptionCharValidation {
+  email: boolean;
+  hiragana: boolean;
+  katakana: boolean;
+  phoneNumber: boolean;
+  url: boolean;
+}
+
+export interface TableColumnValidationOptionDateValidation {
+  past: boolean;
+  future: boolean;
+}
+
+export interface TableColumnValidationOptionNumericalityValidation {
+  greaterThan: number;
+  greaterThanOrEqualTo: number;
+  lessThan: number;
+  lessThanOrEqualTo: number;
+}
+
+export interface TableColumnValidationOptionFileValidation {
+  single: boolean;
+  contentTypes: string[];
 }
 
 export interface TableConstraint {
@@ -5943,6 +5992,12 @@ export const TableColumn = {
     for (const v of message.constraints) {
       TableConstraint.encode(v!, writer.uint32(26).fork()).ldelim();
     }
+    if (message.hidden !== undefined) {
+      writer.uint32(32).bool(message.hidden);
+    }
+    if (message.columnValidation !== undefined) {
+      TableColumnValidation.encode(message.columnValidation, writer.uint32(42).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -5962,6 +6017,12 @@ export const TableColumn = {
         case 3:
           message.constraints.push(TableConstraint.decode(reader, reader.uint32()));
           break;
+        case 4:
+          message.hidden = reader.bool();
+          break;
+        case 5:
+          message.columnValidation = TableColumnValidation.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -5977,6 +6038,10 @@ export const TableColumn = {
       constraints: Array.isArray(object?.constraints)
         ? object.constraints.map((e: any) => TableConstraint.fromJSON(e))
         : [],
+      hidden: isSet(object.hidden) ? Boolean(object.hidden) : undefined,
+      columnValidation: isSet(object.columnValidation)
+        ? TableColumnValidation.fromJSON(object.columnValidation)
+        : undefined,
     };
   },
 
@@ -5989,6 +6054,10 @@ export const TableColumn = {
     } else {
       obj.constraints = [];
     }
+    message.hidden !== undefined && (obj.hidden = message.hidden);
+    message.columnValidation !== undefined && (obj.columnValidation = message.columnValidation
+      ? TableColumnValidation.toJSON(message.columnValidation)
+      : undefined);
     return obj;
   },
 
@@ -5999,6 +6068,10 @@ export const TableColumn = {
       ? TableColumnColumnType.fromPartial(object.type)
       : undefined;
     message.constraints = object.constraints?.map((e) => TableConstraint.fromPartial(e)) || [];
+    message.hidden = object.hidden ?? undefined;
+    message.columnValidation = (object.columnValidation !== undefined && object.columnValidation !== null)
+      ? TableColumnValidation.fromPartial(object.columnValidation)
+      : undefined;
     return message;
   },
 };
@@ -6886,6 +6959,587 @@ export const TableColumnEnumType = {
     const message = createBaseTableColumnEnumType();
     message.defaultValue = object.defaultValue ?? "";
     message.values = object.values?.map((e) => e) || [];
+    return message;
+  },
+};
+
+function createBaseTableColumnValidation(): TableColumnValidation {
+  return { columnValidationOptions: [], presence: false, uniqueness: false, allowNil: false };
+}
+
+export const TableColumnValidation = {
+  encode(message: TableColumnValidation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.columnValidationOptions) {
+      TableColumnValidationOption.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.presence === true) {
+      writer.uint32(16).bool(message.presence);
+    }
+    if (message.uniqueness === true) {
+      writer.uint32(24).bool(message.uniqueness);
+    }
+    if (message.allowNil === true) {
+      writer.uint32(32).bool(message.allowNil);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): TableColumnValidation {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTableColumnValidation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.columnValidationOptions.push(TableColumnValidationOption.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.presence = reader.bool();
+          break;
+        case 3:
+          message.uniqueness = reader.bool();
+          break;
+        case 4:
+          message.allowNil = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TableColumnValidation {
+    return {
+      columnValidationOptions: Array.isArray(object?.columnValidationOptions)
+        ? object.columnValidationOptions.map((e: any) => TableColumnValidationOption.fromJSON(e))
+        : [],
+      presence: isSet(object.presence) ? Boolean(object.presence) : false,
+      uniqueness: isSet(object.uniqueness) ? Boolean(object.uniqueness) : false,
+      allowNil: isSet(object.allowNil) ? Boolean(object.allowNil) : false,
+    };
+  },
+
+  toJSON(message: TableColumnValidation): unknown {
+    const obj: any = {};
+    if (message.columnValidationOptions) {
+      obj.columnValidationOptions = message.columnValidationOptions.map((e) =>
+        e ? TableColumnValidationOption.toJSON(e) : undefined
+      );
+    } else {
+      obj.columnValidationOptions = [];
+    }
+    message.presence !== undefined && (obj.presence = message.presence);
+    message.uniqueness !== undefined && (obj.uniqueness = message.uniqueness);
+    message.allowNil !== undefined && (obj.allowNil = message.allowNil);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<TableColumnValidation>): TableColumnValidation {
+    const message = createBaseTableColumnValidation();
+    message.columnValidationOptions =
+      object.columnValidationOptions?.map((e) => TableColumnValidationOption.fromPartial(e)) || [];
+    message.presence = object.presence ?? false;
+    message.uniqueness = object.uniqueness ?? false;
+    message.allowNil = object.allowNil ?? false;
+    return message;
+  },
+};
+
+function createBaseTableColumnValidationOption(): TableColumnValidationOption {
+  return {};
+}
+
+export const TableColumnValidationOption = {
+  encode(message: TableColumnValidationOption, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.lengthValidation !== undefined) {
+      TableColumnValidationOptionLengthValidation.encode(message.lengthValidation, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.charValidation !== undefined) {
+      TableColumnValidationOptionCharValidation.encode(message.charValidation, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.dateValidation !== undefined) {
+      TableColumnValidationOptionDateValidation.encode(message.dateValidation, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.dateTimeValidation !== undefined) {
+      TableColumnValidationOptionDateValidation.encode(message.dateTimeValidation, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.numericalityValidation !== undefined) {
+      TableColumnValidationOptionNumericalityValidation.encode(message.numericalityValidation, writer.uint32(42).fork())
+        .ldelim();
+    }
+    if (message.fileValidation !== undefined) {
+      TableColumnValidationOptionFileValidation.encode(message.fileValidation, writer.uint32(50).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): TableColumnValidationOption {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTableColumnValidationOption();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.lengthValidation = TableColumnValidationOptionLengthValidation.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.charValidation = TableColumnValidationOptionCharValidation.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.dateValidation = TableColumnValidationOptionDateValidation.decode(reader, reader.uint32());
+          break;
+        case 4:
+          message.dateTimeValidation = TableColumnValidationOptionDateValidation.decode(reader, reader.uint32());
+          break;
+        case 5:
+          message.numericalityValidation = TableColumnValidationOptionNumericalityValidation.decode(
+            reader,
+            reader.uint32(),
+          );
+          break;
+        case 6:
+          message.fileValidation = TableColumnValidationOptionFileValidation.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TableColumnValidationOption {
+    return {
+      lengthValidation: isSet(object.lengthValidation)
+        ? TableColumnValidationOptionLengthValidation.fromJSON(object.lengthValidation)
+        : undefined,
+      charValidation: isSet(object.charValidation)
+        ? TableColumnValidationOptionCharValidation.fromJSON(object.charValidation)
+        : undefined,
+      dateValidation: isSet(object.dateValidation)
+        ? TableColumnValidationOptionDateValidation.fromJSON(object.dateValidation)
+        : undefined,
+      dateTimeValidation: isSet(object.dateTimeValidation)
+        ? TableColumnValidationOptionDateValidation.fromJSON(object.dateTimeValidation)
+        : undefined,
+      numericalityValidation: isSet(object.numericalityValidation)
+        ? TableColumnValidationOptionNumericalityValidation.fromJSON(object.numericalityValidation)
+        : undefined,
+      fileValidation: isSet(object.fileValidation)
+        ? TableColumnValidationOptionFileValidation.fromJSON(object.fileValidation)
+        : undefined,
+    };
+  },
+
+  toJSON(message: TableColumnValidationOption): unknown {
+    const obj: any = {};
+    message.lengthValidation !== undefined && (obj.lengthValidation = message.lengthValidation
+      ? TableColumnValidationOptionLengthValidation.toJSON(message.lengthValidation)
+      : undefined);
+    message.charValidation !== undefined && (obj.charValidation = message.charValidation
+      ? TableColumnValidationOptionCharValidation.toJSON(message.charValidation)
+      : undefined);
+    message.dateValidation !== undefined && (obj.dateValidation = message.dateValidation
+      ? TableColumnValidationOptionDateValidation.toJSON(message.dateValidation)
+      : undefined);
+    message.dateTimeValidation !== undefined && (obj.dateTimeValidation = message.dateTimeValidation
+      ? TableColumnValidationOptionDateValidation.toJSON(message.dateTimeValidation)
+      : undefined);
+    message.numericalityValidation !== undefined && (obj.numericalityValidation = message.numericalityValidation
+      ? TableColumnValidationOptionNumericalityValidation.toJSON(message.numericalityValidation)
+      : undefined);
+    message.fileValidation !== undefined && (obj.fileValidation = message.fileValidation
+      ? TableColumnValidationOptionFileValidation.toJSON(message.fileValidation)
+      : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<TableColumnValidationOption>): TableColumnValidationOption {
+    const message = createBaseTableColumnValidationOption();
+    message.lengthValidation = (object.lengthValidation !== undefined && object.lengthValidation !== null)
+      ? TableColumnValidationOptionLengthValidation.fromPartial(object.lengthValidation)
+      : undefined;
+    message.charValidation = (object.charValidation !== undefined && object.charValidation !== null)
+      ? TableColumnValidationOptionCharValidation.fromPartial(object.charValidation)
+      : undefined;
+    message.dateValidation = (object.dateValidation !== undefined && object.dateValidation !== null)
+      ? TableColumnValidationOptionDateValidation.fromPartial(object.dateValidation)
+      : undefined;
+    message.dateTimeValidation = (object.dateTimeValidation !== undefined && object.dateTimeValidation !== null)
+      ? TableColumnValidationOptionDateValidation.fromPartial(object.dateTimeValidation)
+      : undefined;
+    message.numericalityValidation =
+      (object.numericalityValidation !== undefined && object.numericalityValidation !== null)
+        ? TableColumnValidationOptionNumericalityValidation.fromPartial(object.numericalityValidation)
+        : undefined;
+    message.fileValidation = (object.fileValidation !== undefined && object.fileValidation !== null)
+      ? TableColumnValidationOptionFileValidation.fromPartial(object.fileValidation)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseTableColumnValidationOptionLengthValidation(): TableColumnValidationOptionLengthValidation {
+  return { maximum: 0, minimum: 0, is: 0 };
+}
+
+export const TableColumnValidationOptionLengthValidation = {
+  encode(message: TableColumnValidationOptionLengthValidation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.maximum !== 0) {
+      writer.uint32(8).int32(message.maximum);
+    }
+    if (message.minimum !== 0) {
+      writer.uint32(16).int32(message.minimum);
+    }
+    if (message.is !== 0) {
+      writer.uint32(24).int32(message.is);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): TableColumnValidationOptionLengthValidation {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTableColumnValidationOptionLengthValidation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.maximum = reader.int32();
+          break;
+        case 2:
+          message.minimum = reader.int32();
+          break;
+        case 3:
+          message.is = reader.int32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TableColumnValidationOptionLengthValidation {
+    return {
+      maximum: isSet(object.maximum) ? Number(object.maximum) : 0,
+      minimum: isSet(object.minimum) ? Number(object.minimum) : 0,
+      is: isSet(object.is) ? Number(object.is) : 0,
+    };
+  },
+
+  toJSON(message: TableColumnValidationOptionLengthValidation): unknown {
+    const obj: any = {};
+    message.maximum !== undefined && (obj.maximum = Math.round(message.maximum));
+    message.minimum !== undefined && (obj.minimum = Math.round(message.minimum));
+    message.is !== undefined && (obj.is = Math.round(message.is));
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<TableColumnValidationOptionLengthValidation>,
+  ): TableColumnValidationOptionLengthValidation {
+    const message = createBaseTableColumnValidationOptionLengthValidation();
+    message.maximum = object.maximum ?? 0;
+    message.minimum = object.minimum ?? 0;
+    message.is = object.is ?? 0;
+    return message;
+  },
+};
+
+function createBaseTableColumnValidationOptionCharValidation(): TableColumnValidationOptionCharValidation {
+  return { email: false, hiragana: false, katakana: false, phoneNumber: false, url: false };
+}
+
+export const TableColumnValidationOptionCharValidation = {
+  encode(message: TableColumnValidationOptionCharValidation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.email === true) {
+      writer.uint32(8).bool(message.email);
+    }
+    if (message.hiragana === true) {
+      writer.uint32(16).bool(message.hiragana);
+    }
+    if (message.katakana === true) {
+      writer.uint32(24).bool(message.katakana);
+    }
+    if (message.phoneNumber === true) {
+      writer.uint32(32).bool(message.phoneNumber);
+    }
+    if (message.url === true) {
+      writer.uint32(40).bool(message.url);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): TableColumnValidationOptionCharValidation {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTableColumnValidationOptionCharValidation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.email = reader.bool();
+          break;
+        case 2:
+          message.hiragana = reader.bool();
+          break;
+        case 3:
+          message.katakana = reader.bool();
+          break;
+        case 4:
+          message.phoneNumber = reader.bool();
+          break;
+        case 5:
+          message.url = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TableColumnValidationOptionCharValidation {
+    return {
+      email: isSet(object.email) ? Boolean(object.email) : false,
+      hiragana: isSet(object.hiragana) ? Boolean(object.hiragana) : false,
+      katakana: isSet(object.katakana) ? Boolean(object.katakana) : false,
+      phoneNumber: isSet(object.phoneNumber) ? Boolean(object.phoneNumber) : false,
+      url: isSet(object.url) ? Boolean(object.url) : false,
+    };
+  },
+
+  toJSON(message: TableColumnValidationOptionCharValidation): unknown {
+    const obj: any = {};
+    message.email !== undefined && (obj.email = message.email);
+    message.hiragana !== undefined && (obj.hiragana = message.hiragana);
+    message.katakana !== undefined && (obj.katakana = message.katakana);
+    message.phoneNumber !== undefined && (obj.phoneNumber = message.phoneNumber);
+    message.url !== undefined && (obj.url = message.url);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<TableColumnValidationOptionCharValidation>,
+  ): TableColumnValidationOptionCharValidation {
+    const message = createBaseTableColumnValidationOptionCharValidation();
+    message.email = object.email ?? false;
+    message.hiragana = object.hiragana ?? false;
+    message.katakana = object.katakana ?? false;
+    message.phoneNumber = object.phoneNumber ?? false;
+    message.url = object.url ?? false;
+    return message;
+  },
+};
+
+function createBaseTableColumnValidationOptionDateValidation(): TableColumnValidationOptionDateValidation {
+  return { past: false, future: false };
+}
+
+export const TableColumnValidationOptionDateValidation = {
+  encode(message: TableColumnValidationOptionDateValidation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.past === true) {
+      writer.uint32(8).bool(message.past);
+    }
+    if (message.future === true) {
+      writer.uint32(16).bool(message.future);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): TableColumnValidationOptionDateValidation {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTableColumnValidationOptionDateValidation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.past = reader.bool();
+          break;
+        case 2:
+          message.future = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TableColumnValidationOptionDateValidation {
+    return {
+      past: isSet(object.past) ? Boolean(object.past) : false,
+      future: isSet(object.future) ? Boolean(object.future) : false,
+    };
+  },
+
+  toJSON(message: TableColumnValidationOptionDateValidation): unknown {
+    const obj: any = {};
+    message.past !== undefined && (obj.past = message.past);
+    message.future !== undefined && (obj.future = message.future);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<TableColumnValidationOptionDateValidation>,
+  ): TableColumnValidationOptionDateValidation {
+    const message = createBaseTableColumnValidationOptionDateValidation();
+    message.past = object.past ?? false;
+    message.future = object.future ?? false;
+    return message;
+  },
+};
+
+function createBaseTableColumnValidationOptionNumericalityValidation(): TableColumnValidationOptionNumericalityValidation {
+  return { greaterThan: 0, greaterThanOrEqualTo: 0, lessThan: 0, lessThanOrEqualTo: 0 };
+}
+
+export const TableColumnValidationOptionNumericalityValidation = {
+  encode(
+    message: TableColumnValidationOptionNumericalityValidation,
+    writer: _m0.Writer = _m0.Writer.create(),
+  ): _m0.Writer {
+    if (message.greaterThan !== 0) {
+      writer.uint32(8).int32(message.greaterThan);
+    }
+    if (message.greaterThanOrEqualTo !== 0) {
+      writer.uint32(16).int32(message.greaterThanOrEqualTo);
+    }
+    if (message.lessThan !== 0) {
+      writer.uint32(24).int32(message.lessThan);
+    }
+    if (message.lessThanOrEqualTo !== 0) {
+      writer.uint32(32).int32(message.lessThanOrEqualTo);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): TableColumnValidationOptionNumericalityValidation {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTableColumnValidationOptionNumericalityValidation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.greaterThan = reader.int32();
+          break;
+        case 2:
+          message.greaterThanOrEqualTo = reader.int32();
+          break;
+        case 3:
+          message.lessThan = reader.int32();
+          break;
+        case 4:
+          message.lessThanOrEqualTo = reader.int32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TableColumnValidationOptionNumericalityValidation {
+    return {
+      greaterThan: isSet(object.greaterThan) ? Number(object.greaterThan) : 0,
+      greaterThanOrEqualTo: isSet(object.greaterThanOrEqualTo) ? Number(object.greaterThanOrEqualTo) : 0,
+      lessThan: isSet(object.lessThan) ? Number(object.lessThan) : 0,
+      lessThanOrEqualTo: isSet(object.lessThanOrEqualTo) ? Number(object.lessThanOrEqualTo) : 0,
+    };
+  },
+
+  toJSON(message: TableColumnValidationOptionNumericalityValidation): unknown {
+    const obj: any = {};
+    message.greaterThan !== undefined && (obj.greaterThan = Math.round(message.greaterThan));
+    message.greaterThanOrEqualTo !== undefined && (obj.greaterThanOrEqualTo = Math.round(message.greaterThanOrEqualTo));
+    message.lessThan !== undefined && (obj.lessThan = Math.round(message.lessThan));
+    message.lessThanOrEqualTo !== undefined && (obj.lessThanOrEqualTo = Math.round(message.lessThanOrEqualTo));
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<TableColumnValidationOptionNumericalityValidation>,
+  ): TableColumnValidationOptionNumericalityValidation {
+    const message = createBaseTableColumnValidationOptionNumericalityValidation();
+    message.greaterThan = object.greaterThan ?? 0;
+    message.greaterThanOrEqualTo = object.greaterThanOrEqualTo ?? 0;
+    message.lessThan = object.lessThan ?? 0;
+    message.lessThanOrEqualTo = object.lessThanOrEqualTo ?? 0;
+    return message;
+  },
+};
+
+function createBaseTableColumnValidationOptionFileValidation(): TableColumnValidationOptionFileValidation {
+  return { single: false, contentTypes: [] };
+}
+
+export const TableColumnValidationOptionFileValidation = {
+  encode(message: TableColumnValidationOptionFileValidation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.single === true) {
+      writer.uint32(8).bool(message.single);
+    }
+    for (const v of message.contentTypes) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): TableColumnValidationOptionFileValidation {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTableColumnValidationOptionFileValidation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.single = reader.bool();
+          break;
+        case 2:
+          message.contentTypes.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TableColumnValidationOptionFileValidation {
+    return {
+      single: isSet(object.single) ? Boolean(object.single) : false,
+      contentTypes: Array.isArray(object?.contentTypes) ? object.contentTypes.map((e: any) => String(e)) : [],
+    };
+  },
+
+  toJSON(message: TableColumnValidationOptionFileValidation): unknown {
+    const obj: any = {};
+    message.single !== undefined && (obj.single = message.single);
+    if (message.contentTypes) {
+      obj.contentTypes = message.contentTypes.map((e) => e);
+    } else {
+      obj.contentTypes = [];
+    }
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<TableColumnValidationOptionFileValidation>,
+  ): TableColumnValidationOptionFileValidation {
+    const message = createBaseTableColumnValidationOptionFileValidation();
+    message.single = object.single ?? false;
+    message.contentTypes = object.contentTypes?.map((e) => e) || [];
     return message;
   },
 };

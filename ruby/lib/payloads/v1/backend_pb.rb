@@ -308,6 +308,8 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :name, :string, 1
       optional :type, :message, 2, "schema.v1.Table.Column.ColumnType"
       repeated :constraints, :message, 3, "schema.v1.Table.Constraint"
+      proto3_optional :hidden, :bool, 4
+      proto3_optional :column_validation, :message, 5, "schema.v1.Table.ColumnValidation"
     end
     add_message "schema.v1.Table.Column.ColumnType" do
       oneof :types do
@@ -402,6 +404,48 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       value :LESS_THAN, 3
       value :LESS_THAN_OR_EQUAL, 4
       value :NOT_EQUAL, 5
+    end
+    add_message "schema.v1.Table.ColumnValidation" do
+      repeated :column_validation_options, :message, 1, "schema.v1.Table.ColumnValidationOption"
+      optional :presence, :bool, 2
+      optional :uniqueness, :bool, 3
+      optional :allow_nil, :bool, 4
+    end
+    add_message "schema.v1.Table.ColumnValidationOption" do
+      oneof :validation_type do
+        optional :length_validation, :message, 1, "schema.v1.Table.ColumnValidationOption.LengthValidation"
+        optional :char_validation, :message, 2, "schema.v1.Table.ColumnValidationOption.CharValidation"
+        optional :date_validation, :message, 3, "schema.v1.Table.ColumnValidationOption.DateValidation"
+        optional :date_time_validation, :message, 4, "schema.v1.Table.ColumnValidationOption.DateValidation"
+        optional :numericality_validation, :message, 5, "schema.v1.Table.ColumnValidationOption.NumericalityValidation"
+        optional :file_validation, :message, 6, "schema.v1.Table.ColumnValidationOption.FileValidation"
+      end
+    end
+    add_message "schema.v1.Table.ColumnValidationOption.LengthValidation" do
+      optional :maximum, :int32, 1
+      optional :minimum, :int32, 2
+      optional :is, :int32, 3
+    end
+    add_message "schema.v1.Table.ColumnValidationOption.CharValidation" do
+      optional :email, :bool, 1
+      optional :hiragana, :bool, 2
+      optional :katakana, :bool, 3
+      optional :phone_number, :bool, 4
+      optional :url, :bool, 5
+    end
+    add_message "schema.v1.Table.ColumnValidationOption.DateValidation" do
+      optional :past, :bool, 1
+      optional :future, :bool, 2
+    end
+    add_message "schema.v1.Table.ColumnValidationOption.NumericalityValidation" do
+      optional :greater_than, :int32, 1
+      optional :greater_than_or_equal_to, :int32, 2
+      optional :less_than, :int32, 3
+      optional :less_than_or_equal_to, :int32, 4
+    end
+    add_message "schema.v1.Table.ColumnValidationOption.FileValidation" do
+      optional :single, :bool, 1
+      repeated :content_types, :string, 2
     end
     add_message "schema.v1.Table.Constraint" do
       oneof :relation_key do
@@ -777,6 +821,13 @@ module Schema
     Table::Column::FileType::ContentType = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Table.Column.FileType.ContentType").enummodule
     Table::Column::EnumType = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Table.Column.EnumType").msgclass
     Table::Column::Operator = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Table.Column.Operator").enummodule
+    Table::ColumnValidation = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Table.ColumnValidation").msgclass
+    Table::ColumnValidationOption = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Table.ColumnValidationOption").msgclass
+    Table::ColumnValidationOption::LengthValidation = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Table.ColumnValidationOption.LengthValidation").msgclass
+    Table::ColumnValidationOption::CharValidation = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Table.ColumnValidationOption.CharValidation").msgclass
+    Table::ColumnValidationOption::DateValidation = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Table.ColumnValidationOption.DateValidation").msgclass
+    Table::ColumnValidationOption::NumericalityValidation = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Table.ColumnValidationOption.NumericalityValidation").msgclass
+    Table::ColumnValidationOption::FileValidation = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Table.ColumnValidationOption.FileValidation").msgclass
     Table::Constraint = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Table.Constraint").msgclass
     Table::Constraint::PrimaryKey = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Table.Constraint.PrimaryKey").msgclass
     Table::Constraint::ForeignKey = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Table.Constraint.ForeignKey").msgclass
