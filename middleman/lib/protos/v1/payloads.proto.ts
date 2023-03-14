@@ -377,6 +377,7 @@ export class Feature {
   stripe?: FeatureStripe | undefined;
   lineLogin?: FeatureLineLogin | undefined;
   googleAnalytics?: FeatureGoogleAnalytics | undefined;
+  scoutApm?: FeatureScoutApm | undefined;
 }
 
 export enum FeatureFeatureName {
@@ -390,6 +391,7 @@ export enum FeatureFeatureName {
   STRIPE = 7,
   LINE_LOGIN = 8,
   GOOGLE_ANALYTICS = 9,
+  SCOUT_APM = 10,
   UNRECOGNIZED = -1,
 }
 
@@ -425,6 +427,9 @@ export function featureFeatureNameFromJSON(object: any): FeatureFeatureName {
     case 9:
     case "GOOGLE_ANALYTICS":
       return FeatureFeatureName.GOOGLE_ANALYTICS;
+    case 10:
+    case "SCOUT_APM":
+      return FeatureFeatureName.SCOUT_APM;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -454,6 +459,8 @@ export function featureFeatureNameToJSON(object: FeatureFeatureName): string {
       return "LINE_LOGIN";
     case FeatureFeatureName.GOOGLE_ANALYTICS:
       return "GOOGLE_ANALYTICS";
+    case FeatureFeatureName.SCOUT_APM:
+      return "SCOUT_APM";
     case FeatureFeatureName.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -503,6 +510,10 @@ export function featureEnvironmentToJSON(object: FeatureEnvironment): string {
     default:
       return "UNRECOGNIZED";
   }
+}
+
+export class FeatureScoutApm {
+  keyId: string;
 }
 
 export class FeatureEmailLogin {
@@ -3587,6 +3598,9 @@ export const FeatureData = {
     if (message.googleAnalytics !== undefined) {
       FeatureGoogleAnalyticsData.encode(message.googleAnalytics, writer.uint32(90).fork()).ldelim();
     }
+    if (message.scoutApm !== undefined) {
+      FeatureScoutApmData.encode(message.scoutApm, writer.uint32(98).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -3630,6 +3644,9 @@ export const FeatureData = {
         case 11:
           message.googleAnalytics = FeatureGoogleAnalyticsData.decode(reader, reader.uint32());
           break;
+        case 12:
+          message.scoutApm = FeatureScoutApmData.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3653,6 +3670,7 @@ export const FeatureData = {
       googleAnalytics: isSet(object.googleAnalytics)
         ? FeatureGoogleAnalyticsData.fromJSON(object.googleAnalytics)
         : undefined,
+      scoutApm: isSet(object.scoutApm) ? FeatureScoutApmData.fromJSON(object.scoutApm) : undefined,
     };
   },
 
@@ -3679,6 +3697,8 @@ export const FeatureData = {
     message.googleAnalytics !== undefined && (obj.googleAnalytics = message.googleAnalytics
       ? FeatureGoogleAnalyticsData.toJSON(message.googleAnalytics)
       : undefined);
+    message.scoutApm !== undefined &&
+      (obj.scoutApm = message.scoutApm ? FeatureScoutApmData.toJSON(message.scoutApm) : undefined);
     return obj;
   },
 
@@ -3713,6 +3733,56 @@ export const FeatureData = {
     message.googleAnalytics = (object.googleAnalytics !== undefined && object.googleAnalytics !== null)
       ? FeatureGoogleAnalyticsData.fromPartial(object.googleAnalytics)
       : undefined;
+    message.scoutApm = (object.scoutApm !== undefined && object.scoutApm !== null)
+      ? FeatureScoutApmData.fromPartial(object.scoutApm)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseFeatureScoutApm(): FeatureScoutApm {
+  return { keyId: "" };
+}
+
+export const FeatureScoutApmData = {
+  encode(message: FeatureScoutApm, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.keyId !== "") {
+      writer.uint32(10).string(message.keyId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): FeatureScoutApm {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseFeatureScoutApm();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.keyId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): FeatureScoutApm {
+    return { keyId: isSet(object.keyId) ? String(object.keyId) : "" };
+  },
+
+  toJSON(message: FeatureScoutApm): unknown {
+    const obj: any = {};
+    message.keyId !== undefined && (obj.keyId = message.keyId);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<FeatureScoutApm>): FeatureScoutApm {
+    const message = createBaseFeatureScoutApm();
+    message.keyId = object.keyId ?? "";
     return message;
   },
 };

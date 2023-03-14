@@ -158,6 +158,7 @@ message Feature {
 		Stripe stripe = 9;
 		LineLogin line_login = 10;
 		GoogleAnalytics google_analytics = 11;
+		ScoutApm scout_apm = 12;
 	}
 
 	message EmailLogin {
@@ -229,6 +230,10 @@ message Feature {
 		string measurement_id = 1;
 	}
 
+	message ScoutApm {
+		string key_id = 1;
+	}
+
 	enum FeatureName {
 		NIL = 0;
 		EMAIL_LOGIN = 1;
@@ -240,6 +245,7 @@ message Feature {
 		STRIPE = 7;
 		LINE_LOGIN = 8;
 		GOOGLE_ANALYTICS = 9;
+		SCOUT_APM = 10;
 	}
 
 	enum Environment {

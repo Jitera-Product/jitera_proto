@@ -127,9 +127,9 @@ export const StructData = {
     return {
       fields: isObject(object.fields)
         ? Object.entries(object.fields).reduce<{ [key: string]: any }>((acc, [key, value]) => {
-            acc[key] = value as any;
-            return acc;
-          }, {})
+          acc[key] = value as any;
+          return acc;
+        }, {})
         : {},
     };
   },
@@ -429,14 +429,9 @@ export const ListValueData = {
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
-type DeepPartial<T> = T extends Builtin
-  ? T
-  : T extends Array<infer U>
-  ? Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U>
-  ? ReadonlyArray<DeepPartial<U>>
-  : T extends {}
-  ? { [K in keyof T]?: DeepPartial<T[K]> }
+type DeepPartial<T> = T extends Builtin ? T
+  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
 function isObject(value: any): boolean {
