@@ -1741,6 +1741,7 @@ export enum NodeReferenceReferenceRefType {
   MOBILE_NAVIGATION_NODE = 13,
   MOBILE_MOLECULE_PROP = 14,
   TABLE_DEFINITION = 15,
+  PROJECT_VARIABLE = 16,
   UNRECOGNIZED = -1,
 }
 
@@ -1794,6 +1795,9 @@ export function nodeReferenceReferenceRefTypeFromJSON(object: any): NodeReferenc
     case 15:
     case "TABLE_DEFINITION":
       return NodeReferenceReferenceRefType.TABLE_DEFINITION;
+    case 16:
+    case "PROJECT_VARIABLE":
+      return NodeReferenceReferenceRefType.PROJECT_VARIABLE;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -1835,6 +1839,8 @@ export function nodeReferenceReferenceRefTypeToJSON(object: NodeReferenceReferen
       return "MOBILE_MOLECULE_PROP";
     case NodeReferenceReferenceRefType.TABLE_DEFINITION:
       return "TABLE_DEFINITION";
+    case NodeReferenceReferenceRefType.PROJECT_VARIABLE:
+      return "PROJECT_VARIABLE";
     case NodeReferenceReferenceRefType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -1918,6 +1924,7 @@ export enum NodeVariableVariableSource {
   CONTEXT_VALUES = 7,
   LOCAL_CONTEXT_RESPONSE = 8,
   FORM_VALIDATION_ERROR_MESSAGE = 9,
+  CSS_VARIABLE = 10,
   UNRECOGNIZED = -1,
 }
 
@@ -1953,6 +1960,9 @@ export function nodeVariableVariableSourceFromJSON(object: any): NodeVariableVar
     case 9:
     case "FORM_VALIDATION_ERROR_MESSAGE":
       return NodeVariableVariableSource.FORM_VALIDATION_ERROR_MESSAGE;
+    case 10:
+    case "CSS_VARIABLE":
+      return NodeVariableVariableSource.CSS_VARIABLE;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -1982,6 +1992,8 @@ export function nodeVariableVariableSourceToJSON(object: NodeVariableVariableSou
       return "LOCAL_CONTEXT_RESPONSE";
     case NodeVariableVariableSource.FORM_VALIDATION_ERROR_MESSAGE:
       return "FORM_VALIDATION_ERROR_MESSAGE";
+    case NodeVariableVariableSource.CSS_VARIABLE:
+      return "CSS_VARIABLE";
     case NodeVariableVariableSource.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
