@@ -127,9 +127,9 @@ export const StructData = {
     return {
       fields: isObject(object.fields)
         ? Object.entries(object.fields).reduce<{ [key: string]: any }>((acc, [key, value]) => {
-            acc[key] = value as any;
-            return acc;
-          }, {})
+          acc[key] = value as any;
+          return acc;
+        }, {})
         : {},
     };
   },
@@ -249,7 +249,7 @@ export const ValueData = {
       writer.uint32(32).bool(message.boolValue);
     }
     if (message.structValue !== undefined) {
-      StructData.encode(StructData.wrap(message.structValue), writer.uint32(42).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.structValue), writer.uint32(42).fork()).ldelim();
     }
     if (message.listValue !== undefined) {
       ListValueData.encode(ListValueData.wrap(message.listValue), writer.uint32(50).fork()).ldelim();
@@ -277,7 +277,7 @@ export const ValueData = {
           message.boolValue = reader.bool();
           break;
         case 5:
-          message.structValue = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.structValue = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 6:
           message.listValue = ListValueData.unwrap(ListValueData.decode(reader, reader.uint32()));
@@ -429,14 +429,9 @@ export const ListValueData = {
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
-type DeepPartial<T> = T extends Builtin
-  ? T
-  : T extends Array<infer U>
-  ? Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U>
-  ? ReadonlyArray<DeepPartial<U>>
-  : T extends {}
-  ? { [K in keyof T]?: DeepPartial<T[K]> }
+type DeepPartial<T> = T extends Builtin ? T
+  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
 function isObject(value: any): boolean {
