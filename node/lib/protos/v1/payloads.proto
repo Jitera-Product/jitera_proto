@@ -1292,6 +1292,12 @@ message NodeCustom {
 	repeated NodeParam props = 12;
 	repeated NodeVariable children_data = 13;
 	repeated FormValidation form_validations = 14;
+	repeated FormDefaultValue form_default_values = 15;
+}
+
+message FormDefaultValue {
+	NodeReference reference = 1;
+	NodeVariable value = 2;
 }
 
 message NodeMediaQuery {
