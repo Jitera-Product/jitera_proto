@@ -249,7 +249,7 @@ export const ValueData = {
       writer.uint32(32).bool(message.boolValue);
     }
     if (message.structValue !== undefined) {
-      StructData.encode(Struct.wrap(message.structValue), writer.uint32(42).fork()).ldelim();
+      StructData.encode(StructData.wrap(message.structValue), writer.uint32(42).fork()).ldelim();
     }
     if (message.listValue !== undefined) {
       ListValueData.encode(ListValueData.wrap(message.listValue), writer.uint32(50).fork()).ldelim();
@@ -277,7 +277,7 @@ export const ValueData = {
           message.boolValue = reader.bool();
           break;
         case 5:
-          message.structValue = Struct.unwrap(StructData.decode(reader, reader.uint32()));
+          message.structValue = StructData.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 6:
           message.listValue = ListValueData.unwrap(ListValueData.decode(reader, reader.uint32()));
