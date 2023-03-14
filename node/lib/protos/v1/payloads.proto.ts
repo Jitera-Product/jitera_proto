@@ -1754,6 +1754,7 @@ export enum NodeReferenceReferenceRefType {
   MOBILE_NAVIGATION_NODE = 13,
   MOBILE_MOLECULE_PROP = 14,
   TABLE_DEFINITION = 15,
+  PROJECT_VARIABLE = 16,
   UNRECOGNIZED = -1,
 }
 
@@ -1807,6 +1808,9 @@ export function nodeReferenceReferenceRefTypeFromJSON(object: any): NodeReferenc
     case 15:
     case "TABLE_DEFINITION":
       return NodeReferenceReferenceRefType.TABLE_DEFINITION;
+    case 16:
+    case "PROJECT_VARIABLE":
+      return NodeReferenceReferenceRefType.PROJECT_VARIABLE;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -1848,6 +1852,8 @@ export function nodeReferenceReferenceRefTypeToJSON(object: NodeReferenceReferen
       return "MOBILE_MOLECULE_PROP";
     case NodeReferenceReferenceRefType.TABLE_DEFINITION:
       return "TABLE_DEFINITION";
+    case NodeReferenceReferenceRefType.PROJECT_VARIABLE:
+      return "PROJECT_VARIABLE";
     case NodeReferenceReferenceRefType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -1931,6 +1937,7 @@ export enum NodeVariableVariableSource {
   CONTEXT_VALUES = 7,
   LOCAL_CONTEXT_RESPONSE = 8,
   FORM_VALIDATION_ERROR_MESSAGE = 9,
+  CSS_VARIABLE = 10,
   UNRECOGNIZED = -1,
 }
 
@@ -1966,6 +1973,9 @@ export function nodeVariableVariableSourceFromJSON(object: any): NodeVariableVar
     case 9:
     case "FORM_VALIDATION_ERROR_MESSAGE":
       return NodeVariableVariableSource.FORM_VALIDATION_ERROR_MESSAGE;
+    case 10:
+    case "CSS_VARIABLE":
+      return NodeVariableVariableSource.CSS_VARIABLE;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -1995,6 +2005,8 @@ export function nodeVariableVariableSourceToJSON(object: NodeVariableVariableSou
       return "LOCAL_CONTEXT_RESPONSE";
     case NodeVariableVariableSource.FORM_VALIDATION_ERROR_MESSAGE:
       return "FORM_VALIDATION_ERROR_MESSAGE";
+    case NodeVariableVariableSource.CSS_VARIABLE:
+      return "CSS_VARIABLE";
     case NodeVariableVariableSource.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -2186,6 +2198,12 @@ export interface NodeCustom {
   props: NodeParam[];
   childrenData: NodeVariable[];
   formValidations: FormValidation[];
+  formDefaultValues: FormDefaultValue[];
+}
+
+export interface FormDefaultValue {
+  reference?: NodeReference;
+  value?: NodeVariable;
 }
 
 export interface NodeMediaQuery {
@@ -14638,6 +14656,7 @@ function createBaseNodeCustom(): NodeCustom {
     props: [],
     childrenData: [],
     formValidations: [],
+    formDefaultValues: [],
   };
 }
 
@@ -14684,6 +14703,9 @@ export const NodeCustom = {
     }
     for (const v of message.formValidations) {
       FormValidation.encode(v!, writer.uint32(114).fork()).ldelim();
+    }
+    for (const v of message.formDefaultValues) {
+      FormDefaultValue.encode(v!, writer.uint32(122).fork()).ldelim();
     }
     return writer;
   },
@@ -14737,6 +14759,9 @@ export const NodeCustom = {
         case 14:
           message.formValidations.push(FormValidation.decode(reader, reader.uint32()));
           break;
+        case 15:
+          message.formDefaultValues.push(FormDefaultValue.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -14768,6 +14793,9 @@ export const NodeCustom = {
         : [],
       formValidations: Array.isArray(object?.formValidations)
         ? object.formValidations.map((e: any) => FormValidation.fromJSON(e))
+        : [],
+      formDefaultValues: Array.isArray(object?.formDefaultValues)
+        ? object.formDefaultValues.map((e: any) => FormDefaultValue.fromJSON(e))
         : [],
     };
   },
@@ -14823,6 +14851,11 @@ export const NodeCustom = {
     } else {
       obj.formValidations = [];
     }
+    if (message.formDefaultValues) {
+      obj.formDefaultValues = message.formDefaultValues.map((e) => e ? FormDefaultValue.toJSON(e) : undefined);
+    } else {
+      obj.formDefaultValues = [];
+    }
     return obj;
   },
 
@@ -14850,6 +14883,70 @@ export const NodeCustom = {
     message.props = object.props?.map((e) => NodeParam.fromPartial(e)) || [];
     message.childrenData = object.childrenData?.map((e) => NodeVariable.fromPartial(e)) || [];
     message.formValidations = object.formValidations?.map((e) => FormValidation.fromPartial(e)) || [];
+    message.formDefaultValues = object.formDefaultValues?.map((e) => FormDefaultValue.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseFormDefaultValue(): FormDefaultValue {
+  return {};
+}
+
+export const FormDefaultValue = {
+  encode(message: FormDefaultValue, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.reference !== undefined) {
+      NodeReference.encode(message.reference, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.value !== undefined) {
+      NodeVariable.encode(message.value, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): FormDefaultValue {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseFormDefaultValue();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.reference = NodeReference.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.value = NodeVariable.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): FormDefaultValue {
+    return {
+      reference: isSet(object.reference) ? NodeReference.fromJSON(object.reference) : undefined,
+      value: isSet(object.value) ? NodeVariable.fromJSON(object.value) : undefined,
+    };
+  },
+
+  toJSON(message: FormDefaultValue): unknown {
+    const obj: any = {};
+    message.reference !== undefined &&
+      (obj.reference = message.reference ? NodeReference.toJSON(message.reference) : undefined);
+    message.value !== undefined && (obj.value = message.value ? NodeVariable.toJSON(message.value) : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<FormDefaultValue>): FormDefaultValue {
+    const message = createBaseFormDefaultValue();
+    message.reference = (object.reference !== undefined && object.reference !== null)
+      ? NodeReference.fromPartial(object.reference)
+      : undefined;
+    message.value = (object.value !== undefined && object.value !== null)
+      ? NodeVariable.fromPartial(object.value)
+      : undefined;
     return message;
   },
 };

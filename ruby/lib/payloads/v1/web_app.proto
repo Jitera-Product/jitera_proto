@@ -316,6 +316,7 @@ message NodeReference {
 		MOBILE_NAVIGATION_NODE = 13;
 		MOBILE_MOLECULE_PROP = 14;
 		TABLE_DEFINITION = 15;
+		PROJECT_VARIABLE = 16;
 	}
 }
 
@@ -367,6 +368,7 @@ message NodeVariable {
 		CONTEXT_VALUES = 7;
 		LOCAL_CONTEXT_RESPONSE = 8;
 		FORM_VALIDATION_ERROR_MESSAGE = 9;
+		CSS_VARIABLE = 10;
 	}
 	
 	enum VariableType {
@@ -431,6 +433,12 @@ message NodeCustom {
 	repeated NodeParam props = 12;
 	repeated NodeVariable children_data = 13;
 	repeated FormValidation form_validations = 14;
+	repeated FormDefaultValue form_default_values = 15;
+}
+
+message FormDefaultValue {
+	NodeReference reference = 1;
+	NodeVariable value = 2;
 }
 
 message NodeMediaQuery {

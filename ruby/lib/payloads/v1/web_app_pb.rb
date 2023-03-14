@@ -291,6 +291,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       value :MOBILE_NAVIGATION_NODE, 13
       value :MOBILE_MOLECULE_PROP, 14
       value :TABLE_DEFINITION, 15
+      value :PROJECT_VARIABLE, 16
     end
     add_message "schema.v1.FunctionArgument" do
       optional :name, :string, 1
@@ -337,6 +338,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       value :CONTEXT_VALUES, 7
       value :LOCAL_CONTEXT_RESPONSE, 8
       value :FORM_VALIDATION_ERROR_MESSAGE, 9
+      value :CSS_VARIABLE, 10
     end
     add_enum "schema.v1.NodeVariable.VariableType" do
       value :STATIC, 0
@@ -393,6 +395,11 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       repeated :props, :message, 12, "schema.v1.NodeParam"
       repeated :children_data, :message, 13, "schema.v1.NodeVariable"
       repeated :form_validations, :message, 14, "schema.v1.FormValidation"
+      repeated :form_default_values, :message, 15, "schema.v1.FormDefaultValue"
+    end
+    add_message "schema.v1.FormDefaultValue" do
+      optional :reference, :message, 1, "schema.v1.NodeReference"
+      optional :value, :message, 2, "schema.v1.NodeVariable"
     end
     add_message "schema.v1.NodeMediaQuery" do
       optional :lower, :int32, 1
@@ -476,6 +483,7 @@ module Schema
     NodePayload = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.NodePayload").msgclass
     MoleculeComponent = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.MoleculeComponent").msgclass
     NodeCustom = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.NodeCustom").msgclass
+    FormDefaultValue = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.FormDefaultValue").msgclass
     NodeMediaQuery = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.NodeMediaQuery").msgclass
     RenderCondition = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.RenderCondition").msgclass
     RenderCondition::Condition = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.RenderCondition.Condition").msgclass
