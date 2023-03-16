@@ -378,6 +378,7 @@ export class Feature {
   lineLogin?: FeatureLineLogin | undefined;
   googleAnalytics?: FeatureGoogleAnalytics | undefined;
   scoutApm?: FeatureScoutApm | undefined;
+  googleTagManager?: FeatureGoogleTagManager | undefined;
 }
 
 export enum FeatureFeatureName {
@@ -392,6 +393,7 @@ export enum FeatureFeatureName {
   LINE_LOGIN = 8,
   GOOGLE_ANALYTICS = 9,
   SCOUT_APM = 10,
+  GOOGLE_TAG_MANAGER = 11,
   UNRECOGNIZED = -1,
 }
 
@@ -430,6 +432,9 @@ export function featureFeatureNameFromJSON(object: any): FeatureFeatureName {
     case 10:
     case "SCOUT_APM":
       return FeatureFeatureName.SCOUT_APM;
+    case 11:
+    case "GOOGLE_TAG_MANAGER":
+      return FeatureFeatureName.GOOGLE_TAG_MANAGER;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -461,6 +466,8 @@ export function featureFeatureNameToJSON(object: FeatureFeatureName): string {
       return "GOOGLE_ANALYTICS";
     case FeatureFeatureName.SCOUT_APM:
       return "SCOUT_APM";
+    case FeatureFeatureName.GOOGLE_TAG_MANAGER:
+      return "GOOGLE_TAG_MANAGER";
     case FeatureFeatureName.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -617,6 +624,10 @@ export class FeatureLineLogin {
 
 export class FeatureGoogleAnalytics {
   measurementId: string;
+}
+
+export class FeatureGoogleTagManager {
+  containerId: string;
 }
 
 export class Controller {
@@ -3620,6 +3631,9 @@ export const FeatureData = {
     if (message.scoutApm !== undefined) {
       FeatureScoutApmData.encode(message.scoutApm, writer.uint32(98).fork()).ldelim();
     }
+    if (message.googleTagManager !== undefined) {
+      FeatureGoogleTagManagerData.encode(message.googleTagManager, writer.uint32(106).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -3666,6 +3680,9 @@ export const FeatureData = {
         case 12:
           message.scoutApm = FeatureScoutApmData.decode(reader, reader.uint32());
           break;
+        case 13:
+          message.googleTagManager = FeatureGoogleTagManagerData.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3690,6 +3707,9 @@ export const FeatureData = {
         ? FeatureGoogleAnalyticsData.fromJSON(object.googleAnalytics)
         : undefined,
       scoutApm: isSet(object.scoutApm) ? FeatureScoutApmData.fromJSON(object.scoutApm) : undefined,
+      googleTagManager: isSet(object.googleTagManager)
+        ? FeatureGoogleTagManagerData.fromJSON(object.googleTagManager)
+        : undefined,
     };
   },
 
@@ -3718,6 +3738,9 @@ export const FeatureData = {
       : undefined);
     message.scoutApm !== undefined &&
       (obj.scoutApm = message.scoutApm ? FeatureScoutApmData.toJSON(message.scoutApm) : undefined);
+    message.googleTagManager !== undefined && (obj.googleTagManager = message.googleTagManager
+      ? FeatureGoogleTagManagerData.toJSON(message.googleTagManager)
+      : undefined);
     return obj;
   },
 
@@ -3754,6 +3777,9 @@ export const FeatureData = {
       : undefined;
     message.scoutApm = (object.scoutApm !== undefined && object.scoutApm !== null)
       ? FeatureScoutApmData.fromPartial(object.scoutApm)
+      : undefined;
+    message.googleTagManager = (object.googleTagManager !== undefined && object.googleTagManager !== null)
+      ? FeatureGoogleTagManagerData.fromPartial(object.googleTagManager)
       : undefined;
     return message;
   },
@@ -4541,6 +4567,53 @@ export const FeatureGoogleAnalyticsData = {
   fromPartial(object: DeepPartial<FeatureGoogleAnalytics>): FeatureGoogleAnalytics {
     const message = createBaseFeatureGoogleAnalytics();
     message.measurementId = object.measurementId ?? "";
+    return message;
+  },
+};
+
+function createBaseFeatureGoogleTagManager(): FeatureGoogleTagManager {
+  return { containerId: "" };
+}
+
+export const FeatureGoogleTagManagerData = {
+  encode(message: FeatureGoogleTagManager, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.containerId !== "") {
+      writer.uint32(10).string(message.containerId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): FeatureGoogleTagManager {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseFeatureGoogleTagManager();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.containerId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): FeatureGoogleTagManager {
+    return { containerId: isSet(object.containerId) ? String(object.containerId) : "" };
+  },
+
+  toJSON(message: FeatureGoogleTagManager): unknown {
+    const obj: any = {};
+    message.containerId !== undefined && (obj.containerId = message.containerId);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<FeatureGoogleTagManager>): FeatureGoogleTagManager {
+    const message = createBaseFeatureGoogleTagManager();
+    message.containerId = object.containerId ?? "";
     return message;
   },
 };

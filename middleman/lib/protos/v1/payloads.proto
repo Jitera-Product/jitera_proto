@@ -161,6 +161,7 @@ message Feature {
 		LineLogin line_login = 10;
 		GoogleAnalytics google_analytics = 11;
 		ScoutApm scout_apm = 12;
+		GoogleTagManager google_tag_manager = 13;
 	}
 
 	message ScoutApm {
@@ -236,6 +237,10 @@ message Feature {
 		string measurement_id = 1;
 	}
 
+	message GoogleTagManager {
+		string container_id = 1;
+	}
+
 	enum FeatureName {
 		NIL = 0;
 		EMAIL_LOGIN = 1;
@@ -248,6 +253,7 @@ message Feature {
 		LINE_LOGIN = 8;
 		GOOGLE_ANALYTICS = 9;
 		SCOUT_APM = 10;
+		GOOGLE_TAG_MANAGER = 11;
 	}
 
 	enum Environment {
