@@ -14,9 +14,10 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       repeated :categories, :message, 4, "schema.v1.AppPageCategory"
     end
     add_message "schema.v1.WebApp.Variable" do
-      optional :type, :enum, 1, "schema.v1.WebApp.VariableType"
-      optional :name, :string, 2
-      optional :value, :string, 3
+      optional :id, :string, 1
+      optional :type, :enum, 2, "schema.v1.WebApp.VariableType"
+      optional :name, :string, 3
+      optional :value, :string, 4
     end
     add_enum "schema.v1.WebApp.VariableType" do
       value :JS, 0
