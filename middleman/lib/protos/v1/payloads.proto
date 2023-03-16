@@ -875,9 +875,10 @@ message WebApp {
 	repeated AppPageCategory categories = 4;
 
 	message Variable {
-		VariableType type = 1;
-		string name = 2;
-		string value = 3;
+		string id = 1;
+		VariableType type = 2;
+		string name = 3;
+		string value = 4;
 	}
 
 	enum VariableType {

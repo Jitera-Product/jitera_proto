@@ -1435,6 +1435,7 @@ export function webAppVariableTypeToJSON(object: WebAppVariableType): string {
 }
 
 export class WebAppVariable {
+  id: string;
   type: WebAppVariableType;
   name: string;
   value: string;
@@ -11217,19 +11218,22 @@ export const WebAppData = {
 };
 
 function createBaseWebAppVariable(): WebAppVariable {
-  return { type: 0, name: "", value: "" };
+  return { id: "", type: 0, name: "", value: "" };
 }
 
 export const WebAppVariableData = {
   encode(message: WebAppVariable, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
     if (message.type !== 0) {
-      writer.uint32(8).int32(message.type);
+      writer.uint32(16).int32(message.type);
     }
     if (message.name !== "") {
-      writer.uint32(18).string(message.name);
+      writer.uint32(26).string(message.name);
     }
     if (message.value !== "") {
-      writer.uint32(26).string(message.value);
+      writer.uint32(34).string(message.value);
     }
     return writer;
   },
@@ -11242,12 +11246,15 @@ export const WebAppVariableData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.type = reader.int32() as any;
+          message.id = reader.string();
           break;
         case 2:
-          message.name = reader.string();
+          message.type = reader.int32() as any;
           break;
         case 3:
+          message.name = reader.string();
+          break;
+        case 4:
           message.value = reader.string();
           break;
         default:
@@ -11260,6 +11267,7 @@ export const WebAppVariableData = {
 
   fromJSON(object: any): WebAppVariable {
     return {
+      id: isSet(object.id) ? String(object.id) : "",
       type: isSet(object.type) ? webAppVariableTypeFromJSON(object.type) : 0,
       name: isSet(object.name) ? String(object.name) : "",
       value: isSet(object.value) ? String(object.value) : "",
@@ -11268,6 +11276,7 @@ export const WebAppVariableData = {
 
   toJSON(message: WebAppVariable): unknown {
     const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
     message.type !== undefined && (obj.type = webAppVariableTypeToJSON(message.type));
     message.name !== undefined && (obj.name = message.name);
     message.value !== undefined && (obj.value = message.value);
@@ -11276,6 +11285,7 @@ export const WebAppVariableData = {
 
   fromPartial(object: DeepPartial<WebAppVariable>): WebAppVariable {
     const message = createBaseWebAppVariable();
+    message.id = object.id ?? "";
     message.type = object.type ?? 0;
     message.name = object.name ?? "";
     message.value = object.value ?? "";
