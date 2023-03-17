@@ -190,8 +190,8 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :sortable, :bool, 2
       optional :filterable, :bool, 3
       optional :column_index, :int32, 4
-      repeated :column_name, :message, 5, "google.protobuf.Struct"
-      repeated :column_path, :message, 6, "google.protobuf.Struct"
+      repeated :column_name, :message, 5, "schema.v1.NodeVariable"
+      repeated :column_path, :message, 6, "schema.v1.NodeVariable"
     end
     add_message "schema.v1.MobileNodeProps" do
       optional :element_key, :string, 1

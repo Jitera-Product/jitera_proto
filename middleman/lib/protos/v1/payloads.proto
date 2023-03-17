@@ -1071,8 +1071,8 @@ message WebNodeProps {
 		bool sortable = 2;
 		bool filterable = 3;
 		int32 column_index = 4;
-		repeated google.protobuf.Struct column_name = 5;
-		repeated google.protobuf.Struct column_path = 6;
+		repeated NodeVariable column_name = 5;
+		repeated NodeVariable column_path = 6;
 	}
 }
 

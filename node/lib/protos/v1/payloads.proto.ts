@@ -1649,8 +1649,8 @@ export interface WebNodePropsTableColumn {
   sortable: boolean;
   filterable: boolean;
   columnIndex: number;
-  columnName: { [key: string]: any }[];
-  columnPath: { [key: string]: any }[];
+  columnName: NodeVariable[];
+  columnPath: NodeVariable[];
 }
 
 export interface MobileNodeProps {
@@ -13016,10 +13016,10 @@ export const WebNodePropsTableColumn = {
       writer.uint32(32).int32(message.columnIndex);
     }
     for (const v of message.columnName) {
-      Struct.encode(Struct.wrap(v!), writer.uint32(42).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(42).fork()).ldelim();
     }
     for (const v of message.columnPath) {
-      Struct.encode(Struct.wrap(v!), writer.uint32(50).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -13044,10 +13044,10 @@ export const WebNodePropsTableColumn = {
           message.columnIndex = reader.int32();
           break;
         case 5:
-          message.columnName.push(Struct.unwrap(Struct.decode(reader, reader.uint32())));
+          message.columnName.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 6:
-          message.columnPath.push(Struct.unwrap(Struct.decode(reader, reader.uint32())));
+          message.columnPath.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -13063,8 +13063,8 @@ export const WebNodePropsTableColumn = {
       sortable: isSet(object.sortable) ? Boolean(object.sortable) : false,
       filterable: isSet(object.filterable) ? Boolean(object.filterable) : false,
       columnIndex: isSet(object.columnIndex) ? Number(object.columnIndex) : 0,
-      columnName: Array.isArray(object?.columnName) ? [...object.columnName] : [],
-      columnPath: Array.isArray(object?.columnPath) ? [...object.columnPath] : [],
+      columnName: Array.isArray(object?.columnName) ? object.columnName.map((e: any) => NodeVariable.fromJSON(e)) : [],
+      columnPath: Array.isArray(object?.columnPath) ? object.columnPath.map((e: any) => NodeVariable.fromJSON(e)) : [],
     };
   },
 
@@ -13076,12 +13076,12 @@ export const WebNodePropsTableColumn = {
     message.filterable !== undefined && (obj.filterable = message.filterable);
     message.columnIndex !== undefined && (obj.columnIndex = Math.round(message.columnIndex));
     if (message.columnName) {
-      obj.columnName = message.columnName.map((e) => e);
+      obj.columnName = message.columnName.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.columnName = [];
     }
     if (message.columnPath) {
-      obj.columnPath = message.columnPath.map((e) => e);
+      obj.columnPath = message.columnPath.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.columnPath = [];
     }
@@ -13096,8 +13096,8 @@ export const WebNodePropsTableColumn = {
     message.sortable = object.sortable ?? false;
     message.filterable = object.filterable ?? false;
     message.columnIndex = object.columnIndex ?? 0;
-    message.columnName = object.columnName?.map((e) => e) || [];
-    message.columnPath = object.columnPath?.map((e) => e) || [];
+    message.columnName = object.columnName?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.columnPath = object.columnPath?.map((e) => NodeVariable.fromPartial(e)) || [];
     return message;
   },
 };
