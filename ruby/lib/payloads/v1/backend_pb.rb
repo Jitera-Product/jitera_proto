@@ -103,6 +103,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
         optional :line_login, :message, 10, "schema.v1.Feature.LineLogin"
         optional :google_analytics, :message, 11, "schema.v1.Feature.GoogleAnalytics"
         optional :scout_apm, :message, 12, "schema.v1.Feature.ScoutApm"
+        optional :google_tag_manager, :message, 13, "schema.v1.Feature.GoogleTagManager"
       end
     end
     add_message "schema.v1.Feature.EmailLogin" do
@@ -165,6 +166,9 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     add_message "schema.v1.Feature.GoogleAnalytics" do
       optional :measurement_id, :string, 1
     end
+    add_message "schema.v1.Feature.GoogleTagManager" do
+      optional :container_id, :string, 1
+    end
     add_message "schema.v1.Feature.ScoutApm" do
       optional :key_id, :string, 1
     end
@@ -180,6 +184,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       value :LINE_LOGIN, 8
       value :GOOGLE_ANALYTICS, 9
       value :SCOUT_APM, 10
+      value :GOOGLE_TAG_MANAGER, 11
     end
     add_enum "schema.v1.Feature.Environment" do
       value :DEVELOPMENT, 0
@@ -787,6 +792,7 @@ module Schema
     Feature::Stripe = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Feature.Stripe").msgclass
     Feature::LineLogin = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Feature.LineLogin").msgclass
     Feature::GoogleAnalytics = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Feature.GoogleAnalytics").msgclass
+    Feature::GoogleTagManager = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Feature.GoogleTagManager").msgclass
     Feature::ScoutApm = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Feature.ScoutApm").msgclass
     Feature::FeatureName = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Feature.FeatureName").enummodule
     Feature::Environment = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Feature.Environment").enummodule
