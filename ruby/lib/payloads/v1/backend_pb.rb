@@ -330,7 +330,11 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
         optional :date_type, :message, 5, "schema.v1.Table.Column.DateType"
         optional :file_type, :message, 6, "schema.v1.Table.Column.FileType"
         optional :enum_type, :message, 7, "schema.v1.Table.Column.EnumType"
+        optional :counter_cache_type, :message, 8, "schema.v1.Table.Column.CounterCacheType"
       end
+    end
+    add_message "schema.v1.Table.Column.CounterCacheType" do
+      optional :table_name, :string, 1
     end
     add_message "schema.v1.Table.Column.StringType" do
       proto3_optional :default_value, :string, 1
@@ -739,6 +743,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       value :TABLE, 12
       value :ENUM, 13
       value :CURRENT_USER, 14
+      value :COUNTER_CACHE, 15
     end
     add_enum "schema.v1.Operator" do
       value :WHERE, 0
@@ -818,6 +823,7 @@ module Schema
     Table = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Table").msgclass
     Table::Column = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Table.Column").msgclass
     Table::Column::ColumnType = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Table.Column.ColumnType").msgclass
+    Table::Column::CounterCacheType = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Table.Column.CounterCacheType").msgclass
     Table::Column::StringType = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Table.Column.StringType").msgclass
     Table::Column::StringType::Condition = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Table.Column.StringType.Condition").msgclass
     Table::Column::StringType::Format = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Table.Column.StringType.Format").enummodule

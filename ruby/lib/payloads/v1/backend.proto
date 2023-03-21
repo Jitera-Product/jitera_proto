@@ -67,7 +67,8 @@ enum DataTypeName {
 	FILE = 11;
 	TABLE = 12;
 	ENUM = 13;
-	CURRENT_USER=14;
+	CURRENT_USER = 14;
+	COUNTER_CACHE = 15;
 }
 
 message DataType {
@@ -419,7 +420,12 @@ message Table {
 				DateType date_type = 5;
 				FileType file_type = 6;
 				EnumType enum_type = 7;
+				CounterCacheType counter_cache_type = 8;
 			}
+		}
+
+		message CounterCacheType {
+			string table_name = 1;
 		}
 
 		message StringType {
