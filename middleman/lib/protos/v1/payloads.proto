@@ -1355,6 +1355,7 @@ message FormValidation {
 		string value = 1;
 		string value_type = 2;
 		repeated NodeVariable error_messages = 3;
+		RuleType rule_type = 4;
 	}
 
 	enum ValidationType {

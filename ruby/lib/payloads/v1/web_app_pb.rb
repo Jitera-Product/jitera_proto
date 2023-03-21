@@ -439,6 +439,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :value, :string, 1
       optional :value_type, :string, 2
       repeated :error_messages, :message, 3, "schema.v1.NodeVariable"
+      optional :rule_type, :enum, 4, "schema.v1.FormValidation.RuleType"
     end
     add_enum "schema.v1.FormValidation.ValidationType" do
       value :TEXT, 0

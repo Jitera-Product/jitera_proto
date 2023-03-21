@@ -2443,6 +2443,7 @@ export interface FormValidationFormValidationsRule {
   value: string;
   valueType: string;
   errorMessages: NodeVariable[];
+  ruleType: FormValidationRuleType;
 }
 
 export interface GetWebAppRequest {
@@ -15314,7 +15315,7 @@ export const FormValidation = {
 };
 
 function createBaseFormValidationFormValidationsRule(): FormValidationFormValidationsRule {
-  return { value: "", valueType: "", errorMessages: [] };
+  return { value: "", valueType: "", errorMessages: [], ruleType: 0 };
 }
 
 export const FormValidationFormValidationsRule = {
@@ -15327,6 +15328,9 @@ export const FormValidationFormValidationsRule = {
     }
     for (const v of message.errorMessages) {
       NodeVariable.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.ruleType !== 0) {
+      writer.uint32(32).int32(message.ruleType);
     }
     return writer;
   },
@@ -15347,6 +15351,9 @@ export const FormValidationFormValidationsRule = {
         case 3:
           message.errorMessages.push(NodeVariable.decode(reader, reader.uint32()));
           break;
+        case 4:
+          message.ruleType = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -15362,6 +15369,7 @@ export const FormValidationFormValidationsRule = {
       errorMessages: Array.isArray(object?.errorMessages)
         ? object.errorMessages.map((e: any) => NodeVariable.fromJSON(e))
         : [],
+      ruleType: isSet(object.ruleType) ? formValidationRuleTypeFromJSON(object.ruleType) : 0,
     };
   },
 
@@ -15374,6 +15382,7 @@ export const FormValidationFormValidationsRule = {
     } else {
       obj.errorMessages = [];
     }
+    message.ruleType !== undefined && (obj.ruleType = formValidationRuleTypeToJSON(message.ruleType));
     return obj;
   },
 
@@ -15382,6 +15391,7 @@ export const FormValidationFormValidationsRule = {
     message.value = object.value ?? "";
     message.valueType = object.valueType ?? "";
     message.errorMessages = object.errorMessages?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.ruleType = object.ruleType ?? 0;
     return message;
   },
 };

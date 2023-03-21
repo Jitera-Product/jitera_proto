@@ -2441,6 +2441,7 @@ export class FormValidationFormValidationsRule {
   value: string;
   valueType: string;
   errorMessages: NodeVariable[];
+  ruleType: FormValidationRuleType;
 }
 
 export class GetWebAppRequest {
@@ -15386,7 +15387,7 @@ export const FormValidationData = {
 };
 
 function createBaseFormValidationFormValidationsRule(): FormValidationFormValidationsRule {
-  return { value: "", valueType: "", errorMessages: [] };
+  return { value: "", valueType: "", errorMessages: [], ruleType: 0 };
 }
 
 export const FormValidationFormValidationsRuleData = {
@@ -15399,6 +15400,9 @@ export const FormValidationFormValidationsRuleData = {
     }
     for (const v of message.errorMessages) {
       NodeVariableData.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.ruleType !== 0) {
+      writer.uint32(32).int32(message.ruleType);
     }
     return writer;
   },
@@ -15419,6 +15423,9 @@ export const FormValidationFormValidationsRuleData = {
         case 3:
           message.errorMessages.push(NodeVariableData.decode(reader, reader.uint32()));
           break;
+        case 4:
+          message.ruleType = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -15434,6 +15441,7 @@ export const FormValidationFormValidationsRuleData = {
       errorMessages: Array.isArray(object?.errorMessages)
         ? object.errorMessages.map((e: any) => NodeVariableData.fromJSON(e))
         : [],
+      ruleType: isSet(object.ruleType) ? formValidationRuleTypeFromJSON(object.ruleType) : 0,
     };
   },
 
@@ -15446,6 +15454,7 @@ export const FormValidationFormValidationsRuleData = {
     } else {
       obj.errorMessages = [];
     }
+    message.ruleType !== undefined && (obj.ruleType = formValidationRuleTypeToJSON(message.ruleType));
     return obj;
   },
 
@@ -15454,6 +15463,7 @@ export const FormValidationFormValidationsRuleData = {
     message.value = object.value ?? "";
     message.valueType = object.valueType ?? "";
     message.errorMessages = object.errorMessages?.map((e) => NodeVariableData.fromPartial(e)) || [];
+    message.ruleType = object.ruleType ?? 0;
     return message;
   },
 };
