@@ -1379,7 +1379,8 @@ service CoreService {
 	rpc ListControllers (ListControllersRequest) returns (ListControllersResponse) {}
 	rpc ListFeatures (ListFeaturesRequest) returns (ListFeaturesResponse) {}
 	rpc ListAuthorizations (ListAuthorizationsRequest) returns (ListAuthorizationsResponse) {}
-	rpc ListLocalizations (ListLocalizationsRequest) returns (ListLocalizationsResponse) {}
+	rpc ListBeLocalizations (ListLocalizationsRequest) returns (ListLocalizationsResponse) {}
+	rpc ListFeLocalizations (ListLocalizationsRequest) returns (ListLocalizationsResponse) {}
 	rpc ListMigrations (ListMigrationsRequest) returns (ListMigrationsResponse) {}
 	rpc GetBackend (GetBackendRequest) returns (GetBackendResponse) {}
 	rpc GetWebApp (GetWebAppRequest) returns (GetWebAppResponse) {}
