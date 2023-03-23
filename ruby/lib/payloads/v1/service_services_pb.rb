@@ -18,7 +18,8 @@ module Schema
         rpc :ListControllers, ::Schema::V1::ListControllersRequest, ::Schema::V1::ListControllersResponse
         rpc :ListFeatures, ::Schema::V1::ListFeaturesRequest, ::Schema::V1::ListFeaturesResponse
         rpc :ListAuthorizations, ::Schema::V1::ListAuthorizationsRequest, ::Schema::V1::ListAuthorizationsResponse
-        rpc :ListLocalizations, ::Schema::V1::ListLocalizationsRequest, ::Schema::V1::ListLocalizationsResponse
+        rpc :ListBeLocalizations, ::Schema::V1::ListLocalizationsRequest, ::Schema::V1::ListLocalizationsResponse
+        rpc :ListFeLocalizations, ::Schema::V1::ListLocalizationsRequest, ::Schema::V1::ListLocalizationsResponse
         rpc :GetWebApp, ::Schema::V1::GetWebAppRequest, ::Schema::V1::GetWebAppResponse
         rpc :ListMigrations, ::Schema::V1::ListMigrationsRequest, ::Schema::V1::ListMigrationsResponse
         rpc :GetBackend, ::Schema::V1::GetBackendRequest, ::Schema::V1::GetBackendResponse

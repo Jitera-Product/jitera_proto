@@ -16035,8 +16035,16 @@ export const CoreServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    listLocalizations: {
-      name: "ListLocalizations",
+    listBeLocalizations: {
+      name: "ListBeLocalizations",
+      requestType: ListLocalizationsRequest,
+      requestStream: false,
+      responseType: ListLocalizationsResponse,
+      responseStream: false,
+      options: {},
+    },
+    listFeLocalizations: {
+      name: "ListFeLocalizations",
       requestType: ListLocalizationsRequest,
       requestStream: false,
       responseType: ListLocalizationsResponse,
@@ -16087,7 +16095,11 @@ export interface CoreServiceImplementation<CallContextExt = {}> {
     request: ListAuthorizationsRequest,
     context: CallContext & CallContextExt,
   ): Promise<DeepPartial<ListAuthorizationsResponse>>;
-  listLocalizations(
+  listBeLocalizations(
+    request: ListLocalizationsRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<DeepPartial<ListLocalizationsResponse>>;
+  listFeLocalizations(
     request: ListLocalizationsRequest,
     context: CallContext & CallContextExt,
   ): Promise<DeepPartial<ListLocalizationsResponse>>;
@@ -16119,7 +16131,11 @@ export interface CoreServiceClient<CallOptionsExt = {}> {
     request: DeepPartial<ListAuthorizationsRequest>,
     options?: CallOptions & CallOptionsExt,
   ): Promise<ListAuthorizationsResponse>;
-  listLocalizations(
+  listBeLocalizations(
+    request: DeepPartial<ListLocalizationsRequest>,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<ListLocalizationsResponse>;
+  listFeLocalizations(
     request: DeepPartial<ListLocalizationsRequest>,
     options?: CallOptions & CallOptionsExt,
   ): Promise<ListLocalizationsResponse>;
