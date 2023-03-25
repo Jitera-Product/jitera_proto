@@ -561,10 +561,10 @@ message Table {
 			bool future = 2;
 		}
 		message NumericalityValidation {
-			int32 greater_than = 1;
-			int32 greater_than_or_equal_to = 2;
-			int32 less_than = 3;
-			int32 less_than_or_equal_to = 4;
+			float greater_than = 1;
+			float greater_than_or_equal_to = 2;
+			float less_than = 3;
+			float less_than_or_equal_to = 4;
 		}
 
 		message FileValidation {

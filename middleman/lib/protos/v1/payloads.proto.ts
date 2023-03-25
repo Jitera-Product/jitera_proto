@@ -7603,16 +7603,16 @@ export const TableColumnValidationOptionNumericalityValidationData = {
     writer: _m0.Writer = _m0.Writer.create(),
   ): _m0.Writer {
     if (message.greaterThan !== 0) {
-      writer.uint32(8).int32(message.greaterThan);
+      writer.uint32(13).float(message.greaterThan);
     }
     if (message.greaterThanOrEqualTo !== 0) {
-      writer.uint32(16).int32(message.greaterThanOrEqualTo);
+      writer.uint32(21).float(message.greaterThanOrEqualTo);
     }
     if (message.lessThan !== 0) {
-      writer.uint32(24).int32(message.lessThan);
+      writer.uint32(29).float(message.lessThan);
     }
     if (message.lessThanOrEqualTo !== 0) {
-      writer.uint32(32).int32(message.lessThanOrEqualTo);
+      writer.uint32(37).float(message.lessThanOrEqualTo);
     }
     return writer;
   },
@@ -7625,16 +7625,16 @@ export const TableColumnValidationOptionNumericalityValidationData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.greaterThan = reader.int32();
+          message.greaterThan = reader.float();
           break;
         case 2:
-          message.greaterThanOrEqualTo = reader.int32();
+          message.greaterThanOrEqualTo = reader.float();
           break;
         case 3:
-          message.lessThan = reader.int32();
+          message.lessThan = reader.float();
           break;
         case 4:
-          message.lessThanOrEqualTo = reader.int32();
+          message.lessThanOrEqualTo = reader.float();
           break;
         default:
           reader.skipType(tag & 7);
@@ -7655,10 +7655,10 @@ export const TableColumnValidationOptionNumericalityValidationData = {
 
   toJSON(message: TableColumnValidationOptionNumericalityValidation): unknown {
     const obj: any = {};
-    message.greaterThan !== undefined && (obj.greaterThan = Math.round(message.greaterThan));
-    message.greaterThanOrEqualTo !== undefined && (obj.greaterThanOrEqualTo = Math.round(message.greaterThanOrEqualTo));
-    message.lessThan !== undefined && (obj.lessThan = Math.round(message.lessThan));
-    message.lessThanOrEqualTo !== undefined && (obj.lessThanOrEqualTo = Math.round(message.lessThanOrEqualTo));
+    message.greaterThan !== undefined && (obj.greaterThan = message.greaterThan);
+    message.greaterThanOrEqualTo !== undefined && (obj.greaterThanOrEqualTo = message.greaterThanOrEqualTo);
+    message.lessThan !== undefined && (obj.lessThan = message.lessThan);
+    message.lessThanOrEqualTo !== undefined && (obj.lessThanOrEqualTo = message.lessThanOrEqualTo);
     return obj;
   },
 

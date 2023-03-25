@@ -452,10 +452,10 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :future, :bool, 2
     end
     add_message "schema.v1.Table.ColumnValidationOption.NumericalityValidation" do
-      optional :greater_than, :int32, 1
-      optional :greater_than_or_equal_to, :int32, 2
-      optional :less_than, :int32, 3
-      optional :less_than_or_equal_to, :int32, 4
+      optional :greater_than, :float, 1
+      optional :greater_than_or_equal_to, :float, 2
+      optional :less_than, :float, 3
+      optional :less_than_or_equal_to, :float, 4
     end
     add_message "schema.v1.Table.ColumnValidationOption.FileValidation" do
       optional :single, :bool, 1
