@@ -19,6 +19,8 @@ export enum DataTypeName {
   TABLE = 12,
   ENUM = 13,
   CURRENT_USER = 14,
+  COUNTER_CACHE = 15,
+  ID = 16,
   UNRECOGNIZED = -1,
 }
 
@@ -69,6 +71,12 @@ export function dataTypeNameFromJSON(object: any): DataTypeName {
     case 14:
     case "CURRENT_USER":
       return DataTypeName.CURRENT_USER;
+    case 15:
+    case "COUNTER_CACHE":
+      return DataTypeName.COUNTER_CACHE;
+    case 16:
+    case "ID":
+      return DataTypeName.ID;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -108,6 +116,10 @@ export function dataTypeNameToJSON(object: DataTypeName): string {
       return "ENUM";
     case DataTypeName.CURRENT_USER:
       return "CURRENT_USER";
+    case DataTypeName.COUNTER_CACHE:
+      return "COUNTER_CACHE";
+    case DataTypeName.ID:
+      return "ID";
     case DataTypeName.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -856,6 +868,15 @@ export class TableColumnColumnType {
   dateType?: TableColumnDateType | undefined;
   fileType?: TableColumnFileType | undefined;
   enumType?: TableColumnEnumType | undefined;
+  counterCacheType?: TableColumnCounterCacheType | undefined;
+  idType?: TableColumnIDType | undefined;
+}
+
+export class TableColumnIDType {
+}
+
+export class TableColumnCounterCacheType {
+  tableName: string;
 }
 
 export class TableColumnStringType {
@@ -6293,6 +6314,12 @@ export const TableColumnColumnTypeData = {
     if (message.enumType !== undefined) {
       TableColumnEnumTypeData.encode(message.enumType, writer.uint32(58).fork()).ldelim();
     }
+    if (message.counterCacheType !== undefined) {
+      TableColumnCounterCacheTypeData.encode(message.counterCacheType, writer.uint32(66).fork()).ldelim();
+    }
+    if (message.idType !== undefined) {
+      TableColumnIDTypeData.encode(message.idType, writer.uint32(74).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -6324,6 +6351,12 @@ export const TableColumnColumnTypeData = {
         case 7:
           message.enumType = TableColumnEnumTypeData.decode(reader, reader.uint32());
           break;
+        case 8:
+          message.counterCacheType = TableColumnCounterCacheTypeData.decode(reader, reader.uint32());
+          break;
+        case 9:
+          message.idType = TableColumnIDTypeData.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -6341,6 +6374,10 @@ export const TableColumnColumnTypeData = {
       dateType: isSet(object.dateType) ? TableColumnDateTypeData.fromJSON(object.dateType) : undefined,
       fileType: isSet(object.fileType) ? TableColumnFileTypeData.fromJSON(object.fileType) : undefined,
       enumType: isSet(object.enumType) ? TableColumnEnumTypeData.fromJSON(object.enumType) : undefined,
+      counterCacheType: isSet(object.counterCacheType)
+        ? TableColumnCounterCacheTypeData.fromJSON(object.counterCacheType)
+        : undefined,
+      idType: isSet(object.idType) ? TableColumnIDTypeData.fromJSON(object.idType) : undefined,
     };
   },
 
@@ -6360,6 +6397,11 @@ export const TableColumnColumnTypeData = {
       (obj.fileType = message.fileType ? TableColumnFileTypeData.toJSON(message.fileType) : undefined);
     message.enumType !== undefined &&
       (obj.enumType = message.enumType ? TableColumnEnumTypeData.toJSON(message.enumType) : undefined);
+    message.counterCacheType !== undefined && (obj.counterCacheType = message.counterCacheType
+      ? TableColumnCounterCacheTypeData.toJSON(message.counterCacheType)
+      : undefined);
+    message.idType !== undefined &&
+      (obj.idType = message.idType ? TableColumnIDTypeData.toJSON(message.idType) : undefined);
     return obj;
   },
 
@@ -6386,6 +6428,98 @@ export const TableColumnColumnTypeData = {
     message.enumType = (object.enumType !== undefined && object.enumType !== null)
       ? TableColumnEnumTypeData.fromPartial(object.enumType)
       : undefined;
+    message.counterCacheType = (object.counterCacheType !== undefined && object.counterCacheType !== null)
+      ? TableColumnCounterCacheTypeData.fromPartial(object.counterCacheType)
+      : undefined;
+    message.idType = (object.idType !== undefined && object.idType !== null)
+      ? TableColumnIDTypeData.fromPartial(object.idType)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseTableColumnIDType(): TableColumnIDType {
+  return {};
+}
+
+export const TableColumnIDTypeData = {
+  encode(_: TableColumnIDType, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): TableColumnIDType {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTableColumnIDType();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): TableColumnIDType {
+    return {};
+  },
+
+  toJSON(_: TableColumnIDType): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: DeepPartial<TableColumnIDType>): TableColumnIDType {
+    const message = createBaseTableColumnIDType();
+    return message;
+  },
+};
+
+function createBaseTableColumnCounterCacheType(): TableColumnCounterCacheType {
+  return { tableName: "" };
+}
+
+export const TableColumnCounterCacheTypeData = {
+  encode(message: TableColumnCounterCacheType, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.tableName !== "") {
+      writer.uint32(10).string(message.tableName);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): TableColumnCounterCacheType {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTableColumnCounterCacheType();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.tableName = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TableColumnCounterCacheType {
+    return { tableName: isSet(object.tableName) ? String(object.tableName) : "" };
+  },
+
+  toJSON(message: TableColumnCounterCacheType): unknown {
+    const obj: any = {};
+    message.tableName !== undefined && (obj.tableName = message.tableName);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<TableColumnCounterCacheType>): TableColumnCounterCacheType {
+    const message = createBaseTableColumnCounterCacheType();
+    message.tableName = object.tableName ?? "";
     return message;
   },
 };
