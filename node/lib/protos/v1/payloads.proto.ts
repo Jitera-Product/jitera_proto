@@ -1431,6 +1431,7 @@ export interface WebApp {
   assets: Asset[];
   variables: WebAppVariable[];
   categories: AppPageCategory[];
+  localizations: Localization[];
 }
 
 export enum WebAppVariableType {
@@ -11275,7 +11276,7 @@ export const TableRelationMigration = {
 };
 
 function createBaseWebApp(): WebApp {
-  return { appPages: [], assets: [], variables: [], categories: [] };
+  return { appPages: [], assets: [], variables: [], categories: [], localizations: [] };
 }
 
 export const WebApp = {
@@ -11291,6 +11292,9 @@ export const WebApp = {
     }
     for (const v of message.categories) {
       AppPageCategory.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+    for (const v of message.localizations) {
+      Localization.encode(v!, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -11314,6 +11318,9 @@ export const WebApp = {
         case 4:
           message.categories.push(AppPageCategory.decode(reader, reader.uint32()));
           break;
+        case 5:
+          message.localizations.push(Localization.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -11329,6 +11336,9 @@ export const WebApp = {
       variables: Array.isArray(object?.variables) ? object.variables.map((e: any) => WebAppVariable.fromJSON(e)) : [],
       categories: Array.isArray(object?.categories)
         ? object.categories.map((e: any) => AppPageCategory.fromJSON(e))
+        : [],
+      localizations: Array.isArray(object?.localizations)
+        ? object.localizations.map((e: any) => Localization.fromJSON(e))
         : [],
     };
   },
@@ -11355,6 +11365,11 @@ export const WebApp = {
     } else {
       obj.categories = [];
     }
+    if (message.localizations) {
+      obj.localizations = message.localizations.map((e) => e ? Localization.toJSON(e) : undefined);
+    } else {
+      obj.localizations = [];
+    }
     return obj;
   },
 
@@ -11364,6 +11379,7 @@ export const WebApp = {
     message.assets = object.assets?.map((e) => Asset.fromPartial(e)) || [];
     message.variables = object.variables?.map((e) => WebAppVariable.fromPartial(e)) || [];
     message.categories = object.categories?.map((e) => AppPageCategory.fromPartial(e)) || [];
+    message.localizations = object.localizations?.map((e) => Localization.fromPartial(e)) || [];
     return message;
   },
 };

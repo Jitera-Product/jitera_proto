@@ -890,6 +890,7 @@ message WebApp {
 	repeated Asset assets = 2;
 	repeated Variable variables = 3;
 	repeated AppPageCategory categories = 4;
+	repeated Localization localizations = 5;
 
 	message Variable {
 		string id = 1;

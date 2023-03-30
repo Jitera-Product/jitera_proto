@@ -2,12 +2,14 @@ syntax = "proto3";
 package schema.v1;
 
 import "google/protobuf/struct.proto";
+import "v1/backend.proto";
 
 message WebApp {
 	repeated AppPage app_pages = 1;
 	repeated Asset assets = 2;
 	repeated Variable variables = 3;
 	repeated AppPageCategory categories = 4;
+	repeated Localization localizations = 5;
 
 	message Variable {
 		string id = 1;
