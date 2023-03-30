@@ -1431,6 +1431,7 @@ export class WebApp {
   assets: Asset[];
   variables: WebAppVariable[];
   categories: AppPageCategory[];
+  localizations: Localization[];
 }
 
 export enum WebAppVariableType {
@@ -11330,7 +11331,7 @@ export const TableRelationMigrationData = {
 };
 
 function createBaseWebApp(): WebApp {
-  return { appPages: [], assets: [], variables: [], categories: [] };
+  return { appPages: [], assets: [], variables: [], categories: [], localizations: [] };
 }
 
 export const WebAppData = {
@@ -11346,6 +11347,9 @@ export const WebAppData = {
     }
     for (const v of message.categories) {
       AppPageCategoryData.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+    for (const v of message.localizations) {
+      LocalizationData.encode(v!, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -11369,6 +11373,9 @@ export const WebAppData = {
         case 4:
           message.categories.push(AppPageCategoryData.decode(reader, reader.uint32()));
           break;
+        case 5:
+          message.localizations.push(LocalizationData.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -11386,6 +11393,9 @@ export const WebAppData = {
         : [],
       categories: Array.isArray(object?.categories)
         ? object.categories.map((e: any) => AppPageCategoryData.fromJSON(e))
+        : [],
+      localizations: Array.isArray(object?.localizations)
+        ? object.localizations.map((e: any) => LocalizationData.fromJSON(e))
         : [],
     };
   },
@@ -11412,6 +11422,11 @@ export const WebAppData = {
     } else {
       obj.categories = [];
     }
+    if (message.localizations) {
+      obj.localizations = message.localizations.map((e) => e ? LocalizationData.toJSON(e) : undefined);
+    } else {
+      obj.localizations = [];
+    }
     return obj;
   },
 
@@ -11421,6 +11436,7 @@ export const WebAppData = {
     message.assets = object.assets?.map((e) => AssetData.fromPartial(e)) || [];
     message.variables = object.variables?.map((e) => WebAppVariableData.fromPartial(e)) || [];
     message.categories = object.categories?.map((e) => AppPageCategoryData.fromPartial(e)) || [];
+    message.localizations = object.localizations?.map((e) => LocalizationData.fromPartial(e)) || [];
     return message;
   },
 };

@@ -12,6 +12,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       repeated :assets, :message, 2, "schema.v1.Asset"
       repeated :variables, :message, 3, "schema.v1.WebApp.Variable"
       repeated :categories, :message, 4, "schema.v1.AppPageCategory"
+      repeated :localizations, :message, 5, "schema.v1.Localization"
     end
     add_message "schema.v1.WebApp.Variable" do
       optional :id, :string, 1
