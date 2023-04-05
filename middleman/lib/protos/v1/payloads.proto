@@ -1201,6 +1201,7 @@ message NodeReference {
 		MOBILE_MOLECULE_PROP = 14;
 		TABLE_DEFINITION = 15;
 		PROJECT_VARIABLE = 16;
+		LOCALIZATION = 17;
 	}
 }
 
@@ -1253,6 +1254,7 @@ message NodeVariable {
 		LOCAL_CONTEXT_RESPONSE = 8;
 		FORM_VALIDATION_ERROR_MESSAGE = 9;
 		CSS_VARIABLE = 10;
+		LOCALIZATION = 11;
 	}
 
 	enum VariableType {

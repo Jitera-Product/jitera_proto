@@ -294,6 +294,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       value :MOBILE_MOLECULE_PROP, 14
       value :TABLE_DEFINITION, 15
       value :PROJECT_VARIABLE, 16
+      value :LOCALIZATION, 17
     end
     add_message "schema.v1.FunctionArgument" do
       optional :name, :string, 1
@@ -341,6 +342,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       value :LOCAL_CONTEXT_RESPONSE, 8
       value :FORM_VALIDATION_ERROR_MESSAGE, 9
       value :CSS_VARIABLE, 10
+      value :LOCALIZATION, 11
     end
     add_enum "schema.v1.NodeVariable.VariableType" do
       value :STATIC, 0
