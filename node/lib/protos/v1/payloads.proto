@@ -403,13 +403,13 @@ message Controller {
 
 	message AuthorizationGroup {
 		string table_name = 1;
-		repeated AuthorizationConditions authorization_conditions = 2;
+		repeated AuthorizationCondition authorization_conditions = 2;
 	}
 
-	message AuthorizationConditions {
-		string column_definition_name =1;
+	message AuthorizationCondition {
+		string column_definition_name = 1;
 		string column_definition_display_name = 2;
-		string joining_condition = 3;
+		JoiningCondition joining_condition = 3;
 		Query query = 4;
 		string default_value = 5;
 
@@ -420,6 +420,11 @@ message Controller {
 			LESS_THAN = 3;
 			GREATER_THAN_OR_EQUAL_TO = 4;
 			LESS_THAN_OR_EQUAL_TO = 5;
+		}
+
+		enum JoiningCondition {
+			AND_JOIN = 0;
+			OR_JOIN = 1;
 		}
 	}
 }

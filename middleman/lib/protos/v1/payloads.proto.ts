@@ -791,18 +791,18 @@ export class ControllerAuthorization {
 
 export class ControllerAuthorizationGroup {
   tableName: string;
-  authorizationConditions: ControllerAuthorizationConditions[];
+  authorizationConditions: ControllerAuthorizationCondition[];
 }
 
-export class ControllerAuthorizationConditions {
+export class ControllerAuthorizationCondition {
   columnDefinitionName: string;
   columnDefinitionDisplayName: string;
-  joiningCondition: string;
-  query: ControllerAuthorizationConditionsQuery;
+  joiningCondition: ControllerAuthorizationConditionJoiningCondition;
+  query: ControllerAuthorizationConditionQuery;
   defaultValue: string;
 }
 
-export enum ControllerAuthorizationConditionsQuery {
+export enum ControllerAuthorizationConditionQuery {
   EQUAL = 0,
   IS_NOT_EQUAL = 1,
   GREATER_THAN = 2,
@@ -812,48 +812,85 @@ export enum ControllerAuthorizationConditionsQuery {
   UNRECOGNIZED = -1,
 }
 
-export function controllerAuthorizationConditionsQueryFromJSON(object: any): ControllerAuthorizationConditionsQuery {
+export function controllerAuthorizationConditionQueryFromJSON(object: any): ControllerAuthorizationConditionQuery {
   switch (object) {
     case 0:
     case "EQUAL":
-      return ControllerAuthorizationConditionsQuery.EQUAL;
+      return ControllerAuthorizationConditionQuery.EQUAL;
     case 1:
     case "IS_NOT_EQUAL":
-      return ControllerAuthorizationConditionsQuery.IS_NOT_EQUAL;
+      return ControllerAuthorizationConditionQuery.IS_NOT_EQUAL;
     case 2:
     case "GREATER_THAN":
-      return ControllerAuthorizationConditionsQuery.GREATER_THAN;
+      return ControllerAuthorizationConditionQuery.GREATER_THAN;
     case 3:
     case "LESS_THAN":
-      return ControllerAuthorizationConditionsQuery.LESS_THAN;
+      return ControllerAuthorizationConditionQuery.LESS_THAN;
     case 4:
     case "GREATER_THAN_OR_EQUAL_TO":
-      return ControllerAuthorizationConditionsQuery.GREATER_THAN_OR_EQUAL_TO;
+      return ControllerAuthorizationConditionQuery.GREATER_THAN_OR_EQUAL_TO;
     case 5:
     case "LESS_THAN_OR_EQUAL_TO":
-      return ControllerAuthorizationConditionsQuery.LESS_THAN_OR_EQUAL_TO;
+      return ControllerAuthorizationConditionQuery.LESS_THAN_OR_EQUAL_TO;
     case -1:
     case "UNRECOGNIZED":
     default:
-      return ControllerAuthorizationConditionsQuery.UNRECOGNIZED;
+      return ControllerAuthorizationConditionQuery.UNRECOGNIZED;
   }
 }
 
-export function controllerAuthorizationConditionsQueryToJSON(object: ControllerAuthorizationConditionsQuery): string {
+export function controllerAuthorizationConditionQueryToJSON(object: ControllerAuthorizationConditionQuery): string {
   switch (object) {
-    case ControllerAuthorizationConditionsQuery.EQUAL:
+    case ControllerAuthorizationConditionQuery.EQUAL:
       return "EQUAL";
-    case ControllerAuthorizationConditionsQuery.IS_NOT_EQUAL:
+    case ControllerAuthorizationConditionQuery.IS_NOT_EQUAL:
       return "IS_NOT_EQUAL";
-    case ControllerAuthorizationConditionsQuery.GREATER_THAN:
+    case ControllerAuthorizationConditionQuery.GREATER_THAN:
       return "GREATER_THAN";
-    case ControllerAuthorizationConditionsQuery.LESS_THAN:
+    case ControllerAuthorizationConditionQuery.LESS_THAN:
       return "LESS_THAN";
-    case ControllerAuthorizationConditionsQuery.GREATER_THAN_OR_EQUAL_TO:
+    case ControllerAuthorizationConditionQuery.GREATER_THAN_OR_EQUAL_TO:
       return "GREATER_THAN_OR_EQUAL_TO";
-    case ControllerAuthorizationConditionsQuery.LESS_THAN_OR_EQUAL_TO:
+    case ControllerAuthorizationConditionQuery.LESS_THAN_OR_EQUAL_TO:
       return "LESS_THAN_OR_EQUAL_TO";
-    case ControllerAuthorizationConditionsQuery.UNRECOGNIZED:
+    case ControllerAuthorizationConditionQuery.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export enum ControllerAuthorizationConditionJoiningCondition {
+  AND_JOIN = 0,
+  OR_JOIN = 1,
+  UNRECOGNIZED = -1,
+}
+
+export function controllerAuthorizationConditionJoiningConditionFromJSON(
+  object: any,
+): ControllerAuthorizationConditionJoiningCondition {
+  switch (object) {
+    case 0:
+    case "AND_JOIN":
+      return ControllerAuthorizationConditionJoiningCondition.AND_JOIN;
+    case 1:
+    case "OR_JOIN":
+      return ControllerAuthorizationConditionJoiningCondition.OR_JOIN;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ControllerAuthorizationConditionJoiningCondition.UNRECOGNIZED;
+  }
+}
+
+export function controllerAuthorizationConditionJoiningConditionToJSON(
+  object: ControllerAuthorizationConditionJoiningCondition,
+): string {
+  switch (object) {
+    case ControllerAuthorizationConditionJoiningCondition.AND_JOIN:
+      return "AND_JOIN";
+    case ControllerAuthorizationConditionJoiningCondition.OR_JOIN:
+      return "OR_JOIN";
+    case ControllerAuthorizationConditionJoiningCondition.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
@@ -6209,7 +6246,7 @@ export const ControllerAuthorizationGroupData = {
       writer.uint32(10).string(message.tableName);
     }
     for (const v of message.authorizationConditions) {
-      ControllerAuthorizationConditionsData.encode(v!, writer.uint32(18).fork()).ldelim();
+      ControllerAuthorizationConditionData.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -6225,7 +6262,7 @@ export const ControllerAuthorizationGroupData = {
           message.tableName = reader.string();
           break;
         case 2:
-          message.authorizationConditions.push(ControllerAuthorizationConditionsData.decode(reader, reader.uint32()));
+          message.authorizationConditions.push(ControllerAuthorizationConditionData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -6239,7 +6276,7 @@ export const ControllerAuthorizationGroupData = {
     return {
       tableName: isSet(object.tableName) ? String(object.tableName) : "",
       authorizationConditions: Array.isArray(object?.authorizationConditions)
-        ? object.authorizationConditions.map((e: any) => ControllerAuthorizationConditionsData.fromJSON(e))
+        ? object.authorizationConditions.map((e: any) => ControllerAuthorizationConditionData.fromJSON(e))
         : [],
     };
   },
@@ -6249,7 +6286,7 @@ export const ControllerAuthorizationGroupData = {
     message.tableName !== undefined && (obj.tableName = message.tableName);
     if (message.authorizationConditions) {
       obj.authorizationConditions = message.authorizationConditions.map((e) =>
-        e ? ControllerAuthorizationConditionsData.toJSON(e) : undefined
+        e ? ControllerAuthorizationConditionData.toJSON(e) : undefined
       );
     } else {
       obj.authorizationConditions = [];
@@ -6261,31 +6298,25 @@ export const ControllerAuthorizationGroupData = {
     const message = createBaseControllerAuthorizationGroup();
     message.tableName = object.tableName ?? "";
     message.authorizationConditions =
-      object.authorizationConditions?.map((e) => ControllerAuthorizationConditionsData.fromPartial(e)) || [];
+      object.authorizationConditions?.map((e) => ControllerAuthorizationConditionData.fromPartial(e)) || [];
     return message;
   },
 };
 
-function createBaseControllerAuthorizationConditions(): ControllerAuthorizationConditions {
-  return {
-    columnDefinitionName: "",
-    columnDefinitionDisplayName: "",
-    joiningCondition: "",
-    query: 0,
-    defaultValue: "",
-  };
+function createBaseControllerAuthorizationCondition(): ControllerAuthorizationCondition {
+  return { columnDefinitionName: "", columnDefinitionDisplayName: "", joiningCondition: 0, query: 0, defaultValue: "" };
 }
 
-export const ControllerAuthorizationConditionsData = {
-  encode(message: ControllerAuthorizationConditions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const ControllerAuthorizationConditionData = {
+  encode(message: ControllerAuthorizationCondition, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.columnDefinitionName !== "") {
       writer.uint32(10).string(message.columnDefinitionName);
     }
     if (message.columnDefinitionDisplayName !== "") {
       writer.uint32(18).string(message.columnDefinitionDisplayName);
     }
-    if (message.joiningCondition !== "") {
-      writer.uint32(26).string(message.joiningCondition);
+    if (message.joiningCondition !== 0) {
+      writer.uint32(24).int32(message.joiningCondition);
     }
     if (message.query !== 0) {
       writer.uint32(32).int32(message.query);
@@ -6296,10 +6327,10 @@ export const ControllerAuthorizationConditionsData = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ControllerAuthorizationConditions {
+  decode(input: _m0.Reader | Uint8Array, length?: number): ControllerAuthorizationCondition {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseControllerAuthorizationConditions();
+    const message = createBaseControllerAuthorizationCondition();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -6310,7 +6341,7 @@ export const ControllerAuthorizationConditionsData = {
           message.columnDefinitionDisplayName = reader.string();
           break;
         case 3:
-          message.joiningCondition = reader.string();
+          message.joiningCondition = reader.int32() as any;
           break;
         case 4:
           message.query = reader.int32() as any;
@@ -6326,34 +6357,37 @@ export const ControllerAuthorizationConditionsData = {
     return message;
   },
 
-  fromJSON(object: any): ControllerAuthorizationConditions {
+  fromJSON(object: any): ControllerAuthorizationCondition {
     return {
       columnDefinitionName: isSet(object.columnDefinitionName) ? String(object.columnDefinitionName) : "",
       columnDefinitionDisplayName: isSet(object.columnDefinitionDisplayName)
         ? String(object.columnDefinitionDisplayName)
         : "",
-      joiningCondition: isSet(object.joiningCondition) ? String(object.joiningCondition) : "",
-      query: isSet(object.query) ? controllerAuthorizationConditionsQueryFromJSON(object.query) : 0,
+      joiningCondition: isSet(object.joiningCondition)
+        ? controllerAuthorizationConditionJoiningConditionFromJSON(object.joiningCondition)
+        : 0,
+      query: isSet(object.query) ? controllerAuthorizationConditionQueryFromJSON(object.query) : 0,
       defaultValue: isSet(object.defaultValue) ? String(object.defaultValue) : "",
     };
   },
 
-  toJSON(message: ControllerAuthorizationConditions): unknown {
+  toJSON(message: ControllerAuthorizationCondition): unknown {
     const obj: any = {};
     message.columnDefinitionName !== undefined && (obj.columnDefinitionName = message.columnDefinitionName);
     message.columnDefinitionDisplayName !== undefined &&
       (obj.columnDefinitionDisplayName = message.columnDefinitionDisplayName);
-    message.joiningCondition !== undefined && (obj.joiningCondition = message.joiningCondition);
-    message.query !== undefined && (obj.query = controllerAuthorizationConditionsQueryToJSON(message.query));
+    message.joiningCondition !== undefined &&
+      (obj.joiningCondition = controllerAuthorizationConditionJoiningConditionToJSON(message.joiningCondition));
+    message.query !== undefined && (obj.query = controllerAuthorizationConditionQueryToJSON(message.query));
     message.defaultValue !== undefined && (obj.defaultValue = message.defaultValue);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<ControllerAuthorizationConditions>): ControllerAuthorizationConditions {
-    const message = createBaseControllerAuthorizationConditions();
+  fromPartial(object: DeepPartial<ControllerAuthorizationCondition>): ControllerAuthorizationCondition {
+    const message = createBaseControllerAuthorizationCondition();
     message.columnDefinitionName = object.columnDefinitionName ?? "";
     message.columnDefinitionDisplayName = object.columnDefinitionDisplayName ?? "";
-    message.joiningCondition = object.joiningCondition ?? "";
+    message.joiningCondition = object.joiningCondition ?? 0;
     message.query = object.query ?? 0;
     message.defaultValue = object.defaultValue ?? "";
     return message;
