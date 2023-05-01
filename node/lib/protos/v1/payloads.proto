@@ -15,7 +15,14 @@ message Project {
 	oneof generate_type {
 		ProjectExport project_export = 9;
 		ProjectPreview project_preview = 10;
+		CodePreview code_preview = 11;
 	}
+}
+
+message CodePreview {
+	int32 id = 1;
+	optional Backend backend = 2;
+	optional WebApp web_app = 3;
 }
 
 message ProjectExport {

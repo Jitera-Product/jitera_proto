@@ -265,6 +265,13 @@ export class Project {
   languageCodes: string[];
   projectExport?: ProjectExport | undefined;
   projectPreview?: ProjectPreview | undefined;
+  codePreview?: CodePreview | undefined;
+}
+
+export class CodePreview {
+  id: number;
+  backend?: Backend | undefined;
+  webApp?: WebApp | undefined;
 }
 
 export class ProjectExport {
@@ -2575,6 +2582,9 @@ export const ProjectData = {
     if (message.projectPreview !== undefined) {
       ProjectPreviewData.encode(message.projectPreview, writer.uint32(82).fork()).ldelim();
     }
+    if (message.codePreview !== undefined) {
+      CodePreviewData.encode(message.codePreview, writer.uint32(90).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -2612,6 +2622,9 @@ export const ProjectData = {
         case 10:
           message.projectPreview = ProjectPreviewData.decode(reader, reader.uint32());
           break;
+        case 11:
+          message.codePreview = CodePreviewData.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2631,6 +2644,7 @@ export const ProjectData = {
       languageCodes: Array.isArray(object?.languageCodes) ? object.languageCodes.map((e: any) => String(e)) : [],
       projectExport: isSet(object.projectExport) ? ProjectExportData.fromJSON(object.projectExport) : undefined,
       projectPreview: isSet(object.projectPreview) ? ProjectPreviewData.fromJSON(object.projectPreview) : undefined,
+      codePreview: isSet(object.codePreview) ? CodePreviewData.fromJSON(object.codePreview) : undefined,
     };
   },
 
@@ -2651,6 +2665,8 @@ export const ProjectData = {
       (obj.projectExport = message.projectExport ? ProjectExportData.toJSON(message.projectExport) : undefined);
     message.projectPreview !== undefined &&
       (obj.projectPreview = message.projectPreview ? ProjectPreviewData.toJSON(message.projectPreview) : undefined);
+    message.codePreview !== undefined &&
+      (obj.codePreview = message.codePreview ? CodePreviewData.toJSON(message.codePreview) : undefined);
     return obj;
   },
 
@@ -2670,6 +2686,80 @@ export const ProjectData = {
       : undefined;
     message.projectPreview = (object.projectPreview !== undefined && object.projectPreview !== null)
       ? ProjectPreviewData.fromPartial(object.projectPreview)
+      : undefined;
+    message.codePreview = (object.codePreview !== undefined && object.codePreview !== null)
+      ? CodePreviewData.fromPartial(object.codePreview)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseCodePreview(): CodePreview {
+  return { id: 0 };
+}
+
+export const CodePreviewData = {
+  encode(message: CodePreview, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
+    if (message.backend !== undefined) {
+      BackendData.encode(message.backend, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.webApp !== undefined) {
+      WebAppData.encode(message.webApp, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CodePreview {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCodePreview();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.int32();
+          break;
+        case 2:
+          message.backend = BackendData.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.webApp = WebAppData.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CodePreview {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      backend: isSet(object.backend) ? BackendData.fromJSON(object.backend) : undefined,
+      webApp: isSet(object.webApp) ? WebAppData.fromJSON(object.webApp) : undefined,
+    };
+  },
+
+  toJSON(message: CodePreview): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.backend !== undefined && (obj.backend = message.backend ? BackendData.toJSON(message.backend) : undefined);
+    message.webApp !== undefined && (obj.webApp = message.webApp ? WebAppData.toJSON(message.webApp) : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<CodePreview>): CodePreview {
+    const message = createBaseCodePreview();
+    message.id = object.id ?? 0;
+    message.backend = (object.backend !== undefined && object.backend !== null)
+      ? BackendData.fromPartial(object.backend)
+      : undefined;
+    message.webApp = (object.webApp !== undefined && object.webApp !== null)
+      ? WebAppData.fromPartial(object.webApp)
       : undefined;
     return message;
   },

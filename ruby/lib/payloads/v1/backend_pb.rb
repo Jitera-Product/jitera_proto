@@ -5,28 +5,6 @@ require 'google/protobuf'
 
 Google::Protobuf::DescriptorPool.generated_pool.build do
   add_file("v1/backend.proto", :syntax => :proto3) do
-    add_message "schema.v1.Project" do
-      optional :id, :string, 1
-      optional :project_name, :string, 2
-      optional :project_id, :int32, 3
-      proto3_optional :infra, :message, 4, "schema.v1.Infra"
-      optional :time_zone, :string, 5
-      optional :default_language_code, :string, 6
-      repeated :language_codes, :string, 7
-      oneof :generate_type do
-        optional :project_export, :message, 9, "schema.v1.ProjectExport"
-        optional :project_preview, :message, 10, "schema.v1.ProjectPreview"
-      end
-    end
-    add_message "schema.v1.ProjectExport" do
-      optional :id, :int32, 1
-    end
-    add_message "schema.v1.ProjectPreview" do
-      optional :id, :int32, 1
-    end
-    add_message "schema.v1.Infra" do
-      optional :path, :string, 1
-    end
     add_message "schema.v1.Backend" do
       repeated :tables, :message, 4, "schema.v1.Table"
       repeated :controllers, :message, 5, "schema.v1.Controller"
@@ -774,10 +752,6 @@ end
 
 module Schema
   module V1
-    Project = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Project").msgclass
-    ProjectExport = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.ProjectExport").msgclass
-    ProjectPreview = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.ProjectPreview").msgclass
-    Infra = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Infra").msgclass
     Backend = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Backend").msgclass
     Localization = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Localization").msgclass
     Localization::Namespace = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Localization.Namespace").msgclass
