@@ -664,6 +664,7 @@ export class ControllerEndpoint {
   writable: boolean;
   featureAction?: string | undefined;
   featureTable?: string | undefined;
+  authorizationGroups: ControllerAuthorizationGroup[];
 }
 
 export class ControllerEndpointList {
@@ -786,6 +787,76 @@ export class ControllerAuthentication {
 export class ControllerAuthorization {
   authorizationId: number;
   tableName: string;
+}
+
+export class ControllerAuthorizationGroup {
+  tableName: string;
+  authorizationConditions: ControllerAuthorizationConditions[];
+}
+
+export class ControllerAuthorizationConditions {
+  columnDefinitionName: string;
+  columnDefinitionDisplayName: string;
+  joiningCondition: string;
+  query: ControllerAuthorizationConditionsQuery;
+  defaultValue: string;
+}
+
+export enum ControllerAuthorizationConditionsQuery {
+  EQUAL = 0,
+  IS_NOT_EQUAL = 1,
+  GREATER_THAN = 2,
+  LESS_THAN = 3,
+  GREATER_THAN_OR_EQUAL_TO = 4,
+  LESS_THAN_OR_EQUAL_TO = 5,
+  UNRECOGNIZED = -1,
+}
+
+export function controllerAuthorizationConditionsQueryFromJSON(object: any): ControllerAuthorizationConditionsQuery {
+  switch (object) {
+    case 0:
+    case "EQUAL":
+      return ControllerAuthorizationConditionsQuery.EQUAL;
+    case 1:
+    case "IS_NOT_EQUAL":
+      return ControllerAuthorizationConditionsQuery.IS_NOT_EQUAL;
+    case 2:
+    case "GREATER_THAN":
+      return ControllerAuthorizationConditionsQuery.GREATER_THAN;
+    case 3:
+    case "LESS_THAN":
+      return ControllerAuthorizationConditionsQuery.LESS_THAN;
+    case 4:
+    case "GREATER_THAN_OR_EQUAL_TO":
+      return ControllerAuthorizationConditionsQuery.GREATER_THAN_OR_EQUAL_TO;
+    case 5:
+    case "LESS_THAN_OR_EQUAL_TO":
+      return ControllerAuthorizationConditionsQuery.LESS_THAN_OR_EQUAL_TO;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ControllerAuthorizationConditionsQuery.UNRECOGNIZED;
+  }
+}
+
+export function controllerAuthorizationConditionsQueryToJSON(object: ControllerAuthorizationConditionsQuery): string {
+  switch (object) {
+    case ControllerAuthorizationConditionsQuery.EQUAL:
+      return "EQUAL";
+    case ControllerAuthorizationConditionsQuery.IS_NOT_EQUAL:
+      return "IS_NOT_EQUAL";
+    case ControllerAuthorizationConditionsQuery.GREATER_THAN:
+      return "GREATER_THAN";
+    case ControllerAuthorizationConditionsQuery.LESS_THAN:
+      return "LESS_THAN";
+    case ControllerAuthorizationConditionsQuery.GREATER_THAN_OR_EQUAL_TO:
+      return "GREATER_THAN_OR_EQUAL_TO";
+    case ControllerAuthorizationConditionsQuery.LESS_THAN_OR_EQUAL_TO:
+      return "LESS_THAN_OR_EQUAL_TO";
+    case ControllerAuthorizationConditionsQuery.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
 }
 
 export class Table {
@@ -4718,7 +4789,7 @@ export const ControllerData = {
 };
 
 function createBaseControllerEndpoint(): ControllerEndpoint {
-  return { path: "", name: "", writable: false };
+  return { path: "", name: "", writable: false, authorizationGroups: [] };
 }
 
 export const ControllerEndpointData = {
@@ -4770,6 +4841,9 @@ export const ControllerEndpointData = {
     }
     if (message.featureTable !== undefined) {
       writer.uint32(130).string(message.featureTable);
+    }
+    for (const v of message.authorizationGroups) {
+      ControllerAuthorizationGroupData.encode(v!, writer.uint32(138).fork()).ldelim();
     }
     return writer;
   },
@@ -4829,6 +4903,9 @@ export const ControllerEndpointData = {
         case 16:
           message.featureTable = reader.string();
           break;
+        case 17:
+          message.authorizationGroups.push(ControllerAuthorizationGroupData.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -4859,6 +4936,9 @@ export const ControllerEndpointData = {
       writable: isSet(object.writable) ? Boolean(object.writable) : false,
       featureAction: isSet(object.featureAction) ? String(object.featureAction) : undefined,
       featureTable: isSet(object.featureTable) ? String(object.featureTable) : undefined,
+      authorizationGroups: Array.isArray(object?.authorizationGroups)
+        ? object.authorizationGroups.map((e: any) => ControllerAuthorizationGroupData.fromJSON(e))
+        : [],
     };
   },
 
@@ -4892,6 +4972,13 @@ export const ControllerEndpointData = {
     message.writable !== undefined && (obj.writable = message.writable);
     message.featureAction !== undefined && (obj.featureAction = message.featureAction);
     message.featureTable !== undefined && (obj.featureTable = message.featureTable);
+    if (message.authorizationGroups) {
+      obj.authorizationGroups = message.authorizationGroups.map((e) =>
+        e ? ControllerAuthorizationGroupData.toJSON(e) : undefined
+      );
+    } else {
+      obj.authorizationGroups = [];
+    }
     return obj;
   },
 
@@ -4931,6 +5018,8 @@ export const ControllerEndpointData = {
     message.writable = object.writable ?? false;
     message.featureAction = object.featureAction ?? undefined;
     message.featureTable = object.featureTable ?? undefined;
+    message.authorizationGroups =
+      object.authorizationGroups?.map((e) => ControllerAuthorizationGroupData.fromPartial(e)) || [];
     return message;
   },
 };
@@ -6106,6 +6195,167 @@ export const ControllerAuthorizationData = {
     const message = createBaseControllerAuthorization();
     message.authorizationId = object.authorizationId ?? 0;
     message.tableName = object.tableName ?? "";
+    return message;
+  },
+};
+
+function createBaseControllerAuthorizationGroup(): ControllerAuthorizationGroup {
+  return { tableName: "", authorizationConditions: [] };
+}
+
+export const ControllerAuthorizationGroupData = {
+  encode(message: ControllerAuthorizationGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.tableName !== "") {
+      writer.uint32(10).string(message.tableName);
+    }
+    for (const v of message.authorizationConditions) {
+      ControllerAuthorizationConditionsData.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ControllerAuthorizationGroup {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseControllerAuthorizationGroup();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.tableName = reader.string();
+          break;
+        case 2:
+          message.authorizationConditions.push(ControllerAuthorizationConditionsData.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ControllerAuthorizationGroup {
+    return {
+      tableName: isSet(object.tableName) ? String(object.tableName) : "",
+      authorizationConditions: Array.isArray(object?.authorizationConditions)
+        ? object.authorizationConditions.map((e: any) => ControllerAuthorizationConditionsData.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: ControllerAuthorizationGroup): unknown {
+    const obj: any = {};
+    message.tableName !== undefined && (obj.tableName = message.tableName);
+    if (message.authorizationConditions) {
+      obj.authorizationConditions = message.authorizationConditions.map((e) =>
+        e ? ControllerAuthorizationConditionsData.toJSON(e) : undefined
+      );
+    } else {
+      obj.authorizationConditions = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ControllerAuthorizationGroup>): ControllerAuthorizationGroup {
+    const message = createBaseControllerAuthorizationGroup();
+    message.tableName = object.tableName ?? "";
+    message.authorizationConditions =
+      object.authorizationConditions?.map((e) => ControllerAuthorizationConditionsData.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseControllerAuthorizationConditions(): ControllerAuthorizationConditions {
+  return {
+    columnDefinitionName: "",
+    columnDefinitionDisplayName: "",
+    joiningCondition: "",
+    query: 0,
+    defaultValue: "",
+  };
+}
+
+export const ControllerAuthorizationConditionsData = {
+  encode(message: ControllerAuthorizationConditions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.columnDefinitionName !== "") {
+      writer.uint32(10).string(message.columnDefinitionName);
+    }
+    if (message.columnDefinitionDisplayName !== "") {
+      writer.uint32(18).string(message.columnDefinitionDisplayName);
+    }
+    if (message.joiningCondition !== "") {
+      writer.uint32(26).string(message.joiningCondition);
+    }
+    if (message.query !== 0) {
+      writer.uint32(32).int32(message.query);
+    }
+    if (message.defaultValue !== "") {
+      writer.uint32(42).string(message.defaultValue);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ControllerAuthorizationConditions {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseControllerAuthorizationConditions();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.columnDefinitionName = reader.string();
+          break;
+        case 2:
+          message.columnDefinitionDisplayName = reader.string();
+          break;
+        case 3:
+          message.joiningCondition = reader.string();
+          break;
+        case 4:
+          message.query = reader.int32() as any;
+          break;
+        case 5:
+          message.defaultValue = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ControllerAuthorizationConditions {
+    return {
+      columnDefinitionName: isSet(object.columnDefinitionName) ? String(object.columnDefinitionName) : "",
+      columnDefinitionDisplayName: isSet(object.columnDefinitionDisplayName)
+        ? String(object.columnDefinitionDisplayName)
+        : "",
+      joiningCondition: isSet(object.joiningCondition) ? String(object.joiningCondition) : "",
+      query: isSet(object.query) ? controllerAuthorizationConditionsQueryFromJSON(object.query) : 0,
+      defaultValue: isSet(object.defaultValue) ? String(object.defaultValue) : "",
+    };
+  },
+
+  toJSON(message: ControllerAuthorizationConditions): unknown {
+    const obj: any = {};
+    message.columnDefinitionName !== undefined && (obj.columnDefinitionName = message.columnDefinitionName);
+    message.columnDefinitionDisplayName !== undefined &&
+      (obj.columnDefinitionDisplayName = message.columnDefinitionDisplayName);
+    message.joiningCondition !== undefined && (obj.joiningCondition = message.joiningCondition);
+    message.query !== undefined && (obj.query = controllerAuthorizationConditionsQueryToJSON(message.query));
+    message.defaultValue !== undefined && (obj.defaultValue = message.defaultValue);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ControllerAuthorizationConditions>): ControllerAuthorizationConditions {
+    const message = createBaseControllerAuthorizationConditions();
+    message.columnDefinitionName = object.columnDefinitionName ?? "";
+    message.columnDefinitionDisplayName = object.columnDefinitionDisplayName ?? "";
+    message.joiningCondition = object.joiningCondition ?? "";
+    message.query = object.query ?? 0;
+    message.defaultValue = object.defaultValue ?? "";
     return message;
   },
 };

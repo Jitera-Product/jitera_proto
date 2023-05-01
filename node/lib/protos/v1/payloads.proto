@@ -291,6 +291,7 @@ message Controller {
 		bool writable = 14;
 		optional string feature_action = 15;
 		optional string feature_table = 16;
+		repeated AuthorizationGroup authorization_groups = 17;
 
 		message List {
 			RequestContent queries = 1;
@@ -398,6 +399,28 @@ message Controller {
 	message Authorization {
 		int32 authorization_id = 1;
 		string table_name = 2;
+	}
+
+	message AuthorizationGroup {
+		string table_name = 1;
+		repeated AuthorizationConditions authorization_conditions = 2;
+	}
+
+	message AuthorizationConditions {
+		string column_definition_name =1;
+		string column_definition_display_name = 2;
+		string joining_condition = 3;
+		Query query = 4;
+		string default_value = 5;
+
+		enum Query {
+			EQUAL = 0;
+			IS_NOT_EQUAL = 1;
+			GREATER_THAN = 2;
+			LESS_THAN = 3;
+			GREATER_THAN_OR_EQUAL_TO = 4;
+			LESS_THAN_OR_EQUAL_TO = 5;
+		}
 	}
 }
 
