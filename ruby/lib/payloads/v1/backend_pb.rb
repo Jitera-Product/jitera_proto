@@ -206,6 +206,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :writable, :bool, 14
       proto3_optional :feature_action, :string, 15
       proto3_optional :feature_table, :string, 16
+      repeated :authorization_groups, :message, 17, "schema.v1.Controller.AuthorizationGroup"
       oneof :resource do
         optional :table, :string, 3
         optional :feature, :enum, 4, "schema.v1.Feature.FeatureName"
@@ -307,6 +308,29 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     add_message "schema.v1.Controller.Authorization" do
       optional :authorization_id, :int32, 1
       optional :table_name, :string, 2
+    end
+    add_message "schema.v1.Controller.AuthorizationGroup" do
+      optional :table_name, :string, 1
+      repeated :authorization_conditions, :message, 2, "schema.v1.Controller.AuthorizationCondition"
+    end
+    add_message "schema.v1.Controller.AuthorizationCondition" do
+      optional :column_definition_name, :string, 1
+      optional :column_definition_display_name, :string, 2
+      optional :joining_condition, :enum, 3, "schema.v1.Controller.AuthorizationCondition.JoiningCondition"
+      optional :query, :enum, 4, "schema.v1.Controller.AuthorizationCondition.Query"
+      optional :default_value, :string, 5
+    end
+    add_enum "schema.v1.Controller.AuthorizationCondition.Query" do
+      value :EQUAL, 0
+      value :IS_NOT_EQUAL, 1
+      value :GREATER_THAN, 2
+      value :LESS_THAN, 3
+      value :GREATER_THAN_OR_EQUAL_TO, 4
+      value :LESS_THAN_OR_EQUAL_TO, 5
+    end
+    add_enum "schema.v1.Controller.AuthorizationCondition.JoiningCondition" do
+      value :AND_JOIN, 0
+      value :OR_JOIN, 1
     end
     add_message "schema.v1.Table" do
       optional :name, :string, 1
@@ -824,6 +848,10 @@ module Schema
     Controller::ResourceUpdate::Field = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Controller.ResourceUpdate.Field").msgclass
     Controller::Authentication = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Controller.Authentication").msgclass
     Controller::Authorization = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Controller.Authorization").msgclass
+    Controller::AuthorizationGroup = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Controller.AuthorizationGroup").msgclass
+    Controller::AuthorizationCondition = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Controller.AuthorizationCondition").msgclass
+    Controller::AuthorizationCondition::Query = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Controller.AuthorizationCondition.Query").enummodule
+    Controller::AuthorizationCondition::JoiningCondition = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Controller.AuthorizationCondition.JoiningCondition").enummodule
     Table = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Table").msgclass
     Table::Column = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Table.Column").msgclass
     Table::Column::ColumnType = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Table.Column.ColumnType").msgclass
