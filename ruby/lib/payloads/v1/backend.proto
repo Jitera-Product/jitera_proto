@@ -1,33 +1,6 @@
 syntax = "proto3";
 package schema.v1;
 
-message Project {
-	string id = 1;
-	string project_name = 2;
-	int32 project_id = 3;
-	optional Infra infra = 4;
-	string time_zone = 5;
-	string default_language_code = 6;
-	repeated string language_codes = 7;
-
-	oneof generate_type {
-		ProjectExport project_export = 9;
-		ProjectPreview project_preview = 10;
-	}
-}
-
-message ProjectExport {
-	int32 id = 1;
-}
-
-message ProjectPreview {
-	int32 id = 1;
-}
-
-message Infra {
-	string path = 1;
-}
-
 message Backend {
 	repeated Table tables = 4;
 	repeated Controller controllers = 5;
