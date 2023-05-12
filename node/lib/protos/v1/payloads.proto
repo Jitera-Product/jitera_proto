@@ -299,6 +299,7 @@ message Controller {
 		optional string feature_action = 15;
 		optional string feature_table = 16;
 		repeated AuthorizationGroup authorization_groups = 17;
+		bool restrict_access = 18;
 
 		message List {
 			RequestContent queries = 1;
@@ -419,7 +420,7 @@ message Controller {
 		JoiningCondition joining_condition = 3;
 		Query query = 4;
 		string default_value = 5;
-
+		string authentication_class = 6;
 		enum Query {
 			EQUAL = 0;
 			IS_NOT_EQUAL = 1;

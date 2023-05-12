@@ -672,6 +672,7 @@ export interface ControllerEndpoint {
   featureAction?: string | undefined;
   featureTable?: string | undefined;
   authorizationGroups: ControllerAuthorizationGroup[];
+  restrictAccess: boolean;
 }
 
 export interface ControllerEndpointList {
@@ -807,6 +808,7 @@ export interface ControllerAuthorizationCondition {
   joiningCondition: ControllerAuthorizationConditionJoiningCondition;
   query: ControllerAuthorizationConditionQuery;
   defaultValue: string;
+  authenticationClass: string;
 }
 
 export enum ControllerAuthorizationConditionQuery {
@@ -4905,7 +4907,7 @@ export const Controller = {
 };
 
 function createBaseControllerEndpoint(): ControllerEndpoint {
-  return { path: "", name: "", writable: false, authorizationGroups: [] };
+  return { path: "", name: "", writable: false, authorizationGroups: [], restrictAccess: false };
 }
 
 export const ControllerEndpoint = {
@@ -4960,6 +4962,9 @@ export const ControllerEndpoint = {
     }
     for (const v of message.authorizationGroups) {
       ControllerAuthorizationGroup.encode(v!, writer.uint32(138).fork()).ldelim();
+    }
+    if (message.restrictAccess === true) {
+      writer.uint32(144).bool(message.restrictAccess);
     }
     return writer;
   },
@@ -5022,6 +5027,9 @@ export const ControllerEndpoint = {
         case 17:
           message.authorizationGroups.push(ControllerAuthorizationGroup.decode(reader, reader.uint32()));
           break;
+        case 18:
+          message.restrictAccess = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -5053,6 +5061,7 @@ export const ControllerEndpoint = {
       authorizationGroups: Array.isArray(object?.authorizationGroups)
         ? object.authorizationGroups.map((e: any) => ControllerAuthorizationGroup.fromJSON(e))
         : [],
+      restrictAccess: isSet(object.restrictAccess) ? Boolean(object.restrictAccess) : false,
     };
   },
 
@@ -5091,6 +5100,7 @@ export const ControllerEndpoint = {
     } else {
       obj.authorizationGroups = [];
     }
+    message.restrictAccess !== undefined && (obj.restrictAccess = message.restrictAccess);
     return obj;
   },
 
@@ -5132,6 +5142,7 @@ export const ControllerEndpoint = {
     message.featureTable = object.featureTable ?? undefined;
     message.authorizationGroups = object.authorizationGroups?.map((e) => ControllerAuthorizationGroup.fromPartial(e)) ||
       [];
+    message.restrictAccess = object.restrictAccess ?? false;
     return message;
   },
 };
@@ -6370,7 +6381,14 @@ export const ControllerAuthorizationGroup = {
 };
 
 function createBaseControllerAuthorizationCondition(): ControllerAuthorizationCondition {
-  return { columnDefinitionName: "", columnDefinitionDisplayName: "", joiningCondition: 0, query: 0, defaultValue: "" };
+  return {
+    columnDefinitionName: "",
+    columnDefinitionDisplayName: "",
+    joiningCondition: 0,
+    query: 0,
+    defaultValue: "",
+    authenticationClass: "",
+  };
 }
 
 export const ControllerAuthorizationCondition = {
@@ -6389,6 +6407,9 @@ export const ControllerAuthorizationCondition = {
     }
     if (message.defaultValue !== "") {
       writer.uint32(42).string(message.defaultValue);
+    }
+    if (message.authenticationClass !== "") {
+      writer.uint32(50).string(message.authenticationClass);
     }
     return writer;
   },
@@ -6415,6 +6436,9 @@ export const ControllerAuthorizationCondition = {
         case 5:
           message.defaultValue = reader.string();
           break;
+        case 6:
+          message.authenticationClass = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -6434,6 +6458,7 @@ export const ControllerAuthorizationCondition = {
         : 0,
       query: isSet(object.query) ? controllerAuthorizationConditionQueryFromJSON(object.query) : 0,
       defaultValue: isSet(object.defaultValue) ? String(object.defaultValue) : "",
+      authenticationClass: isSet(object.authenticationClass) ? String(object.authenticationClass) : "",
     };
   },
 
@@ -6446,6 +6471,7 @@ export const ControllerAuthorizationCondition = {
       (obj.joiningCondition = controllerAuthorizationConditionJoiningConditionToJSON(message.joiningCondition));
     message.query !== undefined && (obj.query = controllerAuthorizationConditionQueryToJSON(message.query));
     message.defaultValue !== undefined && (obj.defaultValue = message.defaultValue);
+    message.authenticationClass !== undefined && (obj.authenticationClass = message.authenticationClass);
     return obj;
   },
 
@@ -6456,6 +6482,7 @@ export const ControllerAuthorizationCondition = {
     message.joiningCondition = object.joiningCondition ?? 0;
     message.query = object.query ?? 0;
     message.defaultValue = object.defaultValue ?? "";
+    message.authenticationClass = object.authenticationClass ?? "";
     return message;
   },
 };
