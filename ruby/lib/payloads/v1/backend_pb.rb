@@ -185,6 +185,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       proto3_optional :feature_action, :string, 15
       proto3_optional :feature_table, :string, 16
       repeated :authorization_groups, :message, 17, "schema.v1.Controller.AuthorizationGroup"
+      optional :restrict_access, :bool, 18
       oneof :resource do
         optional :table, :string, 3
         optional :feature, :enum, 4, "schema.v1.Feature.FeatureName"
@@ -297,6 +298,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :joining_condition, :enum, 3, "schema.v1.Controller.AuthorizationCondition.JoiningCondition"
       optional :query, :enum, 4, "schema.v1.Controller.AuthorizationCondition.Query"
       optional :default_value, :string, 5
+      optional :authentication_class, :string, 6
     end
     add_enum "schema.v1.Controller.AuthorizationCondition.Query" do
       value :EQUAL, 0
