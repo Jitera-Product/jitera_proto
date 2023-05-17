@@ -1348,8 +1348,8 @@ message NodeCustom {
 	repeated NodeMediaQuery media_queries = 5;
 	optional NodeReference authentication = 6;
 	optional RenderCondition render_condition = 7;
-	optional NodeVariable seo_title = 8;
-	optional NodeVariable seo_description = 9;
+	repeated NodeVariable seo_title = 8;
+	repeated NodeVariable seo_description = 9;
 	repeated NodeAction actions = 10;
 	repeated NodeParam params = 11;
 	repeated NodeParam props = 12;
