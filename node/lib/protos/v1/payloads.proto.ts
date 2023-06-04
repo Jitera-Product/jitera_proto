@@ -2354,8 +2354,8 @@ export interface NodeCustom {
   mediaQueries: NodeMediaQuery[];
   authentication?: NodeReference | undefined;
   renderCondition?: RenderCondition | undefined;
-  seoTitle: NodeVariable[];
-  seoDescription: NodeVariable[];
+  seoTitle?: NodeVariable | undefined;
+  seoDescription?: NodeVariable | undefined;
   actions: NodeAction[];
   params: NodeParam[];
   props: NodeParam[];
@@ -15296,8 +15296,6 @@ export const MoleculeComponent = {
 function createBaseNodeCustom(): NodeCustom {
   return {
     mediaQueries: [],
-    seoTitle: [],
-    seoDescription: [],
     actions: [],
     params: [],
     props: [],
@@ -15330,11 +15328,11 @@ export const NodeCustom = {
     if (message.renderCondition !== undefined) {
       RenderCondition.encode(message.renderCondition, writer.uint32(58).fork()).ldelim();
     }
-    for (const v of message.seoTitle) {
-      NodeVariable.encode(v!, writer.uint32(66).fork()).ldelim();
+    if (message.seoTitle !== undefined) {
+      NodeVariable.encode(message.seoTitle, writer.uint32(66).fork()).ldelim();
     }
-    for (const v of message.seoDescription) {
-      NodeVariable.encode(v!, writer.uint32(74).fork()).ldelim();
+    if (message.seoDescription !== undefined) {
+      NodeVariable.encode(message.seoDescription, writer.uint32(74).fork()).ldelim();
     }
     for (const v of message.actions) {
       NodeAction.encode(v!, writer.uint32(82).fork()).ldelim();
@@ -15386,10 +15384,10 @@ export const NodeCustom = {
           message.renderCondition = RenderCondition.decode(reader, reader.uint32());
           break;
         case 8:
-          message.seoTitle.push(NodeVariable.decode(reader, reader.uint32()));
+          message.seoTitle = NodeVariable.decode(reader, reader.uint32());
           break;
         case 9:
-          message.seoDescription.push(NodeVariable.decode(reader, reader.uint32()));
+          message.seoDescription = NodeVariable.decode(reader, reader.uint32());
           break;
         case 10:
           message.actions.push(NodeAction.decode(reader, reader.uint32()));
@@ -15428,10 +15426,8 @@ export const NodeCustom = {
         : [],
       authentication: isSet(object.authentication) ? NodeReference.fromJSON(object.authentication) : undefined,
       renderCondition: isSet(object.renderCondition) ? RenderCondition.fromJSON(object.renderCondition) : undefined,
-      seoTitle: Array.isArray(object?.seoTitle) ? object.seoTitle.map((e: any) => NodeVariable.fromJSON(e)) : [],
-      seoDescription: Array.isArray(object?.seoDescription)
-        ? object.seoDescription.map((e: any) => NodeVariable.fromJSON(e))
-        : [],
+      seoTitle: isSet(object.seoTitle) ? NodeVariable.fromJSON(object.seoTitle) : undefined,
+      seoDescription: isSet(object.seoDescription) ? NodeVariable.fromJSON(object.seoDescription) : undefined,
       actions: Array.isArray(object?.actions) ? object.actions.map((e: any) => NodeAction.fromJSON(e)) : [],
       params: Array.isArray(object?.params) ? object.params.map((e: any) => NodeParam.fromJSON(e)) : [],
       props: Array.isArray(object?.props) ? object.props.map((e: any) => NodeParam.fromJSON(e)) : [],
@@ -15463,16 +15459,10 @@ export const NodeCustom = {
       (obj.authentication = message.authentication ? NodeReference.toJSON(message.authentication) : undefined);
     message.renderCondition !== undefined &&
       (obj.renderCondition = message.renderCondition ? RenderCondition.toJSON(message.renderCondition) : undefined);
-    if (message.seoTitle) {
-      obj.seoTitle = message.seoTitle.map((e) => e ? NodeVariable.toJSON(e) : undefined);
-    } else {
-      obj.seoTitle = [];
-    }
-    if (message.seoDescription) {
-      obj.seoDescription = message.seoDescription.map((e) => e ? NodeVariable.toJSON(e) : undefined);
-    } else {
-      obj.seoDescription = [];
-    }
+    message.seoTitle !== undefined &&
+      (obj.seoTitle = message.seoTitle ? NodeVariable.toJSON(message.seoTitle) : undefined);
+    message.seoDescription !== undefined &&
+      (obj.seoDescription = message.seoDescription ? NodeVariable.toJSON(message.seoDescription) : undefined);
     if (message.actions) {
       obj.actions = message.actions.map((e) => e ? NodeAction.toJSON(e) : undefined);
     } else {
@@ -15523,8 +15513,12 @@ export const NodeCustom = {
     message.renderCondition = (object.renderCondition !== undefined && object.renderCondition !== null)
       ? RenderCondition.fromPartial(object.renderCondition)
       : undefined;
-    message.seoTitle = object.seoTitle?.map((e) => NodeVariable.fromPartial(e)) || [];
-    message.seoDescription = object.seoDescription?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.seoTitle = (object.seoTitle !== undefined && object.seoTitle !== null)
+      ? NodeVariable.fromPartial(object.seoTitle)
+      : undefined;
+    message.seoDescription = (object.seoDescription !== undefined && object.seoDescription !== null)
+      ? NodeVariable.fromPartial(object.seoDescription)
+      : undefined;
     message.actions = object.actions?.map((e) => NodeAction.fromPartial(e)) || [];
     message.params = object.params?.map((e) => NodeParam.fromPartial(e)) || [];
     message.props = object.props?.map((e) => NodeParam.fromPartial(e)) || [];
