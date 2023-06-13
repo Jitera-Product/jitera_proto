@@ -291,6 +291,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     add_message "schema.v1.Controller.AuthorizationGroup" do
       optional :table_name, :string, 1
       repeated :authorization_conditions, :message, 2, "schema.v1.Controller.AuthorizationCondition"
+      optional :authentication_model, :bool, 3
     end
     add_message "schema.v1.Controller.AuthorizationCondition" do
       optional :column_definition_name, :string, 1
