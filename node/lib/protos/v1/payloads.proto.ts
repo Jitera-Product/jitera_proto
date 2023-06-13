@@ -800,6 +800,7 @@ export interface ControllerAuthorization {
 export interface ControllerAuthorizationGroup {
   tableName: string;
   authorizationConditions: ControllerAuthorizationCondition[];
+  authenticationModel: boolean;
 }
 
 export interface ControllerAuthorizationCondition {
@@ -6314,7 +6315,7 @@ export const ControllerAuthorization = {
 };
 
 function createBaseControllerAuthorizationGroup(): ControllerAuthorizationGroup {
-  return { tableName: "", authorizationConditions: [] };
+  return { tableName: "", authorizationConditions: [], authenticationModel: false };
 }
 
 export const ControllerAuthorizationGroup = {
@@ -6324,6 +6325,9 @@ export const ControllerAuthorizationGroup = {
     }
     for (const v of message.authorizationConditions) {
       ControllerAuthorizationCondition.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.authenticationModel === true) {
+      writer.uint32(24).bool(message.authenticationModel);
     }
     return writer;
   },
@@ -6341,6 +6345,9 @@ export const ControllerAuthorizationGroup = {
         case 2:
           message.authorizationConditions.push(ControllerAuthorizationCondition.decode(reader, reader.uint32()));
           break;
+        case 3:
+          message.authenticationModel = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -6355,6 +6362,7 @@ export const ControllerAuthorizationGroup = {
       authorizationConditions: Array.isArray(object?.authorizationConditions)
         ? object.authorizationConditions.map((e: any) => ControllerAuthorizationCondition.fromJSON(e))
         : [],
+      authenticationModel: isSet(object.authenticationModel) ? Boolean(object.authenticationModel) : false,
     };
   },
 
@@ -6368,6 +6376,7 @@ export const ControllerAuthorizationGroup = {
     } else {
       obj.authorizationConditions = [];
     }
+    message.authenticationModel !== undefined && (obj.authenticationModel = message.authenticationModel);
     return obj;
   },
 
@@ -6376,6 +6385,7 @@ export const ControllerAuthorizationGroup = {
     message.tableName = object.tableName ?? "";
     message.authorizationConditions =
       object.authorizationConditions?.map((e) => ControllerAuthorizationCondition.fromPartial(e)) || [];
+    message.authenticationModel = object.authenticationModel ?? false;
     return message;
   },
 };

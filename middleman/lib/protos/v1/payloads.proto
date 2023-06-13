@@ -412,6 +412,7 @@ message Controller {
 	message AuthorizationGroup {
 		string table_name = 1;
 		repeated AuthorizationCondition authorization_conditions = 2;
+		bool authentication_model = 3;
 	}
 
 	message AuthorizationCondition {
