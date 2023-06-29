@@ -398,6 +398,7 @@ export class Feature {
   googleAnalytics?: FeatureGoogleAnalytics | undefined;
   scoutApm?: FeatureScoutApm | undefined;
   googleTagManager?: FeatureGoogleTagManager | undefined;
+  emailConfig?: FeatureEmailConfig | undefined;
 }
 
 export enum FeatureFeatureName {
@@ -413,6 +414,7 @@ export enum FeatureFeatureName {
   GOOGLE_ANALYTICS = 9,
   SCOUT_APM = 10,
   GOOGLE_TAG_MANAGER = 11,
+  EMAIL_CONFIG = 12,
   UNRECOGNIZED = -1,
 }
 
@@ -454,6 +456,9 @@ export function featureFeatureNameFromJSON(object: any): FeatureFeatureName {
     case 11:
     case "GOOGLE_TAG_MANAGER":
       return FeatureFeatureName.GOOGLE_TAG_MANAGER;
+    case 12:
+    case "EMAIL_CONFIG":
+      return FeatureFeatureName.EMAIL_CONFIG;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -487,6 +492,8 @@ export function featureFeatureNameToJSON(object: FeatureFeatureName): string {
       return "SCOUT_APM";
     case FeatureFeatureName.GOOGLE_TAG_MANAGER:
       return "GOOGLE_TAG_MANAGER";
+    case FeatureFeatureName.EMAIL_CONFIG:
+      return "EMAIL_CONFIG";
     case FeatureFeatureName.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -540,6 +547,14 @@ export function featureEnvironmentToJSON(object: FeatureEnvironment): string {
 
 export class FeatureScoutApm {
   keyId: string;
+}
+
+export class FeatureEmailConfig {
+  address: string;
+  username: string;
+  password: string;
+  defaultFromEmail: string;
+  serviceProvider: string;
 }
 
 export class FeatureEmailLogin {
@@ -3870,6 +3885,9 @@ export const FeatureData = {
     if (message.googleTagManager !== undefined) {
       FeatureGoogleTagManagerData.encode(message.googleTagManager, writer.uint32(106).fork()).ldelim();
     }
+    if (message.emailConfig !== undefined) {
+      FeatureEmailConfigData.encode(message.emailConfig, writer.uint32(114).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -3919,6 +3937,9 @@ export const FeatureData = {
         case 13:
           message.googleTagManager = FeatureGoogleTagManagerData.decode(reader, reader.uint32());
           break;
+        case 14:
+          message.emailConfig = FeatureEmailConfigData.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3946,6 +3967,7 @@ export const FeatureData = {
       googleTagManager: isSet(object.googleTagManager)
         ? FeatureGoogleTagManagerData.fromJSON(object.googleTagManager)
         : undefined,
+      emailConfig: isSet(object.emailConfig) ? FeatureEmailConfigData.fromJSON(object.emailConfig) : undefined,
     };
   },
 
@@ -3977,6 +3999,8 @@ export const FeatureData = {
     message.googleTagManager !== undefined && (obj.googleTagManager = message.googleTagManager
       ? FeatureGoogleTagManagerData.toJSON(message.googleTagManager)
       : undefined);
+    message.emailConfig !== undefined &&
+      (obj.emailConfig = message.emailConfig ? FeatureEmailConfigData.toJSON(message.emailConfig) : undefined);
     return obj;
   },
 
@@ -4016,6 +4040,9 @@ export const FeatureData = {
       : undefined;
     message.googleTagManager = (object.googleTagManager !== undefined && object.googleTagManager !== null)
       ? FeatureGoogleTagManagerData.fromPartial(object.googleTagManager)
+      : undefined;
+    message.emailConfig = (object.emailConfig !== undefined && object.emailConfig !== null)
+      ? FeatureEmailConfigData.fromPartial(object.emailConfig)
       : undefined;
     return message;
   },
@@ -4064,6 +4091,91 @@ export const FeatureScoutApmData = {
   fromPartial(object: DeepPartial<FeatureScoutApm>): FeatureScoutApm {
     const message = createBaseFeatureScoutApm();
     message.keyId = object.keyId ?? "";
+    return message;
+  },
+};
+
+function createBaseFeatureEmailConfig(): FeatureEmailConfig {
+  return { address: "", username: "", password: "", defaultFromEmail: "", serviceProvider: "" };
+}
+
+export const FeatureEmailConfigData = {
+  encode(message: FeatureEmailConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.address !== "") {
+      writer.uint32(10).string(message.address);
+    }
+    if (message.username !== "") {
+      writer.uint32(18).string(message.username);
+    }
+    if (message.password !== "") {
+      writer.uint32(26).string(message.password);
+    }
+    if (message.defaultFromEmail !== "") {
+      writer.uint32(34).string(message.defaultFromEmail);
+    }
+    if (message.serviceProvider !== "") {
+      writer.uint32(42).string(message.serviceProvider);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): FeatureEmailConfig {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseFeatureEmailConfig();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.address = reader.string();
+          break;
+        case 2:
+          message.username = reader.string();
+          break;
+        case 3:
+          message.password = reader.string();
+          break;
+        case 4:
+          message.defaultFromEmail = reader.string();
+          break;
+        case 5:
+          message.serviceProvider = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): FeatureEmailConfig {
+    return {
+      address: isSet(object.address) ? String(object.address) : "",
+      username: isSet(object.username) ? String(object.username) : "",
+      password: isSet(object.password) ? String(object.password) : "",
+      defaultFromEmail: isSet(object.defaultFromEmail) ? String(object.defaultFromEmail) : "",
+      serviceProvider: isSet(object.serviceProvider) ? String(object.serviceProvider) : "",
+    };
+  },
+
+  toJSON(message: FeatureEmailConfig): unknown {
+    const obj: any = {};
+    message.address !== undefined && (obj.address = message.address);
+    message.username !== undefined && (obj.username = message.username);
+    message.password !== undefined && (obj.password = message.password);
+    message.defaultFromEmail !== undefined && (obj.defaultFromEmail = message.defaultFromEmail);
+    message.serviceProvider !== undefined && (obj.serviceProvider = message.serviceProvider);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<FeatureEmailConfig>): FeatureEmailConfig {
+    const message = createBaseFeatureEmailConfig();
+    message.address = object.address ?? "";
+    message.username = object.username ?? "";
+    message.password = object.password ?? "";
+    message.defaultFromEmail = object.defaultFromEmail ?? "";
+    message.serviceProvider = object.serviceProvider ?? "";
     return message;
   },
 };

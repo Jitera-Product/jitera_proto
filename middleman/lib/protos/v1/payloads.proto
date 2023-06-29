@@ -171,11 +171,21 @@ message Feature {
 		GoogleAnalytics google_analytics = 11;
 		ScoutApm scout_apm = 12;
 		GoogleTagManager google_tag_manager = 13;
+		EmailConfig email_config = 14;
 	}
 
 	message ScoutApm {
 		string key_id = 1;
 	}
+
+	message EmailConfig {
+		string address = 1;
+		string username = 2;
+		string password = 3;
+		string default_from_email = 4;
+		string service_provider = 5;
+	}
+
 
 	message EmailLogin {
 		repeated string tables = 1;
@@ -263,6 +273,7 @@ message Feature {
 		GOOGLE_ANALYTICS = 9;
 		SCOUT_APM = 10;
 		GOOGLE_TAG_MANAGER = 11;
+		EMAIL_CONFIG = 12;
 	}
 
 	enum Environment {
