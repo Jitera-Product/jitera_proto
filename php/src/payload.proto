@@ -225,9 +225,23 @@ message Feature {
 		string username = 2;
 		string password = 3;
 		string default_from_email = 4;
-		string service_provider = 5;
+		EmailServiceProvider service_provider = 5;
+		string port = 6;
+		EmailConfigAuthentication authentication = 7;
 	}
 
+	enum EmailConfigAuthentication {
+		PLAIN = 0;
+		LOGIN = 1;
+		CRAM_MD5 = 2;
+	}
+
+	enum EmailServiceProvider {
+		AWS_SES = 0;
+		SENDGRID = 1;
+		GMAIL = 2;
+		MAILTRAP = 3;
+	}
 
 	enum FeatureName {
 		EMAIL_LOGIN = 0;
