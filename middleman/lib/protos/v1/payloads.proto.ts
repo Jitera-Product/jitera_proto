@@ -401,6 +401,90 @@ export class Feature {
   emailConfig?: FeatureEmailConfig | undefined;
 }
 
+export enum FeatureEmailConfigAuthentication {
+  PLAIN = 0,
+  LOGIN = 1,
+  CRAM_MD5 = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function featureEmailConfigAuthenticationFromJSON(object: any): FeatureEmailConfigAuthentication {
+  switch (object) {
+    case 0:
+    case "PLAIN":
+      return FeatureEmailConfigAuthentication.PLAIN;
+    case 1:
+    case "LOGIN":
+      return FeatureEmailConfigAuthentication.LOGIN;
+    case 2:
+    case "CRAM_MD5":
+      return FeatureEmailConfigAuthentication.CRAM_MD5;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return FeatureEmailConfigAuthentication.UNRECOGNIZED;
+  }
+}
+
+export function featureEmailConfigAuthenticationToJSON(object: FeatureEmailConfigAuthentication): string {
+  switch (object) {
+    case FeatureEmailConfigAuthentication.PLAIN:
+      return "PLAIN";
+    case FeatureEmailConfigAuthentication.LOGIN:
+      return "LOGIN";
+    case FeatureEmailConfigAuthentication.CRAM_MD5:
+      return "CRAM_MD5";
+    case FeatureEmailConfigAuthentication.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export enum FeatureEmailServiceProvider {
+  AWS_SES = 0,
+  SENDGRID = 1,
+  GMAIL = 2,
+  MAILTRAP = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function featureEmailServiceProviderFromJSON(object: any): FeatureEmailServiceProvider {
+  switch (object) {
+    case 0:
+    case "AWS_SES":
+      return FeatureEmailServiceProvider.AWS_SES;
+    case 1:
+    case "SENDGRID":
+      return FeatureEmailServiceProvider.SENDGRID;
+    case 2:
+    case "GMAIL":
+      return FeatureEmailServiceProvider.GMAIL;
+    case 3:
+    case "MAILTRAP":
+      return FeatureEmailServiceProvider.MAILTRAP;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return FeatureEmailServiceProvider.UNRECOGNIZED;
+  }
+}
+
+export function featureEmailServiceProviderToJSON(object: FeatureEmailServiceProvider): string {
+  switch (object) {
+    case FeatureEmailServiceProvider.AWS_SES:
+      return "AWS_SES";
+    case FeatureEmailServiceProvider.SENDGRID:
+      return "SENDGRID";
+    case FeatureEmailServiceProvider.GMAIL:
+      return "GMAIL";
+    case FeatureEmailServiceProvider.MAILTRAP:
+      return "MAILTRAP";
+    case FeatureEmailServiceProvider.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 export enum FeatureFeatureName {
   NIL = 0,
   EMAIL_LOGIN = 1,
@@ -554,7 +638,9 @@ export class FeatureEmailConfig {
   username: string;
   password: string;
   defaultFromEmail: string;
-  serviceProvider: string;
+  serviceProvider: FeatureEmailServiceProvider;
+  port: string;
+  authentication: FeatureEmailConfigAuthentication;
 }
 
 export class FeatureEmailLogin {
@@ -4096,7 +4182,15 @@ export const FeatureScoutApmData = {
 };
 
 function createBaseFeatureEmailConfig(): FeatureEmailConfig {
-  return { address: "", username: "", password: "", defaultFromEmail: "", serviceProvider: "" };
+  return {
+    address: "",
+    username: "",
+    password: "",
+    defaultFromEmail: "",
+    serviceProvider: 0,
+    port: "",
+    authentication: 0,
+  };
 }
 
 export const FeatureEmailConfigData = {
@@ -4113,8 +4207,14 @@ export const FeatureEmailConfigData = {
     if (message.defaultFromEmail !== "") {
       writer.uint32(34).string(message.defaultFromEmail);
     }
-    if (message.serviceProvider !== "") {
-      writer.uint32(42).string(message.serviceProvider);
+    if (message.serviceProvider !== 0) {
+      writer.uint32(40).int32(message.serviceProvider);
+    }
+    if (message.port !== "") {
+      writer.uint32(50).string(message.port);
+    }
+    if (message.authentication !== 0) {
+      writer.uint32(56).int32(message.authentication);
     }
     return writer;
   },
@@ -4139,7 +4239,13 @@ export const FeatureEmailConfigData = {
           message.defaultFromEmail = reader.string();
           break;
         case 5:
-          message.serviceProvider = reader.string();
+          message.serviceProvider = reader.int32() as any;
+          break;
+        case 6:
+          message.port = reader.string();
+          break;
+        case 7:
+          message.authentication = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -4155,7 +4261,11 @@ export const FeatureEmailConfigData = {
       username: isSet(object.username) ? String(object.username) : "",
       password: isSet(object.password) ? String(object.password) : "",
       defaultFromEmail: isSet(object.defaultFromEmail) ? String(object.defaultFromEmail) : "",
-      serviceProvider: isSet(object.serviceProvider) ? String(object.serviceProvider) : "",
+      serviceProvider: isSet(object.serviceProvider) ? featureEmailServiceProviderFromJSON(object.serviceProvider) : 0,
+      port: isSet(object.port) ? String(object.port) : "",
+      authentication: isSet(object.authentication)
+        ? featureEmailConfigAuthenticationFromJSON(object.authentication)
+        : 0,
     };
   },
 
@@ -4165,7 +4275,11 @@ export const FeatureEmailConfigData = {
     message.username !== undefined && (obj.username = message.username);
     message.password !== undefined && (obj.password = message.password);
     message.defaultFromEmail !== undefined && (obj.defaultFromEmail = message.defaultFromEmail);
-    message.serviceProvider !== undefined && (obj.serviceProvider = message.serviceProvider);
+    message.serviceProvider !== undefined &&
+      (obj.serviceProvider = featureEmailServiceProviderToJSON(message.serviceProvider));
+    message.port !== undefined && (obj.port = message.port);
+    message.authentication !== undefined &&
+      (obj.authentication = featureEmailConfigAuthenticationToJSON(message.authentication));
     return obj;
   },
 
@@ -4175,7 +4289,9 @@ export const FeatureEmailConfigData = {
     message.username = object.username ?? "";
     message.password = object.password ?? "";
     message.defaultFromEmail = object.defaultFromEmail ?? "";
-    message.serviceProvider = object.serviceProvider ?? "";
+    message.serviceProvider = object.serviceProvider ?? 0;
+    message.port = object.port ?? "";
+    message.authentication = object.authentication ?? 0;
     return message;
   },
 };

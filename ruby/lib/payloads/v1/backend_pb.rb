@@ -156,7 +156,20 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :username, :string, 2
       optional :password, :string, 3
       optional :default_from_email, :string, 4
-      optional :service_provider, :string, 5
+      optional :service_provider, :enum, 5, "schema.v1.Feature.EmailServiceProvider"
+      optional :port, :string, 6
+      optional :authentication, :enum, 7, "schema.v1.Feature.EmailConfigAuthentication"
+    end
+    add_enum "schema.v1.Feature.EmailConfigAuthentication" do
+      value :PLAIN, 0
+      value :LOGIN, 1
+      value :CRAM_MD5, 2
+    end
+    add_enum "schema.v1.Feature.EmailServiceProvider" do
+      value :AWS_SES, 0
+      value :SENDGRID, 1
+      value :GMAIL, 2
+      value :MAILTRAP, 3
     end
     add_enum "schema.v1.Feature.FeatureName" do
       value :NIL, 0
@@ -814,6 +827,8 @@ module Schema
     Feature::GoogleTagManager = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Feature.GoogleTagManager").msgclass
     Feature::ScoutApm = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Feature.ScoutApm").msgclass
     Feature::EmailConfig = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Feature.EmailConfig").msgclass
+    Feature::EmailConfigAuthentication = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Feature.EmailConfigAuthentication").enummodule
+    Feature::EmailServiceProvider = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Feature.EmailServiceProvider").enummodule
     Feature::FeatureName = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Feature.FeatureName").enummodule
     Feature::Environment = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Feature.Environment").enummodule
     Controller = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Controller").msgclass
