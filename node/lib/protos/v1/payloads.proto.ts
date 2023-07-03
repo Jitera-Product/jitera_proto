@@ -398,6 +398,97 @@ export interface Feature {
   googleAnalytics?: FeatureGoogleAnalytics | undefined;
   scoutApm?: FeatureScoutApm | undefined;
   googleTagManager?: FeatureGoogleTagManager | undefined;
+  emailConfig?: FeatureEmailConfig | undefined;
+}
+
+export enum FeatureEmailConfigAuthentication {
+  PLAIN = 0,
+  LOGIN = 1,
+  CRAM_MD5 = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function featureEmailConfigAuthenticationFromJSON(object: any): FeatureEmailConfigAuthentication {
+  switch (object) {
+    case 0:
+    case "PLAIN":
+      return FeatureEmailConfigAuthentication.PLAIN;
+    case 1:
+    case "LOGIN":
+      return FeatureEmailConfigAuthentication.LOGIN;
+    case 2:
+    case "CRAM_MD5":
+      return FeatureEmailConfigAuthentication.CRAM_MD5;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return FeatureEmailConfigAuthentication.UNRECOGNIZED;
+  }
+}
+
+export function featureEmailConfigAuthenticationToJSON(object: FeatureEmailConfigAuthentication): string {
+  switch (object) {
+    case FeatureEmailConfigAuthentication.PLAIN:
+      return "PLAIN";
+    case FeatureEmailConfigAuthentication.LOGIN:
+      return "LOGIN";
+    case FeatureEmailConfigAuthentication.CRAM_MD5:
+      return "CRAM_MD5";
+    case FeatureEmailConfigAuthentication.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export enum FeatureEmailServiceProvider {
+  AWS_SES = 0,
+  SENDGRID = 1,
+  GMAIL = 2,
+  MAILTRAP = 3,
+  GENERIC_SMTP = 4,
+  UNRECOGNIZED = -1,
+}
+
+export function featureEmailServiceProviderFromJSON(object: any): FeatureEmailServiceProvider {
+  switch (object) {
+    case 0:
+    case "AWS_SES":
+      return FeatureEmailServiceProvider.AWS_SES;
+    case 1:
+    case "SENDGRID":
+      return FeatureEmailServiceProvider.SENDGRID;
+    case 2:
+    case "GMAIL":
+      return FeatureEmailServiceProvider.GMAIL;
+    case 3:
+    case "MAILTRAP":
+      return FeatureEmailServiceProvider.MAILTRAP;
+    case 4:
+    case "GENERIC_SMTP":
+      return FeatureEmailServiceProvider.GENERIC_SMTP;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return FeatureEmailServiceProvider.UNRECOGNIZED;
+  }
+}
+
+export function featureEmailServiceProviderToJSON(object: FeatureEmailServiceProvider): string {
+  switch (object) {
+    case FeatureEmailServiceProvider.AWS_SES:
+      return "AWS_SES";
+    case FeatureEmailServiceProvider.SENDGRID:
+      return "SENDGRID";
+    case FeatureEmailServiceProvider.GMAIL:
+      return "GMAIL";
+    case FeatureEmailServiceProvider.MAILTRAP:
+      return "MAILTRAP";
+    case FeatureEmailServiceProvider.GENERIC_SMTP:
+      return "GENERIC_SMTP";
+    case FeatureEmailServiceProvider.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
 }
 
 export enum FeatureFeatureName {
@@ -413,6 +504,7 @@ export enum FeatureFeatureName {
   GOOGLE_ANALYTICS = 9,
   SCOUT_APM = 10,
   GOOGLE_TAG_MANAGER = 11,
+  EMAIL_CONFIG = 12,
   UNRECOGNIZED = -1,
 }
 
@@ -454,6 +546,9 @@ export function featureFeatureNameFromJSON(object: any): FeatureFeatureName {
     case 11:
     case "GOOGLE_TAG_MANAGER":
       return FeatureFeatureName.GOOGLE_TAG_MANAGER;
+    case 12:
+    case "EMAIL_CONFIG":
+      return FeatureFeatureName.EMAIL_CONFIG;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -487,6 +582,8 @@ export function featureFeatureNameToJSON(object: FeatureFeatureName): string {
       return "SCOUT_APM";
     case FeatureFeatureName.GOOGLE_TAG_MANAGER:
       return "GOOGLE_TAG_MANAGER";
+    case FeatureFeatureName.EMAIL_CONFIG:
+      return "EMAIL_CONFIG";
     case FeatureFeatureName.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -647,6 +744,16 @@ export interface FeatureGoogleAnalytics {
 
 export interface FeatureGoogleTagManager {
   containerId: string;
+}
+
+export interface FeatureEmailConfig {
+  address: string;
+  username: string;
+  password: string;
+  defaultFromEmail: string;
+  serviceProvider: FeatureEmailServiceProvider;
+  port: string;
+  authentication: FeatureEmailConfigAuthentication;
 }
 
 export interface Controller {
@@ -3860,6 +3967,9 @@ export const Feature = {
     if (message.googleTagManager !== undefined) {
       FeatureGoogleTagManager.encode(message.googleTagManager, writer.uint32(106).fork()).ldelim();
     }
+    if (message.emailConfig !== undefined) {
+      FeatureEmailConfig.encode(message.emailConfig, writer.uint32(114).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -3909,6 +4019,9 @@ export const Feature = {
         case 13:
           message.googleTagManager = FeatureGoogleTagManager.decode(reader, reader.uint32());
           break;
+        case 14:
+          message.emailConfig = FeatureEmailConfig.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3936,6 +4049,7 @@ export const Feature = {
       googleTagManager: isSet(object.googleTagManager)
         ? FeatureGoogleTagManager.fromJSON(object.googleTagManager)
         : undefined,
+      emailConfig: isSet(object.emailConfig) ? FeatureEmailConfig.fromJSON(object.emailConfig) : undefined,
     };
   },
 
@@ -3966,6 +4080,8 @@ export const Feature = {
     message.googleTagManager !== undefined && (obj.googleTagManager = message.googleTagManager
       ? FeatureGoogleTagManager.toJSON(message.googleTagManager)
       : undefined);
+    message.emailConfig !== undefined &&
+      (obj.emailConfig = message.emailConfig ? FeatureEmailConfig.toJSON(message.emailConfig) : undefined);
     return obj;
   },
 
@@ -4005,6 +4121,9 @@ export const Feature = {
       : undefined;
     message.googleTagManager = (object.googleTagManager !== undefined && object.googleTagManager !== null)
       ? FeatureGoogleTagManager.fromPartial(object.googleTagManager)
+      : undefined;
+    message.emailConfig = (object.emailConfig !== undefined && object.emailConfig !== null)
+      ? FeatureEmailConfig.fromPartial(object.emailConfig)
       : undefined;
     return message;
   },
@@ -4839,6 +4958,121 @@ export const FeatureGoogleTagManager = {
   fromPartial(object: DeepPartial<FeatureGoogleTagManager>): FeatureGoogleTagManager {
     const message = createBaseFeatureGoogleTagManager();
     message.containerId = object.containerId ?? "";
+    return message;
+  },
+};
+
+function createBaseFeatureEmailConfig(): FeatureEmailConfig {
+  return {
+    address: "",
+    username: "",
+    password: "",
+    defaultFromEmail: "",
+    serviceProvider: 0,
+    port: "",
+    authentication: 0,
+  };
+}
+
+export const FeatureEmailConfig = {
+  encode(message: FeatureEmailConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.address !== "") {
+      writer.uint32(10).string(message.address);
+    }
+    if (message.username !== "") {
+      writer.uint32(18).string(message.username);
+    }
+    if (message.password !== "") {
+      writer.uint32(26).string(message.password);
+    }
+    if (message.defaultFromEmail !== "") {
+      writer.uint32(34).string(message.defaultFromEmail);
+    }
+    if (message.serviceProvider !== 0) {
+      writer.uint32(40).int32(message.serviceProvider);
+    }
+    if (message.port !== "") {
+      writer.uint32(50).string(message.port);
+    }
+    if (message.authentication !== 0) {
+      writer.uint32(56).int32(message.authentication);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): FeatureEmailConfig {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseFeatureEmailConfig();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.address = reader.string();
+          break;
+        case 2:
+          message.username = reader.string();
+          break;
+        case 3:
+          message.password = reader.string();
+          break;
+        case 4:
+          message.defaultFromEmail = reader.string();
+          break;
+        case 5:
+          message.serviceProvider = reader.int32() as any;
+          break;
+        case 6:
+          message.port = reader.string();
+          break;
+        case 7:
+          message.authentication = reader.int32() as any;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): FeatureEmailConfig {
+    return {
+      address: isSet(object.address) ? String(object.address) : "",
+      username: isSet(object.username) ? String(object.username) : "",
+      password: isSet(object.password) ? String(object.password) : "",
+      defaultFromEmail: isSet(object.defaultFromEmail) ? String(object.defaultFromEmail) : "",
+      serviceProvider: isSet(object.serviceProvider) ? featureEmailServiceProviderFromJSON(object.serviceProvider) : 0,
+      port: isSet(object.port) ? String(object.port) : "",
+      authentication: isSet(object.authentication)
+        ? featureEmailConfigAuthenticationFromJSON(object.authentication)
+        : 0,
+    };
+  },
+
+  toJSON(message: FeatureEmailConfig): unknown {
+    const obj: any = {};
+    message.address !== undefined && (obj.address = message.address);
+    message.username !== undefined && (obj.username = message.username);
+    message.password !== undefined && (obj.password = message.password);
+    message.defaultFromEmail !== undefined && (obj.defaultFromEmail = message.defaultFromEmail);
+    message.serviceProvider !== undefined &&
+      (obj.serviceProvider = featureEmailServiceProviderToJSON(message.serviceProvider));
+    message.port !== undefined && (obj.port = message.port);
+    message.authentication !== undefined &&
+      (obj.authentication = featureEmailConfigAuthenticationToJSON(message.authentication));
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<FeatureEmailConfig>): FeatureEmailConfig {
+    const message = createBaseFeatureEmailConfig();
+    message.address = object.address ?? "";
+    message.username = object.username ?? "";
+    message.password = object.password ?? "";
+    message.defaultFromEmail = object.defaultFromEmail ?? "";
+    message.serviceProvider = object.serviceProvider ?? 0;
+    message.port = object.port ?? "";
+    message.authentication = object.authentication ?? 0;
     return message;
   },
 };
