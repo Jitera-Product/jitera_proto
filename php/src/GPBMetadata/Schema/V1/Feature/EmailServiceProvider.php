@@ -27,12 +27,17 @@ class EmailServiceProvider
      * Generated from protobuf enum <code>MAILTRAP = 3;</code>
      */
     const MAILTRAP = 3;
+    /**
+     * Generated from protobuf enum <code>GENERIC_SMTP = 4;</code>
+     */
+    const GENERIC_SMTP = 4;
 
     private static $valueToName = [
         self::AWS_SES => 'AWS_SES',
         self::SENDGRID => 'SENDGRID',
         self::GMAIL => 'GMAIL',
         self::MAILTRAP => 'MAILTRAP',
+        self::GENERIC_SMTP => 'GENERIC_SMTP',
     ];
 
     public static function name($value)

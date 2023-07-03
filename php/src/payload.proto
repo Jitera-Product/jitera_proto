@@ -241,6 +241,7 @@ message Feature {
 		SENDGRID = 1;
 		GMAIL = 2;
 		MAILTRAP = 3;
+		GENERIC_SMTP = 4;
 	}
 
 	enum FeatureName {

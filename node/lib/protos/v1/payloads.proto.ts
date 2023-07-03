@@ -445,6 +445,7 @@ export enum FeatureEmailServiceProvider {
   SENDGRID = 1,
   GMAIL = 2,
   MAILTRAP = 3,
+  GENERIC_SMTP = 4,
   UNRECOGNIZED = -1,
 }
 
@@ -462,6 +463,9 @@ export function featureEmailServiceProviderFromJSON(object: any): FeatureEmailSe
     case 3:
     case "MAILTRAP":
       return FeatureEmailServiceProvider.MAILTRAP;
+    case 4:
+    case "GENERIC_SMTP":
+      return FeatureEmailServiceProvider.GENERIC_SMTP;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -479,6 +483,8 @@ export function featureEmailServiceProviderToJSON(object: FeatureEmailServicePro
       return "GMAIL";
     case FeatureEmailServiceProvider.MAILTRAP:
       return "MAILTRAP";
+    case FeatureEmailServiceProvider.GENERIC_SMTP:
+      return "GENERIC_SMTP";
     case FeatureEmailServiceProvider.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";

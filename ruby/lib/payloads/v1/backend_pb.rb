@@ -170,6 +170,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       value :SENDGRID, 1
       value :GMAIL, 2
       value :MAILTRAP, 3
+      value :GENERIC_SMTP, 4
     end
     add_enum "schema.v1.Feature.FeatureName" do
       value :NIL, 0
