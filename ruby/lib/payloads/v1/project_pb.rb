@@ -13,11 +13,21 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :time_zone, :string, 5
       optional :default_language_code, :string, 6
       repeated :language_codes, :string, 7
+      repeated :credentials, :message, 12, "schema.v1.Project.Credential"
       oneof :generate_type do
         optional :project_export, :message, 9, "schema.v1.ProjectExport"
         optional :project_preview, :message, 10, "schema.v1.ProjectPreview"
         optional :code_preview, :message, 11, "schema.v1.CodePreview"
       end
+    end
+    add_message "schema.v1.Project.Credential" do
+      optional :name, :enum, 1, "schema.v1.Project.Environment"
+      optional :value, :string, 2
+    end
+    add_enum "schema.v1.Project.Environment" do
+      value :DEVELOPMENT, 0
+      value :STAGING, 1
+      value :PRODUCTION, 2
     end
     add_message "schema.v1.CodePreview" do
       optional :id, :int32, 1
@@ -39,6 +49,8 @@ end
 module Schema
   module V1
     Project = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Project").msgclass
+    Project::Credential = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Project.Credential").msgclass
+    Project::Environment = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.Project.Environment").enummodule
     CodePreview = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.CodePreview").msgclass
     ProjectExport = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.ProjectExport").msgclass
     ProjectPreview = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v1.ProjectPreview").msgclass
