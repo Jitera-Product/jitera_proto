@@ -185,6 +185,8 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       repeated :table_actions, :message, 126, 'schema.v1.WebNodeProps.TableColumn'
       repeated :on_pagination_change, :message, 127, 'schema.v1.NodeAction'
       repeated :on_data_sorting_change, :message, 128, 'schema.v1.NodeAction'
+      repeated :value_data, :message, 129, 'schema.v1.NodeVariable'
+      repeated :on_change, :message, 130, 'schema.v1.NodeVariable'
     end
     add_message 'schema.v1.WebNodeProps.TableColumn' do
       optional :molecule, :message, 1, 'schema.v1.RenderMolecule'
@@ -392,8 +394,8 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       repeated :media_queries, :message, 5, 'schema.v1.NodeMediaQuery'
       proto3_optional :authentication, :message, 6, 'schema.v1.NodeReference'
       proto3_optional :render_condition, :message, 7, 'schema.v1.RenderCondition'
-      proto3_optional :seo_title, :message, 8, 'schema.v1.NodeVariable'
-      proto3_optional :seo_description, :message, 9, 'schema.v1.NodeVariable'
+      repeated :seo_title, :message, 8, 'schema.v1.NodeVariable'
+      repeated :seo_description, :message, 9, 'schema.v1.NodeVariable'
       repeated :actions, :message, 10, 'schema.v1.NodeAction'
       repeated :params, :message, 11, 'schema.v1.NodeParam'
       repeated :props, :message, 12, 'schema.v1.NodeParam'

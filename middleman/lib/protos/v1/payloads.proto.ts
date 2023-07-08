@@ -1898,6 +1898,8 @@ export class WebNodeProps {
   tableActions: WebNodePropsTableColumn[];
   onPaginationChange: NodeAction[];
   onDataSortingChange: NodeAction[];
+  valueData: NodeVariable[];
+  onChange: NodeVariable[];
 }
 
 export class WebNodePropsTableColumn {
@@ -12651,6 +12653,8 @@ function createBaseWebNodeProps(): WebNodeProps {
     tableActions: [],
     onPaginationChange: [],
     onDataSortingChange: [],
+    valueData: [],
+    onChange: [],
   };
 }
 
@@ -13026,6 +13030,12 @@ export const WebNodePropsData = {
     }
     for (const v of message.onDataSortingChange) {
       NodeActionData.encode(v!, writer.uint32(1026).fork()).ldelim();
+    }
+    for (const v of message.valueData) {
+      NodeVariableData.encode(v!, writer.uint32(1034).fork()).ldelim();
+    }
+    for (const v of message.onChange) {
+      NodeVariableData.encode(v!, writer.uint32(1042).fork()).ldelim();
     }
     return writer;
   },
@@ -13413,6 +13423,12 @@ export const WebNodePropsData = {
         case 128:
           message.onDataSortingChange.push(NodeActionData.decode(reader, reader.uint32()));
           break;
+        case 129:
+          message.valueData.push(NodeVariableData.decode(reader, reader.uint32()));
+          break;
+        case 130:
+          message.onChange.push(NodeVariableData.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -13578,6 +13594,10 @@ export const WebNodePropsData = {
       onDataSortingChange: Array.isArray(object?.onDataSortingChange)
         ? object.onDataSortingChange.map((e: any) => NodeActionData.fromJSON(e))
         : [],
+      valueData: Array.isArray(object?.valueData)
+        ? object.valueData.map((e: any) => NodeVariableData.fromJSON(e))
+        : [],
+      onChange: Array.isArray(object?.onChange) ? object.onChange.map((e: any) => NodeVariableData.fromJSON(e)) : [],
     };
   },
 
@@ -13790,6 +13810,16 @@ export const WebNodePropsData = {
     } else {
       obj.onDataSortingChange = [];
     }
+    if (message.valueData) {
+      obj.valueData = message.valueData.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+    } else {
+      obj.valueData = [];
+    }
+    if (message.onChange) {
+      obj.onChange = message.onChange.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+    } else {
+      obj.onChange = [];
+    }
     return obj;
   },
 
@@ -13938,6 +13968,8 @@ export const WebNodePropsData = {
     message.tableActions = object.tableActions?.map((e) => WebNodePropsTableColumnData.fromPartial(e)) || [];
     message.onPaginationChange = object.onPaginationChange?.map((e) => NodeActionData.fromPartial(e)) || [];
     message.onDataSortingChange = object.onDataSortingChange?.map((e) => NodeActionData.fromPartial(e)) || [];
+    message.valueData = object.valueData?.map((e) => NodeVariableData.fromPartial(e)) || [];
+    message.onChange = object.onChange?.map((e) => NodeVariableData.fromPartial(e)) || [];
     return message;
   },
 };
