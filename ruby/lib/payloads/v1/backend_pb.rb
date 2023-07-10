@@ -250,6 +250,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :name, :string, 1
       optional :data_type, :message, 2, "schema.v1.DataType"
       repeated :children, :message, 3, "schema.v1.Controller.RequestContent.Field"
+      repeated :enum_values, :string, 4
     end
     add_message "schema.v1.Controller.Response" do
       repeated :fields, :message, 1, "schema.v1.Controller.Response.Field"

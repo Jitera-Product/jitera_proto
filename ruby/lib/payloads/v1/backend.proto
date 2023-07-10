@@ -325,6 +325,7 @@ message Controller {
 			string name = 1;
 			DataType data_type = 2;
 			repeated Field children = 3;
+			repeated string enum_values = 4;
 		}
 	}
 
