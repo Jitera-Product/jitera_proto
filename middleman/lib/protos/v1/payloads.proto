@@ -1150,6 +1150,7 @@ message WebNodeProps {
 
 	repeated NodeVariable value_data = 129;
 	repeated NodeVariable on_change = 130;
+	repeated NodeVariable on_click = 131;
 
 	message TableColumn {
 		RenderMolecule molecule = 1;

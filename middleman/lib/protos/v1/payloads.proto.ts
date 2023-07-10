@@ -1900,6 +1900,7 @@ export class WebNodeProps {
   onDataSortingChange: NodeAction[];
   valueData: NodeVariable[];
   onChange: NodeVariable[];
+  onClick: NodeVariable[];
 }
 
 export class WebNodePropsTableColumn {
@@ -12655,6 +12656,7 @@ function createBaseWebNodeProps(): WebNodeProps {
     onDataSortingChange: [],
     valueData: [],
     onChange: [],
+    onClick: [],
   };
 }
 
@@ -13036,6 +13038,9 @@ export const WebNodePropsData = {
     }
     for (const v of message.onChange) {
       NodeVariableData.encode(v!, writer.uint32(1042).fork()).ldelim();
+    }
+    for (const v of message.onClick) {
+      NodeVariableData.encode(v!, writer.uint32(1050).fork()).ldelim();
     }
     return writer;
   },
@@ -13429,6 +13434,9 @@ export const WebNodePropsData = {
         case 130:
           message.onChange.push(NodeVariableData.decode(reader, reader.uint32()));
           break;
+        case 131:
+          message.onClick.push(NodeVariableData.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -13598,6 +13606,7 @@ export const WebNodePropsData = {
         ? object.valueData.map((e: any) => NodeVariableData.fromJSON(e))
         : [],
       onChange: Array.isArray(object?.onChange) ? object.onChange.map((e: any) => NodeVariableData.fromJSON(e)) : [],
+      onClick: Array.isArray(object?.onClick) ? object.onClick.map((e: any) => NodeVariableData.fromJSON(e)) : [],
     };
   },
 
@@ -13820,6 +13829,11 @@ export const WebNodePropsData = {
     } else {
       obj.onChange = [];
     }
+    if (message.onClick) {
+      obj.onClick = message.onClick.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+    } else {
+      obj.onClick = [];
+    }
     return obj;
   },
 
@@ -13970,6 +13984,7 @@ export const WebNodePropsData = {
     message.onDataSortingChange = object.onDataSortingChange?.map((e) => NodeActionData.fromPartial(e)) || [];
     message.valueData = object.valueData?.map((e) => NodeVariableData.fromPartial(e)) || [];
     message.onChange = object.onChange?.map((e) => NodeVariableData.fromPartial(e)) || [];
+    message.onClick = object.onClick?.map((e) => NodeVariableData.fromPartial(e)) || [];
     return message;
   },
 };
