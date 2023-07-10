@@ -263,9 +263,54 @@ export class Project {
   timeZone: string;
   defaultLanguageCode: string;
   languageCodes: string[];
+  credentials: ProjectCredential[];
   projectExport?: ProjectExport | undefined;
   projectPreview?: ProjectPreview | undefined;
   codePreview?: CodePreview | undefined;
+}
+
+export enum ProjectEnvironment {
+  DEVELOPMENT = 0,
+  STAGING = 1,
+  PRODUCTION = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function projectEnvironmentFromJSON(object: any): ProjectEnvironment {
+  switch (object) {
+    case 0:
+    case "DEVELOPMENT":
+      return ProjectEnvironment.DEVELOPMENT;
+    case 1:
+    case "STAGING":
+      return ProjectEnvironment.STAGING;
+    case 2:
+    case "PRODUCTION":
+      return ProjectEnvironment.PRODUCTION;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ProjectEnvironment.UNRECOGNIZED;
+  }
+}
+
+export function projectEnvironmentToJSON(object: ProjectEnvironment): string {
+  switch (object) {
+    case ProjectEnvironment.DEVELOPMENT:
+      return "DEVELOPMENT";
+    case ProjectEnvironment.STAGING:
+      return "STAGING";
+    case ProjectEnvironment.PRODUCTION:
+      return "PRODUCTION";
+    case ProjectEnvironment.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export class ProjectCredential {
+  name: ProjectEnvironment;
+  value: string;
 }
 
 export class CodePreview {
@@ -2771,7 +2816,15 @@ export class ListMigrationsResponse {
 }
 
 function createBaseProject(): Project {
-  return { id: "", projectName: "", projectId: 0, timeZone: "", defaultLanguageCode: "", languageCodes: [] };
+  return {
+    id: "",
+    projectName: "",
+    projectId: 0,
+    timeZone: "",
+    defaultLanguageCode: "",
+    languageCodes: [],
+    credentials: [],
+  };
 }
 
 export const ProjectData = {
@@ -2796,6 +2849,9 @@ export const ProjectData = {
     }
     for (const v of message.languageCodes) {
       writer.uint32(58).string(v!);
+    }
+    for (const v of message.credentials) {
+      ProjectCredentialData.encode(v!, writer.uint32(98).fork()).ldelim();
     }
     if (message.projectExport !== undefined) {
       ProjectExportData.encode(message.projectExport, writer.uint32(74).fork()).ldelim();
@@ -2837,6 +2893,9 @@ export const ProjectData = {
         case 7:
           message.languageCodes.push(reader.string());
           break;
+        case 12:
+          message.credentials.push(ProjectCredentialData.decode(reader, reader.uint32()));
+          break;
         case 9:
           message.projectExport = ProjectExportData.decode(reader, reader.uint32());
           break;
@@ -2863,6 +2922,9 @@ export const ProjectData = {
       timeZone: isSet(object.timeZone) ? String(object.timeZone) : "",
       defaultLanguageCode: isSet(object.defaultLanguageCode) ? String(object.defaultLanguageCode) : "",
       languageCodes: Array.isArray(object?.languageCodes) ? object.languageCodes.map((e: any) => String(e)) : [],
+      credentials: Array.isArray(object?.credentials)
+        ? object.credentials.map((e: any) => ProjectCredentialData.fromJSON(e))
+        : [],
       projectExport: isSet(object.projectExport) ? ProjectExportData.fromJSON(object.projectExport) : undefined,
       projectPreview: isSet(object.projectPreview) ? ProjectPreviewData.fromJSON(object.projectPreview) : undefined,
       codePreview: isSet(object.codePreview) ? CodePreviewData.fromJSON(object.codePreview) : undefined,
@@ -2881,6 +2943,11 @@ export const ProjectData = {
       obj.languageCodes = message.languageCodes.map((e) => e);
     } else {
       obj.languageCodes = [];
+    }
+    if (message.credentials) {
+      obj.credentials = message.credentials.map((e) => e ? ProjectCredentialData.toJSON(e) : undefined);
+    } else {
+      obj.credentials = [];
     }
     message.projectExport !== undefined &&
       (obj.projectExport = message.projectExport ? ProjectExportData.toJSON(message.projectExport) : undefined);
@@ -2902,6 +2969,7 @@ export const ProjectData = {
     message.timeZone = object.timeZone ?? "";
     message.defaultLanguageCode = object.defaultLanguageCode ?? "";
     message.languageCodes = object.languageCodes?.map((e) => e) || [];
+    message.credentials = object.credentials?.map((e) => ProjectCredentialData.fromPartial(e)) || [];
     message.projectExport = (object.projectExport !== undefined && object.projectExport !== null)
       ? ProjectExportData.fromPartial(object.projectExport)
       : undefined;
@@ -2911,6 +2979,64 @@ export const ProjectData = {
     message.codePreview = (object.codePreview !== undefined && object.codePreview !== null)
       ? CodePreviewData.fromPartial(object.codePreview)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseProjectCredential(): ProjectCredential {
+  return { name: 0, value: "" };
+}
+
+export const ProjectCredentialData = {
+  encode(message: ProjectCredential, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.name !== 0) {
+      writer.uint32(8).int32(message.name);
+    }
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectCredential {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseProjectCredential();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.name = reader.int32() as any;
+          break;
+        case 2:
+          message.value = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ProjectCredential {
+    return {
+      name: isSet(object.name) ? projectEnvironmentFromJSON(object.name) : 0,
+      value: isSet(object.value) ? String(object.value) : "",
+    };
+  },
+
+  toJSON(message: ProjectCredential): unknown {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = projectEnvironmentToJSON(message.name));
+    message.value !== undefined && (obj.value = message.value);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ProjectCredential>): ProjectCredential {
+    const message = createBaseProjectCredential();
+    message.name = object.name ?? 0;
+    message.value = object.value ?? "";
     return message;
   },
 };
