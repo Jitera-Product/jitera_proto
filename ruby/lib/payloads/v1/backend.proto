@@ -342,6 +342,7 @@ message Controller {
 			DataType data_type = 5;
 			repeated Field children = 6;
 			string category = 7;
+			string alias = 8;
 		}
 	}
 
@@ -648,26 +649,31 @@ message Table {
 		message RelationHasOne {
 			string table_name = 1;
 			string column_name = 2;
+			string relation_name = 3;
 		}
 
 		message RelationBelongTo {
 			string table_name = 1;
 			string column_name = 2;
+			string relation_name = 3;
 		}
 
 		message RelationManyOne {
 			string table_name = 1;
 			string column_name = 2;
+			string relation_name = 3;
 		}
 
 		message RelationOneMany {
 			string table_name = 1;
 			string column_name = 2;
+			string relation_name = 3;
 		}
 
 		message RelationManyMany {
 			string table_name = 1;
 			string joined_name = 2;
+			string relation_name = 3;
 		}
 	}
 }

@@ -876,6 +876,7 @@ export class ControllerResponseField {
   dataType?: DataType;
   children: ControllerResponseField[];
   category: string;
+  alias: string;
 }
 
 export class ControllerResourceCondition {
@@ -1436,26 +1437,31 @@ export class TableRelation {
 export class TableRelationRelationHasOne {
   tableName: string;
   columnName: string;
+  relationName: string;
 }
 
 export class TableRelationRelationBelongTo {
   tableName: string;
   columnName: string;
+  relationName: string;
 }
 
 export class TableRelationRelationManyOne {
   tableName: string;
   columnName: string;
+  relationName: string;
 }
 
 export class TableRelationRelationOneMany {
   tableName: string;
   columnName: string;
+  relationName: string;
 }
 
 export class TableRelationRelationManyMany {
   tableName: string;
   joinedName: string;
+  relationName: string;
 }
 
 export class Migration {
@@ -6054,7 +6060,7 @@ export const ControllerResponseData = {
 };
 
 function createBaseControllerResponseField(): ControllerResponseField {
-  return { name: "", children: [], category: "" };
+  return { name: "", children: [], category: "", alias: "" };
 }
 
 export const ControllerResponseFieldData = {
@@ -6079,6 +6085,9 @@ export const ControllerResponseFieldData = {
     }
     if (message.category !== "") {
       writer.uint32(58).string(message.category);
+    }
+    if (message.alias !== "") {
+      writer.uint32(66).string(message.alias);
     }
     return writer;
   },
@@ -6111,6 +6120,9 @@ export const ControllerResponseFieldData = {
         case 7:
           message.category = reader.string();
           break;
+        case 8:
+          message.alias = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -6130,6 +6142,7 @@ export const ControllerResponseFieldData = {
         ? object.children.map((e: any) => ControllerResponseFieldData.fromJSON(e))
         : [],
       category: isSet(object.category) ? String(object.category) : "",
+      alias: isSet(object.alias) ? String(object.alias) : "",
     };
   },
 
@@ -6147,6 +6160,7 @@ export const ControllerResponseFieldData = {
       obj.children = [];
     }
     message.category !== undefined && (obj.category = message.category);
+    message.alias !== undefined && (obj.alias = message.alias);
     return obj;
   },
 
@@ -6161,6 +6175,7 @@ export const ControllerResponseFieldData = {
       : undefined;
     message.children = object.children?.map((e) => ControllerResponseFieldData.fromPartial(e)) || [];
     message.category = object.category ?? "";
+    message.alias = object.alias ?? "";
     return message;
   },
 };
@@ -9091,7 +9106,7 @@ export const TableRelationData = {
 };
 
 function createBaseTableRelationRelationHasOne(): TableRelationRelationHasOne {
-  return { tableName: "", columnName: "" };
+  return { tableName: "", columnName: "", relationName: "" };
 }
 
 export const TableRelationRelationHasOneData = {
@@ -9101,6 +9116,9 @@ export const TableRelationRelationHasOneData = {
     }
     if (message.columnName !== "") {
       writer.uint32(18).string(message.columnName);
+    }
+    if (message.relationName !== "") {
+      writer.uint32(26).string(message.relationName);
     }
     return writer;
   },
@@ -9118,6 +9136,9 @@ export const TableRelationRelationHasOneData = {
         case 2:
           message.columnName = reader.string();
           break;
+        case 3:
+          message.relationName = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -9130,6 +9151,7 @@ export const TableRelationRelationHasOneData = {
     return {
       tableName: isSet(object.tableName) ? String(object.tableName) : "",
       columnName: isSet(object.columnName) ? String(object.columnName) : "",
+      relationName: isSet(object.relationName) ? String(object.relationName) : "",
     };
   },
 
@@ -9137,6 +9159,7 @@ export const TableRelationRelationHasOneData = {
     const obj: any = {};
     message.tableName !== undefined && (obj.tableName = message.tableName);
     message.columnName !== undefined && (obj.columnName = message.columnName);
+    message.relationName !== undefined && (obj.relationName = message.relationName);
     return obj;
   },
 
@@ -9144,12 +9167,13 @@ export const TableRelationRelationHasOneData = {
     const message = createBaseTableRelationRelationHasOne();
     message.tableName = object.tableName ?? "";
     message.columnName = object.columnName ?? "";
+    message.relationName = object.relationName ?? "";
     return message;
   },
 };
 
 function createBaseTableRelationRelationBelongTo(): TableRelationRelationBelongTo {
-  return { tableName: "", columnName: "" };
+  return { tableName: "", columnName: "", relationName: "" };
 }
 
 export const TableRelationRelationBelongToData = {
@@ -9159,6 +9183,9 @@ export const TableRelationRelationBelongToData = {
     }
     if (message.columnName !== "") {
       writer.uint32(18).string(message.columnName);
+    }
+    if (message.relationName !== "") {
+      writer.uint32(26).string(message.relationName);
     }
     return writer;
   },
@@ -9176,6 +9203,9 @@ export const TableRelationRelationBelongToData = {
         case 2:
           message.columnName = reader.string();
           break;
+        case 3:
+          message.relationName = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -9188,6 +9218,7 @@ export const TableRelationRelationBelongToData = {
     return {
       tableName: isSet(object.tableName) ? String(object.tableName) : "",
       columnName: isSet(object.columnName) ? String(object.columnName) : "",
+      relationName: isSet(object.relationName) ? String(object.relationName) : "",
     };
   },
 
@@ -9195,6 +9226,7 @@ export const TableRelationRelationBelongToData = {
     const obj: any = {};
     message.tableName !== undefined && (obj.tableName = message.tableName);
     message.columnName !== undefined && (obj.columnName = message.columnName);
+    message.relationName !== undefined && (obj.relationName = message.relationName);
     return obj;
   },
 
@@ -9202,12 +9234,13 @@ export const TableRelationRelationBelongToData = {
     const message = createBaseTableRelationRelationBelongTo();
     message.tableName = object.tableName ?? "";
     message.columnName = object.columnName ?? "";
+    message.relationName = object.relationName ?? "";
     return message;
   },
 };
 
 function createBaseTableRelationRelationManyOne(): TableRelationRelationManyOne {
-  return { tableName: "", columnName: "" };
+  return { tableName: "", columnName: "", relationName: "" };
 }
 
 export const TableRelationRelationManyOneData = {
@@ -9217,6 +9250,9 @@ export const TableRelationRelationManyOneData = {
     }
     if (message.columnName !== "") {
       writer.uint32(18).string(message.columnName);
+    }
+    if (message.relationName !== "") {
+      writer.uint32(26).string(message.relationName);
     }
     return writer;
   },
@@ -9234,6 +9270,9 @@ export const TableRelationRelationManyOneData = {
         case 2:
           message.columnName = reader.string();
           break;
+        case 3:
+          message.relationName = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -9246,6 +9285,7 @@ export const TableRelationRelationManyOneData = {
     return {
       tableName: isSet(object.tableName) ? String(object.tableName) : "",
       columnName: isSet(object.columnName) ? String(object.columnName) : "",
+      relationName: isSet(object.relationName) ? String(object.relationName) : "",
     };
   },
 
@@ -9253,6 +9293,7 @@ export const TableRelationRelationManyOneData = {
     const obj: any = {};
     message.tableName !== undefined && (obj.tableName = message.tableName);
     message.columnName !== undefined && (obj.columnName = message.columnName);
+    message.relationName !== undefined && (obj.relationName = message.relationName);
     return obj;
   },
 
@@ -9260,12 +9301,13 @@ export const TableRelationRelationManyOneData = {
     const message = createBaseTableRelationRelationManyOne();
     message.tableName = object.tableName ?? "";
     message.columnName = object.columnName ?? "";
+    message.relationName = object.relationName ?? "";
     return message;
   },
 };
 
 function createBaseTableRelationRelationOneMany(): TableRelationRelationOneMany {
-  return { tableName: "", columnName: "" };
+  return { tableName: "", columnName: "", relationName: "" };
 }
 
 export const TableRelationRelationOneManyData = {
@@ -9275,6 +9317,9 @@ export const TableRelationRelationOneManyData = {
     }
     if (message.columnName !== "") {
       writer.uint32(18).string(message.columnName);
+    }
+    if (message.relationName !== "") {
+      writer.uint32(26).string(message.relationName);
     }
     return writer;
   },
@@ -9292,6 +9337,9 @@ export const TableRelationRelationOneManyData = {
         case 2:
           message.columnName = reader.string();
           break;
+        case 3:
+          message.relationName = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -9304,6 +9352,7 @@ export const TableRelationRelationOneManyData = {
     return {
       tableName: isSet(object.tableName) ? String(object.tableName) : "",
       columnName: isSet(object.columnName) ? String(object.columnName) : "",
+      relationName: isSet(object.relationName) ? String(object.relationName) : "",
     };
   },
 
@@ -9311,6 +9360,7 @@ export const TableRelationRelationOneManyData = {
     const obj: any = {};
     message.tableName !== undefined && (obj.tableName = message.tableName);
     message.columnName !== undefined && (obj.columnName = message.columnName);
+    message.relationName !== undefined && (obj.relationName = message.relationName);
     return obj;
   },
 
@@ -9318,12 +9368,13 @@ export const TableRelationRelationOneManyData = {
     const message = createBaseTableRelationRelationOneMany();
     message.tableName = object.tableName ?? "";
     message.columnName = object.columnName ?? "";
+    message.relationName = object.relationName ?? "";
     return message;
   },
 };
 
 function createBaseTableRelationRelationManyMany(): TableRelationRelationManyMany {
-  return { tableName: "", joinedName: "" };
+  return { tableName: "", joinedName: "", relationName: "" };
 }
 
 export const TableRelationRelationManyManyData = {
@@ -9333,6 +9384,9 @@ export const TableRelationRelationManyManyData = {
     }
     if (message.joinedName !== "") {
       writer.uint32(18).string(message.joinedName);
+    }
+    if (message.relationName !== "") {
+      writer.uint32(26).string(message.relationName);
     }
     return writer;
   },
@@ -9350,6 +9404,9 @@ export const TableRelationRelationManyManyData = {
         case 2:
           message.joinedName = reader.string();
           break;
+        case 3:
+          message.relationName = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -9362,6 +9419,7 @@ export const TableRelationRelationManyManyData = {
     return {
       tableName: isSet(object.tableName) ? String(object.tableName) : "",
       joinedName: isSet(object.joinedName) ? String(object.joinedName) : "",
+      relationName: isSet(object.relationName) ? String(object.relationName) : "",
     };
   },
 
@@ -9369,6 +9427,7 @@ export const TableRelationRelationManyManyData = {
     const obj: any = {};
     message.tableName !== undefined && (obj.tableName = message.tableName);
     message.joinedName !== undefined && (obj.joinedName = message.joinedName);
+    message.relationName !== undefined && (obj.relationName = message.relationName);
     return obj;
   },
 
@@ -9376,6 +9435,7 @@ export const TableRelationRelationManyManyData = {
     const message = createBaseTableRelationRelationManyMany();
     message.tableName = object.tableName ?? "";
     message.joinedName = object.joinedName ?? "";
+    message.relationName = object.relationName ?? "";
     return message;
   },
 };
