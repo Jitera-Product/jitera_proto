@@ -185,6 +185,9 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       repeated :table_actions, :message, 126, "schema.v1.WebNodeProps.TableColumn"
       repeated :on_pagination_change, :message, 127, "schema.v1.NodeAction"
       repeated :on_data_sorting_change, :message, 128, "schema.v1.NodeAction"
+      repeated :value_data, :message, 129, "schema.v1.NodeVariable"
+      repeated :on_change, :message, 130, "schema.v1.NodeVariable"
+      repeated :on_click, :message, 131, "schema.v1.NodeVariable"
     end
     add_message "schema.v1.WebNodeProps.TableColumn" do
       optional :molecule, :message, 1, "schema.v1.RenderMolecule"

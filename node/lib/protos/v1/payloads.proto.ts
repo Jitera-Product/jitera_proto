@@ -1951,6 +1951,9 @@ export interface WebNodeProps {
   tableActions: WebNodePropsTableColumn[];
   onPaginationChange: NodeAction[];
   onDataSortingChange: NodeAction[];
+  valueData: NodeVariable[];
+  onChange: NodeVariable[];
+  onClick: NodeVariable[];
 }
 
 export interface WebNodePropsTableColumn {
@@ -12780,6 +12783,9 @@ function createBaseWebNodeProps(): WebNodeProps {
     tableActions: [],
     onPaginationChange: [],
     onDataSortingChange: [],
+    valueData: [],
+    onChange: [],
+    onClick: [],
   };
 }
 
@@ -13155,6 +13161,15 @@ export const WebNodeProps = {
     }
     for (const v of message.onDataSortingChange) {
       NodeAction.encode(v!, writer.uint32(1026).fork()).ldelim();
+    }
+    for (const v of message.valueData) {
+      NodeVariable.encode(v!, writer.uint32(1034).fork()).ldelim();
+    }
+    for (const v of message.onChange) {
+      NodeVariable.encode(v!, writer.uint32(1042).fork()).ldelim();
+    }
+    for (const v of message.onClick) {
+      NodeVariable.encode(v!, writer.uint32(1050).fork()).ldelim();
     }
     return writer;
   },
@@ -13542,6 +13557,15 @@ export const WebNodeProps = {
         case 128:
           message.onDataSortingChange.push(NodeAction.decode(reader, reader.uint32()));
           break;
+        case 129:
+          message.valueData.push(NodeVariable.decode(reader, reader.uint32()));
+          break;
+        case 130:
+          message.onChange.push(NodeVariable.decode(reader, reader.uint32()));
+          break;
+        case 131:
+          message.onClick.push(NodeVariable.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -13699,6 +13723,9 @@ export const WebNodeProps = {
       onDataSortingChange: Array.isArray(object?.onDataSortingChange)
         ? object.onDataSortingChange.map((e: any) => NodeAction.fromJSON(e))
         : [],
+      valueData: Array.isArray(object?.valueData) ? object.valueData.map((e: any) => NodeVariable.fromJSON(e)) : [],
+      onChange: Array.isArray(object?.onChange) ? object.onChange.map((e: any) => NodeVariable.fromJSON(e)) : [],
+      onClick: Array.isArray(object?.onClick) ? object.onClick.map((e: any) => NodeVariable.fromJSON(e)) : [],
     };
   },
 
@@ -13912,6 +13939,21 @@ export const WebNodeProps = {
     } else {
       obj.onDataSortingChange = [];
     }
+    if (message.valueData) {
+      obj.valueData = message.valueData.map((e) => e ? NodeVariable.toJSON(e) : undefined);
+    } else {
+      obj.valueData = [];
+    }
+    if (message.onChange) {
+      obj.onChange = message.onChange.map((e) => e ? NodeVariable.toJSON(e) : undefined);
+    } else {
+      obj.onChange = [];
+    }
+    if (message.onClick) {
+      obj.onClick = message.onClick.map((e) => e ? NodeVariable.toJSON(e) : undefined);
+    } else {
+      obj.onClick = [];
+    }
     return obj;
   },
 
@@ -14060,6 +14102,9 @@ export const WebNodeProps = {
     message.tableActions = object.tableActions?.map((e) => WebNodePropsTableColumn.fromPartial(e)) || [];
     message.onPaginationChange = object.onPaginationChange?.map((e) => NodeAction.fromPartial(e)) || [];
     message.onDataSortingChange = object.onDataSortingChange?.map((e) => NodeAction.fromPartial(e)) || [];
+    message.valueData = object.valueData?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.onChange = object.onChange?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.onClick = object.onClick?.map((e) => NodeVariable.fromPartial(e)) || [];
     return message;
   },
 };

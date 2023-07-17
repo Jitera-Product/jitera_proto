@@ -1166,6 +1166,10 @@ message WebNodeProps {
 	repeated NodeAction on_pagination_change = 127;
 	repeated NodeAction on_data_sorting_change = 128;
 
+	repeated NodeVariable value_data = 129;
+	repeated NodeVariable on_change = 130;
+	repeated NodeVariable on_click = 131;
+
 	message TableColumn {
 		RenderMolecule molecule = 1;
 		bool sortable = 2;
