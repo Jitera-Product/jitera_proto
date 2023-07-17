@@ -260,6 +260,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :data_type, :message, 5, "schema.v1.DataType"
       repeated :children, :message, 6, "schema.v1.Controller.Response.Field"
       optional :category, :string, 7
+      optional :alias, :string, 8
       oneof :map_to do
         optional :resource, :string, 2
         optional :property, :string, 3
@@ -528,22 +529,27 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     add_message "schema.v1.Table.Relation.RelationHasOne" do
       optional :table_name, :string, 1
       optional :column_name, :string, 2
+      optional :relation_name, :string, 3
     end
     add_message "schema.v1.Table.Relation.RelationBelongTo" do
       optional :table_name, :string, 1
       optional :column_name, :string, 2
+      optional :relation_name, :string, 3
     end
     add_message "schema.v1.Table.Relation.RelationManyOne" do
       optional :table_name, :string, 1
       optional :column_name, :string, 2
+      optional :relation_name, :string, 3
     end
     add_message "schema.v1.Table.Relation.RelationOneMany" do
       optional :table_name, :string, 1
       optional :column_name, :string, 2
+      optional :relation_name, :string, 3
     end
     add_message "schema.v1.Table.Relation.RelationManyMany" do
       optional :table_name, :string, 1
       optional :joined_name, :string, 2
+      optional :relation_name, :string, 3
     end
     add_message "schema.v1.Migration" do
       optional :migration_id, :string, 1
