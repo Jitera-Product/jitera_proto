@@ -1,13 +1,19 @@
 {
     "name": "jitera/payload-interface",
     "version": "0.0.1",
+    "authors": [
+        {
+            "name": "JITERA",
+            "homepage": "https://jitera.com/"
+        }
+    ],
     "require": {
         "php": "^8.1",
         "google/protobuf": "3.21"
     },
     "autoload": {
         "psr-4": {
-            "": "src/"
+            "": "php/src/"
         }
     },
     "scripts": {
