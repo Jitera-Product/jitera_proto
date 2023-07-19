@@ -17,6 +17,6 @@
         }
     },
     "scripts": {
-        "generate-payload": "protoc --proto_path=proto/node/lib/protos/v1 --php_out=src payloads.proto"
+        "generate-payload": "protoc --proto_path=php/src --php_out=php/src payload.proto"
     }
 }
