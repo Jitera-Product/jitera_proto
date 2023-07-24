@@ -13,6 +13,8 @@ message Project {
 	string default_language_code = 6;
 	repeated string language_codes = 7;
 	repeated Credential credentials = 12;
+	string event_type = 13;
+	PreviewUrls preview_urls = 14;
 
 	oneof generate_type {
 		ProjectExport project_export = 9;
@@ -30,6 +32,11 @@ message Project {
 		STAGING = 1;
 		PRODUCTION = 2;
 	}
+}
+
+message PreviewUrls {
+	string frontend = 1;
+	string api = 2;
 }
 
 message CodePreview {
