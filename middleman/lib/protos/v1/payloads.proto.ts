@@ -310,14 +310,14 @@ export function projectEnvironmentToJSON(object: ProjectEnvironment): string {
   }
 }
 
-export class PreviewUrls {
-  frontend: string;
-  api: string;
-}
-
 export class ProjectCredential {
   name: ProjectEnvironment;
   value: string;
+}
+
+export class PreviewUrls {
+  frontend: string;
+  api: string;
 }
 
 export class CodePreview {
@@ -1851,7 +1851,6 @@ export class WebNodeProps {
   activeColor?: string | undefined;
   inactiveColor?: string | undefined;
   checkColor?: string | undefined;
-  direction?: string | undefined;
   size?: string | undefined;
   label?: string | undefined;
   dateMode?: string | undefined;
@@ -1959,6 +1958,7 @@ export class WebNodeProps {
   valueData: NodeVariable[];
   onChange: NodeVariable[];
   onClick: NodeVariable[];
+  direction: NodeVariable[];
 }
 
 export class WebNodePropsTableColumn {
@@ -12930,6 +12930,7 @@ function createBaseWebNodeProps(): WebNodeProps {
     valueData: [],
     onChange: [],
     onClick: [],
+    direction: [],
   };
 }
 
@@ -12996,9 +12997,6 @@ export const WebNodePropsData = {
     }
     if (message.checkColor !== undefined) {
       writer.uint32(162).string(message.checkColor);
-    }
-    if (message.direction !== undefined) {
-      writer.uint32(170).string(message.direction);
     }
     if (message.size !== undefined) {
       writer.uint32(178).string(message.size);
@@ -13315,6 +13313,9 @@ export const WebNodePropsData = {
     for (const v of message.onClick) {
       NodeVariableData.encode(v!, writer.uint32(1050).fork()).ldelim();
     }
+    for (const v of message.direction) {
+      NodeVariableData.encode(v!, writer.uint32(1058).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -13391,9 +13392,6 @@ export const WebNodePropsData = {
           break;
         case 20:
           message.checkColor = reader.string();
-          break;
-        case 21:
-          message.direction = reader.string();
           break;
         case 22:
           message.size = reader.string();
@@ -13710,6 +13708,9 @@ export const WebNodePropsData = {
         case 131:
           message.onClick.push(NodeVariableData.decode(reader, reader.uint32()));
           break;
+        case 132:
+          message.direction.push(NodeVariableData.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -13740,7 +13741,6 @@ export const WebNodePropsData = {
       activeColor: isSet(object.activeColor) ? String(object.activeColor) : undefined,
       inactiveColor: isSet(object.inactiveColor) ? String(object.inactiveColor) : undefined,
       checkColor: isSet(object.checkColor) ? String(object.checkColor) : undefined,
-      direction: isSet(object.direction) ? String(object.direction) : undefined,
       size: isSet(object.size) ? String(object.size) : undefined,
       label: isSet(object.label) ? String(object.label) : undefined,
       dateMode: isSet(object.dateMode) ? String(object.dateMode) : undefined,
@@ -13880,6 +13880,7 @@ export const WebNodePropsData = {
         : [],
       onChange: Array.isArray(object?.onChange) ? object.onChange.map((e: any) => NodeVariableData.fromJSON(e)) : [],
       onClick: Array.isArray(object?.onClick) ? object.onClick.map((e: any) => NodeVariableData.fromJSON(e)) : [],
+      direction: Array.isArray(object?.direction) ? object.direction.map((e: any) => NodeVariableData.fromJSON(e)) : [],
     };
   },
 
@@ -13909,7 +13910,6 @@ export const WebNodePropsData = {
     message.activeColor !== undefined && (obj.activeColor = message.activeColor);
     message.inactiveColor !== undefined && (obj.inactiveColor = message.inactiveColor);
     message.checkColor !== undefined && (obj.checkColor = message.checkColor);
-    message.direction !== undefined && (obj.direction = message.direction);
     message.size !== undefined && (obj.size = message.size);
     message.label !== undefined && (obj.label = message.label);
     message.dateMode !== undefined && (obj.dateMode = message.dateMode);
@@ -14107,6 +14107,11 @@ export const WebNodePropsData = {
     } else {
       obj.onClick = [];
     }
+    if (message.direction) {
+      obj.direction = message.direction.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+    } else {
+      obj.direction = [];
+    }
     return obj;
   },
 
@@ -14132,7 +14137,6 @@ export const WebNodePropsData = {
     message.activeColor = object.activeColor ?? undefined;
     message.inactiveColor = object.inactiveColor ?? undefined;
     message.checkColor = object.checkColor ?? undefined;
-    message.direction = object.direction ?? undefined;
     message.size = object.size ?? undefined;
     message.label = object.label ?? undefined;
     message.dateMode = object.dateMode ?? undefined;
@@ -14258,6 +14262,7 @@ export const WebNodePropsData = {
     message.valueData = object.valueData?.map((e) => NodeVariableData.fromPartial(e)) || [];
     message.onChange = object.onChange?.map((e) => NodeVariableData.fromPartial(e)) || [];
     message.onClick = object.onClick?.map((e) => NodeVariableData.fromPartial(e)) || [];
+    message.direction = object.direction?.map((e) => NodeVariableData.fromPartial(e)) || [];
     return message;
   },
 };
