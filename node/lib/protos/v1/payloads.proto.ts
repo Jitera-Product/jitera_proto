@@ -1851,6 +1851,7 @@ export interface WebNodeProps {
   activeColor?: string | undefined;
   inactiveColor?: string | undefined;
   checkColor?: string | undefined;
+  direction?: string | undefined;
   size?: string | undefined;
   label?: string | undefined;
   dateMode?: string | undefined;
@@ -1960,7 +1961,7 @@ export interface WebNodeProps {
   valueData: NodeVariable[];
   onChange: NodeVariable[];
   onClick: NodeVariable[];
-  direction: NodeVariable[];
+  orientation: NodeVariable[];
 }
 
 export interface WebNodePropsTableColumn {
@@ -12873,7 +12874,7 @@ function createBaseWebNodeProps(): WebNodeProps {
     valueData: [],
     onChange: [],
     onClick: [],
-    direction: [],
+    orientation: [],
   };
 }
 
@@ -12940,6 +12941,9 @@ export const WebNodeProps = {
     }
     if (message.checkColor !== undefined) {
       writer.uint32(162).string(message.checkColor);
+    }
+    if (message.direction !== undefined) {
+      writer.uint32(170).string(message.direction);
     }
     if (message.size !== undefined) {
       writer.uint32(178).string(message.size);
@@ -13256,8 +13260,8 @@ export const WebNodeProps = {
     for (const v of message.onClick) {
       NodeVariable.encode(v!, writer.uint32(1050).fork()).ldelim();
     }
-    for (const v of message.direction) {
-      NodeVariable.encode(v!, writer.uint32(1058).fork()).ldelim();
+    for (const v of message.orientation) {
+      NodeVariable.encode(v!, writer.uint32(1066).fork()).ldelim();
     }
     return writer;
   },
@@ -13335,6 +13339,9 @@ export const WebNodeProps = {
           break;
         case 20:
           message.checkColor = reader.string();
+          break;
+        case 21:
+          message.direction = reader.string();
           break;
         case 22:
           message.size = reader.string();
@@ -13651,8 +13658,8 @@ export const WebNodeProps = {
         case 131:
           message.onClick.push(NodeVariable.decode(reader, reader.uint32()));
           break;
-        case 132:
-          message.direction.push(NodeVariable.decode(reader, reader.uint32()));
+        case 133:
+          message.orientation.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -13684,6 +13691,7 @@ export const WebNodeProps = {
       activeColor: isSet(object.activeColor) ? String(object.activeColor) : undefined,
       inactiveColor: isSet(object.inactiveColor) ? String(object.inactiveColor) : undefined,
       checkColor: isSet(object.checkColor) ? String(object.checkColor) : undefined,
+      direction: isSet(object.direction) ? String(object.direction) : undefined,
       size: isSet(object.size) ? String(object.size) : undefined,
       label: isSet(object.label) ? String(object.label) : undefined,
       dateMode: isSet(object.dateMode) ? String(object.dateMode) : undefined,
@@ -13813,7 +13821,9 @@ export const WebNodeProps = {
       valueData: Array.isArray(object?.valueData) ? object.valueData.map((e: any) => NodeVariable.fromJSON(e)) : [],
       onChange: Array.isArray(object?.onChange) ? object.onChange.map((e: any) => NodeVariable.fromJSON(e)) : [],
       onClick: Array.isArray(object?.onClick) ? object.onClick.map((e: any) => NodeVariable.fromJSON(e)) : [],
-      direction: Array.isArray(object?.direction) ? object.direction.map((e: any) => NodeVariable.fromJSON(e)) : [],
+      orientation: Array.isArray(object?.orientation)
+        ? object.orientation.map((e: any) => NodeVariable.fromJSON(e))
+        : [],
     };
   },
 
@@ -13843,6 +13853,7 @@ export const WebNodeProps = {
     message.activeColor !== undefined && (obj.activeColor = message.activeColor);
     message.inactiveColor !== undefined && (obj.inactiveColor = message.inactiveColor);
     message.checkColor !== undefined && (obj.checkColor = message.checkColor);
+    message.direction !== undefined && (obj.direction = message.direction);
     message.size !== undefined && (obj.size = message.size);
     message.label !== undefined && (obj.label = message.label);
     message.dateMode !== undefined && (obj.dateMode = message.dateMode);
@@ -14041,10 +14052,10 @@ export const WebNodeProps = {
     } else {
       obj.onClick = [];
     }
-    if (message.direction) {
-      obj.direction = message.direction.map((e) => e ? NodeVariable.toJSON(e) : undefined);
+    if (message.orientation) {
+      obj.orientation = message.orientation.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
-      obj.direction = [];
+      obj.orientation = [];
     }
     return obj;
   },
@@ -14071,6 +14082,7 @@ export const WebNodeProps = {
     message.activeColor = object.activeColor ?? undefined;
     message.inactiveColor = object.inactiveColor ?? undefined;
     message.checkColor = object.checkColor ?? undefined;
+    message.direction = object.direction ?? undefined;
     message.size = object.size ?? undefined;
     message.label = object.label ?? undefined;
     message.dateMode = object.dateMode ?? undefined;
@@ -14196,7 +14208,7 @@ export const WebNodeProps = {
     message.valueData = object.valueData?.map((e) => NodeVariable.fromPartial(e)) || [];
     message.onChange = object.onChange?.map((e) => NodeVariable.fromPartial(e)) || [];
     message.onClick = object.onClick?.map((e) => NodeVariable.fromPartial(e)) || [];
-    message.direction = object.direction?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.orientation = object.orientation?.map((e) => NodeVariable.fromPartial(e)) || [];
     return message;
   },
 };

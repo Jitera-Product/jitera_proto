@@ -1057,7 +1057,7 @@ message WebNodeProps {
 	optional string active_color = 18;
 	optional string inactive_color = 19;
 	optional string check_color = 20;
-	reserved 21;
+	optional string direction = 21;
 	optional string size = 22;
 	optional string label = 23;
 	optional string date_mode = 24;
@@ -1175,7 +1175,8 @@ message WebNodeProps {
 	repeated NodeVariable value_data = 129;
 	repeated NodeVariable on_change = 130;
 	repeated NodeVariable on_click = 131;
-	repeated NodeVariable direction = 132;
+	reserved 132;
+	repeated NodeVariable orientation = 133;
 
 	message TableColumn {
 		RenderMolecule molecule = 1;

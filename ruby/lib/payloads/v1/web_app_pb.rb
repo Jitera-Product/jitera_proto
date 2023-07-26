@@ -82,6 +82,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       proto3_optional :active_color, :string, 18
       proto3_optional :inactive_color, :string, 19
       proto3_optional :check_color, :string, 20
+      proto3_optional :direction, :string, 21
       proto3_optional :size, :string, 22
       proto3_optional :label, :string, 23
       proto3_optional :date_mode, :string, 24
@@ -187,7 +188,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       repeated :value_data, :message, 129, "schema.v1.NodeVariable"
       repeated :on_change, :message, 130, "schema.v1.NodeVariable"
       repeated :on_click, :message, 131, "schema.v1.NodeVariable"
-      repeated :direction, :message, 132, "schema.v1.NodeVariable"
+      repeated :orientation, :message, 133, "schema.v1.NodeVariable"
     end
     add_message "schema.v1.WebNodeProps.TableColumn" do
       optional :molecule, :message, 1, "schema.v1.RenderMolecule"
