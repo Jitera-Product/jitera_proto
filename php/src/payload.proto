@@ -221,6 +221,10 @@ message Feature {
 		string sid = 3;
 		string token = 4;
 		int32 otp_length = 5;
+		bool recaptcha = 6;
+		string recaptcha_score = 7;
+		string recaptcha_site_key = 8;
+		string recaptcha_secret_key = 9;
 	}
 
 	message Rollbar {

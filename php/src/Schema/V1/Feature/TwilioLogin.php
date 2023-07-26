@@ -33,6 +33,22 @@ class TwilioLogin extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>int32 otp_length = 5;</code>
      */
     protected $otp_length = 0;
+    /**
+     * Generated from protobuf field <code>bool recaptcha = 6;</code>
+     */
+    protected $recaptcha = false;
+    /**
+     * Generated from protobuf field <code>string recaptcha_score = 7;</code>
+     */
+    protected $recaptcha_score = '';
+    /**
+     * Generated from protobuf field <code>string recaptcha_site_key = 8;</code>
+     */
+    protected $recaptcha_site_key = '';
+    /**
+     * Generated from protobuf field <code>string recaptcha_secret_key = 9;</code>
+     */
+    protected $recaptcha_secret_key = '';
 
     /**
      * Constructor.
@@ -45,6 +61,10 @@ class TwilioLogin extends \Google\Protobuf\Internal\Message
      *     @type string $sid
      *     @type string $token
      *     @type int $otp_length
+     *     @type bool $recaptcha
+     *     @type string $recaptcha_score
+     *     @type string $recaptcha_site_key
+     *     @type string $recaptcha_secret_key
      * }
      */
     public function __construct($data = NULL) {
@@ -158,6 +178,94 @@ class TwilioLogin extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkInt32($var);
         $this->otp_length = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>bool recaptcha = 6;</code>
+     * @return bool
+     */
+    public function getRecaptcha()
+    {
+        return $this->recaptcha;
+    }
+
+    /**
+     * Generated from protobuf field <code>bool recaptcha = 6;</code>
+     * @param bool $var
+     * @return $this
+     */
+    public function setRecaptcha($var)
+    {
+        GPBUtil::checkBool($var);
+        $this->recaptcha = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string recaptcha_score = 7;</code>
+     * @return string
+     */
+    public function getRecaptchaScore()
+    {
+        return $this->recaptcha_score;
+    }
+
+    /**
+     * Generated from protobuf field <code>string recaptcha_score = 7;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setRecaptchaScore($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->recaptcha_score = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string recaptcha_site_key = 8;</code>
+     * @return string
+     */
+    public function getRecaptchaSiteKey()
+    {
+        return $this->recaptcha_site_key;
+    }
+
+    /**
+     * Generated from protobuf field <code>string recaptcha_site_key = 8;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setRecaptchaSiteKey($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->recaptcha_site_key = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string recaptcha_secret_key = 9;</code>
+     * @return string
+     */
+    public function getRecaptchaSecretKey()
+    {
+        return $this->recaptcha_secret_key;
+    }
+
+    /**
+     * Generated from protobuf field <code>string recaptcha_secret_key = 9;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setRecaptchaSecretKey($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->recaptcha_secret_key = $var;
 
         return $this;
     }

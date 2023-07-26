@@ -113,6 +113,10 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :sid, :string, 3
       optional :token, :string, 4
       optional :otp_length, :int32, 5
+      optional :recaptcha, :bool, 6
+      optional :recaptcha_score, :string, 7
+      optional :recaptcha_site_key, :string, 8
+      optional :recaptcha_secret_key, :string, 9
     end
     add_message "schema.v1.Feature.Rollbar" do
       optional :access_token, :string, 1
