@@ -264,6 +264,8 @@ export class Project {
   defaultLanguageCode: string;
   languageCodes: string[];
   credentials: ProjectCredential[];
+  eventType: string;
+  previewUrls?: PreviewUrls;
   projectExport?: ProjectExport | undefined;
   projectPreview?: ProjectPreview | undefined;
   codePreview?: CodePreview | undefined;
@@ -306,6 +308,11 @@ export function projectEnvironmentToJSON(object: ProjectEnvironment): string {
     default:
       return "UNRECOGNIZED";
   }
+}
+
+export class PreviewUrls {
+  frontend: string;
+  api: string;
 }
 
 export class ProjectCredential {
@@ -2830,6 +2837,7 @@ function createBaseProject(): Project {
     defaultLanguageCode: "",
     languageCodes: [],
     credentials: [],
+    eventType: "",
   };
 }
 
@@ -2858,6 +2866,12 @@ export const ProjectData = {
     }
     for (const v of message.credentials) {
       ProjectCredentialData.encode(v!, writer.uint32(98).fork()).ldelim();
+    }
+    if (message.eventType !== "") {
+      writer.uint32(106).string(message.eventType);
+    }
+    if (message.previewUrls !== undefined) {
+      PreviewUrlsData.encode(message.previewUrls, writer.uint32(114).fork()).ldelim();
     }
     if (message.projectExport !== undefined) {
       ProjectExportData.encode(message.projectExport, writer.uint32(74).fork()).ldelim();
@@ -2902,6 +2916,12 @@ export const ProjectData = {
         case 12:
           message.credentials.push(ProjectCredentialData.decode(reader, reader.uint32()));
           break;
+        case 13:
+          message.eventType = reader.string();
+          break;
+        case 14:
+          message.previewUrls = PreviewUrlsData.decode(reader, reader.uint32());
+          break;
         case 9:
           message.projectExport = ProjectExportData.decode(reader, reader.uint32());
           break;
@@ -2931,6 +2951,8 @@ export const ProjectData = {
       credentials: Array.isArray(object?.credentials)
         ? object.credentials.map((e: any) => ProjectCredentialData.fromJSON(e))
         : [],
+      eventType: isSet(object.eventType) ? String(object.eventType) : "",
+      previewUrls: isSet(object.previewUrls) ? PreviewUrlsData.fromJSON(object.previewUrls) : undefined,
       projectExport: isSet(object.projectExport) ? ProjectExportData.fromJSON(object.projectExport) : undefined,
       projectPreview: isSet(object.projectPreview) ? ProjectPreviewData.fromJSON(object.projectPreview) : undefined,
       codePreview: isSet(object.codePreview) ? CodePreviewData.fromJSON(object.codePreview) : undefined,
@@ -2955,6 +2977,9 @@ export const ProjectData = {
     } else {
       obj.credentials = [];
     }
+    message.eventType !== undefined && (obj.eventType = message.eventType);
+    message.previewUrls !== undefined &&
+      (obj.previewUrls = message.previewUrls ? PreviewUrlsData.toJSON(message.previewUrls) : undefined);
     message.projectExport !== undefined &&
       (obj.projectExport = message.projectExport ? ProjectExportData.toJSON(message.projectExport) : undefined);
     message.projectPreview !== undefined &&
@@ -2976,6 +3001,10 @@ export const ProjectData = {
     message.defaultLanguageCode = object.defaultLanguageCode ?? "";
     message.languageCodes = object.languageCodes?.map((e) => e) || [];
     message.credentials = object.credentials?.map((e) => ProjectCredentialData.fromPartial(e)) || [];
+    message.eventType = object.eventType ?? "";
+    message.previewUrls = (object.previewUrls !== undefined && object.previewUrls !== null)
+      ? PreviewUrlsData.fromPartial(object.previewUrls)
+      : undefined;
     message.projectExport = (object.projectExport !== undefined && object.projectExport !== null)
       ? ProjectExportData.fromPartial(object.projectExport)
       : undefined;
@@ -3043,6 +3072,64 @@ export const ProjectCredentialData = {
     const message = createBaseProjectCredential();
     message.name = object.name ?? 0;
     message.value = object.value ?? "";
+    return message;
+  },
+};
+
+function createBasePreviewUrls(): PreviewUrls {
+  return { frontend: "", api: "" };
+}
+
+export const PreviewUrlsData = {
+  encode(message: PreviewUrls, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.frontend !== "") {
+      writer.uint32(10).string(message.frontend);
+    }
+    if (message.api !== "") {
+      writer.uint32(18).string(message.api);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): PreviewUrls {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePreviewUrls();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.frontend = reader.string();
+          break;
+        case 2:
+          message.api = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PreviewUrls {
+    return {
+      frontend: isSet(object.frontend) ? String(object.frontend) : "",
+      api: isSet(object.api) ? String(object.api) : "",
+    };
+  },
+
+  toJSON(message: PreviewUrls): unknown {
+    const obj: any = {};
+    message.frontend !== undefined && (obj.frontend = message.frontend);
+    message.api !== undefined && (obj.api = message.api);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<PreviewUrls>): PreviewUrls {
+    const message = createBasePreviewUrls();
+    message.frontend = object.frontend ?? "";
+    message.api = object.api ?? "";
     return message;
   },
 };
