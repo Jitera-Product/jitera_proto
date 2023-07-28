@@ -1961,6 +1961,7 @@ export interface WebNodeProps {
   valueData: NodeVariable[];
   onChange: NodeVariable[];
   onClick: NodeVariable[];
+  orientation: NodeVariable[];
 }
 
 export interface WebNodePropsTableColumn {
@@ -12873,6 +12874,7 @@ function createBaseWebNodeProps(): WebNodeProps {
     valueData: [],
     onChange: [],
     onClick: [],
+    orientation: [],
   };
 }
 
@@ -13257,6 +13259,9 @@ export const WebNodeProps = {
     }
     for (const v of message.onClick) {
       NodeVariable.encode(v!, writer.uint32(1050).fork()).ldelim();
+    }
+    for (const v of message.orientation) {
+      NodeVariable.encode(v!, writer.uint32(1066).fork()).ldelim();
     }
     return writer;
   },
@@ -13653,6 +13658,9 @@ export const WebNodeProps = {
         case 131:
           message.onClick.push(NodeVariable.decode(reader, reader.uint32()));
           break;
+        case 133:
+          message.orientation.push(NodeVariable.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -13813,6 +13821,9 @@ export const WebNodeProps = {
       valueData: Array.isArray(object?.valueData) ? object.valueData.map((e: any) => NodeVariable.fromJSON(e)) : [],
       onChange: Array.isArray(object?.onChange) ? object.onChange.map((e: any) => NodeVariable.fromJSON(e)) : [],
       onClick: Array.isArray(object?.onClick) ? object.onClick.map((e: any) => NodeVariable.fromJSON(e)) : [],
+      orientation: Array.isArray(object?.orientation)
+        ? object.orientation.map((e: any) => NodeVariable.fromJSON(e))
+        : [],
     };
   },
 
@@ -14041,6 +14052,11 @@ export const WebNodeProps = {
     } else {
       obj.onClick = [];
     }
+    if (message.orientation) {
+      obj.orientation = message.orientation.map((e) => e ? NodeVariable.toJSON(e) : undefined);
+    } else {
+      obj.orientation = [];
+    }
     return obj;
   },
 
@@ -14192,6 +14208,7 @@ export const WebNodeProps = {
     message.valueData = object.valueData?.map((e) => NodeVariable.fromPartial(e)) || [];
     message.onChange = object.onChange?.map((e) => NodeVariable.fromPartial(e)) || [];
     message.onClick = object.onClick?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.orientation = object.orientation?.map((e) => NodeVariable.fromPartial(e)) || [];
     return message;
   },
 };
