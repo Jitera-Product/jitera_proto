@@ -310,14 +310,14 @@ export function projectEnvironmentToJSON(object: ProjectEnvironment): string {
   }
 }
 
-export class PreviewUrls {
-  frontend: string;
-  api: string;
-}
-
 export class ProjectCredential {
   name: ProjectEnvironment;
   value: string;
+}
+
+export class PreviewUrls {
+  frontend: string;
+  api: string;
 }
 
 export class CodePreview {
@@ -1963,6 +1963,7 @@ export class WebNodeProps {
   valueData: NodeVariable[];
   onChange: NodeVariable[];
   onClick: NodeVariable[];
+  orientation: NodeVariable[];
 }
 
 export class WebNodePropsTableColumn {
@@ -12980,6 +12981,7 @@ function createBaseWebNodeProps(): WebNodeProps {
     valueData: [],
     onChange: [],
     onClick: [],
+    orientation: [],
   };
 }
 
@@ -13364,6 +13366,9 @@ export const WebNodePropsData = {
     }
     for (const v of message.onClick) {
       NodeVariableData.encode(v!, writer.uint32(1050).fork()).ldelim();
+    }
+    for (const v of message.orientation) {
+      NodeVariableData.encode(v!, writer.uint32(1066).fork()).ldelim();
     }
     return writer;
   },
@@ -13760,6 +13765,9 @@ export const WebNodePropsData = {
         case 131:
           message.onClick.push(NodeVariableData.decode(reader, reader.uint32()));
           break;
+        case 133:
+          message.orientation.push(NodeVariableData.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -13930,6 +13938,9 @@ export const WebNodePropsData = {
         : [],
       onChange: Array.isArray(object?.onChange) ? object.onChange.map((e: any) => NodeVariableData.fromJSON(e)) : [],
       onClick: Array.isArray(object?.onClick) ? object.onClick.map((e: any) => NodeVariableData.fromJSON(e)) : [],
+      orientation: Array.isArray(object?.orientation)
+        ? object.orientation.map((e: any) => NodeVariableData.fromJSON(e))
+        : [],
     };
   },
 
@@ -14157,6 +14168,11 @@ export const WebNodePropsData = {
     } else {
       obj.onClick = [];
     }
+    if (message.orientation) {
+      obj.orientation = message.orientation.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+    } else {
+      obj.orientation = [];
+    }
     return obj;
   },
 
@@ -14308,6 +14324,7 @@ export const WebNodePropsData = {
     message.valueData = object.valueData?.map((e) => NodeVariableData.fromPartial(e)) || [];
     message.onChange = object.onChange?.map((e) => NodeVariableData.fromPartial(e)) || [];
     message.onClick = object.onClick?.map((e) => NodeVariableData.fromPartial(e)) || [];
+    message.orientation = object.orientation?.map((e) => NodeVariableData.fromPartial(e)) || [];
     return message;
   },
 };
