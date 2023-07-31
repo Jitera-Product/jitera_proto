@@ -1178,6 +1178,8 @@ message WebNodeProps {
 	reserved 132;
 	repeated NodeVariable orientation = 133;
 
+	optional bool is_visible = 134;
+
 	message TableColumn {
 		RenderMolecule molecule = 1;
 		bool sortable = 2;

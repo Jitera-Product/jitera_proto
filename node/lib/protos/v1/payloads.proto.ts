@@ -1962,6 +1962,7 @@ export interface WebNodeProps {
   onChange: NodeVariable[];
   onClick: NodeVariable[];
   orientation: NodeVariable[];
+  isVisible?: boolean | undefined;
 }
 
 export interface WebNodePropsTableColumn {
@@ -13263,6 +13264,9 @@ export const WebNodeProps = {
     for (const v of message.orientation) {
       NodeVariable.encode(v!, writer.uint32(1066).fork()).ldelim();
     }
+    if (message.isVisible !== undefined) {
+      writer.uint32(1072).bool(message.isVisible);
+    }
     return writer;
   },
 
@@ -13661,6 +13665,9 @@ export const WebNodeProps = {
         case 133:
           message.orientation.push(NodeVariable.decode(reader, reader.uint32()));
           break;
+        case 134:
+          message.isVisible = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -13824,6 +13831,7 @@ export const WebNodeProps = {
       orientation: Array.isArray(object?.orientation)
         ? object.orientation.map((e: any) => NodeVariable.fromJSON(e))
         : [],
+      isVisible: isSet(object.isVisible) ? Boolean(object.isVisible) : undefined,
     };
   },
 
@@ -14057,6 +14065,7 @@ export const WebNodeProps = {
     } else {
       obj.orientation = [];
     }
+    message.isVisible !== undefined && (obj.isVisible = message.isVisible);
     return obj;
   },
 
@@ -14209,6 +14218,7 @@ export const WebNodeProps = {
     message.onChange = object.onChange?.map((e) => NodeVariable.fromPartial(e)) || [];
     message.onClick = object.onClick?.map((e) => NodeVariable.fromPartial(e)) || [];
     message.orientation = object.orientation?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.isVisible = object.isVisible ?? undefined;
     return message;
   },
 };

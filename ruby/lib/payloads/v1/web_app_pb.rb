@@ -189,6 +189,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       repeated :on_change, :message, 130, "schema.v1.NodeVariable"
       repeated :on_click, :message, 131, "schema.v1.NodeVariable"
       repeated :orientation, :message, 133, "schema.v1.NodeVariable"
+      proto3_optional :is_visible, :bool, 134
     end
     add_message "schema.v1.WebNodeProps.TableColumn" do
       optional :molecule, :message, 1, "schema.v1.RenderMolecule"
