@@ -15,7 +15,7 @@ If bundler is not being used to manage dependencies, install the gem by executin
 ### Generate protobuf
 
 ```
-$ grpc_tools_ruby_protoc -I ./lib/payloads --ruby_out=./lib/payloads --grpc_out=./lib/payloads ./lib/payloads/**/*.proto --proto_path=lib/payloads
+$ grpc_tools_ruby_protoc -I ../protos --ruby_out=./lib/payloads --grpc_out=./lib/payloads ../protos/**/*.proto --proto_path=lib/payloads
 ```
 
 ## Contributing
