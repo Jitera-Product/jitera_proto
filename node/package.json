@@ -1,6 +1,6 @@
 {
   "name": "@jitera/proto",
-  "version": "0.0.2-beta.39",
+  "version": "0.0.2-beta.40",
   "description": "",
   "main": "./build/cjs/index.js",
   "module": "./build/esm/index.js",
@@ -28,5 +28,8 @@
   "files": [
     "build/**/*",
     "lib/**/*"
-  ]
+  ],
+  "resolutions": {
+    "ts-proto@1.136.1": "patch:ts-proto@npm%3A1.136.1#./.yarn/patches/ts-proto-npm-1.136.1-c27de25407.patch"
+  }
 }
