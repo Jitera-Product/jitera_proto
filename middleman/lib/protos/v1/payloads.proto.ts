@@ -766,6 +766,10 @@ export class FeatureTwilioLogin {
   sid: string;
   token: string;
   otpLength: number;
+  recaptcha: boolean;
+  recaptchaScore: string;
+  recaptchaSiteKey: string;
+  recaptchaSecretKey: string;
 }
 
 export class FeatureRollbar {
@@ -4759,7 +4763,17 @@ export const FeatureBasicAuthData = {
 };
 
 function createBaseFeatureTwilioLogin(): FeatureTwilioLogin {
-  return { userTables: [], serviceId: "", sid: "", token: "", otpLength: 0 };
+  return {
+    userTables: [],
+    serviceId: "",
+    sid: "",
+    token: "",
+    otpLength: 0,
+    recaptcha: false,
+    recaptchaScore: "",
+    recaptchaSiteKey: "",
+    recaptchaSecretKey: "",
+  };
 }
 
 export const FeatureTwilioLoginData = {
@@ -4778,6 +4792,18 @@ export const FeatureTwilioLoginData = {
     }
     if (message.otpLength !== 0) {
       writer.uint32(40).int32(message.otpLength);
+    }
+    if (message.recaptcha === true) {
+      writer.uint32(48).bool(message.recaptcha);
+    }
+    if (message.recaptchaScore !== "") {
+      writer.uint32(58).string(message.recaptchaScore);
+    }
+    if (message.recaptchaSiteKey !== "") {
+      writer.uint32(66).string(message.recaptchaSiteKey);
+    }
+    if (message.recaptchaSecretKey !== "") {
+      writer.uint32(74).string(message.recaptchaSecretKey);
     }
     return writer;
   },
@@ -4804,6 +4830,18 @@ export const FeatureTwilioLoginData = {
         case 5:
           message.otpLength = reader.int32();
           break;
+        case 6:
+          message.recaptcha = reader.bool();
+          break;
+        case 7:
+          message.recaptchaScore = reader.string();
+          break;
+        case 8:
+          message.recaptchaSiteKey = reader.string();
+          break;
+        case 9:
+          message.recaptchaSecretKey = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -4819,6 +4857,10 @@ export const FeatureTwilioLoginData = {
       sid: isSet(object.sid) ? String(object.sid) : "",
       token: isSet(object.token) ? String(object.token) : "",
       otpLength: isSet(object.otpLength) ? Number(object.otpLength) : 0,
+      recaptcha: isSet(object.recaptcha) ? Boolean(object.recaptcha) : false,
+      recaptchaScore: isSet(object.recaptchaScore) ? String(object.recaptchaScore) : "",
+      recaptchaSiteKey: isSet(object.recaptchaSiteKey) ? String(object.recaptchaSiteKey) : "",
+      recaptchaSecretKey: isSet(object.recaptchaSecretKey) ? String(object.recaptchaSecretKey) : "",
     };
   },
 
@@ -4833,6 +4875,10 @@ export const FeatureTwilioLoginData = {
     message.sid !== undefined && (obj.sid = message.sid);
     message.token !== undefined && (obj.token = message.token);
     message.otpLength !== undefined && (obj.otpLength = Math.round(message.otpLength));
+    message.recaptcha !== undefined && (obj.recaptcha = message.recaptcha);
+    message.recaptchaScore !== undefined && (obj.recaptchaScore = message.recaptchaScore);
+    message.recaptchaSiteKey !== undefined && (obj.recaptchaSiteKey = message.recaptchaSiteKey);
+    message.recaptchaSecretKey !== undefined && (obj.recaptchaSecretKey = message.recaptchaSecretKey);
     return obj;
   },
 
@@ -4843,6 +4889,10 @@ export const FeatureTwilioLoginData = {
     message.sid = object.sid ?? "";
     message.token = object.token ?? "";
     message.otpLength = object.otpLength ?? 0;
+    message.recaptcha = object.recaptcha ?? false;
+    message.recaptchaScore = object.recaptchaScore ?? "";
+    message.recaptchaSiteKey = object.recaptchaSiteKey ?? "";
+    message.recaptchaSecretKey = object.recaptchaSecretKey ?? "";
     return message;
   },
 };
