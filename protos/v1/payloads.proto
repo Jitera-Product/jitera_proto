@@ -95,7 +95,7 @@ enum DataTypeName {
 	FILE = 11;
 	TABLE = 12;
 	ENUM = 13;
-	CURRENT_USER=14;
+	CURRENT_USER = 14;
 	COUNTER_CACHE = 15;
 	ID = 16;
 }
@@ -193,34 +193,6 @@ message Feature {
 		EmailConfig email_config = 14;
 	}
 
-	message ScoutApm {
-		string key_id = 1;
-	}
-
-	message EmailConfig {
-		string address = 1;
-		string username = 2;
-		string password = 3;
-		string default_from_email = 4;
-		EmailServiceProvider service_provider = 5;
-		string port = 6;
-		EmailConfigAuthentication authentication = 7;
-	}
-
-	enum EmailConfigAuthentication {
-		PLAIN = 0;
-		LOGIN = 1;
-		CRAM_MD5 = 2;
-	}
-
-	enum EmailServiceProvider {
-		AWS_SES = 0;
-		SENDGRID = 1;
-		GMAIL = 2;
-		MAILTRAP = 3;
-		GENERIC_SMTP = 4;
-	}
-
 	message EmailLogin {
 		repeated string tables = 1;
 		int32 password_min_length = 2;
@@ -298,6 +270,34 @@ message Feature {
 		string container_id = 1;
 	}
 
+	message ScoutApm {
+		string key_id = 1;
+	}
+
+	message EmailConfig {
+		string address = 1;
+		string username = 2;
+		string password = 3;
+		string default_from_email = 4;
+		EmailServiceProvider service_provider = 5;
+		string port = 6;
+		EmailConfigAuthentication authentication = 7;
+	}
+
+	enum EmailConfigAuthentication {
+		PLAIN = 0;
+		LOGIN = 1;
+		CRAM_MD5 = 2;
+	}
+
+	enum EmailServiceProvider {
+		AWS_SES = 0;
+		SENDGRID = 1;
+		GMAIL = 2;
+		MAILTRAP = 3;
+		GENERIC_SMTP = 4;
+	}
+
 	enum FeatureName {
 		NIL = 0;
 		EMAIL_LOGIN = 1;
@@ -349,7 +349,6 @@ message Controller {
 		optional string feature_table = 16;
 		repeated AuthorizationGroup authorization_groups = 17;
 		bool restrict_access = 18;
-
 		message List {
 			RequestContent queries = 1;
 			ResourceCondition conditions = 2;
@@ -385,6 +384,7 @@ message Controller {
 			string name = 1;
 			DataType data_type = 2;
 			repeated Field children = 3;
+			repeated string enum_values = 4;
 		}
 	}
 
@@ -472,7 +472,6 @@ message Controller {
 		Query query = 4;
 		string default_value = 5;
 		string authentication_class = 6;
-
 		enum Query {
 			EQUAL = 0;
 			IS_NOT_EQUAL = 1;
@@ -737,12 +736,10 @@ message Table {
 		}
 	}
 }
-
 message Migration {
 	string migration_id = 1;
 	repeated MigrationChange changes = 2;
 }
-
 message MigrationChange {
 	oneof methods {
 		CreateTable create_table  = 1;
@@ -765,7 +762,6 @@ message MigrationChange {
 		ChangeColumnUnique change_column_unique = 18;
 	}
 }
-
 message CreateTable {
 	string key = 1;
 	CreateTableChange change_to = 2;
@@ -773,7 +769,6 @@ message CreateTable {
 	string next_uuid = 4;
 	CreateTableNextRecord next_record = 5;
 }
-
 message ChangeTableName {
 	string key = 1;
 	string change_from = 2;
@@ -783,7 +778,6 @@ message ChangeTableName {
 	CreateTableNextRecord prev_record = 6;
 	CreateTableNextRecord next_record = 7;
 }
-
 message ChangeTableComment {
 	string key = 1;
 	string change_from = 2;
@@ -793,13 +787,11 @@ message ChangeTableComment {
 	CreateTableNextRecord prev_record = 6;
 	CreateTableNextRecord next_record = 7;
 }
-
 message CreateTableChange {
 	string name = 1;
 	string uuid = 2;
 	optional string comment = 3;
 }
-
 message AddColumn {
 	string key = 1;
 	MigrationColumnDefinition change_to = 2;
@@ -807,7 +799,6 @@ message AddColumn {
 	string next_uuid = 4;
 	MigrationColumnDefinition next_record = 5;
 }
-
 message RenameColumn {
 	string key = 1;
 	string change_from = 2;
@@ -817,7 +808,6 @@ message RenameColumn {
 	MigrationColumnDefinition prev_record = 6;
 	MigrationColumnDefinition next_record = 7;
 }
-
 message ChangeColumnComment {
 	string key = 1;
 	string change_from = 2;
@@ -827,7 +817,6 @@ message ChangeColumnComment {
 	MigrationColumnDefinition prev_record = 6;
 	MigrationColumnDefinition next_record = 7;
 }
-
 message ChangeColumn {
 	string key = 1;
 	string change_from = 2;
@@ -837,7 +826,6 @@ message ChangeColumn {
 	MigrationColumnDefinition prev_record = 6;
 	MigrationColumnDefinition next_record = 7;
 }
-
 message ChangeColumnDefault {
 	string key = 1;
 	string change_from = 2;
@@ -847,7 +835,6 @@ message ChangeColumnDefault {
 	MigrationColumnDefinition prev_record = 6;
 	MigrationColumnDefinition next_record = 7;
 }
-
 message ChangeColumnNull {
 	string key = 1;
 	string change_from = 2;
@@ -857,7 +844,6 @@ message ChangeColumnNull {
 	MigrationColumnDefinition prev_record = 6;
 	MigrationColumnDefinition next_record = 7;
 }
-
 message RemoveTableIndex {
 	string key = 1;
 	TableIndexMigration change_from = 2;
@@ -865,14 +851,12 @@ message RemoveTableIndex {
 	string next_uuid = 4;
 	TableIndexMigration prev_record = 5;
 }
-
 message RemoveTableRelation {
 	string key = 1;
 	string prev_uuid = 3;
 	string next_uuid = 4;
 	TableRelationMigration prev_record = 5;
 }
-
 message CreateTableRelation {
 	string key = 1;
 	TableRelationMigration change_to = 2;
@@ -880,7 +864,6 @@ message CreateTableRelation {
 	string next_uuid = 5;
 	TableRelationMigration next_record = 6;
 }
-
 message RemoveColumn {
 	string key = 1;
 	MigrationColumnDefinition change_from = 2;
@@ -888,7 +871,6 @@ message RemoveColumn {
 	string next_uuid = 5;
 	MigrationColumnDefinition prev_record = 6;
 }
-
 message DropTable {
 	string key = 1;
 	CreateTableNextRecord change_from = 2;
@@ -896,7 +878,6 @@ message DropTable {
 	string next_uuid = 5;
 	CreateTableNextRecord prev_record = 6;
 }
-
 message ChangeTableIndex {
 	string key = 1;
 	string change_from = 2;
@@ -906,18 +887,15 @@ message ChangeTableIndex {
 	TableIndexMigration prev_record = 6;
 	TableIndexMigration next_record = 7;
 }
-
 message CreateTableIndex {
 	string key = 1;
 	TableIndexMigration change_to = 2;
 	string next_uuid = 5;
 	TableIndexMigration next_record = 7;
 }
-
 message AddUniqColumn {
 	MigrationColumnDefinition next_record = 7;
 }
-
 message ChangeColumnUnique {
 	string key = 1;
 	bool change_from = 2;
@@ -927,14 +905,12 @@ message ChangeColumnUnique {
 	MigrationColumnDefinition prev_record = 6;
 	MigrationColumnDefinition next_record = 7;
 }
-
 message CreateTableNextRecord {
 	string name = 1;
 	string uuid = 2;
 	string comment = 3;
 	repeated MigrationColumnDefinition column_definitions = 4;
 }
-
 message MigrationColumnDefinition {
 	string name = 1;
 	string column_type = 2;
@@ -948,12 +924,10 @@ message MigrationColumnDefinition {
 	optional TableMetaDataMigration table_definition = 10;
 	int32 id = 11;
 }
-
 message TableMetaDataMigration {
 	string name = 1;
 	string uuid = 2;
 }
-
 message TableIndexMigration {
 	string name = 1;
 	bool unique = 2;
@@ -964,7 +938,6 @@ message TableIndexMigration {
 	optional TableMetaDataMigration table_definition = 7;
 	int32 id = 8;
 }
-
 message TableRelationMigration {
 	string foreign_key = 1;
 	string relation_type = 2;
