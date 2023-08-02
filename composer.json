@@ -17,6 +17,6 @@
         }
     },
     "scripts": {
-        "generate-payload": "protoc --proto_path=php/src --php_out=php/src payload.proto"
+        "generate-payload": "protoc --proto_path=protos --php_out=php/src protos/**/*.proto"
     }
 }
