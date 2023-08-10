@@ -1155,6 +1155,8 @@ message WebNodeProps {
 	repeated NodeVariable on_click = 131;
 	reserved 132;
 	repeated NodeVariable orientation = 133;
+	repeated NodeVariable date_time_format = 134;
+	repeated NodeVariable date_time_mode = 135;
 
 	message TableColumn {
 		RenderMolecule molecule = 1;

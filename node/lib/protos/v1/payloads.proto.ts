@@ -1964,6 +1964,8 @@ export class WebNodeProps {
   onChange: NodeVariable[];
   onClick: NodeVariable[];
   orientation: NodeVariable[];
+  dateTimeFormat: NodeVariable[];
+  dateTimeMode: NodeVariable[];
 }
 
 export class WebNodePropsTableColumn {
@@ -12982,6 +12984,8 @@ function createBaseWebNodeProps(): WebNodeProps {
     onChange: [],
     onClick: [],
     orientation: [],
+    dateTimeFormat: [],
+    dateTimeMode: [],
   };
 }
 
@@ -13369,6 +13373,12 @@ export const WebNodePropsData = {
     }
     for (const v of message.orientation) {
       NodeVariableData.encode(v!, writer.uint32(1066).fork()).ldelim();
+    }
+    for (const v of message.dateTimeFormat) {
+      NodeVariableData.encode(v!, writer.uint32(1074).fork()).ldelim();
+    }
+    for (const v of message.dateTimeMode) {
+      NodeVariableData.encode(v!, writer.uint32(1082).fork()).ldelim();
     }
     return writer;
   },
@@ -13768,6 +13778,12 @@ export const WebNodePropsData = {
         case 133:
           message.orientation.push(NodeVariableData.decode(reader, reader.uint32()));
           break;
+        case 134:
+          message.dateTimeFormat.push(NodeVariableData.decode(reader, reader.uint32()));
+          break;
+        case 135:
+          message.dateTimeMode.push(NodeVariableData.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -13940,6 +13956,12 @@ export const WebNodePropsData = {
       onClick: Array.isArray(object?.onClick) ? object.onClick.map((e: any) => NodeVariableData.fromJSON(e)) : [],
       orientation: Array.isArray(object?.orientation)
         ? object.orientation.map((e: any) => NodeVariableData.fromJSON(e))
+        : [],
+      dateTimeFormat: Array.isArray(object?.dateTimeFormat)
+        ? object.dateTimeFormat.map((e: any) => NodeVariableData.fromJSON(e))
+        : [],
+      dateTimeMode: Array.isArray(object?.dateTimeMode)
+        ? object.dateTimeMode.map((e: any) => NodeVariableData.fromJSON(e))
         : [],
     };
   },
@@ -14173,6 +14195,16 @@ export const WebNodePropsData = {
     } else {
       obj.orientation = [];
     }
+    if (message.dateTimeFormat) {
+      obj.dateTimeFormat = message.dateTimeFormat.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+    } else {
+      obj.dateTimeFormat = [];
+    }
+    if (message.dateTimeMode) {
+      obj.dateTimeMode = message.dateTimeMode.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+    } else {
+      obj.dateTimeMode = [];
+    }
     return obj;
   },
 
@@ -14325,6 +14357,8 @@ export const WebNodePropsData = {
     message.onChange = object.onChange?.map((e) => NodeVariableData.fromPartial(e)) || [];
     message.onClick = object.onClick?.map((e) => NodeVariableData.fromPartial(e)) || [];
     message.orientation = object.orientation?.map((e) => NodeVariableData.fromPartial(e)) || [];
+    message.dateTimeFormat = object.dateTimeFormat?.map((e) => NodeVariableData.fromPartial(e)) || [];
+    message.dateTimeMode = object.dateTimeMode?.map((e) => NodeVariableData.fromPartial(e)) || [];
     return message;
   },
 };
