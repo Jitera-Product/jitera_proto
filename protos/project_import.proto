@@ -1,0 +1,34 @@
+syntax = "proto3";
+package schema.v1;
+
+message ProjectAnalysis {
+	int32 project_import_id = 1;
+  string repo = 2;
+  string owner = 3;
+  string branch = 4;
+  string token = 5;
+}
+
+message ProjectAnalysisReport {
+	int32 project_import_id = 1;
+
+	oneof state {
+		Progress progress = 2;
+		Error error = 3;
+	}
+
+	message Progress {
+		float percentage = 1;
+		string message = 2;
+		Payload payload = 3;
+	}
+
+	message Error {
+		string message = 1;
+	}
+
+	message Payload {
+		string data = 1;
+		string module = 2;
+	}
+}

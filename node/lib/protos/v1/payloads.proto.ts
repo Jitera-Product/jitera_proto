@@ -1,7 +1,7 @@
 /* eslint-disable */
 import type { CallContext, CallOptions } from "nice-grpc-common";
 import * as _m0 from "protobufjs/minimal";
-import { Struct, StructData } from "../google/protobuf/struct.proto";
+import { StructData } from "../google/protobuf/struct.proto";
 
 export enum DataTypeName {
   BOOLEAN = 0,
@@ -687,20 +687,6 @@ export function featureEnvironmentToJSON(object: FeatureEnvironment): string {
   }
 }
 
-export class FeatureScoutApm {
-  keyId: string;
-}
-
-export class FeatureEmailConfig {
-  address: string;
-  username: string;
-  password: string;
-  defaultFromEmail: string;
-  serviceProvider: FeatureEmailServiceProvider;
-  port: string;
-  authentication: FeatureEmailConfigAuthentication;
-}
-
 export class FeatureEmailLogin {
   tables: string[];
   passwordMinLength: number;
@@ -812,6 +798,20 @@ export class FeatureGoogleTagManager {
   containerId: string;
 }
 
+export class FeatureScoutApm {
+  keyId: string;
+}
+
+export class FeatureEmailConfig {
+  address: string;
+  username: string;
+  password: string;
+  defaultFromEmail: string;
+  serviceProvider: FeatureEmailServiceProvider;
+  port: string;
+  authentication: FeatureEmailConfigAuthentication;
+}
+
 export class Controller {
   name: string;
   endpoints: ControllerEndpoint[];
@@ -873,6 +873,7 @@ export class ControllerRequestContentField {
   name: string;
   dataType?: DataType;
   children: ControllerRequestContentField[];
+  enumValues: string[];
 }
 
 export class ControllerResponse {
@@ -4369,168 +4370,6 @@ export const FeatureData = {
   },
 };
 
-function createBaseFeatureScoutApm(): FeatureScoutApm {
-  return { keyId: "" };
-}
-
-export const FeatureScoutApmData = {
-  encode(message: FeatureScoutApm, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.keyId !== "") {
-      writer.uint32(10).string(message.keyId);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): FeatureScoutApm {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseFeatureScoutApm();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.keyId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): FeatureScoutApm {
-    return { keyId: isSet(object.keyId) ? String(object.keyId) : "" };
-  },
-
-  toJSON(message: FeatureScoutApm): unknown {
-    const obj: any = {};
-    message.keyId !== undefined && (obj.keyId = message.keyId);
-    return obj;
-  },
-
-  fromPartial(object: DeepPartial<FeatureScoutApm>): FeatureScoutApm {
-    const message = createBaseFeatureScoutApm();
-    message.keyId = object.keyId ?? "";
-    return message;
-  },
-};
-
-function createBaseFeatureEmailConfig(): FeatureEmailConfig {
-  return {
-    address: "",
-    username: "",
-    password: "",
-    defaultFromEmail: "",
-    serviceProvider: 0,
-    port: "",
-    authentication: 0,
-  };
-}
-
-export const FeatureEmailConfigData = {
-  encode(message: FeatureEmailConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.address !== "") {
-      writer.uint32(10).string(message.address);
-    }
-    if (message.username !== "") {
-      writer.uint32(18).string(message.username);
-    }
-    if (message.password !== "") {
-      writer.uint32(26).string(message.password);
-    }
-    if (message.defaultFromEmail !== "") {
-      writer.uint32(34).string(message.defaultFromEmail);
-    }
-    if (message.serviceProvider !== 0) {
-      writer.uint32(40).int32(message.serviceProvider);
-    }
-    if (message.port !== "") {
-      writer.uint32(50).string(message.port);
-    }
-    if (message.authentication !== 0) {
-      writer.uint32(56).int32(message.authentication);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): FeatureEmailConfig {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseFeatureEmailConfig();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.address = reader.string();
-          break;
-        case 2:
-          message.username = reader.string();
-          break;
-        case 3:
-          message.password = reader.string();
-          break;
-        case 4:
-          message.defaultFromEmail = reader.string();
-          break;
-        case 5:
-          message.serviceProvider = reader.int32() as any;
-          break;
-        case 6:
-          message.port = reader.string();
-          break;
-        case 7:
-          message.authentication = reader.int32() as any;
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): FeatureEmailConfig {
-    return {
-      address: isSet(object.address) ? String(object.address) : "",
-      username: isSet(object.username) ? String(object.username) : "",
-      password: isSet(object.password) ? String(object.password) : "",
-      defaultFromEmail: isSet(object.defaultFromEmail) ? String(object.defaultFromEmail) : "",
-      serviceProvider: isSet(object.serviceProvider) ? featureEmailServiceProviderFromJSON(object.serviceProvider) : 0,
-      port: isSet(object.port) ? String(object.port) : "",
-      authentication: isSet(object.authentication)
-        ? featureEmailConfigAuthenticationFromJSON(object.authentication)
-        : 0,
-    };
-  },
-
-  toJSON(message: FeatureEmailConfig): unknown {
-    const obj: any = {};
-    message.address !== undefined && (obj.address = message.address);
-    message.username !== undefined && (obj.username = message.username);
-    message.password !== undefined && (obj.password = message.password);
-    message.defaultFromEmail !== undefined && (obj.defaultFromEmail = message.defaultFromEmail);
-    message.serviceProvider !== undefined &&
-      (obj.serviceProvider = featureEmailServiceProviderToJSON(message.serviceProvider));
-    message.port !== undefined && (obj.port = message.port);
-    message.authentication !== undefined &&
-      (obj.authentication = featureEmailConfigAuthenticationToJSON(message.authentication));
-    return obj;
-  },
-
-  fromPartial(object: DeepPartial<FeatureEmailConfig>): FeatureEmailConfig {
-    const message = createBaseFeatureEmailConfig();
-    message.address = object.address ?? "";
-    message.username = object.username ?? "";
-    message.password = object.password ?? "";
-    message.defaultFromEmail = object.defaultFromEmail ?? "";
-    message.serviceProvider = object.serviceProvider ?? 0;
-    message.port = object.port ?? "";
-    message.authentication = object.authentication ?? 0;
-    return message;
-  },
-};
-
 function createBaseFeatureEmailLogin(): FeatureEmailLogin {
   return {
     tables: [],
@@ -5363,6 +5202,168 @@ export const FeatureGoogleTagManagerData = {
   },
 };
 
+function createBaseFeatureScoutApm(): FeatureScoutApm {
+  return { keyId: "" };
+}
+
+export const FeatureScoutApmData = {
+  encode(message: FeatureScoutApm, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.keyId !== "") {
+      writer.uint32(10).string(message.keyId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): FeatureScoutApm {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseFeatureScoutApm();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.keyId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): FeatureScoutApm {
+    return { keyId: isSet(object.keyId) ? String(object.keyId) : "" };
+  },
+
+  toJSON(message: FeatureScoutApm): unknown {
+    const obj: any = {};
+    message.keyId !== undefined && (obj.keyId = message.keyId);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<FeatureScoutApm>): FeatureScoutApm {
+    const message = createBaseFeatureScoutApm();
+    message.keyId = object.keyId ?? "";
+    return message;
+  },
+};
+
+function createBaseFeatureEmailConfig(): FeatureEmailConfig {
+  return {
+    address: "",
+    username: "",
+    password: "",
+    defaultFromEmail: "",
+    serviceProvider: 0,
+    port: "",
+    authentication: 0,
+  };
+}
+
+export const FeatureEmailConfigData = {
+  encode(message: FeatureEmailConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.address !== "") {
+      writer.uint32(10).string(message.address);
+    }
+    if (message.username !== "") {
+      writer.uint32(18).string(message.username);
+    }
+    if (message.password !== "") {
+      writer.uint32(26).string(message.password);
+    }
+    if (message.defaultFromEmail !== "") {
+      writer.uint32(34).string(message.defaultFromEmail);
+    }
+    if (message.serviceProvider !== 0) {
+      writer.uint32(40).int32(message.serviceProvider);
+    }
+    if (message.port !== "") {
+      writer.uint32(50).string(message.port);
+    }
+    if (message.authentication !== 0) {
+      writer.uint32(56).int32(message.authentication);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): FeatureEmailConfig {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseFeatureEmailConfig();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.address = reader.string();
+          break;
+        case 2:
+          message.username = reader.string();
+          break;
+        case 3:
+          message.password = reader.string();
+          break;
+        case 4:
+          message.defaultFromEmail = reader.string();
+          break;
+        case 5:
+          message.serviceProvider = reader.int32() as any;
+          break;
+        case 6:
+          message.port = reader.string();
+          break;
+        case 7:
+          message.authentication = reader.int32() as any;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): FeatureEmailConfig {
+    return {
+      address: isSet(object.address) ? String(object.address) : "",
+      username: isSet(object.username) ? String(object.username) : "",
+      password: isSet(object.password) ? String(object.password) : "",
+      defaultFromEmail: isSet(object.defaultFromEmail) ? String(object.defaultFromEmail) : "",
+      serviceProvider: isSet(object.serviceProvider) ? featureEmailServiceProviderFromJSON(object.serviceProvider) : 0,
+      port: isSet(object.port) ? String(object.port) : "",
+      authentication: isSet(object.authentication)
+        ? featureEmailConfigAuthenticationFromJSON(object.authentication)
+        : 0,
+    };
+  },
+
+  toJSON(message: FeatureEmailConfig): unknown {
+    const obj: any = {};
+    message.address !== undefined && (obj.address = message.address);
+    message.username !== undefined && (obj.username = message.username);
+    message.password !== undefined && (obj.password = message.password);
+    message.defaultFromEmail !== undefined && (obj.defaultFromEmail = message.defaultFromEmail);
+    message.serviceProvider !== undefined &&
+      (obj.serviceProvider = featureEmailServiceProviderToJSON(message.serviceProvider));
+    message.port !== undefined && (obj.port = message.port);
+    message.authentication !== undefined &&
+      (obj.authentication = featureEmailConfigAuthenticationToJSON(message.authentication));
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<FeatureEmailConfig>): FeatureEmailConfig {
+    const message = createBaseFeatureEmailConfig();
+    message.address = object.address ?? "";
+    message.username = object.username ?? "";
+    message.password = object.password ?? "";
+    message.defaultFromEmail = object.defaultFromEmail ?? "";
+    message.serviceProvider = object.serviceProvider ?? 0;
+    message.port = object.port ?? "";
+    message.authentication = object.authentication ?? 0;
+    return message;
+  },
+};
+
 function createBaseController(): Controller {
   return { name: "", endpoints: [] };
 }
@@ -6072,7 +6073,7 @@ export const ControllerRequestContentData = {
 };
 
 function createBaseControllerRequestContentField(): ControllerRequestContentField {
-  return { name: "", children: [] };
+  return { name: "", children: [], enumValues: [] };
 }
 
 export const ControllerRequestContentFieldData = {
@@ -6085,6 +6086,9 @@ export const ControllerRequestContentFieldData = {
     }
     for (const v of message.children) {
       ControllerRequestContentFieldData.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    for (const v of message.enumValues) {
+      writer.uint32(34).string(v!);
     }
     return writer;
   },
@@ -6105,6 +6109,9 @@ export const ControllerRequestContentFieldData = {
         case 3:
           message.children.push(ControllerRequestContentFieldData.decode(reader, reader.uint32()));
           break;
+        case 4:
+          message.enumValues.push(reader.string());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -6120,6 +6127,7 @@ export const ControllerRequestContentFieldData = {
       children: Array.isArray(object?.children)
         ? object.children.map((e: any) => ControllerRequestContentFieldData.fromJSON(e))
         : [],
+      enumValues: Array.isArray(object?.enumValues) ? object.enumValues.map((e: any) => String(e)) : [],
     };
   },
 
@@ -6133,6 +6141,11 @@ export const ControllerRequestContentFieldData = {
     } else {
       obj.children = [];
     }
+    if (message.enumValues) {
+      obj.enumValues = message.enumValues.map((e) => e);
+    } else {
+      obj.enumValues = [];
+    }
     return obj;
   },
 
@@ -6143,6 +6156,7 @@ export const ControllerRequestContentFieldData = {
       ? DataTypeData.fromPartial(object.dataType)
       : undefined;
     message.children = object.children?.map((e) => ControllerRequestContentFieldData.fromPartial(e)) || [];
+    message.enumValues = object.enumValues?.map((e) => e) || [];
     return message;
   },
 };
