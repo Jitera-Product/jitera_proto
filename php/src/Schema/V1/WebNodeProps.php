@@ -525,6 +525,14 @@ class WebNodeProps extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>repeated .schema.v1.NodeVariable orientation = 133;</code>
      */
     private $orientation;
+    /**
+     * Generated from protobuf field <code>repeated .schema.v1.NodeVariable date_time_format = 134;</code>
+     */
+    private $date_time_format;
+    /**
+     * Generated from protobuf field <code>repeated .schema.v1.NodeVariable date_time_mode = 135;</code>
+     */
+    private $date_time_mode;
 
     /**
      * Constructor.
@@ -661,6 +669,8 @@ class WebNodeProps extends \Google\Protobuf\Internal\Message
      *     @type array<\Schema\V1\NodeVariable>|\Google\Protobuf\Internal\RepeatedField $on_change
      *     @type array<\Schema\V1\NodeVariable>|\Google\Protobuf\Internal\RepeatedField $on_click
      *     @type array<\Schema\V1\NodeVariable>|\Google\Protobuf\Internal\RepeatedField $orientation
+     *     @type array<\Schema\V1\NodeVariable>|\Google\Protobuf\Internal\RepeatedField $date_time_format
+     *     @type array<\Schema\V1\NodeVariable>|\Google\Protobuf\Internal\RepeatedField $date_time_mode
      * }
      */
     public function __construct($data = NULL) {
@@ -4506,6 +4516,50 @@ class WebNodeProps extends \Google\Protobuf\Internal\Message
     {
         $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Schema\V1\NodeVariable::class);
         $this->orientation = $arr;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>repeated .schema.v1.NodeVariable date_time_format = 134;</code>
+     * @return \Google\Protobuf\Internal\RepeatedField
+     */
+    public function getDateTimeFormat()
+    {
+        return $this->date_time_format;
+    }
+
+    /**
+     * Generated from protobuf field <code>repeated .schema.v1.NodeVariable date_time_format = 134;</code>
+     * @param array<\Schema\V1\NodeVariable>|\Google\Protobuf\Internal\RepeatedField $var
+     * @return $this
+     */
+    public function setDateTimeFormat($var)
+    {
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Schema\V1\NodeVariable::class);
+        $this->date_time_format = $arr;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>repeated .schema.v1.NodeVariable date_time_mode = 135;</code>
+     * @return \Google\Protobuf\Internal\RepeatedField
+     */
+    public function getDateTimeMode()
+    {
+        return $this->date_time_mode;
+    }
+
+    /**
+     * Generated from protobuf field <code>repeated .schema.v1.NodeVariable date_time_mode = 135;</code>
+     * @param array<\Schema\V1\NodeVariable>|\Google\Protobuf\Internal\RepeatedField $var
+     * @return $this
+     */
+    public function setDateTimeMode($var)
+    {
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Schema\V1\NodeVariable::class);
+        $this->date_time_mode = $arr;
 
         return $this;
     }
