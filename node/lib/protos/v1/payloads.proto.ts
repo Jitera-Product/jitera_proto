@@ -2271,6 +2271,7 @@ export enum NodeVariableVariableSource {
   FORM_VALIDATION_ERROR_MESSAGE = 9,
   CSS_VARIABLE = 10,
   LOCALIZATION = 11,
+  NAVIGATION = 12,
   UNRECOGNIZED = -1,
 }
 
@@ -2312,6 +2313,9 @@ export function nodeVariableVariableSourceFromJSON(object: any): NodeVariableVar
     case 11:
     case "LOCALIZATION":
       return NodeVariableVariableSource.LOCALIZATION;
+    case 12:
+    case "NAVIGATION":
+      return NodeVariableVariableSource.NAVIGATION;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -2345,6 +2349,8 @@ export function nodeVariableVariableSourceToJSON(object: NodeVariableVariableSou
       return "CSS_VARIABLE";
     case NodeVariableVariableSource.LOCALIZATION:
       return "LOCALIZATION";
+    case NodeVariableVariableSource.NAVIGATION:
+      return "NAVIGATION";
     case NodeVariableVariableSource.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";

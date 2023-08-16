@@ -1329,6 +1329,7 @@ message NodeVariable {
 		FORM_VALIDATION_ERROR_MESSAGE = 9;
 		CSS_VARIABLE = 10;
 		LOCALIZATION = 11;
+		NAVIGATION = 12;
 	}
 
 	enum VariableType {
