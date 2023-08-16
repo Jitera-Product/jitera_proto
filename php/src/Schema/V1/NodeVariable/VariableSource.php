@@ -59,6 +59,10 @@ class VariableSource
      * Generated from protobuf enum <code>LOCALIZATION = 11;</code>
      */
     const LOCALIZATION = 11;
+    /**
+     * Generated from protobuf enum <code>NAVIGATION = 12;</code>
+     */
+    const NAVIGATION = 12;
 
     private static $valueToName = [
         self::PARAMS => 'PARAMS',
@@ -73,6 +77,7 @@ class VariableSource
         self::FORM_VALIDATION_ERROR_MESSAGE => 'FORM_VALIDATION_ERROR_MESSAGE',
         self::CSS_VARIABLE => 'CSS_VARIABLE',
         self::LOCALIZATION => 'LOCALIZATION',
+        self::NAVIGATION => 'NAVIGATION',
     ];
 
     public static function name($value)
