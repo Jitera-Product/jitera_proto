@@ -1,0 +1,31 @@
+syntax = "proto3";
+package schema.v2;
+
+message NewProject {
+	int32 project_id = 1;
+	string project_name = 2;
+	string time_zone = 3;
+	string default_language_code = 4;
+	repeated string language_codes = 5;
+
+	enum Framework {
+		UNSPECIFIED = 0;
+		NESTJS = 1;
+		NEXTJS = 2;
+		REACT_NATIVE = 3;
+		RUBY_ON_RAILS = 4;
+		LARAVEL = 5;
+	}
+}
+
+message ProjectSpecChanges {
+	int32 project_id = 1;
+	string category = 2;
+	string payload = 3;
+}
+
+message ProjectChangesSync {
+	int32 project_id = 1;
+	string category = 2;
+	string payload = 3;
+}
