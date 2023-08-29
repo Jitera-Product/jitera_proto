@@ -1,0 +1,34 @@
+syntax = "proto3";
+package schema.v2;
+
+message ProjectSourceInit {
+	int32 project_id = 1;
+	int32 project_source_id = 2;
+	Framework framework = 3;
+	Layer layer = 4;
+	string source_path = 5;
+
+	enum Framework {
+		FRAMEWORK_UNSPECIFIED = 0;
+		NEXTJS = 1;
+		VITE = 2;
+		NUXTJS = 3;
+		NESTJS = 4;
+		ROR = 5;
+		LARAVEL = 6;
+	}
+
+	enum Layer {
+		LAYER_UNSPECIFIED = 0;
+		BACKEND = 1;
+		FRONTEND = 2;
+		MOBILE = 3;
+	}
+}
+
+message ProjectSourceSync {
+	int32 project_id = 1;
+	int32 project_source_id = 2;
+	string status = 3;
+}
+

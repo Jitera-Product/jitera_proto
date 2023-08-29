@@ -1,0 +1,14 @@
+syntax = "proto3";
+package schema.v2;
+
+message ProjectSpecChanges {
+	int32 project_id = 1;
+	string category = 2;
+	string payload = 3;
+}
+
+message ProjectChangesSync {
+	int32 project_id = 1;
+	string category = 2;
+	string payload = 3;
+}
