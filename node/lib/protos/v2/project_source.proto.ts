@@ -121,6 +121,7 @@ export class ProjectSourceSync {
   projectId: number;
   projectSourceId: number;
   status: string;
+  files: string;
 }
 
 function createBaseProjectSourceInit(): ProjectSourceInit {
@@ -209,7 +210,7 @@ export const ProjectSourceInitData = {
 };
 
 function createBaseProjectSourceSync(): ProjectSourceSync {
-  return { projectId: 0, projectSourceId: 0, status: "" };
+  return { projectId: 0, projectSourceId: 0, status: "", files: "" };
 }
 
 export const ProjectSourceSyncData = {
@@ -222,6 +223,9 @@ export const ProjectSourceSyncData = {
     }
     if (message.status !== "") {
       writer.uint32(26).string(message.status);
+    }
+    if (message.files !== "") {
+      writer.uint32(34).string(message.files);
     }
     return writer;
   },
@@ -242,6 +246,9 @@ export const ProjectSourceSyncData = {
         case 3:
           message.status = reader.string();
           break;
+        case 4:
+          message.files = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -255,6 +262,7 @@ export const ProjectSourceSyncData = {
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       projectSourceId: isSet(object.projectSourceId) ? Number(object.projectSourceId) : 0,
       status: isSet(object.status) ? String(object.status) : "",
+      files: isSet(object.files) ? String(object.files) : "",
     };
   },
 
@@ -263,6 +271,7 @@ export const ProjectSourceSyncData = {
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     message.projectSourceId !== undefined && (obj.projectSourceId = Math.round(message.projectSourceId));
     message.status !== undefined && (obj.status = message.status);
+    message.files !== undefined && (obj.files = message.files);
     return obj;
   },
 
@@ -271,6 +280,7 @@ export const ProjectSourceSyncData = {
     message.projectId = object.projectId ?? 0;
     message.projectSourceId = object.projectSourceId ?? 0;
     message.status = object.status ?? "";
+    message.files = object.files ?? "";
     return message;
   },
 };
