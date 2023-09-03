@@ -25,6 +25,10 @@ class CodePreview extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>optional .schema.v1.WebApp web_app = 3;</code>
      */
     protected $web_app = null;
+    /**
+     * Generated from protobuf field <code>repeated string sections = 4;</code>
+     */
+    private $sections;
 
     /**
      * Constructor.
@@ -35,6 +39,7 @@ class CodePreview extends \Google\Protobuf\Internal\Message
      *     @type int $id
      *     @type \Schema\V1\Backend $backend
      *     @type \Schema\V1\WebApp $web_app
+     *     @type array<string>|\Google\Protobuf\Internal\RepeatedField $sections
      * }
      */
     public function __construct($data = NULL) {
@@ -124,6 +129,28 @@ class CodePreview extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkMessage($var, \Schema\V1\WebApp::class);
         $this->web_app = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>repeated string sections = 4;</code>
+     * @return \Google\Protobuf\Internal\RepeatedField
+     */
+    public function getSections()
+    {
+        return $this->sections;
+    }
+
+    /**
+     * Generated from protobuf field <code>repeated string sections = 4;</code>
+     * @param array<string>|\Google\Protobuf\Internal\RepeatedField $var
+     * @return $this
+     */
+    public function setSections($var)
+    {
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::STRING);
+        $this->sections = $arr;
 
         return $this;
     }

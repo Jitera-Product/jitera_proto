@@ -42,6 +42,7 @@ message CodePreview {
 	int32 id = 1;
 	optional Backend backend = 2;
 	optional WebApp web_app = 3;
+	repeated string sections = 4;
 }
 
 message ProjectExport {
