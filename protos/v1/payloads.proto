@@ -19,6 +19,7 @@ message Project {
 		ProjectExport project_export = 9;
 		ProjectPreview project_preview = 10;
 		CodePreview code_preview = 11;
+		Placeholder placeholder = 15;
 	}
 
 	message Credential {
@@ -31,6 +32,11 @@ message Project {
 		STAGING = 1;
 		PRODUCTION = 2;
 	}
+}
+
+message Placeholder {
+	CodePreview example = 1;
+	CodePreview project = 2;
 }
 
 message PreviewUrls {
