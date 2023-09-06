@@ -269,6 +269,7 @@ export class Project {
   projectExport?: ProjectExport | undefined;
   projectPreview?: ProjectPreview | undefined;
   codePreview?: CodePreview | undefined;
+  placeholder?: Placeholder | undefined;
 }
 
 export enum ProjectEnvironment {
@@ -313,6 +314,11 @@ export function projectEnvironmentToJSON(object: ProjectEnvironment): string {
 export class ProjectCredential {
   name: ProjectEnvironment;
   value: string;
+}
+
+export class Placeholder {
+  example?: CodePreview;
+  project?: CodePreview;
 }
 
 export class PreviewUrls {
@@ -2896,6 +2902,9 @@ export const ProjectData = {
     if (message.codePreview !== undefined) {
       CodePreviewData.encode(message.codePreview, writer.uint32(90).fork()).ldelim();
     }
+    if (message.placeholder !== undefined) {
+      PlaceholderData.encode(message.placeholder, writer.uint32(122).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -2945,6 +2954,9 @@ export const ProjectData = {
         case 11:
           message.codePreview = CodePreviewData.decode(reader, reader.uint32());
           break;
+        case 15:
+          message.placeholder = PlaceholderData.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2970,6 +2982,7 @@ export const ProjectData = {
       projectExport: isSet(object.projectExport) ? ProjectExportData.fromJSON(object.projectExport) : undefined,
       projectPreview: isSet(object.projectPreview) ? ProjectPreviewData.fromJSON(object.projectPreview) : undefined,
       codePreview: isSet(object.codePreview) ? CodePreviewData.fromJSON(object.codePreview) : undefined,
+      placeholder: isSet(object.placeholder) ? PlaceholderData.fromJSON(object.placeholder) : undefined,
     };
   },
 
@@ -3000,6 +3013,8 @@ export const ProjectData = {
       (obj.projectPreview = message.projectPreview ? ProjectPreviewData.toJSON(message.projectPreview) : undefined);
     message.codePreview !== undefined &&
       (obj.codePreview = message.codePreview ? CodePreviewData.toJSON(message.codePreview) : undefined);
+    message.placeholder !== undefined &&
+      (obj.placeholder = message.placeholder ? PlaceholderData.toJSON(message.placeholder) : undefined);
     return obj;
   },
 
@@ -3027,6 +3042,9 @@ export const ProjectData = {
       : undefined;
     message.codePreview = (object.codePreview !== undefined && object.codePreview !== null)
       ? CodePreviewData.fromPartial(object.codePreview)
+      : undefined;
+    message.placeholder = (object.placeholder !== undefined && object.placeholder !== null)
+      ? PlaceholderData.fromPartial(object.placeholder)
       : undefined;
     return message;
   },
@@ -3086,6 +3104,70 @@ export const ProjectCredentialData = {
     const message = createBaseProjectCredential();
     message.name = object.name ?? 0;
     message.value = object.value ?? "";
+    return message;
+  },
+};
+
+function createBasePlaceholder(): Placeholder {
+  return {};
+}
+
+export const PlaceholderData = {
+  encode(message: Placeholder, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.example !== undefined) {
+      CodePreviewData.encode(message.example, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.project !== undefined) {
+      CodePreviewData.encode(message.project, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Placeholder {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePlaceholder();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.example = CodePreviewData.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.project = CodePreviewData.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Placeholder {
+    return {
+      example: isSet(object.example) ? CodePreviewData.fromJSON(object.example) : undefined,
+      project: isSet(object.project) ? CodePreviewData.fromJSON(object.project) : undefined,
+    };
+  },
+
+  toJSON(message: Placeholder): unknown {
+    const obj: any = {};
+    message.example !== undefined &&
+      (obj.example = message.example ? CodePreviewData.toJSON(message.example) : undefined);
+    message.project !== undefined &&
+      (obj.project = message.project ? CodePreviewData.toJSON(message.project) : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<Placeholder>): Placeholder {
+    const message = createBasePlaceholder();
+    message.example = (object.example !== undefined && object.example !== null)
+      ? CodePreviewData.fromPartial(object.example)
+      : undefined;
+    message.project = (object.project !== undefined && object.project !== null)
+      ? CodePreviewData.fromPartial(object.project)
+      : undefined;
     return message;
   },
 };
