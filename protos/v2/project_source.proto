@@ -1,12 +1,17 @@
 syntax = "proto3";
 package schema.v2;
 
-message ProjectSourceInit {
+message ProjectSource {
 	int32 project_id = 1;
 	int32 project_source_id = 2;
 	Framework framework = 3;
 	Layer layer = 4;
 	string source_path = 5;
+
+	oneof generate_type {
+		Created created = 6;
+		ERD erd = 7;
+	}
 
 	enum Framework {
 		FRAMEWORK_UNSPECIFIED = 0;
@@ -23,6 +28,24 @@ message ProjectSourceInit {
 		BACKEND = 1;
 		FRONTEND = 2;
 		MOBILE = 3;
+	}
+
+	message Created {}
+
+	message ERD {
+		repeated Table tables = 1;
+		string files = 2;
+	}
+
+	message Table {
+		int32 id = 1;
+		string name = 2;
+		repeated Column columns = 3;
+	}
+
+	message Column {
+		int32 id = 1;
+		string name = 2;
 	}
 }
 
