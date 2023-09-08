@@ -7,10 +7,11 @@ message ProjectSource {
 	Framework framework = 3;
 	Layer layer = 4;
 	string source_path = 5;
+	string files = 6;
 
 	oneof generate_type {
-		Created created = 6;
-		ERD erd = 7;
+		Created created = 7;
+		ERD erd = 8;
 	}
 
 	enum Framework {
@@ -34,7 +35,6 @@ message ProjectSource {
 
 	message ERD {
 		repeated Table tables = 1;
-		string files = 2;
 	}
 
 	message Table {

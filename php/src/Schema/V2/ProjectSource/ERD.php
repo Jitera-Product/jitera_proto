@@ -17,10 +17,6 @@ class ERD extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>repeated .schema.v2.ProjectSource.Table tables = 1;</code>
      */
     private $tables;
-    /**
-     * Generated from protobuf field <code>string files = 2;</code>
-     */
-    protected $files = '';
 
     /**
      * Constructor.
@@ -29,7 +25,6 @@ class ERD extends \Google\Protobuf\Internal\Message
      *     Optional. Data for populating the Message object.
      *
      *     @type array<\Schema\V2\ProjectSource\Table>|\Google\Protobuf\Internal\RepeatedField $tables
-     *     @type string $files
      * }
      */
     public function __construct($data = NULL) {
@@ -55,28 +50,6 @@ class ERD extends \Google\Protobuf\Internal\Message
     {
         $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Schema\V2\ProjectSource\Table::class);
         $this->tables = $arr;
-
-        return $this;
-    }
-
-    /**
-     * Generated from protobuf field <code>string files = 2;</code>
-     * @return string
-     */
-    public function getFiles()
-    {
-        return $this->files;
-    }
-
-    /**
-     * Generated from protobuf field <code>string files = 2;</code>
-     * @param string $var
-     * @return $this
-     */
-    public function setFiles($var)
-    {
-        GPBUtil::checkString($var, True);
-        $this->files = $var;
 
         return $this;
     }

@@ -7,6 +7,7 @@ export class ProjectSource {
   framework: ProjectSourceFramework;
   layer: ProjectSourceLayer;
   sourcePath: string;
+  files: string;
   created?: ProjectSourceCreated | undefined;
   erd?: ProjectSourceERD | undefined;
 }
@@ -124,7 +125,6 @@ export class ProjectSourceCreated {
 
 export class ProjectSourceERD {
   tables: ProjectSourceTable[];
-  files: string;
 }
 
 export class ProjectSourceTable {
@@ -146,7 +146,7 @@ export class ProjectSourceSync {
 }
 
 function createBaseProjectSource(): ProjectSource {
-  return { projectId: 0, projectSourceId: 0, framework: 0, layer: 0, sourcePath: "" };
+  return { projectId: 0, projectSourceId: 0, framework: 0, layer: 0, sourcePath: "", files: "" };
 }
 
 export const ProjectSourceData = {
@@ -166,11 +166,14 @@ export const ProjectSourceData = {
     if (message.sourcePath !== "") {
       writer.uint32(42).string(message.sourcePath);
     }
+    if (message.files !== "") {
+      writer.uint32(50).string(message.files);
+    }
     if (message.created !== undefined) {
-      ProjectSourceCreatedData.encode(message.created, writer.uint32(50).fork()).ldelim();
+      ProjectSourceCreatedData.encode(message.created, writer.uint32(58).fork()).ldelim();
     }
     if (message.erd !== undefined) {
-      ProjectSourceERDData.encode(message.erd, writer.uint32(58).fork()).ldelim();
+      ProjectSourceERDData.encode(message.erd, writer.uint32(66).fork()).ldelim();
     }
     return writer;
   },
@@ -198,9 +201,12 @@ export const ProjectSourceData = {
           message.sourcePath = reader.string();
           break;
         case 6:
-          message.created = ProjectSourceCreatedData.decode(reader, reader.uint32());
+          message.files = reader.string();
           break;
         case 7:
+          message.created = ProjectSourceCreatedData.decode(reader, reader.uint32());
+          break;
+        case 8:
           message.erd = ProjectSourceERDData.decode(reader, reader.uint32());
           break;
         default:
@@ -218,6 +224,7 @@ export const ProjectSourceData = {
       framework: isSet(object.framework) ? projectSourceFrameworkFromJSON(object.framework) : 0,
       layer: isSet(object.layer) ? projectSourceLayerFromJSON(object.layer) : 0,
       sourcePath: isSet(object.sourcePath) ? String(object.sourcePath) : "",
+      files: isSet(object.files) ? String(object.files) : "",
       created: isSet(object.created) ? ProjectSourceCreatedData.fromJSON(object.created) : undefined,
       erd: isSet(object.erd) ? ProjectSourceERDData.fromJSON(object.erd) : undefined,
     };
@@ -230,6 +237,7 @@ export const ProjectSourceData = {
     message.framework !== undefined && (obj.framework = projectSourceFrameworkToJSON(message.framework));
     message.layer !== undefined && (obj.layer = projectSourceLayerToJSON(message.layer));
     message.sourcePath !== undefined && (obj.sourcePath = message.sourcePath);
+    message.files !== undefined && (obj.files = message.files);
     message.created !== undefined &&
       (obj.created = message.created ? ProjectSourceCreatedData.toJSON(message.created) : undefined);
     message.erd !== undefined && (obj.erd = message.erd ? ProjectSourceERDData.toJSON(message.erd) : undefined);
@@ -243,6 +251,7 @@ export const ProjectSourceData = {
     message.framework = object.framework ?? 0;
     message.layer = object.layer ?? 0;
     message.sourcePath = object.sourcePath ?? "";
+    message.files = object.files ?? "";
     message.created = (object.created !== undefined && object.created !== null)
       ? ProjectSourceCreatedData.fromPartial(object.created)
       : undefined;
@@ -293,16 +302,13 @@ export const ProjectSourceCreatedData = {
 };
 
 function createBaseProjectSourceERD(): ProjectSourceERD {
-  return { tables: [], files: "" };
+  return { tables: [] };
 }
 
 export const ProjectSourceERDData = {
   encode(message: ProjectSourceERD, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.tables) {
       ProjectSourceTableData.encode(v!, writer.uint32(10).fork()).ldelim();
-    }
-    if (message.files !== "") {
-      writer.uint32(18).string(message.files);
     }
     return writer;
   },
@@ -317,9 +323,6 @@ export const ProjectSourceERDData = {
         case 1:
           message.tables.push(ProjectSourceTableData.decode(reader, reader.uint32()));
           break;
-        case 2:
-          message.files = reader.string();
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -331,7 +334,6 @@ export const ProjectSourceERDData = {
   fromJSON(object: any): ProjectSourceERD {
     return {
       tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => ProjectSourceTableData.fromJSON(e)) : [],
-      files: isSet(object.files) ? String(object.files) : "",
     };
   },
 
@@ -342,14 +344,12 @@ export const ProjectSourceERDData = {
     } else {
       obj.tables = [];
     }
-    message.files !== undefined && (obj.files = message.files);
     return obj;
   },
 
   fromPartial(object: DeepPartial<ProjectSourceERD>): ProjectSourceERD {
     const message = createBaseProjectSourceERD();
     message.tables = object.tables?.map((e) => ProjectSourceTableData.fromPartial(e)) || [];
-    message.files = object.files ?? "";
     return message;
   },
 };
