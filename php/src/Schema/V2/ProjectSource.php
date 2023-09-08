@@ -33,6 +33,10 @@ class ProjectSource extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>string source_path = 5;</code>
      */
     protected $source_path = '';
+    /**
+     * Generated from protobuf field <code>string files = 6;</code>
+     */
+    protected $files = '';
     protected $generate_type;
 
     /**
@@ -46,6 +50,7 @@ class ProjectSource extends \Google\Protobuf\Internal\Message
      *     @type int $framework
      *     @type int $layer
      *     @type string $source_path
+     *     @type string $files
      *     @type \Schema\V2\ProjectSource\Created $created
      *     @type \Schema\V2\ProjectSource\ERD $erd
      * }
@@ -166,55 +171,77 @@ class ProjectSource extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>.schema.v2.ProjectSource.Created created = 6;</code>
+     * Generated from protobuf field <code>string files = 6;</code>
+     * @return string
+     */
+    public function getFiles()
+    {
+        return $this->files;
+    }
+
+    /**
+     * Generated from protobuf field <code>string files = 6;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setFiles($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->files = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.schema.v2.ProjectSource.Created created = 7;</code>
      * @return \Schema\V2\ProjectSource\Created|null
      */
     public function getCreated()
     {
-        return $this->readOneof(6);
+        return $this->readOneof(7);
     }
 
     public function hasCreated()
     {
-        return $this->hasOneof(6);
+        return $this->hasOneof(7);
     }
 
     /**
-     * Generated from protobuf field <code>.schema.v2.ProjectSource.Created created = 6;</code>
+     * Generated from protobuf field <code>.schema.v2.ProjectSource.Created created = 7;</code>
      * @param \Schema\V2\ProjectSource\Created $var
      * @return $this
      */
     public function setCreated($var)
     {
         GPBUtil::checkMessage($var, \Schema\V2\ProjectSource\Created::class);
-        $this->writeOneof(6, $var);
+        $this->writeOneof(7, $var);
 
         return $this;
     }
 
     /**
-     * Generated from protobuf field <code>.schema.v2.ProjectSource.ERD erd = 7;</code>
+     * Generated from protobuf field <code>.schema.v2.ProjectSource.ERD erd = 8;</code>
      * @return \Schema\V2\ProjectSource\ERD|null
      */
     public function getErd()
     {
-        return $this->readOneof(7);
+        return $this->readOneof(8);
     }
 
     public function hasErd()
     {
-        return $this->hasOneof(7);
+        return $this->hasOneof(8);
     }
 
     /**
-     * Generated from protobuf field <code>.schema.v2.ProjectSource.ERD erd = 7;</code>
+     * Generated from protobuf field <code>.schema.v2.ProjectSource.ERD erd = 8;</code>
      * @param \Schema\V2\ProjectSource\ERD $var
      * @return $this
      */
     public function setErd($var)
     {
         GPBUtil::checkMessage($var, \Schema\V2\ProjectSource\ERD::class);
-        $this->writeOneof(7, $var);
+        $this->writeOneof(8, $var);
 
         return $this;
     }
