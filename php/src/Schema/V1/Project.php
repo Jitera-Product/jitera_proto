@@ -74,6 +74,7 @@ class Project extends \Google\Protobuf\Internal\Message
      *     @type \Schema\V1\ProjectExport $project_export
      *     @type \Schema\V1\ProjectPreview $project_preview
      *     @type \Schema\V1\CodePreview $code_preview
+     *     @type \Schema\V1\Placeholder $placeholder
      * }
      */
     public function __construct($data = NULL) {
@@ -398,6 +399,33 @@ class Project extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkMessage($var, \Schema\V1\CodePreview::class);
         $this->writeOneof(11, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.schema.v1.Placeholder placeholder = 15;</code>
+     * @return \Schema\V1\Placeholder|null
+     */
+    public function getPlaceholder()
+    {
+        return $this->readOneof(15);
+    }
+
+    public function hasPlaceholder()
+    {
+        return $this->hasOneof(15);
+    }
+
+    /**
+     * Generated from protobuf field <code>.schema.v1.Placeholder placeholder = 15;</code>
+     * @param \Schema\V1\Placeholder $var
+     * @return $this
+     */
+    public function setPlaceholder($var)
+    {
+        GPBUtil::checkMessage($var, \Schema\V1\Placeholder::class);
+        $this->writeOneof(15, $var);
 
         return $this;
     }
