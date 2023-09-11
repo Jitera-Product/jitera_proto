@@ -7,6 +7,7 @@ require_relative 'payloads/v1/project_import_pb'
 require_relative 'payloads/v2/project_source_pb'
 require_relative 'payloads/v2/specification_pb'
 require_relative 'payloads/v2/project_generate_queue_pb'
+require_relative 'payloads/v2/user_case_creation_pb'
 
 module JiteraProto
 end
