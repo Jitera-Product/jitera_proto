@@ -28,6 +28,7 @@ message UserCase {
   repeated Content content = 5;
   Property properties = 6;
   int32 project_id = 7;
+	repeated UserCase children = 8;
 
 	message Content {
 		string type = 1;
