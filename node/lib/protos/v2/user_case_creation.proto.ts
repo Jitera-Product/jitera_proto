@@ -25,6 +25,7 @@ export class UserCase {
   content: UserCaseContent[];
   properties?: UserCaseProperty;
   projectId: number;
+  children: UserCase[];
 }
 
 export class UserCaseContent {
@@ -227,7 +228,7 @@ export const UserCaseCreationErrorData = {
 };
 
 function createBaseUserCase(): UserCase {
-  return { name: "", nodeId: "", parentNodeId: "", blockType: "", content: [], projectId: 0 };
+  return { name: "", nodeId: "", parentNodeId: "", blockType: "", content: [], projectId: 0, children: [] };
 }
 
 export const UserCaseData = {
@@ -252,6 +253,9 @@ export const UserCaseData = {
     }
     if (message.projectId !== 0) {
       writer.uint32(56).int32(message.projectId);
+    }
+    for (const v of message.children) {
+      UserCaseData.encode(v!, writer.uint32(66).fork()).ldelim();
     }
     return writer;
   },
@@ -284,6 +288,9 @@ export const UserCaseData = {
         case 7:
           message.projectId = reader.int32();
           break;
+        case 8:
+          message.children.push(UserCaseData.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -301,6 +308,7 @@ export const UserCaseData = {
       content: Array.isArray(object?.content) ? object.content.map((e: any) => UserCaseContentData.fromJSON(e)) : [],
       properties: isSet(object.properties) ? UserCasePropertyData.fromJSON(object.properties) : undefined,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
+      children: Array.isArray(object?.children) ? object.children.map((e: any) => UserCaseData.fromJSON(e)) : [],
     };
   },
 
@@ -318,6 +326,11 @@ export const UserCaseData = {
     message.properties !== undefined &&
       (obj.properties = message.properties ? UserCasePropertyData.toJSON(message.properties) : undefined);
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
+    if (message.children) {
+      obj.children = message.children.map((e) => e ? UserCaseData.toJSON(e) : undefined);
+    } else {
+      obj.children = [];
+    }
     return obj;
   },
 
@@ -332,6 +345,7 @@ export const UserCaseData = {
       ? UserCasePropertyData.fromPartial(object.properties)
       : undefined;
     message.projectId = object.projectId ?? 0;
+    message.children = object.children?.map((e) => UserCaseData.fromPartial(e)) || [];
     return message;
   },
 };
