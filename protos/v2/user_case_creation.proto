@@ -39,3 +39,16 @@ message UserCase {
 		string category = 1;
 	}
 }
+
+message UserCaseCreationResponse {
+	int32 project_generate_queue_id = 1;
+	string message = 2;
+	Module module = 3;
+
+	enum Module {
+		UNSPECIFIED = 0;
+		BUSINESS_LOGIC = 1;
+		ERD = 2;
+		API = 3;
+	}
+}
