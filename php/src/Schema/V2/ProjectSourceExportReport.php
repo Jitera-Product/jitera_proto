@@ -9,9 +9,9 @@ use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
- * Generated from protobuf message <code>schema.v2.ProjectSource</code>
+ * Generated from protobuf message <code>schema.v2.ProjectSourceExportReport</code>
  */
-class ProjectSource extends \Google\Protobuf\Internal\Message
+class ProjectSourceExportReport extends \Google\Protobuf\Internal\Message
 {
     /**
      * Generated from protobuf field <code>int32 id = 1;</code>
@@ -22,13 +22,13 @@ class ProjectSource extends \Google\Protobuf\Internal\Message
      */
     protected $project_id = 0;
     /**
-     * Generated from protobuf field <code>.schema.v2.ProjectSource.Framework framework = 3;</code>
+     * Generated from protobuf field <code>int32 project_source_id = 3;</code>
      */
-    protected $framework = 0;
+    protected $project_source_id = 0;
     /**
-     * Generated from protobuf field <code>.schema.v2.ProjectSource.Layer layer = 4;</code>
+     * Generated from protobuf field <code>string status = 4;</code>
      */
-    protected $layer = 0;
+    protected $status = '';
     /**
      * Generated from protobuf field <code>string files = 5;</code>
      */
@@ -42,8 +42,8 @@ class ProjectSource extends \Google\Protobuf\Internal\Message
      *
      *     @type int $id
      *     @type int $project_id
-     *     @type int $framework
-     *     @type int $layer
+     *     @type int $project_source_id
+     *     @type string $status
      *     @type string $files
      * }
      */
@@ -97,45 +97,45 @@ class ProjectSource extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>.schema.v2.ProjectSource.Framework framework = 3;</code>
+     * Generated from protobuf field <code>int32 project_source_id = 3;</code>
      * @return int
      */
-    public function getFramework()
+    public function getProjectSourceId()
     {
-        return $this->framework;
+        return $this->project_source_id;
     }
 
     /**
-     * Generated from protobuf field <code>.schema.v2.ProjectSource.Framework framework = 3;</code>
+     * Generated from protobuf field <code>int32 project_source_id = 3;</code>
      * @param int $var
      * @return $this
      */
-    public function setFramework($var)
+    public function setProjectSourceId($var)
     {
-        GPBUtil::checkEnum($var, \Schema\V2\ProjectSource\Framework::class);
-        $this->framework = $var;
+        GPBUtil::checkInt32($var);
+        $this->project_source_id = $var;
 
         return $this;
     }
 
     /**
-     * Generated from protobuf field <code>.schema.v2.ProjectSource.Layer layer = 4;</code>
-     * @return int
+     * Generated from protobuf field <code>string status = 4;</code>
+     * @return string
      */
-    public function getLayer()
+    public function getStatus()
     {
-        return $this->layer;
+        return $this->status;
     }
 
     /**
-     * Generated from protobuf field <code>.schema.v2.ProjectSource.Layer layer = 4;</code>
-     * @param int $var
+     * Generated from protobuf field <code>string status = 4;</code>
+     * @param string $var
      * @return $this
      */
-    public function setLayer($var)
+    public function setStatus($var)
     {
-        GPBUtil::checkEnum($var, \Schema\V2\ProjectSource\Layer::class);
-        $this->layer = $var;
+        GPBUtil::checkString($var, True);
+        $this->status = $var;
 
         return $this;
     }

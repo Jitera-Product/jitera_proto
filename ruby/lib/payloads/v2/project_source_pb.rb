@@ -5,7 +5,7 @@
 require 'google/protobuf'
 
 
-descriptor_data = "\n\x17v2/project_source.proto\x12\tschema.v2\"\xa9\x05\n\rProjectSource\x12\x12\n\nproject_id\x18\x01 \x01(\x05\x12\x19\n\x11project_source_id\x18\x02 \x01(\x05\x12\x35\n\tframework\x18\x03 \x01(\x0e\x32\".schema.v2.ProjectSource.Framework\x12-\n\x05layer\x18\x04 \x01(\x0e\x32\x1e.schema.v2.ProjectSource.Layer\x12\x13\n\x0bsource_path\x18\x05 \x01(\t\x12\r\n\x05\x66iles\x18\x06 \x01(\t\x12\x33\n\x07\x63reated\x18\x07 \x01(\x0b\x32 .schema.v2.ProjectSource.CreatedH\x00\x12+\n\x03\x65rd\x18\x08 \x01(\x0b\x32\x1c.schema.v2.ProjectSource.ERDH\x00\x1a\t\n\x07\x43reated\x1a\x35\n\x03\x45RD\x12.\n\x06tables\x18\x01 \x03(\x0b\x32\x1e.schema.v2.ProjectSource.Table\x1aS\n\x05Table\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x30\n\x07\x63olumns\x18\x03 \x03(\x0b\x32\x1f.schema.v2.ProjectSource.Column\x1a\"\n\x06\x43olumn\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\"j\n\tFramework\x12\x19\n\x15\x46RAMEWORK_UNSPECIFIED\x10\x00\x12\n\n\x06NEXTJS\x10\x01\x12\x08\n\x04VITE\x10\x02\x12\n\n\x06NUXTJS\x10\x03\x12\n\n\x06NESTJS\x10\x04\x12\x07\n\x03ROR\x10\x05\x12\x0b\n\x07LARAVEL\x10\x06\"E\n\x05Layer\x12\x15\n\x11LAYER_UNSPECIFIED\x10\x00\x12\x0b\n\x07\x42\x41\x43KEND\x10\x01\x12\x0c\n\x08\x46RONTEND\x10\x02\x12\n\n\x06MOBILE\x10\x03\x42\x0f\n\rgenerate_type\"a\n\x11ProjectSourceSync\x12\x12\n\nproject_id\x18\x01 \x01(\x05\x12\x19\n\x11project_source_id\x18\x02 \x01(\x05\x12\x0e\n\x06status\x18\x03 \x01(\t\x12\r\n\x05\x66iles\x18\x04 \x01(\tb\x06proto3"
+descriptor_data = "\n\x17v2/project_source.proto\x12\tschema.v2\"\xd7\x02\n\rProjectSource\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x12\n\nproject_id\x18\x02 \x01(\x05\x12\x35\n\tframework\x18\x03 \x01(\x0e\x32\".schema.v2.ProjectSource.Framework\x12-\n\x05layer\x18\x04 \x01(\x0e\x32\x1e.schema.v2.ProjectSource.Layer\x12\r\n\x05\x66iles\x18\x05 \x01(\t\"j\n\tFramework\x12\x19\n\x15\x46RAMEWORK_UNSPECIFIED\x10\x00\x12\n\n\x06NEXTJS\x10\x01\x12\x08\n\x04VITE\x10\x02\x12\n\n\x06NUXTJS\x10\x03\x12\n\n\x06NESTJS\x10\x04\x12\x07\n\x03ROR\x10\x05\x12\x0b\n\x07LARAVEL\x10\x06\"E\n\x05Layer\x12\x15\n\x11LAYER_UNSPECIFIED\x10\x00\x12\x0b\n\x07\x42\x41\x43KEND\x10\x01\x12\x0c\n\x08\x46RONTEND\x10\x02\x12\n\n\x06MOBILE\x10\x03\"\x81\x01\n\x15ProjectSourceCreation\x12!\n\x19project_generate_queue_id\x18\x01 \x01(\x05\x12\x30\n\x0eproject_source\x18\x02 \x01(\x0b\x32\x18.schema.v2.ProjectSource\x12\x13\n\x0bsource_path\x18\x03 \x01(\t\"\x96\x02\n\tERDConfig\x12!\n\x19project_generate_queue_id\x18\x01 \x01(\x05\x12*\n\x06tables\x18\x02 \x03(\x0b\x32\x1a.schema.v2.ERDConfig.Table\x12\x13\n\x0bsource_path\x18\x03 \x01(\t\x12\x30\n\x0eproject_source\x18\x04 \x01(\x0b\x32\x18.schema.v2.ProjectSource\x1aO\n\x05Table\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12,\n\x07\x63olumns\x18\x03 \x03(\x0b\x32\x1b.schema.v2.ERDConfig.Column\x1a\"\n\x06\x43olumn\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\"\x87\x03\n\x13ProjectSourceReport\x12!\n\x19project_generate_queue_id\x18\x01 \x01(\x05\x12\x12\n\nproject_id\x18\x02 \x01(\x05\x12\x19\n\x11project_source_id\x18\x03 \x01(\x05\x12;\n\x08progress\x18\x04 \x01(\x0b\x32\'.schema.v2.ProjectSourceReport.ProgressH\x00\x12;\n\x08\x63omplete\x18\x05 \x01(\x0b\x32\'.schema.v2.ProjectSourceReport.CompleteH\x00\x12\x35\n\x05\x65rror\x18\x06 \x01(\x0b\x32$.schema.v2.ProjectSourceReport.ErrorH\x00\x1a/\n\x08Progress\x12\x12\n\nprecentage\x18\x01 \x01(\x05\x12\x0f\n\x07message\x18\x02 \x01(\t\x1a\x18\n\x05\x45rror\x12\x0f\n\x07message\x18\x01 \x01(\t\x1a\x19\n\x08\x43omplete\x12\r\n\x05\x66iles\x18\x04 \x01(\tB\x07\n\x05stateb\x06proto3"
 
 pool = Google::Protobuf::DescriptorPool.generated_pool
 
@@ -34,12 +34,15 @@ end
 module Schema
   module V2
     ProjectSource = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.ProjectSource").msgclass
-    ProjectSource::Created = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.ProjectSource.Created").msgclass
-    ProjectSource::ERD = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.ProjectSource.ERD").msgclass
-    ProjectSource::Table = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.ProjectSource.Table").msgclass
-    ProjectSource::Column = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.ProjectSource.Column").msgclass
     ProjectSource::Framework = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.ProjectSource.Framework").enummodule
     ProjectSource::Layer = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.ProjectSource.Layer").enummodule
-    ProjectSourceSync = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.ProjectSourceSync").msgclass
+    ProjectSourceCreation = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.ProjectSourceCreation").msgclass
+    ERDConfig = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.ERDConfig").msgclass
+    ERDConfig::Table = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.ERDConfig.Table").msgclass
+    ERDConfig::Column = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.ERDConfig.Column").msgclass
+    ProjectSourceReport = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.ProjectSourceReport").msgclass
+    ProjectSourceReport::Progress = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.ProjectSourceReport.Progress").msgclass
+    ProjectSourceReport::Error = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.ProjectSourceReport.Error").msgclass
+    ProjectSourceReport::Complete = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.ProjectSourceReport.Complete").msgclass
   end
 end
