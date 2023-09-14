@@ -2,17 +2,11 @@ syntax = "proto3";
 package schema.v2;
 
 message ProjectSource {
-	int32 project_id = 1;
-	int32 project_source_id = 2;
+	int32 id = 1;
+	int32 project_id = 2;
 	Framework framework = 3;
 	Layer layer = 4;
-	string source_path = 5;
-	string files = 6;
-
-	oneof generate_type {
-		Created created = 7;
-		ERD erd = 8;
-	}
+	string files = 5;
 
 	enum Framework {
 		FRAMEWORK_UNSPECIFIED = 0;
@@ -30,12 +24,19 @@ message ProjectSource {
 		FRONTEND = 2;
 		MOBILE = 3;
 	}
+}
 
-	message Created {}
+message ProjectSourceCreation {
+	int32 project_generate_queue_id = 1;
+	ProjectSource project_source = 2;
+	string source_path = 3;
+}
 
-	message ERD {
-		repeated Table tables = 1;
-	}
+message ERDConfig {
+	int32 project_generate_queue_id = 1;
+	repeated Table tables = 2;
+	string source_path = 3;
+	ProjectSource project_source = 4;
 
 	message Table {
 		int32 id = 1;
@@ -49,10 +50,28 @@ message ProjectSource {
 	}
 }
 
-message ProjectSourceSync {
-	int32 project_id = 1;
-	int32 project_source_id = 2;
-	string status = 3;
-	string files = 4;
+message ProjectSourceReport {
+	int32 project_generate_queue_id = 1;
+	int32 project_id = 2;
+	int32 project_source_id = 3;
+
+	oneof state {
+		Progress progress = 4;
+		Complete complete = 5;
+		Error error = 6;
+	}
+
+	message Progress {
+		int32 precentage = 1;
+		string message = 2;
+	}
+
+	message Error {
+		string message = 1;
+	}
+
+	message Complete {
+		string files = 4;
+	}
 }
 
