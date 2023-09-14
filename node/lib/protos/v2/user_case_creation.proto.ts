@@ -37,6 +37,57 @@ export class UserCaseProperty {
   category: string;
 }
 
+export class UserCaseCreationResponse {
+  projectGenerateQueueId: number;
+  message: string;
+  module: UserCaseCreationResponseModule;
+}
+
+export enum UserCaseCreationResponseModule {
+  UNSPECIFIED = 0,
+  BUSINESS_LOGIC = 1,
+  ERD = 2,
+  API = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function userCaseCreationResponseModuleFromJSON(object: any): UserCaseCreationResponseModule {
+  switch (object) {
+    case 0:
+    case "UNSPECIFIED":
+      return UserCaseCreationResponseModule.UNSPECIFIED;
+    case 1:
+    case "BUSINESS_LOGIC":
+      return UserCaseCreationResponseModule.BUSINESS_LOGIC;
+    case 2:
+    case "ERD":
+      return UserCaseCreationResponseModule.ERD;
+    case 3:
+    case "API":
+      return UserCaseCreationResponseModule.API;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return UserCaseCreationResponseModule.UNRECOGNIZED;
+  }
+}
+
+export function userCaseCreationResponseModuleToJSON(object: UserCaseCreationResponseModule): string {
+  switch (object) {
+    case UserCaseCreationResponseModule.UNSPECIFIED:
+      return "UNSPECIFIED";
+    case UserCaseCreationResponseModule.BUSINESS_LOGIC:
+      return "BUSINESS_LOGIC";
+    case UserCaseCreationResponseModule.ERD:
+      return "ERD";
+    case UserCaseCreationResponseModule.API:
+      return "API";
+    case UserCaseCreationResponseModule.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 function createBaseUserCaseCreation(): UserCaseCreation {
   return { projectGenerateQueueId: 0, projectId: 0, userCases: [] };
 }
@@ -451,6 +502,74 @@ export const UserCasePropertyData = {
   fromPartial(object: DeepPartial<UserCaseProperty>): UserCaseProperty {
     const message = createBaseUserCaseProperty();
     message.category = object.category ?? "";
+    return message;
+  },
+};
+
+function createBaseUserCaseCreationResponse(): UserCaseCreationResponse {
+  return { projectGenerateQueueId: 0, message: "", module: 0 };
+}
+
+export const UserCaseCreationResponseData = {
+  encode(message: UserCaseCreationResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.projectGenerateQueueId !== 0) {
+      writer.uint32(8).int32(message.projectGenerateQueueId);
+    }
+    if (message.message !== "") {
+      writer.uint32(18).string(message.message);
+    }
+    if (message.module !== 0) {
+      writer.uint32(24).int32(message.module);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): UserCaseCreationResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUserCaseCreationResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.projectGenerateQueueId = reader.int32();
+          break;
+        case 2:
+          message.message = reader.string();
+          break;
+        case 3:
+          message.module = reader.int32() as any;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UserCaseCreationResponse {
+    return {
+      projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
+      message: isSet(object.message) ? String(object.message) : "",
+      module: isSet(object.module) ? userCaseCreationResponseModuleFromJSON(object.module) : 0,
+    };
+  },
+
+  toJSON(message: UserCaseCreationResponse): unknown {
+    const obj: any = {};
+    message.projectGenerateQueueId !== undefined &&
+      (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
+    message.message !== undefined && (obj.message = message.message);
+    message.module !== undefined && (obj.module = userCaseCreationResponseModuleToJSON(message.module));
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<UserCaseCreationResponse>): UserCaseCreationResponse {
+    const message = createBaseUserCaseCreationResponse();
+    message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
+    message.message = object.message ?? "";
+    message.module = object.module ?? 0;
     return message;
   },
 };
