@@ -141,6 +141,25 @@ export class ERDConfigColumn {
   name: string;
 }
 
+export class ControllerConfig {
+  projectGenerateQueueId: number;
+  controllers: ControllerConfigController[];
+  sourcePath: string;
+  projectSource?: ProjectSource;
+}
+
+export class ControllerConfigController {
+  id: number;
+  name: string;
+  endpoints: ControllerConfigControllerEndpoint[];
+}
+
+export class ControllerConfigControllerEndpoint {
+  id: number;
+  path: string;
+  name: string;
+}
+
 export class ProjectSourceReport {
   projectGenerateQueueId: number;
   projectId: number;
@@ -524,6 +543,232 @@ export const ERDConfigColumnData = {
   fromPartial(object: DeepPartial<ERDConfigColumn>): ERDConfigColumn {
     const message = createBaseERDConfigColumn();
     message.id = object.id ?? 0;
+    message.name = object.name ?? "";
+    return message;
+  },
+};
+
+function createBaseControllerConfig(): ControllerConfig {
+  return { projectGenerateQueueId: 0, controllers: [], sourcePath: "" };
+}
+
+export const ControllerConfigData = {
+  encode(message: ControllerConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.projectGenerateQueueId !== 0) {
+      writer.uint32(8).int32(message.projectGenerateQueueId);
+    }
+    for (const v of message.controllers) {
+      ControllerConfigControllerData.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.sourcePath !== "") {
+      writer.uint32(26).string(message.sourcePath);
+    }
+    if (message.projectSource !== undefined) {
+      ProjectSourceData.encode(message.projectSource, writer.uint32(34).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ControllerConfig {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseControllerConfig();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.projectGenerateQueueId = reader.int32();
+          break;
+        case 2:
+          message.controllers.push(ControllerConfigControllerData.decode(reader, reader.uint32()));
+          break;
+        case 3:
+          message.sourcePath = reader.string();
+          break;
+        case 4:
+          message.projectSource = ProjectSourceData.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ControllerConfig {
+    return {
+      projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
+      controllers: Array.isArray(object?.controllers)
+        ? object.controllers.map((e: any) => ControllerConfigControllerData.fromJSON(e))
+        : [],
+      sourcePath: isSet(object.sourcePath) ? String(object.sourcePath) : "",
+      projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
+    };
+  },
+
+  toJSON(message: ControllerConfig): unknown {
+    const obj: any = {};
+    message.projectGenerateQueueId !== undefined &&
+      (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
+    if (message.controllers) {
+      obj.controllers = message.controllers.map((e) => e ? ControllerConfigControllerData.toJSON(e) : undefined);
+    } else {
+      obj.controllers = [];
+    }
+    message.sourcePath !== undefined && (obj.sourcePath = message.sourcePath);
+    message.projectSource !== undefined &&
+      (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ControllerConfig>): ControllerConfig {
+    const message = createBaseControllerConfig();
+    message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
+    message.controllers = object.controllers?.map((e) => ControllerConfigControllerData.fromPartial(e)) || [];
+    message.sourcePath = object.sourcePath ?? "";
+    message.projectSource = (object.projectSource !== undefined && object.projectSource !== null)
+      ? ProjectSourceData.fromPartial(object.projectSource)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseControllerConfigController(): ControllerConfigController {
+  return { id: 0, name: "", endpoints: [] };
+}
+
+export const ControllerConfigControllerData = {
+  encode(message: ControllerConfigController, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
+    for (const v of message.endpoints) {
+      ControllerConfigControllerEndpointData.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ControllerConfigController {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseControllerConfigController();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.int32();
+          break;
+        case 2:
+          message.name = reader.string();
+          break;
+        case 3:
+          message.endpoints.push(ControllerConfigControllerEndpointData.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ControllerConfigController {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      name: isSet(object.name) ? String(object.name) : "",
+      endpoints: Array.isArray(object?.endpoints)
+        ? object.endpoints.map((e: any) => ControllerConfigControllerEndpointData.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: ControllerConfigController): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.name !== undefined && (obj.name = message.name);
+    if (message.endpoints) {
+      obj.endpoints = message.endpoints.map((e) => e ? ControllerConfigControllerEndpointData.toJSON(e) : undefined);
+    } else {
+      obj.endpoints = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ControllerConfigController>): ControllerConfigController {
+    const message = createBaseControllerConfigController();
+    message.id = object.id ?? 0;
+    message.name = object.name ?? "";
+    message.endpoints = object.endpoints?.map((e) => ControllerConfigControllerEndpointData.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseControllerConfigControllerEndpoint(): ControllerConfigControllerEndpoint {
+  return { id: 0, path: "", name: "" };
+}
+
+export const ControllerConfigControllerEndpointData = {
+  encode(message: ControllerConfigControllerEndpoint, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
+    if (message.path !== "") {
+      writer.uint32(18).string(message.path);
+    }
+    if (message.name !== "") {
+      writer.uint32(26).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ControllerConfigControllerEndpoint {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseControllerConfigControllerEndpoint();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.int32();
+          break;
+        case 2:
+          message.path = reader.string();
+          break;
+        case 3:
+          message.name = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ControllerConfigControllerEndpoint {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      path: isSet(object.path) ? String(object.path) : "",
+      name: isSet(object.name) ? String(object.name) : "",
+    };
+  },
+
+  toJSON(message: ControllerConfigControllerEndpoint): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.path !== undefined && (obj.path = message.path);
+    message.name !== undefined && (obj.name = message.name);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ControllerConfigControllerEndpoint>): ControllerConfigControllerEndpoint {
+    const message = createBaseControllerConfigControllerEndpoint();
+    message.id = object.id ?? 0;
+    message.path = object.path ?? "";
     message.name = object.name ?? "";
     return message;
   },

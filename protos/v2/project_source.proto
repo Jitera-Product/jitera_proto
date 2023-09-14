@@ -50,6 +50,25 @@ message ERDConfig {
 	}
 }
 
+message ControllerConfig {
+	int32 project_generate_queue_id = 1;
+	repeated Controller controllers = 2;
+	string source_path = 3;
+	ProjectSource project_source = 4;
+
+	message Controller {
+		int32 id = 1;
+		string name = 2;
+		repeated Endpoint endpoints = 3;
+
+		message Endpoint {
+			int32 id = 1;
+			string path = 2;
+			string name = 3;
+		}
+	}
+}
+
 message ProjectSourceReport {
 	int32 project_generate_queue_id = 1;
 	int32 project_id = 2;
