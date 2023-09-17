@@ -25,6 +25,10 @@ class UserCaseCreationResponse extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>.schema.v2.UserCaseCreationResponse.Module module = 3;</code>
      */
     protected $module = 0;
+    /**
+     * Generated from protobuf field <code>.schema.v2.UserCaseCreationResponse.Status status = 4;</code>
+     */
+    protected $status = 0;
 
     /**
      * Constructor.
@@ -35,6 +39,7 @@ class UserCaseCreationResponse extends \Google\Protobuf\Internal\Message
      *     @type int $project_generate_queue_id
      *     @type string $message
      *     @type int $module
+     *     @type int $status
      * }
      */
     public function __construct($data = NULL) {
@@ -104,6 +109,28 @@ class UserCaseCreationResponse extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkEnum($var, \Schema\V2\UserCaseCreationResponse\Module::class);
         $this->module = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.schema.v2.UserCaseCreationResponse.Status status = 4;</code>
+     * @return int
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Generated from protobuf field <code>.schema.v2.UserCaseCreationResponse.Status status = 4;</code>
+     * @param int $var
+     * @return $this
+     */
+    public function setStatus($var)
+    {
+        GPBUtil::checkEnum($var, \Schema\V2\UserCaseCreationResponse\Status::class);
+        $this->status = $var;
 
         return $this;
     }
