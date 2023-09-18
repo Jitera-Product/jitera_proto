@@ -21,14 +21,15 @@ message UserCaseCreation {
 }
 
 message UserCase {
-  string name = 1;
-  string node_id = 2;
-  string parent_node_id = 3;
-  string block_type = 4;
-  repeated Content content = 5;
-  Property properties = 6;
-  int32 project_id = 7;
-	repeated UserCase children = 8;
+	int32 id = 1;
+  string name = 2;
+  string node_id = 3;
+  string parent_node_id = 4;
+  string block_type = 5;
+  repeated Content content = 6;
+  Property properties = 7;
+  int32 project_id = 8;
+	repeated UserCase children = 9;
 
 	message Content {
 		string type = 1;
