@@ -18,6 +18,7 @@ export class UserCaseCreationError {
 }
 
 export class UserCase {
+  id: number;
   name: string;
   nodeId: string;
   parentNodeId: string;
@@ -279,34 +280,37 @@ export const UserCaseCreationErrorData = {
 };
 
 function createBaseUserCase(): UserCase {
-  return { name: "", nodeId: "", parentNodeId: "", blockType: "", content: [], projectId: 0, children: [] };
+  return { id: 0, name: "", nodeId: "", parentNodeId: "", blockType: "", content: [], projectId: 0, children: [] };
 }
 
 export const UserCaseData = {
   encode(message: UserCase, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
     if (message.name !== "") {
-      writer.uint32(10).string(message.name);
+      writer.uint32(18).string(message.name);
     }
     if (message.nodeId !== "") {
-      writer.uint32(18).string(message.nodeId);
+      writer.uint32(26).string(message.nodeId);
     }
     if (message.parentNodeId !== "") {
-      writer.uint32(26).string(message.parentNodeId);
+      writer.uint32(34).string(message.parentNodeId);
     }
     if (message.blockType !== "") {
-      writer.uint32(34).string(message.blockType);
+      writer.uint32(42).string(message.blockType);
     }
     for (const v of message.content) {
-      UserCaseContentData.encode(v!, writer.uint32(42).fork()).ldelim();
+      UserCaseContentData.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     if (message.properties !== undefined) {
-      UserCasePropertyData.encode(message.properties, writer.uint32(50).fork()).ldelim();
+      UserCasePropertyData.encode(message.properties, writer.uint32(58).fork()).ldelim();
     }
     if (message.projectId !== 0) {
-      writer.uint32(56).int32(message.projectId);
+      writer.uint32(64).int32(message.projectId);
     }
     for (const v of message.children) {
-      UserCaseData.encode(v!, writer.uint32(66).fork()).ldelim();
+      UserCaseData.encode(v!, writer.uint32(74).fork()).ldelim();
     }
     return writer;
   },
@@ -319,27 +323,30 @@ export const UserCaseData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.name = reader.string();
+          message.id = reader.int32();
           break;
         case 2:
-          message.nodeId = reader.string();
+          message.name = reader.string();
           break;
         case 3:
-          message.parentNodeId = reader.string();
+          message.nodeId = reader.string();
           break;
         case 4:
-          message.blockType = reader.string();
+          message.parentNodeId = reader.string();
           break;
         case 5:
-          message.content.push(UserCaseContentData.decode(reader, reader.uint32()));
+          message.blockType = reader.string();
           break;
         case 6:
-          message.properties = UserCasePropertyData.decode(reader, reader.uint32());
+          message.content.push(UserCaseContentData.decode(reader, reader.uint32()));
           break;
         case 7:
-          message.projectId = reader.int32();
+          message.properties = UserCasePropertyData.decode(reader, reader.uint32());
           break;
         case 8:
+          message.projectId = reader.int32();
+          break;
+        case 9:
           message.children.push(UserCaseData.decode(reader, reader.uint32()));
           break;
         default:
@@ -352,6 +359,7 @@ export const UserCaseData = {
 
   fromJSON(object: any): UserCase {
     return {
+      id: isSet(object.id) ? Number(object.id) : 0,
       name: isSet(object.name) ? String(object.name) : "",
       nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
       parentNodeId: isSet(object.parentNodeId) ? String(object.parentNodeId) : "",
@@ -365,6 +373,7 @@ export const UserCaseData = {
 
   toJSON(message: UserCase): unknown {
     const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
     message.name !== undefined && (obj.name = message.name);
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
     message.parentNodeId !== undefined && (obj.parentNodeId = message.parentNodeId);
@@ -387,6 +396,7 @@ export const UserCaseData = {
 
   fromPartial(object: DeepPartial<UserCase>): UserCase {
     const message = createBaseUserCase();
+    message.id = object.id ?? 0;
     message.name = object.name ?? "";
     message.nodeId = object.nodeId ?? "";
     message.parentNodeId = object.parentNodeId ?? "";
