@@ -4,16 +4,17 @@ package schema.v2;
 message BusinessLogicResponse {
 	int32 project_generate_queue_id = 1;
 	int32 project_id = 2;
-  repeated BusinessLogic business_logics = 3;
+    repeated BusinessLogic business_logics = 3;
 }
 
 message BusinessLogic {
-  string node_id = 1;
-  string block_type = 2;
-  repeated Content content = 3;
-  Property properties = 4;
-  int32 project_id = 5;
-	repeated string children = 6;
+    string node_id = 1;
+    string parent_node_id = 2;
+    string block_type = 3;
+    repeated Content content = 4;
+    Property properties = 5;
+    int32 project_id = 6;
+    repeated string children = 7;
 
 	message Content {
 		string type = 1;
@@ -22,6 +23,6 @@ message BusinessLogic {
 
 	message Property {
 		string category = 1;
-    int32 user_case_id = 2;
+        int32 use_case_id = 2;
 	}
 }
