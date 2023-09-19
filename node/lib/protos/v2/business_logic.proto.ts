@@ -9,6 +9,7 @@ export class BusinessLogicResponse {
 
 export class BusinessLogic {
   nodeId: string;
+  parentNodeId: string;
   blockType: string;
   content: BusinessLogicContent[];
   properties?: BusinessLogicProperty;
@@ -23,7 +24,7 @@ export class BusinessLogicContent {
 
 export class BusinessLogicProperty {
   category: string;
-  userCaseId: number;
+  useCaseId: number;
 }
 
 function createBaseBusinessLogicResponse(): BusinessLogicResponse {
@@ -101,7 +102,7 @@ export const BusinessLogicResponseData = {
 };
 
 function createBaseBusinessLogic(): BusinessLogic {
-  return { nodeId: "", blockType: "", content: [], projectId: 0, children: [] };
+  return { nodeId: "", parentNodeId: "", blockType: "", content: [], projectId: 0, children: [] };
 }
 
 export const BusinessLogicData = {
@@ -109,20 +110,23 @@ export const BusinessLogicData = {
     if (message.nodeId !== "") {
       writer.uint32(10).string(message.nodeId);
     }
+    if (message.parentNodeId !== "") {
+      writer.uint32(18).string(message.parentNodeId);
+    }
     if (message.blockType !== "") {
-      writer.uint32(18).string(message.blockType);
+      writer.uint32(26).string(message.blockType);
     }
     for (const v of message.content) {
-      BusinessLogicContentData.encode(v!, writer.uint32(26).fork()).ldelim();
+      BusinessLogicContentData.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     if (message.properties !== undefined) {
-      BusinessLogicPropertyData.encode(message.properties, writer.uint32(34).fork()).ldelim();
+      BusinessLogicPropertyData.encode(message.properties, writer.uint32(42).fork()).ldelim();
     }
     if (message.projectId !== 0) {
-      writer.uint32(40).int32(message.projectId);
+      writer.uint32(48).int32(message.projectId);
     }
     for (const v of message.children) {
-      writer.uint32(50).string(v!);
+      writer.uint32(58).string(v!);
     }
     return writer;
   },
@@ -138,18 +142,21 @@ export const BusinessLogicData = {
           message.nodeId = reader.string();
           break;
         case 2:
-          message.blockType = reader.string();
+          message.parentNodeId = reader.string();
           break;
         case 3:
-          message.content.push(BusinessLogicContentData.decode(reader, reader.uint32()));
+          message.blockType = reader.string();
           break;
         case 4:
-          message.properties = BusinessLogicPropertyData.decode(reader, reader.uint32());
+          message.content.push(BusinessLogicContentData.decode(reader, reader.uint32()));
           break;
         case 5:
-          message.projectId = reader.int32();
+          message.properties = BusinessLogicPropertyData.decode(reader, reader.uint32());
           break;
         case 6:
+          message.projectId = reader.int32();
+          break;
+        case 7:
           message.children.push(reader.string());
           break;
         default:
@@ -163,6 +170,7 @@ export const BusinessLogicData = {
   fromJSON(object: any): BusinessLogic {
     return {
       nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
+      parentNodeId: isSet(object.parentNodeId) ? String(object.parentNodeId) : "",
       blockType: isSet(object.blockType) ? String(object.blockType) : "",
       content: Array.isArray(object?.content)
         ? object.content.map((e: any) => BusinessLogicContentData.fromJSON(e))
@@ -176,6 +184,7 @@ export const BusinessLogicData = {
   toJSON(message: BusinessLogic): unknown {
     const obj: any = {};
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
+    message.parentNodeId !== undefined && (obj.parentNodeId = message.parentNodeId);
     message.blockType !== undefined && (obj.blockType = message.blockType);
     if (message.content) {
       obj.content = message.content.map((e) => e ? BusinessLogicContentData.toJSON(e) : undefined);
@@ -196,6 +205,7 @@ export const BusinessLogicData = {
   fromPartial(object: DeepPartial<BusinessLogic>): BusinessLogic {
     const message = createBaseBusinessLogic();
     message.nodeId = object.nodeId ?? "";
+    message.parentNodeId = object.parentNodeId ?? "";
     message.blockType = object.blockType ?? "";
     message.content = object.content?.map((e) => BusinessLogicContentData.fromPartial(e)) || [];
     message.properties = (object.properties !== undefined && object.properties !== null)
@@ -266,7 +276,7 @@ export const BusinessLogicContentData = {
 };
 
 function createBaseBusinessLogicProperty(): BusinessLogicProperty {
-  return { category: "", userCaseId: 0 };
+  return { category: "", useCaseId: 0 };
 }
 
 export const BusinessLogicPropertyData = {
@@ -274,8 +284,8 @@ export const BusinessLogicPropertyData = {
     if (message.category !== "") {
       writer.uint32(10).string(message.category);
     }
-    if (message.userCaseId !== 0) {
-      writer.uint32(16).int32(message.userCaseId);
+    if (message.useCaseId !== 0) {
+      writer.uint32(16).int32(message.useCaseId);
     }
     return writer;
   },
@@ -291,7 +301,7 @@ export const BusinessLogicPropertyData = {
           message.category = reader.string();
           break;
         case 2:
-          message.userCaseId = reader.int32();
+          message.useCaseId = reader.int32();
           break;
         default:
           reader.skipType(tag & 7);
@@ -304,21 +314,21 @@ export const BusinessLogicPropertyData = {
   fromJSON(object: any): BusinessLogicProperty {
     return {
       category: isSet(object.category) ? String(object.category) : "",
-      userCaseId: isSet(object.userCaseId) ? Number(object.userCaseId) : 0,
+      useCaseId: isSet(object.useCaseId) ? Number(object.useCaseId) : 0,
     };
   },
 
   toJSON(message: BusinessLogicProperty): unknown {
     const obj: any = {};
     message.category !== undefined && (obj.category = message.category);
-    message.userCaseId !== undefined && (obj.userCaseId = Math.round(message.userCaseId));
+    message.useCaseId !== undefined && (obj.useCaseId = Math.round(message.useCaseId));
     return obj;
   },
 
   fromPartial(object: DeepPartial<BusinessLogicProperty>): BusinessLogicProperty {
     const message = createBaseBusinessLogicProperty();
     message.category = object.category ?? "";
-    message.userCaseId = object.userCaseId ?? 0;
+    message.useCaseId = object.useCaseId ?? 0;
     return message;
   },
 };
