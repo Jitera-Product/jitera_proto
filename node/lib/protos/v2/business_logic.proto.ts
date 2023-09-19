@@ -23,8 +23,12 @@ export class BusinessLogicContent {
 }
 
 export class BusinessLogicProperty {
-  category: string;
-  useCaseId: number;
+  useCaseId?: number | undefined;
+  category?: string | undefined;
+  level?: number | undefined;
+  textColor?: string | undefined;
+  backgroundColor?: string | undefined;
+  textAlignment?: string | undefined;
 }
 
 function createBaseBusinessLogicResponse(): BusinessLogicResponse {
@@ -276,16 +280,28 @@ export const BusinessLogicContentData = {
 };
 
 function createBaseBusinessLogicProperty(): BusinessLogicProperty {
-  return { category: "", useCaseId: 0 };
+  return {};
 }
 
 export const BusinessLogicPropertyData = {
   encode(message: BusinessLogicProperty, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.category !== "") {
-      writer.uint32(10).string(message.category);
+    if (message.useCaseId !== undefined) {
+      writer.uint32(8).int32(message.useCaseId);
     }
-    if (message.useCaseId !== 0) {
-      writer.uint32(16).int32(message.useCaseId);
+    if (message.category !== undefined) {
+      writer.uint32(18).string(message.category);
+    }
+    if (message.level !== undefined) {
+      writer.uint32(24).int32(message.level);
+    }
+    if (message.textColor !== undefined) {
+      writer.uint32(34).string(message.textColor);
+    }
+    if (message.backgroundColor !== undefined) {
+      writer.uint32(42).string(message.backgroundColor);
+    }
+    if (message.textAlignment !== undefined) {
+      writer.uint32(50).string(message.textAlignment);
     }
     return writer;
   },
@@ -298,10 +314,22 @@ export const BusinessLogicPropertyData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.category = reader.string();
+          message.useCaseId = reader.int32();
           break;
         case 2:
-          message.useCaseId = reader.int32();
+          message.category = reader.string();
+          break;
+        case 3:
+          message.level = reader.int32();
+          break;
+        case 4:
+          message.textColor = reader.string();
+          break;
+        case 5:
+          message.backgroundColor = reader.string();
+          break;
+        case 6:
+          message.textAlignment = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -313,22 +341,34 @@ export const BusinessLogicPropertyData = {
 
   fromJSON(object: any): BusinessLogicProperty {
     return {
-      category: isSet(object.category) ? String(object.category) : "",
-      useCaseId: isSet(object.useCaseId) ? Number(object.useCaseId) : 0,
+      useCaseId: isSet(object.useCaseId) ? Number(object.useCaseId) : undefined,
+      category: isSet(object.category) ? String(object.category) : undefined,
+      level: isSet(object.level) ? Number(object.level) : undefined,
+      textColor: isSet(object.textColor) ? String(object.textColor) : undefined,
+      backgroundColor: isSet(object.backgroundColor) ? String(object.backgroundColor) : undefined,
+      textAlignment: isSet(object.textAlignment) ? String(object.textAlignment) : undefined,
     };
   },
 
   toJSON(message: BusinessLogicProperty): unknown {
     const obj: any = {};
-    message.category !== undefined && (obj.category = message.category);
     message.useCaseId !== undefined && (obj.useCaseId = Math.round(message.useCaseId));
+    message.category !== undefined && (obj.category = message.category);
+    message.level !== undefined && (obj.level = Math.round(message.level));
+    message.textColor !== undefined && (obj.textColor = message.textColor);
+    message.backgroundColor !== undefined && (obj.backgroundColor = message.backgroundColor);
+    message.textAlignment !== undefined && (obj.textAlignment = message.textAlignment);
     return obj;
   },
 
   fromPartial(object: DeepPartial<BusinessLogicProperty>): BusinessLogicProperty {
     const message = createBaseBusinessLogicProperty();
-    message.category = object.category ?? "";
-    message.useCaseId = object.useCaseId ?? 0;
+    message.useCaseId = object.useCaseId ?? undefined;
+    message.category = object.category ?? undefined;
+    message.level = object.level ?? undefined;
+    message.textColor = object.textColor ?? undefined;
+    message.backgroundColor = object.backgroundColor ?? undefined;
+    message.textAlignment = object.textAlignment ?? undefined;
     return message;
   },
 };
