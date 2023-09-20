@@ -45,11 +45,19 @@ message UserCaseCreationResponse {
 	int32 project_generate_queue_id = 1;
 	string message = 2;
 	Module module = 3;
+	Status status = 4;
 
 	enum Module {
 		UNSPECIFIED = 0;
 		BUSINESS_LOGIC = 1;
 		ERD = 2;
 		API = 3;
+	}
+
+	enum Status {
+		STATUS_UNSPECIFIED = 0;
+		STARTED = 1;
+		SUCCEEDED = 2;
+		FAILED = 3;
 	}
 }
