@@ -10,7 +10,9 @@ export class BusinessLogicResponse {
 export class BusinessLogic {
   nodeId: string;
   parentNodeId: string;
+  pageNodeId: string;
   blockType: string;
+  name: string;
   content: BusinessLogicContent[];
   properties?: BusinessLogicProperty;
   projectId: number;
@@ -106,7 +108,16 @@ export const BusinessLogicResponseData = {
 };
 
 function createBaseBusinessLogic(): BusinessLogic {
-  return { nodeId: "", parentNodeId: "", blockType: "", content: [], projectId: 0, children: [] };
+  return {
+    nodeId: "",
+    parentNodeId: "",
+    pageNodeId: "",
+    blockType: "",
+    name: "",
+    content: [],
+    projectId: 0,
+    children: [],
+  };
 }
 
 export const BusinessLogicData = {
@@ -117,20 +128,26 @@ export const BusinessLogicData = {
     if (message.parentNodeId !== "") {
       writer.uint32(18).string(message.parentNodeId);
     }
+    if (message.pageNodeId !== "") {
+      writer.uint32(26).string(message.pageNodeId);
+    }
     if (message.blockType !== "") {
-      writer.uint32(26).string(message.blockType);
+      writer.uint32(34).string(message.blockType);
+    }
+    if (message.name !== "") {
+      writer.uint32(42).string(message.name);
     }
     for (const v of message.content) {
-      BusinessLogicContentData.encode(v!, writer.uint32(34).fork()).ldelim();
+      BusinessLogicContentData.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     if (message.properties !== undefined) {
-      BusinessLogicPropertyData.encode(message.properties, writer.uint32(42).fork()).ldelim();
+      BusinessLogicPropertyData.encode(message.properties, writer.uint32(58).fork()).ldelim();
     }
     if (message.projectId !== 0) {
-      writer.uint32(48).int32(message.projectId);
+      writer.uint32(64).int32(message.projectId);
     }
     for (const v of message.children) {
-      writer.uint32(58).string(v!);
+      writer.uint32(74).string(v!);
     }
     return writer;
   },
@@ -149,18 +166,24 @@ export const BusinessLogicData = {
           message.parentNodeId = reader.string();
           break;
         case 3:
-          message.blockType = reader.string();
+          message.pageNodeId = reader.string();
           break;
         case 4:
-          message.content.push(BusinessLogicContentData.decode(reader, reader.uint32()));
+          message.blockType = reader.string();
           break;
         case 5:
-          message.properties = BusinessLogicPropertyData.decode(reader, reader.uint32());
+          message.name = reader.string();
           break;
         case 6:
-          message.projectId = reader.int32();
+          message.content.push(BusinessLogicContentData.decode(reader, reader.uint32()));
           break;
         case 7:
+          message.properties = BusinessLogicPropertyData.decode(reader, reader.uint32());
+          break;
+        case 8:
+          message.projectId = reader.int32();
+          break;
+        case 9:
           message.children.push(reader.string());
           break;
         default:
@@ -175,7 +198,9 @@ export const BusinessLogicData = {
     return {
       nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
       parentNodeId: isSet(object.parentNodeId) ? String(object.parentNodeId) : "",
+      pageNodeId: isSet(object.pageNodeId) ? String(object.pageNodeId) : "",
       blockType: isSet(object.blockType) ? String(object.blockType) : "",
+      name: isSet(object.name) ? String(object.name) : "",
       content: Array.isArray(object?.content)
         ? object.content.map((e: any) => BusinessLogicContentData.fromJSON(e))
         : [],
@@ -189,7 +214,9 @@ export const BusinessLogicData = {
     const obj: any = {};
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
     message.parentNodeId !== undefined && (obj.parentNodeId = message.parentNodeId);
+    message.pageNodeId !== undefined && (obj.pageNodeId = message.pageNodeId);
     message.blockType !== undefined && (obj.blockType = message.blockType);
+    message.name !== undefined && (obj.name = message.name);
     if (message.content) {
       obj.content = message.content.map((e) => e ? BusinessLogicContentData.toJSON(e) : undefined);
     } else {
@@ -210,7 +237,9 @@ export const BusinessLogicData = {
     const message = createBaseBusinessLogic();
     message.nodeId = object.nodeId ?? "";
     message.parentNodeId = object.parentNodeId ?? "";
+    message.pageNodeId = object.pageNodeId ?? "";
     message.blockType = object.blockType ?? "";
+    message.name = object.name ?? "";
     message.content = object.content?.map((e) => BusinessLogicContentData.fromPartial(e)) || [];
     message.properties = (object.properties !== undefined && object.properties !== null)
       ? BusinessLogicPropertyData.fromPartial(object.properties)

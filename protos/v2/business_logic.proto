@@ -10,11 +10,13 @@ message BusinessLogicResponse {
 message BusinessLogic {
   string node_id = 1;
   string parent_node_id = 2;
-  string block_type = 3;
-  repeated Content content = 4;
-  Property properties = 5;
-  int32 project_id = 6;
-  repeated string children = 7;
+  string page_node_id = 3;
+  string block_type = 4;
+  string name = 5;
+  repeated Content content = 6;
+  Property properties = 7;
+  int32 project_id = 8;
+  repeated string children = 9;
 
   message Content {
     string type = 1;
