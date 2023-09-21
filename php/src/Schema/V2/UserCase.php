@@ -14,35 +14,39 @@ use Google\Protobuf\Internal\GPBUtil;
 class UserCase extends \Google\Protobuf\Internal\Message
 {
     /**
-     * Generated from protobuf field <code>string name = 1;</code>
+     * Generated from protobuf field <code>int32 id = 1;</code>
+     */
+    protected $id = 0;
+    /**
+     * Generated from protobuf field <code>string name = 2;</code>
      */
     protected $name = '';
     /**
-     * Generated from protobuf field <code>string node_id = 2;</code>
+     * Generated from protobuf field <code>string node_id = 3;</code>
      */
     protected $node_id = '';
     /**
-     * Generated from protobuf field <code>string parent_node_id = 3;</code>
+     * Generated from protobuf field <code>string parent_node_id = 4;</code>
      */
     protected $parent_node_id = '';
     /**
-     * Generated from protobuf field <code>string block_type = 4;</code>
+     * Generated from protobuf field <code>string block_type = 5;</code>
      */
     protected $block_type = '';
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.UserCase.Content content = 5;</code>
+     * Generated from protobuf field <code>repeated .schema.v2.UserCase.Content content = 6;</code>
      */
     private $content;
     /**
-     * Generated from protobuf field <code>.schema.v2.UserCase.Property properties = 6;</code>
+     * Generated from protobuf field <code>.schema.v2.UserCase.Property properties = 7;</code>
      */
     protected $properties = null;
     /**
-     * Generated from protobuf field <code>int32 project_id = 7;</code>
+     * Generated from protobuf field <code>int32 project_id = 8;</code>
      */
     protected $project_id = 0;
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.UserCase children = 8;</code>
+     * Generated from protobuf field <code>repeated .schema.v2.UserCase children = 9;</code>
      */
     private $children;
 
@@ -52,6 +56,7 @@ class UserCase extends \Google\Protobuf\Internal\Message
      * @param array $data {
      *     Optional. Data for populating the Message object.
      *
+     *     @type int $id
      *     @type string $name
      *     @type string $node_id
      *     @type string $parent_node_id
@@ -68,7 +73,29 @@ class UserCase extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>string name = 1;</code>
+     * Generated from protobuf field <code>int32 id = 1;</code>
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Generated from protobuf field <code>int32 id = 1;</code>
+     * @param int $var
+     * @return $this
+     */
+    public function setId($var)
+    {
+        GPBUtil::checkInt32($var);
+        $this->id = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string name = 2;</code>
      * @return string
      */
     public function getName()
@@ -77,7 +104,7 @@ class UserCase extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>string name = 1;</code>
+     * Generated from protobuf field <code>string name = 2;</code>
      * @param string $var
      * @return $this
      */
@@ -90,7 +117,7 @@ class UserCase extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>string node_id = 2;</code>
+     * Generated from protobuf field <code>string node_id = 3;</code>
      * @return string
      */
     public function getNodeId()
@@ -99,7 +126,7 @@ class UserCase extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>string node_id = 2;</code>
+     * Generated from protobuf field <code>string node_id = 3;</code>
      * @param string $var
      * @return $this
      */
@@ -112,7 +139,7 @@ class UserCase extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>string parent_node_id = 3;</code>
+     * Generated from protobuf field <code>string parent_node_id = 4;</code>
      * @return string
      */
     public function getParentNodeId()
@@ -121,7 +148,7 @@ class UserCase extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>string parent_node_id = 3;</code>
+     * Generated from protobuf field <code>string parent_node_id = 4;</code>
      * @param string $var
      * @return $this
      */
@@ -134,7 +161,7 @@ class UserCase extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>string block_type = 4;</code>
+     * Generated from protobuf field <code>string block_type = 5;</code>
      * @return string
      */
     public function getBlockType()
@@ -143,7 +170,7 @@ class UserCase extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>string block_type = 4;</code>
+     * Generated from protobuf field <code>string block_type = 5;</code>
      * @param string $var
      * @return $this
      */
@@ -156,7 +183,7 @@ class UserCase extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.UserCase.Content content = 5;</code>
+     * Generated from protobuf field <code>repeated .schema.v2.UserCase.Content content = 6;</code>
      * @return \Google\Protobuf\Internal\RepeatedField
      */
     public function getContent()
@@ -165,7 +192,7 @@ class UserCase extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.UserCase.Content content = 5;</code>
+     * Generated from protobuf field <code>repeated .schema.v2.UserCase.Content content = 6;</code>
      * @param array<\Schema\V2\UserCase\Content>|\Google\Protobuf\Internal\RepeatedField $var
      * @return $this
      */
@@ -178,7 +205,7 @@ class UserCase extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>.schema.v2.UserCase.Property properties = 6;</code>
+     * Generated from protobuf field <code>.schema.v2.UserCase.Property properties = 7;</code>
      * @return \Schema\V2\UserCase\Property|null
      */
     public function getProperties()
@@ -197,7 +224,7 @@ class UserCase extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>.schema.v2.UserCase.Property properties = 6;</code>
+     * Generated from protobuf field <code>.schema.v2.UserCase.Property properties = 7;</code>
      * @param \Schema\V2\UserCase\Property $var
      * @return $this
      */
@@ -210,7 +237,7 @@ class UserCase extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>int32 project_id = 7;</code>
+     * Generated from protobuf field <code>int32 project_id = 8;</code>
      * @return int
      */
     public function getProjectId()
@@ -219,7 +246,7 @@ class UserCase extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>int32 project_id = 7;</code>
+     * Generated from protobuf field <code>int32 project_id = 8;</code>
      * @param int $var
      * @return $this
      */
@@ -232,7 +259,7 @@ class UserCase extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.UserCase children = 8;</code>
+     * Generated from protobuf field <code>repeated .schema.v2.UserCase children = 9;</code>
      * @return \Google\Protobuf\Internal\RepeatedField
      */
     public function getChildren()
@@ -241,7 +268,7 @@ class UserCase extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.UserCase children = 8;</code>
+     * Generated from protobuf field <code>repeated .schema.v2.UserCase children = 9;</code>
      * @param array<\Schema\V2\UserCase>|\Google\Protobuf\Internal\RepeatedField $var
      * @return $this
      */
