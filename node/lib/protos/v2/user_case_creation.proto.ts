@@ -42,6 +42,7 @@ export class UserCaseCreationResponse {
   projectGenerateQueueId: number;
   message: string;
   module: UserCaseCreationResponseModule;
+  status: UserCaseCreationResponseStatus;
 }
 
 export enum UserCaseCreationResponseModule {
@@ -84,6 +85,51 @@ export function userCaseCreationResponseModuleToJSON(object: UserCaseCreationRes
     case UserCaseCreationResponseModule.API:
       return "API";
     case UserCaseCreationResponseModule.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export enum UserCaseCreationResponseStatus {
+  STATUS_UNSPECIFIED = 0,
+  STARTED = 1,
+  SUCCEEDED = 2,
+  FAILED = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function userCaseCreationResponseStatusFromJSON(object: any): UserCaseCreationResponseStatus {
+  switch (object) {
+    case 0:
+    case "STATUS_UNSPECIFIED":
+      return UserCaseCreationResponseStatus.STATUS_UNSPECIFIED;
+    case 1:
+    case "STARTED":
+      return UserCaseCreationResponseStatus.STARTED;
+    case 2:
+    case "SUCCEEDED":
+      return UserCaseCreationResponseStatus.SUCCEEDED;
+    case 3:
+    case "FAILED":
+      return UserCaseCreationResponseStatus.FAILED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return UserCaseCreationResponseStatus.UNRECOGNIZED;
+  }
+}
+
+export function userCaseCreationResponseStatusToJSON(object: UserCaseCreationResponseStatus): string {
+  switch (object) {
+    case UserCaseCreationResponseStatus.STATUS_UNSPECIFIED:
+      return "STATUS_UNSPECIFIED";
+    case UserCaseCreationResponseStatus.STARTED:
+      return "STARTED";
+    case UserCaseCreationResponseStatus.SUCCEEDED:
+      return "SUCCEEDED";
+    case UserCaseCreationResponseStatus.FAILED:
+      return "FAILED";
+    case UserCaseCreationResponseStatus.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
@@ -517,7 +563,7 @@ export const UserCasePropertyData = {
 };
 
 function createBaseUserCaseCreationResponse(): UserCaseCreationResponse {
-  return { projectGenerateQueueId: 0, message: "", module: 0 };
+  return { projectGenerateQueueId: 0, message: "", module: 0, status: 0 };
 }
 
 export const UserCaseCreationResponseData = {
@@ -530,6 +576,9 @@ export const UserCaseCreationResponseData = {
     }
     if (message.module !== 0) {
       writer.uint32(24).int32(message.module);
+    }
+    if (message.status !== 0) {
+      writer.uint32(32).int32(message.status);
     }
     return writer;
   },
@@ -550,6 +599,9 @@ export const UserCaseCreationResponseData = {
         case 3:
           message.module = reader.int32() as any;
           break;
+        case 4:
+          message.status = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -563,6 +615,7 @@ export const UserCaseCreationResponseData = {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       message: isSet(object.message) ? String(object.message) : "",
       module: isSet(object.module) ? userCaseCreationResponseModuleFromJSON(object.module) : 0,
+      status: isSet(object.status) ? userCaseCreationResponseStatusFromJSON(object.status) : 0,
     };
   },
 
@@ -572,6 +625,7 @@ export const UserCaseCreationResponseData = {
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.message !== undefined && (obj.message = message.message);
     message.module !== undefined && (obj.module = userCaseCreationResponseModuleToJSON(message.module));
+    message.status !== undefined && (obj.status = userCaseCreationResponseStatusToJSON(message.status));
     return obj;
   },
 
@@ -580,6 +634,7 @@ export const UserCaseCreationResponseData = {
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.message = object.message ?? "";
     message.module = object.module ?? 0;
+    message.status = object.status ?? 0;
     return message;
   },
 };
