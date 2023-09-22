@@ -46,6 +46,7 @@ message UserCaseCreationResponse {
 	string message = 2;
 	Module module = 3;
 	Status status = 4;
+	int32 token_usage = 5;
 
 	enum Module {
 		UNSPECIFIED = 0;
