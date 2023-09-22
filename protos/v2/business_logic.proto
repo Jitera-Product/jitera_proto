@@ -21,6 +21,7 @@ message BusinessLogic {
   message Content {
     string type = 1;
     string value = 2;
+    string styles = 3;
   }
 
   message Property {
