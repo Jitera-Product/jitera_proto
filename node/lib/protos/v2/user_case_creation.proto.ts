@@ -43,6 +43,7 @@ export class UserCaseCreationResponse {
   message: string;
   module: UserCaseCreationResponseModule;
   status: UserCaseCreationResponseStatus;
+  tokenUsage: number;
 }
 
 export enum UserCaseCreationResponseModule {
@@ -563,7 +564,7 @@ export const UserCasePropertyData = {
 };
 
 function createBaseUserCaseCreationResponse(): UserCaseCreationResponse {
-  return { projectGenerateQueueId: 0, message: "", module: 0, status: 0 };
+  return { projectGenerateQueueId: 0, message: "", module: 0, status: 0, tokenUsage: 0 };
 }
 
 export const UserCaseCreationResponseData = {
@@ -579,6 +580,9 @@ export const UserCaseCreationResponseData = {
     }
     if (message.status !== 0) {
       writer.uint32(32).int32(message.status);
+    }
+    if (message.tokenUsage !== 0) {
+      writer.uint32(40).int32(message.tokenUsage);
     }
     return writer;
   },
@@ -602,6 +606,9 @@ export const UserCaseCreationResponseData = {
         case 4:
           message.status = reader.int32() as any;
           break;
+        case 5:
+          message.tokenUsage = reader.int32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -616,6 +623,7 @@ export const UserCaseCreationResponseData = {
       message: isSet(object.message) ? String(object.message) : "",
       module: isSet(object.module) ? userCaseCreationResponseModuleFromJSON(object.module) : 0,
       status: isSet(object.status) ? userCaseCreationResponseStatusFromJSON(object.status) : 0,
+      tokenUsage: isSet(object.tokenUsage) ? Number(object.tokenUsage) : 0,
     };
   },
 
@@ -626,6 +634,7 @@ export const UserCaseCreationResponseData = {
     message.message !== undefined && (obj.message = message.message);
     message.module !== undefined && (obj.module = userCaseCreationResponseModuleToJSON(message.module));
     message.status !== undefined && (obj.status = userCaseCreationResponseStatusToJSON(message.status));
+    message.tokenUsage !== undefined && (obj.tokenUsage = Math.round(message.tokenUsage));
     return obj;
   },
 
@@ -635,6 +644,7 @@ export const UserCaseCreationResponseData = {
     message.message = object.message ?? "";
     message.module = object.module ?? 0;
     message.status = object.status ?? 0;
+    message.tokenUsage = object.tokenUsage ?? 0;
     return message;
   },
 };

@@ -182,6 +182,7 @@ export class ProjectSourceReport {
   projectGenerateQueueId: number;
   projectId: number;
   projectSourceId: number;
+  tokenUsage: number;
   progress?: ProjectSourceReportProgress | undefined;
   complete?: ProjectSourceReportComplete | undefined;
   error?: ProjectSourceReportError | undefined;
@@ -1000,7 +1001,7 @@ export const SpecificationChangesBlockBodyData = {
 };
 
 function createBaseProjectSourceReport(): ProjectSourceReport {
-  return { projectGenerateQueueId: 0, projectId: 0, projectSourceId: 0 };
+  return { projectGenerateQueueId: 0, projectId: 0, projectSourceId: 0, tokenUsage: 0 };
 }
 
 export const ProjectSourceReportData = {
@@ -1014,14 +1015,17 @@ export const ProjectSourceReportData = {
     if (message.projectSourceId !== 0) {
       writer.uint32(24).int32(message.projectSourceId);
     }
+    if (message.tokenUsage !== 0) {
+      writer.uint32(32).int32(message.tokenUsage);
+    }
     if (message.progress !== undefined) {
-      ProjectSourceReportProgressData.encode(message.progress, writer.uint32(34).fork()).ldelim();
+      ProjectSourceReportProgressData.encode(message.progress, writer.uint32(42).fork()).ldelim();
     }
     if (message.complete !== undefined) {
-      ProjectSourceReportCompleteData.encode(message.complete, writer.uint32(42).fork()).ldelim();
+      ProjectSourceReportCompleteData.encode(message.complete, writer.uint32(50).fork()).ldelim();
     }
     if (message.error !== undefined) {
-      ProjectSourceReportErrorData.encode(message.error, writer.uint32(50).fork()).ldelim();
+      ProjectSourceReportErrorData.encode(message.error, writer.uint32(58).fork()).ldelim();
     }
     return writer;
   },
@@ -1043,12 +1047,15 @@ export const ProjectSourceReportData = {
           message.projectSourceId = reader.int32();
           break;
         case 4:
-          message.progress = ProjectSourceReportProgressData.decode(reader, reader.uint32());
+          message.tokenUsage = reader.int32();
           break;
         case 5:
-          message.complete = ProjectSourceReportCompleteData.decode(reader, reader.uint32());
+          message.progress = ProjectSourceReportProgressData.decode(reader, reader.uint32());
           break;
         case 6:
+          message.complete = ProjectSourceReportCompleteData.decode(reader, reader.uint32());
+          break;
+        case 7:
           message.error = ProjectSourceReportErrorData.decode(reader, reader.uint32());
           break;
         default:
@@ -1064,6 +1071,7 @@ export const ProjectSourceReportData = {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       projectSourceId: isSet(object.projectSourceId) ? Number(object.projectSourceId) : 0,
+      tokenUsage: isSet(object.tokenUsage) ? Number(object.tokenUsage) : 0,
       progress: isSet(object.progress) ? ProjectSourceReportProgressData.fromJSON(object.progress) : undefined,
       complete: isSet(object.complete) ? ProjectSourceReportCompleteData.fromJSON(object.complete) : undefined,
       error: isSet(object.error) ? ProjectSourceReportErrorData.fromJSON(object.error) : undefined,
@@ -1076,6 +1084,7 @@ export const ProjectSourceReportData = {
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     message.projectSourceId !== undefined && (obj.projectSourceId = Math.round(message.projectSourceId));
+    message.tokenUsage !== undefined && (obj.tokenUsage = Math.round(message.tokenUsage));
     message.progress !== undefined &&
       (obj.progress = message.progress ? ProjectSourceReportProgressData.toJSON(message.progress) : undefined);
     message.complete !== undefined &&
@@ -1090,6 +1099,7 @@ export const ProjectSourceReportData = {
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectId = object.projectId ?? 0;
     message.projectSourceId = object.projectSourceId ?? 0;
+    message.tokenUsage = object.tokenUsage ?? 0;
     message.progress = (object.progress !== undefined && object.progress !== null)
       ? ProjectSourceReportProgressData.fromPartial(object.progress)
       : undefined;

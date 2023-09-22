@@ -21,6 +21,10 @@ class Content extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>string value = 2;</code>
      */
     protected $value = '';
+    /**
+     * Generated from protobuf field <code>string styles = 3;</code>
+     */
+    protected $styles = '';
 
     /**
      * Constructor.
@@ -30,6 +34,7 @@ class Content extends \Google\Protobuf\Internal\Message
      *
      *     @type string $type
      *     @type string $value
+     *     @type string $styles
      * }
      */
     public function __construct($data = NULL) {
@@ -77,6 +82,28 @@ class Content extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkString($var, True);
         $this->value = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string styles = 3;</code>
+     * @return string
+     */
+    public function getStyles()
+    {
+        return $this->styles;
+    }
+
+    /**
+     * Generated from protobuf field <code>string styles = 3;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setStyles($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->styles = $var;
 
         return $this;
     }

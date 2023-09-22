@@ -25,6 +25,10 @@ class ProjectSourceReport extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>int32 project_source_id = 3;</code>
      */
     protected $project_source_id = 0;
+    /**
+     * Generated from protobuf field <code>int32 token_usage = 4;</code>
+     */
+    protected $token_usage = 0;
     protected $state;
 
     /**
@@ -36,6 +40,7 @@ class ProjectSourceReport extends \Google\Protobuf\Internal\Message
      *     @type int $project_generate_queue_id
      *     @type int $project_id
      *     @type int $project_source_id
+     *     @type int $token_usage
      *     @type \Schema\V2\ProjectSourceReport\Progress $progress
      *     @type \Schema\V2\ProjectSourceReport\Complete $complete
      *     @type \Schema\V2\ProjectSourceReport\Error $error
@@ -113,82 +118,104 @@ class ProjectSourceReport extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>.schema.v2.ProjectSourceReport.Progress progress = 4;</code>
+     * Generated from protobuf field <code>int32 token_usage = 4;</code>
+     * @return int
+     */
+    public function getTokenUsage()
+    {
+        return $this->token_usage;
+    }
+
+    /**
+     * Generated from protobuf field <code>int32 token_usage = 4;</code>
+     * @param int $var
+     * @return $this
+     */
+    public function setTokenUsage($var)
+    {
+        GPBUtil::checkInt32($var);
+        $this->token_usage = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.schema.v2.ProjectSourceReport.Progress progress = 5;</code>
      * @return \Schema\V2\ProjectSourceReport\Progress|null
      */
     public function getProgress()
     {
-        return $this->readOneof(4);
+        return $this->readOneof(5);
     }
 
     public function hasProgress()
     {
-        return $this->hasOneof(4);
+        return $this->hasOneof(5);
     }
 
     /**
-     * Generated from protobuf field <code>.schema.v2.ProjectSourceReport.Progress progress = 4;</code>
+     * Generated from protobuf field <code>.schema.v2.ProjectSourceReport.Progress progress = 5;</code>
      * @param \Schema\V2\ProjectSourceReport\Progress $var
      * @return $this
      */
     public function setProgress($var)
     {
         GPBUtil::checkMessage($var, \Schema\V2\ProjectSourceReport\Progress::class);
-        $this->writeOneof(4, $var);
-
-        return $this;
-    }
-
-    /**
-     * Generated from protobuf field <code>.schema.v2.ProjectSourceReport.Complete complete = 5;</code>
-     * @return \Schema\V2\ProjectSourceReport\Complete|null
-     */
-    public function getComplete()
-    {
-        return $this->readOneof(5);
-    }
-
-    public function hasComplete()
-    {
-        return $this->hasOneof(5);
-    }
-
-    /**
-     * Generated from protobuf field <code>.schema.v2.ProjectSourceReport.Complete complete = 5;</code>
-     * @param \Schema\V2\ProjectSourceReport\Complete $var
-     * @return $this
-     */
-    public function setComplete($var)
-    {
-        GPBUtil::checkMessage($var, \Schema\V2\ProjectSourceReport\Complete::class);
         $this->writeOneof(5, $var);
 
         return $this;
     }
 
     /**
-     * Generated from protobuf field <code>.schema.v2.ProjectSourceReport.Error error = 6;</code>
-     * @return \Schema\V2\ProjectSourceReport\Error|null
+     * Generated from protobuf field <code>.schema.v2.ProjectSourceReport.Complete complete = 6;</code>
+     * @return \Schema\V2\ProjectSourceReport\Complete|null
      */
-    public function getError()
+    public function getComplete()
     {
         return $this->readOneof(6);
     }
 
-    public function hasError()
+    public function hasComplete()
     {
         return $this->hasOneof(6);
     }
 
     /**
-     * Generated from protobuf field <code>.schema.v2.ProjectSourceReport.Error error = 6;</code>
+     * Generated from protobuf field <code>.schema.v2.ProjectSourceReport.Complete complete = 6;</code>
+     * @param \Schema\V2\ProjectSourceReport\Complete $var
+     * @return $this
+     */
+    public function setComplete($var)
+    {
+        GPBUtil::checkMessage($var, \Schema\V2\ProjectSourceReport\Complete::class);
+        $this->writeOneof(6, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.schema.v2.ProjectSourceReport.Error error = 7;</code>
+     * @return \Schema\V2\ProjectSourceReport\Error|null
+     */
+    public function getError()
+    {
+        return $this->readOneof(7);
+    }
+
+    public function hasError()
+    {
+        return $this->hasOneof(7);
+    }
+
+    /**
+     * Generated from protobuf field <code>.schema.v2.ProjectSourceReport.Error error = 7;</code>
      * @param \Schema\V2\ProjectSourceReport\Error $var
      * @return $this
      */
     public function setError($var)
     {
         GPBUtil::checkMessage($var, \Schema\V2\ProjectSourceReport\Error::class);
-        $this->writeOneof(6, $var);
+        $this->writeOneof(7, $var);
 
         return $this;
     }
