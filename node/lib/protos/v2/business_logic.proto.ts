@@ -22,6 +22,7 @@ export class BusinessLogic {
 export class BusinessLogicContent {
   type: string;
   value: string;
+  styles: string;
 }
 
 export class BusinessLogicProperty {
@@ -251,7 +252,7 @@ export const BusinessLogicData = {
 };
 
 function createBaseBusinessLogicContent(): BusinessLogicContent {
-  return { type: "", value: "" };
+  return { type: "", value: "", styles: "" };
 }
 
 export const BusinessLogicContentData = {
@@ -261,6 +262,9 @@ export const BusinessLogicContentData = {
     }
     if (message.value !== "") {
       writer.uint32(18).string(message.value);
+    }
+    if (message.styles !== "") {
+      writer.uint32(26).string(message.styles);
     }
     return writer;
   },
@@ -278,6 +282,9 @@ export const BusinessLogicContentData = {
         case 2:
           message.value = reader.string();
           break;
+        case 3:
+          message.styles = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -290,6 +297,7 @@ export const BusinessLogicContentData = {
     return {
       type: isSet(object.type) ? String(object.type) : "",
       value: isSet(object.value) ? String(object.value) : "",
+      styles: isSet(object.styles) ? String(object.styles) : "",
     };
   },
 
@@ -297,6 +305,7 @@ export const BusinessLogicContentData = {
     const obj: any = {};
     message.type !== undefined && (obj.type = message.type);
     message.value !== undefined && (obj.value = message.value);
+    message.styles !== undefined && (obj.styles = message.styles);
     return obj;
   },
 
@@ -304,6 +313,7 @@ export const BusinessLogicContentData = {
     const message = createBaseBusinessLogicContent();
     message.type = object.type ?? "";
     message.value = object.value ?? "";
+    message.styles = object.styles ?? "";
     return message;
   },
 };
