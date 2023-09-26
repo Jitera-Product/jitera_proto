@@ -142,40 +142,42 @@ export class ERDConfigColumn {
   name: string;
 }
 
-export class SpecificationChanges {
+export class BlockChanges {
   projectId: number;
   projectGenerateQueueId: number;
   id: number;
   nodeId: string;
-  blocks: SpecificationChangesBlock[];
+  blocks: BlockChangesBlock[];
 }
 
-export class SpecificationChangesBlock {
+export class BlockChangesBlock {
   id: number;
   nodeId: string;
-  addition?: SpecificationChangesBlockAddition | undefined;
-  modification?: SpecificationChangesBlockModification | undefined;
-  deletion?: SpecificationChangesBlockDeletion | undefined;
+  addition?: BlockChangesBlockAddition | undefined;
+  modification?: BlockChangesBlockModification | undefined;
+  deletion?: BlockChangesBlockDeletion | undefined;
 }
 
-export class SpecificationChangesBlockAddition {
-  content?: SpecificationChangesBlockBody;
+export class BlockChangesBlockAddition {
+  content?: BlockChangesBlockBody;
 }
 
-export class SpecificationChangesBlockModification {
-  deletion?: SpecificationChangesBlockBody;
-  addition?: SpecificationChangesBlockBody;
+export class BlockChangesBlockModification {
+  deletion?: BlockChangesBlockBody;
+  addition?: BlockChangesBlockBody;
 }
 
-export class SpecificationChangesBlockDeletion {
-  content?: SpecificationChangesBlockBody;
+export class BlockChangesBlockDeletion {
+  content?: BlockChangesBlockBody;
 }
 
-export class SpecificationChangesBlockBody {
+export class BlockChangesBlockBody {
+  name: string;
   blockType: string;
   parentNodeId: string;
   content: { [key: string]: any }[];
   properties?: { [key: string]: any };
+  children: string[];
 }
 
 export class ProjectSourceReport {
@@ -567,12 +569,12 @@ export const ERDConfigColumnData = {
   },
 };
 
-function createBaseSpecificationChanges(): SpecificationChanges {
+function createBaseBlockChanges(): BlockChanges {
   return { projectId: 0, projectGenerateQueueId: 0, id: 0, nodeId: "", blocks: [] };
 }
 
-export const SpecificationChangesData = {
-  encode(message: SpecificationChanges, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const BlockChangesData = {
+  encode(message: BlockChanges, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectId !== 0) {
       writer.uint32(8).int32(message.projectId);
     }
@@ -586,15 +588,15 @@ export const SpecificationChangesData = {
       writer.uint32(34).string(message.nodeId);
     }
     for (const v of message.blocks) {
-      SpecificationChangesBlockData.encode(v!, writer.uint32(42).fork()).ldelim();
+      BlockChangesBlockData.encode(v!, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): SpecificationChanges {
+  decode(input: _m0.Reader | Uint8Array, length?: number): BlockChanges {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseSpecificationChanges();
+    const message = createBaseBlockChanges();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -611,7 +613,7 @@ export const SpecificationChangesData = {
           message.nodeId = reader.string();
           break;
         case 5:
-          message.blocks.push(SpecificationChangesBlockData.decode(reader, reader.uint32()));
+          message.blocks.push(BlockChangesBlockData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -621,19 +623,17 @@ export const SpecificationChangesData = {
     return message;
   },
 
-  fromJSON(object: any): SpecificationChanges {
+  fromJSON(object: any): BlockChanges {
     return {
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       id: isSet(object.id) ? Number(object.id) : 0,
       nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
-      blocks: Array.isArray(object?.blocks)
-        ? object.blocks.map((e: any) => SpecificationChangesBlockData.fromJSON(e))
-        : [],
+      blocks: Array.isArray(object?.blocks) ? object.blocks.map((e: any) => BlockChangesBlockData.fromJSON(e)) : [],
     };
   },
 
-  toJSON(message: SpecificationChanges): unknown {
+  toJSON(message: BlockChanges): unknown {
     const obj: any = {};
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     message.projectGenerateQueueId !== undefined &&
@@ -641,30 +641,30 @@ export const SpecificationChangesData = {
     message.id !== undefined && (obj.id = Math.round(message.id));
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
     if (message.blocks) {
-      obj.blocks = message.blocks.map((e) => e ? SpecificationChangesBlockData.toJSON(e) : undefined);
+      obj.blocks = message.blocks.map((e) => e ? BlockChangesBlockData.toJSON(e) : undefined);
     } else {
       obj.blocks = [];
     }
     return obj;
   },
 
-  fromPartial(object: DeepPartial<SpecificationChanges>): SpecificationChanges {
-    const message = createBaseSpecificationChanges();
+  fromPartial(object: DeepPartial<BlockChanges>): BlockChanges {
+    const message = createBaseBlockChanges();
     message.projectId = object.projectId ?? 0;
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.id = object.id ?? 0;
     message.nodeId = object.nodeId ?? "";
-    message.blocks = object.blocks?.map((e) => SpecificationChangesBlockData.fromPartial(e)) || [];
+    message.blocks = object.blocks?.map((e) => BlockChangesBlockData.fromPartial(e)) || [];
     return message;
   },
 };
 
-function createBaseSpecificationChangesBlock(): SpecificationChangesBlock {
+function createBaseBlockChangesBlock(): BlockChangesBlock {
   return { id: 0, nodeId: "" };
 }
 
-export const SpecificationChangesBlockData = {
-  encode(message: SpecificationChangesBlock, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const BlockChangesBlockData = {
+  encode(message: BlockChangesBlock, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== 0) {
       writer.uint32(8).int32(message.id);
     }
@@ -672,21 +672,21 @@ export const SpecificationChangesBlockData = {
       writer.uint32(18).string(message.nodeId);
     }
     if (message.addition !== undefined) {
-      SpecificationChangesBlockAdditionData.encode(message.addition, writer.uint32(26).fork()).ldelim();
+      BlockChangesBlockAdditionData.encode(message.addition, writer.uint32(26).fork()).ldelim();
     }
     if (message.modification !== undefined) {
-      SpecificationChangesBlockModificationData.encode(message.modification, writer.uint32(34).fork()).ldelim();
+      BlockChangesBlockModificationData.encode(message.modification, writer.uint32(34).fork()).ldelim();
     }
     if (message.deletion !== undefined) {
-      SpecificationChangesBlockDeletionData.encode(message.deletion, writer.uint32(42).fork()).ldelim();
+      BlockChangesBlockDeletionData.encode(message.deletion, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): SpecificationChangesBlock {
+  decode(input: _m0.Reader | Uint8Array, length?: number): BlockChangesBlock {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseSpecificationChangesBlock();
+    const message = createBaseBlockChangesBlock();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -697,13 +697,13 @@ export const SpecificationChangesBlockData = {
           message.nodeId = reader.string();
           break;
         case 3:
-          message.addition = SpecificationChangesBlockAdditionData.decode(reader, reader.uint32());
+          message.addition = BlockChangesBlockAdditionData.decode(reader, reader.uint32());
           break;
         case 4:
-          message.modification = SpecificationChangesBlockModificationData.decode(reader, reader.uint32());
+          message.modification = BlockChangesBlockModificationData.decode(reader, reader.uint32());
           break;
         case 5:
-          message.deletion = SpecificationChangesBlockDeletionData.decode(reader, reader.uint32());
+          message.deletion = BlockChangesBlockDeletionData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -713,70 +713,70 @@ export const SpecificationChangesBlockData = {
     return message;
   },
 
-  fromJSON(object: any): SpecificationChangesBlock {
+  fromJSON(object: any): BlockChangesBlock {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
       nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
-      addition: isSet(object.addition) ? SpecificationChangesBlockAdditionData.fromJSON(object.addition) : undefined,
+      addition: isSet(object.addition) ? BlockChangesBlockAdditionData.fromJSON(object.addition) : undefined,
       modification: isSet(object.modification)
-        ? SpecificationChangesBlockModificationData.fromJSON(object.modification)
+        ? BlockChangesBlockModificationData.fromJSON(object.modification)
         : undefined,
-      deletion: isSet(object.deletion) ? SpecificationChangesBlockDeletionData.fromJSON(object.deletion) : undefined,
+      deletion: isSet(object.deletion) ? BlockChangesBlockDeletionData.fromJSON(object.deletion) : undefined,
     };
   },
 
-  toJSON(message: SpecificationChangesBlock): unknown {
+  toJSON(message: BlockChangesBlock): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
     message.addition !== undefined &&
-      (obj.addition = message.addition ? SpecificationChangesBlockAdditionData.toJSON(message.addition) : undefined);
+      (obj.addition = message.addition ? BlockChangesBlockAdditionData.toJSON(message.addition) : undefined);
     message.modification !== undefined && (obj.modification = message.modification
-      ? SpecificationChangesBlockModificationData.toJSON(message.modification)
+      ? BlockChangesBlockModificationData.toJSON(message.modification)
       : undefined);
     message.deletion !== undefined &&
-      (obj.deletion = message.deletion ? SpecificationChangesBlockDeletionData.toJSON(message.deletion) : undefined);
+      (obj.deletion = message.deletion ? BlockChangesBlockDeletionData.toJSON(message.deletion) : undefined);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<SpecificationChangesBlock>): SpecificationChangesBlock {
-    const message = createBaseSpecificationChangesBlock();
+  fromPartial(object: DeepPartial<BlockChangesBlock>): BlockChangesBlock {
+    const message = createBaseBlockChangesBlock();
     message.id = object.id ?? 0;
     message.nodeId = object.nodeId ?? "";
     message.addition = (object.addition !== undefined && object.addition !== null)
-      ? SpecificationChangesBlockAdditionData.fromPartial(object.addition)
+      ? BlockChangesBlockAdditionData.fromPartial(object.addition)
       : undefined;
     message.modification = (object.modification !== undefined && object.modification !== null)
-      ? SpecificationChangesBlockModificationData.fromPartial(object.modification)
+      ? BlockChangesBlockModificationData.fromPartial(object.modification)
       : undefined;
     message.deletion = (object.deletion !== undefined && object.deletion !== null)
-      ? SpecificationChangesBlockDeletionData.fromPartial(object.deletion)
+      ? BlockChangesBlockDeletionData.fromPartial(object.deletion)
       : undefined;
     return message;
   },
 };
 
-function createBaseSpecificationChangesBlockAddition(): SpecificationChangesBlockAddition {
+function createBaseBlockChangesBlockAddition(): BlockChangesBlockAddition {
   return {};
 }
 
-export const SpecificationChangesBlockAdditionData = {
-  encode(message: SpecificationChangesBlockAddition, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const BlockChangesBlockAdditionData = {
+  encode(message: BlockChangesBlockAddition, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.content !== undefined) {
-      SpecificationChangesBlockBodyData.encode(message.content, writer.uint32(10).fork()).ldelim();
+      BlockChangesBlockBodyData.encode(message.content, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): SpecificationChangesBlockAddition {
+  decode(input: _m0.Reader | Uint8Array, length?: number): BlockChangesBlockAddition {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseSpecificationChangesBlockAddition();
+    const message = createBaseBlockChangesBlockAddition();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.content = SpecificationChangesBlockBodyData.decode(reader, reader.uint32());
+          message.content = BlockChangesBlockBodyData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -786,53 +786,53 @@ export const SpecificationChangesBlockAdditionData = {
     return message;
   },
 
-  fromJSON(object: any): SpecificationChangesBlockAddition {
-    return { content: isSet(object.content) ? SpecificationChangesBlockBodyData.fromJSON(object.content) : undefined };
+  fromJSON(object: any): BlockChangesBlockAddition {
+    return { content: isSet(object.content) ? BlockChangesBlockBodyData.fromJSON(object.content) : undefined };
   },
 
-  toJSON(message: SpecificationChangesBlockAddition): unknown {
+  toJSON(message: BlockChangesBlockAddition): unknown {
     const obj: any = {};
     message.content !== undefined &&
-      (obj.content = message.content ? SpecificationChangesBlockBodyData.toJSON(message.content) : undefined);
+      (obj.content = message.content ? BlockChangesBlockBodyData.toJSON(message.content) : undefined);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<SpecificationChangesBlockAddition>): SpecificationChangesBlockAddition {
-    const message = createBaseSpecificationChangesBlockAddition();
+  fromPartial(object: DeepPartial<BlockChangesBlockAddition>): BlockChangesBlockAddition {
+    const message = createBaseBlockChangesBlockAddition();
     message.content = (object.content !== undefined && object.content !== null)
-      ? SpecificationChangesBlockBodyData.fromPartial(object.content)
+      ? BlockChangesBlockBodyData.fromPartial(object.content)
       : undefined;
     return message;
   },
 };
 
-function createBaseSpecificationChangesBlockModification(): SpecificationChangesBlockModification {
+function createBaseBlockChangesBlockModification(): BlockChangesBlockModification {
   return {};
 }
 
-export const SpecificationChangesBlockModificationData = {
-  encode(message: SpecificationChangesBlockModification, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const BlockChangesBlockModificationData = {
+  encode(message: BlockChangesBlockModification, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.deletion !== undefined) {
-      SpecificationChangesBlockBodyData.encode(message.deletion, writer.uint32(10).fork()).ldelim();
+      BlockChangesBlockBodyData.encode(message.deletion, writer.uint32(10).fork()).ldelim();
     }
     if (message.addition !== undefined) {
-      SpecificationChangesBlockBodyData.encode(message.addition, writer.uint32(18).fork()).ldelim();
+      BlockChangesBlockBodyData.encode(message.addition, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): SpecificationChangesBlockModification {
+  decode(input: _m0.Reader | Uint8Array, length?: number): BlockChangesBlockModification {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseSpecificationChangesBlockModification();
+    const message = createBaseBlockChangesBlockModification();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.deletion = SpecificationChangesBlockBodyData.decode(reader, reader.uint32());
+          message.deletion = BlockChangesBlockBodyData.decode(reader, reader.uint32());
           break;
         case 2:
-          message.addition = SpecificationChangesBlockBodyData.decode(reader, reader.uint32());
+          message.addition = BlockChangesBlockBodyData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -842,55 +842,55 @@ export const SpecificationChangesBlockModificationData = {
     return message;
   },
 
-  fromJSON(object: any): SpecificationChangesBlockModification {
+  fromJSON(object: any): BlockChangesBlockModification {
     return {
-      deletion: isSet(object.deletion) ? SpecificationChangesBlockBodyData.fromJSON(object.deletion) : undefined,
-      addition: isSet(object.addition) ? SpecificationChangesBlockBodyData.fromJSON(object.addition) : undefined,
+      deletion: isSet(object.deletion) ? BlockChangesBlockBodyData.fromJSON(object.deletion) : undefined,
+      addition: isSet(object.addition) ? BlockChangesBlockBodyData.fromJSON(object.addition) : undefined,
     };
   },
 
-  toJSON(message: SpecificationChangesBlockModification): unknown {
+  toJSON(message: BlockChangesBlockModification): unknown {
     const obj: any = {};
     message.deletion !== undefined &&
-      (obj.deletion = message.deletion ? SpecificationChangesBlockBodyData.toJSON(message.deletion) : undefined);
+      (obj.deletion = message.deletion ? BlockChangesBlockBodyData.toJSON(message.deletion) : undefined);
     message.addition !== undefined &&
-      (obj.addition = message.addition ? SpecificationChangesBlockBodyData.toJSON(message.addition) : undefined);
+      (obj.addition = message.addition ? BlockChangesBlockBodyData.toJSON(message.addition) : undefined);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<SpecificationChangesBlockModification>): SpecificationChangesBlockModification {
-    const message = createBaseSpecificationChangesBlockModification();
+  fromPartial(object: DeepPartial<BlockChangesBlockModification>): BlockChangesBlockModification {
+    const message = createBaseBlockChangesBlockModification();
     message.deletion = (object.deletion !== undefined && object.deletion !== null)
-      ? SpecificationChangesBlockBodyData.fromPartial(object.deletion)
+      ? BlockChangesBlockBodyData.fromPartial(object.deletion)
       : undefined;
     message.addition = (object.addition !== undefined && object.addition !== null)
-      ? SpecificationChangesBlockBodyData.fromPartial(object.addition)
+      ? BlockChangesBlockBodyData.fromPartial(object.addition)
       : undefined;
     return message;
   },
 };
 
-function createBaseSpecificationChangesBlockDeletion(): SpecificationChangesBlockDeletion {
+function createBaseBlockChangesBlockDeletion(): BlockChangesBlockDeletion {
   return {};
 }
 
-export const SpecificationChangesBlockDeletionData = {
-  encode(message: SpecificationChangesBlockDeletion, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const BlockChangesBlockDeletionData = {
+  encode(message: BlockChangesBlockDeletion, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.content !== undefined) {
-      SpecificationChangesBlockBodyData.encode(message.content, writer.uint32(10).fork()).ldelim();
+      BlockChangesBlockBodyData.encode(message.content, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): SpecificationChangesBlockDeletion {
+  decode(input: _m0.Reader | Uint8Array, length?: number): BlockChangesBlockDeletion {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseSpecificationChangesBlockDeletion();
+    const message = createBaseBlockChangesBlockDeletion();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.content = SpecificationChangesBlockBodyData.decode(reader, reader.uint32());
+          message.content = BlockChangesBlockBodyData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -900,65 +900,77 @@ export const SpecificationChangesBlockDeletionData = {
     return message;
   },
 
-  fromJSON(object: any): SpecificationChangesBlockDeletion {
-    return { content: isSet(object.content) ? SpecificationChangesBlockBodyData.fromJSON(object.content) : undefined };
+  fromJSON(object: any): BlockChangesBlockDeletion {
+    return { content: isSet(object.content) ? BlockChangesBlockBodyData.fromJSON(object.content) : undefined };
   },
 
-  toJSON(message: SpecificationChangesBlockDeletion): unknown {
+  toJSON(message: BlockChangesBlockDeletion): unknown {
     const obj: any = {};
     message.content !== undefined &&
-      (obj.content = message.content ? SpecificationChangesBlockBodyData.toJSON(message.content) : undefined);
+      (obj.content = message.content ? BlockChangesBlockBodyData.toJSON(message.content) : undefined);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<SpecificationChangesBlockDeletion>): SpecificationChangesBlockDeletion {
-    const message = createBaseSpecificationChangesBlockDeletion();
+  fromPartial(object: DeepPartial<BlockChangesBlockDeletion>): BlockChangesBlockDeletion {
+    const message = createBaseBlockChangesBlockDeletion();
     message.content = (object.content !== undefined && object.content !== null)
-      ? SpecificationChangesBlockBodyData.fromPartial(object.content)
+      ? BlockChangesBlockBodyData.fromPartial(object.content)
       : undefined;
     return message;
   },
 };
 
-function createBaseSpecificationChangesBlockBody(): SpecificationChangesBlockBody {
-  return { blockType: "", parentNodeId: "", content: [] };
+function createBaseBlockChangesBlockBody(): BlockChangesBlockBody {
+  return { name: "", blockType: "", parentNodeId: "", content: [], children: [] };
 }
 
-export const SpecificationChangesBlockBodyData = {
-  encode(message: SpecificationChangesBlockBody, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const BlockChangesBlockBodyData = {
+  encode(message: BlockChangesBlockBody, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
     if (message.blockType !== "") {
-      writer.uint32(10).string(message.blockType);
+      writer.uint32(18).string(message.blockType);
     }
     if (message.parentNodeId !== "") {
-      writer.uint32(18).string(message.parentNodeId);
+      writer.uint32(26).string(message.parentNodeId);
     }
     for (const v of message.content) {
-      StructData.encode(StructData.wrap(v!), writer.uint32(26).fork()).ldelim();
+      StructData.encode(StructData.wrap(v!), writer.uint32(34).fork()).ldelim();
     }
     if (message.properties !== undefined) {
-      StructData.encode(StructData.wrap(message.properties), writer.uint32(34).fork()).ldelim();
+      StructData.encode(StructData.wrap(message.properties), writer.uint32(42).fork()).ldelim();
+    }
+    for (const v of message.children) {
+      writer.uint32(50).string(v!);
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): SpecificationChangesBlockBody {
+  decode(input: _m0.Reader | Uint8Array, length?: number): BlockChangesBlockBody {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseSpecificationChangesBlockBody();
+    const message = createBaseBlockChangesBlockBody();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.blockType = reader.string();
+          message.name = reader.string();
           break;
         case 2:
-          message.parentNodeId = reader.string();
+          message.blockType = reader.string();
           break;
         case 3:
-          message.content.push(StructData.unwrap(StructData.decode(reader, reader.uint32())));
+          message.parentNodeId = reader.string();
           break;
         case 4:
+          message.content.push(StructData.unwrap(StructData.decode(reader, reader.uint32())));
+          break;
+        case 5:
           message.properties = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          break;
+        case 6:
+          message.children.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -968,17 +980,20 @@ export const SpecificationChangesBlockBodyData = {
     return message;
   },
 
-  fromJSON(object: any): SpecificationChangesBlockBody {
+  fromJSON(object: any): BlockChangesBlockBody {
     return {
+      name: isSet(object.name) ? String(object.name) : "",
       blockType: isSet(object.blockType) ? String(object.blockType) : "",
       parentNodeId: isSet(object.parentNodeId) ? String(object.parentNodeId) : "",
       content: Array.isArray(object?.content) ? [...object.content] : [],
       properties: isObject(object.properties) ? object.properties : undefined,
+      children: Array.isArray(object?.children) ? object.children.map((e: any) => String(e)) : [],
     };
   },
 
-  toJSON(message: SpecificationChangesBlockBody): unknown {
+  toJSON(message: BlockChangesBlockBody): unknown {
     const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
     message.blockType !== undefined && (obj.blockType = message.blockType);
     message.parentNodeId !== undefined && (obj.parentNodeId = message.parentNodeId);
     if (message.content) {
@@ -987,15 +1002,22 @@ export const SpecificationChangesBlockBodyData = {
       obj.content = [];
     }
     message.properties !== undefined && (obj.properties = message.properties);
+    if (message.children) {
+      obj.children = message.children.map((e) => e);
+    } else {
+      obj.children = [];
+    }
     return obj;
   },
 
-  fromPartial(object: DeepPartial<SpecificationChangesBlockBody>): SpecificationChangesBlockBody {
-    const message = createBaseSpecificationChangesBlockBody();
+  fromPartial(object: DeepPartial<BlockChangesBlockBody>): BlockChangesBlockBody {
+    const message = createBaseBlockChangesBlockBody();
+    message.name = object.name ?? "";
     message.blockType = object.blockType ?? "";
     message.parentNodeId = object.parentNodeId ?? "";
     message.content = object.content?.map((e) => e) || [];
     message.properties = object.properties ?? undefined;
+    message.children = object.children?.map((e) => e) || [];
     return message;
   },
 };

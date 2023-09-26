@@ -52,7 +52,7 @@ message ERDConfig {
 	}
 }
 
-message SpecificationChanges {
+message BlockChanges {
 	int32 project_id = 1;
 	int32 project_generate_queue_id = 2;
 	int32 id = 3;
@@ -84,10 +84,12 @@ message SpecificationChanges {
 	}
 
 	message BlockBody {
-		string block_type = 1;
-		string parent_node_id = 2;
-		repeated google.protobuf.Struct content = 3;
-		google.protobuf.Struct properties = 4;
+		string name = 1;
+		string block_type = 2;
+		string parent_node_id = 3;
+		repeated google.protobuf.Struct content = 4;
+		google.protobuf.Struct properties = 5;
+		repeated string children = 6;
 	}
 }
 
