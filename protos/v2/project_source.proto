@@ -110,6 +110,33 @@ message BlockDiff {
 	}
 }
 
+message ApiChanges {
+	ProjectSource project_source = 1;
+	ApiSchema api = 2;
+	repeated RequestItem requests = 3;
+	repeated RequestItem responses = 4;
+	repeated BusinessLogic business_logics = 5;
+
+	message ApiSchema {
+    int32 id = 1;
+    int32 usecaseId = 2;
+    string content = 3;
+    bool authenticated = 4;
+  }
+
+  message BusinessLogic {
+    int32 id = 1;
+    string name = 2;
+    int32 usecaseId = 3;
+  }
+
+	message RequestItem {
+		string name = 1;
+		string type = 2;
+		repeated RequestItem children = 3;
+	}
+}
+
 message ProjectSourceReport {
 	int32 project_generate_queue_id = 1;
 	int32 project_id = 2;

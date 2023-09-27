@@ -197,6 +197,33 @@ export class BlockDiffBlockBody {
   children: string[];
 }
 
+export class ApiChanges {
+  projectSource?: ProjectSource;
+  api?: ApiChangesApiSchema;
+  requests: ApiChangesRequestItem[];
+  responses: ApiChangesRequestItem[];
+  businessLogics: ApiChangesBusinessLogic[];
+}
+
+export class ApiChangesApiSchema {
+  id: number;
+  usecaseId: number;
+  content: string;
+  authenticated: boolean;
+}
+
+export class ApiChangesBusinessLogic {
+  id: number;
+  name: string;
+  usecaseId: number;
+}
+
+export class ApiChangesRequestItem {
+  name: string;
+  type: string;
+  children: ApiChangesRequestItem[];
+}
+
 export class ProjectSourceReport {
   projectGenerateQueueId: number;
   projectId: number;
@@ -1243,6 +1270,330 @@ export const BlockDiffBlockBodyData = {
     message.content = object.content?.map((e) => e) || [];
     message.properties = object.properties ?? undefined;
     message.children = object.children?.map((e) => e) || [];
+    return message;
+  },
+};
+
+function createBaseApiChanges(): ApiChanges {
+  return { requests: [], responses: [], businessLogics: [] };
+}
+
+export const ApiChangesData = {
+  encode(message: ApiChanges, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.projectSource !== undefined) {
+      ProjectSourceData.encode(message.projectSource, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.api !== undefined) {
+      ApiChangesApiSchemaData.encode(message.api, writer.uint32(18).fork()).ldelim();
+    }
+    for (const v of message.requests) {
+      ApiChangesRequestItemData.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    for (const v of message.responses) {
+      ApiChangesRequestItemData.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+    for (const v of message.businessLogics) {
+      ApiChangesBusinessLogicData.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ApiChanges {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseApiChanges();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.projectSource = ProjectSourceData.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.api = ApiChangesApiSchemaData.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.requests.push(ApiChangesRequestItemData.decode(reader, reader.uint32()));
+          break;
+        case 4:
+          message.responses.push(ApiChangesRequestItemData.decode(reader, reader.uint32()));
+          break;
+        case 5:
+          message.businessLogics.push(ApiChangesBusinessLogicData.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ApiChanges {
+    return {
+      projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
+      api: isSet(object.api) ? ApiChangesApiSchemaData.fromJSON(object.api) : undefined,
+      requests: Array.isArray(object?.requests)
+        ? object.requests.map((e: any) => ApiChangesRequestItemData.fromJSON(e))
+        : [],
+      responses: Array.isArray(object?.responses)
+        ? object.responses.map((e: any) => ApiChangesRequestItemData.fromJSON(e))
+        : [],
+      businessLogics: Array.isArray(object?.businessLogics)
+        ? object.businessLogics.map((e: any) => ApiChangesBusinessLogicData.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: ApiChanges): unknown {
+    const obj: any = {};
+    message.projectSource !== undefined &&
+      (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
+    message.api !== undefined && (obj.api = message.api ? ApiChangesApiSchemaData.toJSON(message.api) : undefined);
+    if (message.requests) {
+      obj.requests = message.requests.map((e) => e ? ApiChangesRequestItemData.toJSON(e) : undefined);
+    } else {
+      obj.requests = [];
+    }
+    if (message.responses) {
+      obj.responses = message.responses.map((e) => e ? ApiChangesRequestItemData.toJSON(e) : undefined);
+    } else {
+      obj.responses = [];
+    }
+    if (message.businessLogics) {
+      obj.businessLogics = message.businessLogics.map((e) => e ? ApiChangesBusinessLogicData.toJSON(e) : undefined);
+    } else {
+      obj.businessLogics = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ApiChanges>): ApiChanges {
+    const message = createBaseApiChanges();
+    message.projectSource = (object.projectSource !== undefined && object.projectSource !== null)
+      ? ProjectSourceData.fromPartial(object.projectSource)
+      : undefined;
+    message.api = (object.api !== undefined && object.api !== null)
+      ? ApiChangesApiSchemaData.fromPartial(object.api)
+      : undefined;
+    message.requests = object.requests?.map((e) => ApiChangesRequestItemData.fromPartial(e)) || [];
+    message.responses = object.responses?.map((e) => ApiChangesRequestItemData.fromPartial(e)) || [];
+    message.businessLogics = object.businessLogics?.map((e) => ApiChangesBusinessLogicData.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseApiChangesApiSchema(): ApiChangesApiSchema {
+  return { id: 0, usecaseId: 0, content: "", authenticated: false };
+}
+
+export const ApiChangesApiSchemaData = {
+  encode(message: ApiChangesApiSchema, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
+    if (message.usecaseId !== 0) {
+      writer.uint32(16).int32(message.usecaseId);
+    }
+    if (message.content !== "") {
+      writer.uint32(26).string(message.content);
+    }
+    if (message.authenticated === true) {
+      writer.uint32(32).bool(message.authenticated);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ApiChangesApiSchema {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseApiChangesApiSchema();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.int32();
+          break;
+        case 2:
+          message.usecaseId = reader.int32();
+          break;
+        case 3:
+          message.content = reader.string();
+          break;
+        case 4:
+          message.authenticated = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ApiChangesApiSchema {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      usecaseId: isSet(object.usecaseId) ? Number(object.usecaseId) : 0,
+      content: isSet(object.content) ? String(object.content) : "",
+      authenticated: isSet(object.authenticated) ? Boolean(object.authenticated) : false,
+    };
+  },
+
+  toJSON(message: ApiChangesApiSchema): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.usecaseId !== undefined && (obj.usecaseId = Math.round(message.usecaseId));
+    message.content !== undefined && (obj.content = message.content);
+    message.authenticated !== undefined && (obj.authenticated = message.authenticated);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ApiChangesApiSchema>): ApiChangesApiSchema {
+    const message = createBaseApiChangesApiSchema();
+    message.id = object.id ?? 0;
+    message.usecaseId = object.usecaseId ?? 0;
+    message.content = object.content ?? "";
+    message.authenticated = object.authenticated ?? false;
+    return message;
+  },
+};
+
+function createBaseApiChangesBusinessLogic(): ApiChangesBusinessLogic {
+  return { id: 0, name: "", usecaseId: 0 };
+}
+
+export const ApiChangesBusinessLogicData = {
+  encode(message: ApiChangesBusinessLogic, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
+    if (message.usecaseId !== 0) {
+      writer.uint32(24).int32(message.usecaseId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ApiChangesBusinessLogic {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseApiChangesBusinessLogic();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.int32();
+          break;
+        case 2:
+          message.name = reader.string();
+          break;
+        case 3:
+          message.usecaseId = reader.int32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ApiChangesBusinessLogic {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      name: isSet(object.name) ? String(object.name) : "",
+      usecaseId: isSet(object.usecaseId) ? Number(object.usecaseId) : 0,
+    };
+  },
+
+  toJSON(message: ApiChangesBusinessLogic): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.name !== undefined && (obj.name = message.name);
+    message.usecaseId !== undefined && (obj.usecaseId = Math.round(message.usecaseId));
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ApiChangesBusinessLogic>): ApiChangesBusinessLogic {
+    const message = createBaseApiChangesBusinessLogic();
+    message.id = object.id ?? 0;
+    message.name = object.name ?? "";
+    message.usecaseId = object.usecaseId ?? 0;
+    return message;
+  },
+};
+
+function createBaseApiChangesRequestItem(): ApiChangesRequestItem {
+  return { name: "", type: "", children: [] };
+}
+
+export const ApiChangesRequestItemData = {
+  encode(message: ApiChangesRequestItem, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.type !== "") {
+      writer.uint32(18).string(message.type);
+    }
+    for (const v of message.children) {
+      ApiChangesRequestItemData.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ApiChangesRequestItem {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseApiChangesRequestItem();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.name = reader.string();
+          break;
+        case 2:
+          message.type = reader.string();
+          break;
+        case 3:
+          message.children.push(ApiChangesRequestItemData.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ApiChangesRequestItem {
+    return {
+      name: isSet(object.name) ? String(object.name) : "",
+      type: isSet(object.type) ? String(object.type) : "",
+      children: Array.isArray(object?.children)
+        ? object.children.map((e: any) => ApiChangesRequestItemData.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: ApiChangesRequestItem): unknown {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
+    message.type !== undefined && (obj.type = message.type);
+    if (message.children) {
+      obj.children = message.children.map((e) => e ? ApiChangesRequestItemData.toJSON(e) : undefined);
+    } else {
+      obj.children = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ApiChangesRequestItem>): ApiChangesRequestItem {
+    const message = createBaseApiChangesRequestItem();
+    message.name = object.name ?? "";
+    message.type = object.type ?? "";
+    message.children = object.children?.map((e) => ApiChangesRequestItemData.fromPartial(e)) || [];
     return message;
   },
 };
