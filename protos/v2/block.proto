@@ -1,0 +1,15 @@
+syntax = "proto3";
+package schema.v2;
+
+message Block {
+	int32 id = 1;
+  string name = 2;
+  string node_id = 3;
+  string parent_node_id = 4;
+	string page_node_id = 5;
+  string block_type = 6;
+  string content = 7;
+  string properties = 8;
+  int32 project_id = 9;
+	repeated string children = 10;
+}
