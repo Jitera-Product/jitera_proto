@@ -21,6 +21,10 @@ class Column extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>string name = 2;</code>
      */
     protected $name = '';
+    /**
+     * Generated from protobuf field <code>string type = 3;</code>
+     */
+    protected $type = '';
 
     /**
      * Constructor.
@@ -30,6 +34,7 @@ class Column extends \Google\Protobuf\Internal\Message
      *
      *     @type int $id
      *     @type string $name
+     *     @type string $type
      * }
      */
     public function __construct($data = NULL) {
@@ -77,6 +82,28 @@ class Column extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkString($var, True);
         $this->name = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string type = 3;</code>
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Generated from protobuf field <code>string type = 3;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setType($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->type = $var;
 
         return $this;
     }

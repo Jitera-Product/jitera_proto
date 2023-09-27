@@ -145,6 +145,7 @@ export class ERDConfigColumn {
 export class BusinessLogicChanges {
   projectGenerateQueueId: number;
   tables: BusinessLogicChangesTable[];
+  relations: BusinessLogicChangesRelation[];
   projectSource?: ProjectSource;
   blockDiff?: BlockDiff;
 }
@@ -158,6 +159,15 @@ export class BusinessLogicChangesTable {
 export class BusinessLogicChangesColumn {
   id: number;
   name: string;
+  type: string;
+}
+
+export class BusinessLogicChangesRelation {
+  id: number;
+  column: string;
+  table: string;
+  relatedTable: string;
+  type: string;
 }
 
 export class BlockDiff {
@@ -614,7 +624,7 @@ export const ERDConfigColumnData = {
 };
 
 function createBaseBusinessLogicChanges(): BusinessLogicChanges {
-  return { projectGenerateQueueId: 0, tables: [] };
+  return { projectGenerateQueueId: 0, tables: [], relations: [] };
 }
 
 export const BusinessLogicChangesData = {
@@ -625,11 +635,14 @@ export const BusinessLogicChangesData = {
     for (const v of message.tables) {
       BusinessLogicChangesTableData.encode(v!, writer.uint32(18).fork()).ldelim();
     }
+    for (const v of message.relations) {
+      BusinessLogicChangesRelationData.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
     if (message.projectSource !== undefined) {
-      ProjectSourceData.encode(message.projectSource, writer.uint32(26).fork()).ldelim();
+      ProjectSourceData.encode(message.projectSource, writer.uint32(34).fork()).ldelim();
     }
     if (message.blockDiff !== undefined) {
-      BlockDiffData.encode(message.blockDiff, writer.uint32(34).fork()).ldelim();
+      BlockDiffData.encode(message.blockDiff, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -648,9 +661,12 @@ export const BusinessLogicChangesData = {
           message.tables.push(BusinessLogicChangesTableData.decode(reader, reader.uint32()));
           break;
         case 3:
-          message.projectSource = ProjectSourceData.decode(reader, reader.uint32());
+          message.relations.push(BusinessLogicChangesRelationData.decode(reader, reader.uint32()));
           break;
         case 4:
+          message.projectSource = ProjectSourceData.decode(reader, reader.uint32());
+          break;
+        case 5:
           message.blockDiff = BlockDiffData.decode(reader, reader.uint32());
           break;
         default:
@@ -667,6 +683,9 @@ export const BusinessLogicChangesData = {
       tables: Array.isArray(object?.tables)
         ? object.tables.map((e: any) => BusinessLogicChangesTableData.fromJSON(e))
         : [],
+      relations: Array.isArray(object?.relations)
+        ? object.relations.map((e: any) => BusinessLogicChangesRelationData.fromJSON(e))
+        : [],
       projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
       blockDiff: isSet(object.blockDiff) ? BlockDiffData.fromJSON(object.blockDiff) : undefined,
     };
@@ -681,6 +700,11 @@ export const BusinessLogicChangesData = {
     } else {
       obj.tables = [];
     }
+    if (message.relations) {
+      obj.relations = message.relations.map((e) => e ? BusinessLogicChangesRelationData.toJSON(e) : undefined);
+    } else {
+      obj.relations = [];
+    }
     message.projectSource !== undefined &&
       (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
     message.blockDiff !== undefined &&
@@ -692,6 +716,7 @@ export const BusinessLogicChangesData = {
     const message = createBaseBusinessLogicChanges();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.tables = object.tables?.map((e) => BusinessLogicChangesTableData.fromPartial(e)) || [];
+    message.relations = object.relations?.map((e) => BusinessLogicChangesRelationData.fromPartial(e)) || [];
     message.projectSource = (object.projectSource !== undefined && object.projectSource !== null)
       ? ProjectSourceData.fromPartial(object.projectSource)
       : undefined;
@@ -776,7 +801,7 @@ export const BusinessLogicChangesTableData = {
 };
 
 function createBaseBusinessLogicChangesColumn(): BusinessLogicChangesColumn {
-  return { id: 0, name: "" };
+  return { id: 0, name: "", type: "" };
 }
 
 export const BusinessLogicChangesColumnData = {
@@ -786,6 +811,9 @@ export const BusinessLogicChangesColumnData = {
     }
     if (message.name !== "") {
       writer.uint32(18).string(message.name);
+    }
+    if (message.type !== "") {
+      writer.uint32(26).string(message.type);
     }
     return writer;
   },
@@ -803,6 +831,9 @@ export const BusinessLogicChangesColumnData = {
         case 2:
           message.name = reader.string();
           break;
+        case 3:
+          message.type = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -812,13 +843,18 @@ export const BusinessLogicChangesColumnData = {
   },
 
   fromJSON(object: any): BusinessLogicChangesColumn {
-    return { id: isSet(object.id) ? Number(object.id) : 0, name: isSet(object.name) ? String(object.name) : "" };
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      name: isSet(object.name) ? String(object.name) : "",
+      type: isSet(object.type) ? String(object.type) : "",
+    };
   },
 
   toJSON(message: BusinessLogicChangesColumn): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
     message.name !== undefined && (obj.name = message.name);
+    message.type !== undefined && (obj.type = message.type);
     return obj;
   },
 
@@ -826,6 +862,92 @@ export const BusinessLogicChangesColumnData = {
     const message = createBaseBusinessLogicChangesColumn();
     message.id = object.id ?? 0;
     message.name = object.name ?? "";
+    message.type = object.type ?? "";
+    return message;
+  },
+};
+
+function createBaseBusinessLogicChangesRelation(): BusinessLogicChangesRelation {
+  return { id: 0, column: "", table: "", relatedTable: "", type: "" };
+}
+
+export const BusinessLogicChangesRelationData = {
+  encode(message: BusinessLogicChangesRelation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
+    if (message.column !== "") {
+      writer.uint32(18).string(message.column);
+    }
+    if (message.table !== "") {
+      writer.uint32(26).string(message.table);
+    }
+    if (message.relatedTable !== "") {
+      writer.uint32(34).string(message.relatedTable);
+    }
+    if (message.type !== "") {
+      writer.uint32(42).string(message.type);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): BusinessLogicChangesRelation {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBusinessLogicChangesRelation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.int32();
+          break;
+        case 2:
+          message.column = reader.string();
+          break;
+        case 3:
+          message.table = reader.string();
+          break;
+        case 4:
+          message.relatedTable = reader.string();
+          break;
+        case 5:
+          message.type = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BusinessLogicChangesRelation {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      column: isSet(object.column) ? String(object.column) : "",
+      table: isSet(object.table) ? String(object.table) : "",
+      relatedTable: isSet(object.relatedTable) ? String(object.relatedTable) : "",
+      type: isSet(object.type) ? String(object.type) : "",
+    };
+  },
+
+  toJSON(message: BusinessLogicChangesRelation): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.column !== undefined && (obj.column = message.column);
+    message.table !== undefined && (obj.table = message.table);
+    message.relatedTable !== undefined && (obj.relatedTable = message.relatedTable);
+    message.type !== undefined && (obj.type = message.type);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<BusinessLogicChangesRelation>): BusinessLogicChangesRelation {
+    const message = createBaseBusinessLogicChangesRelation();
+    message.id = object.id ?? 0;
+    message.column = object.column ?? "";
+    message.table = object.table ?? "";
+    message.relatedTable = object.relatedTable ?? "";
+    message.type = object.type ?? "";
     return message;
   },
 };
