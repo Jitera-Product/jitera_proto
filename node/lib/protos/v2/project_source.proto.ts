@@ -142,36 +142,53 @@ export class ERDConfigColumn {
   name: string;
 }
 
-export class BlockChanges {
-  projectId: number;
+export class BusinessLogicChanges {
   projectGenerateQueueId: number;
+  tables: BusinessLogicChangesTable[];
+  projectSource?: ProjectSource;
+  blockDiff?: BlockDiff;
+}
+
+export class BusinessLogicChangesTable {
+  id: number;
+  name: string;
+  columns: BusinessLogicChangesColumn[];
+}
+
+export class BusinessLogicChangesColumn {
+  id: number;
+  name: string;
+}
+
+export class BlockDiff {
+  projectId: number;
   id: number;
   nodeId: string;
-  blocks: BlockChangesBlock[];
+  blocks: BlockDiffBlock[];
 }
 
-export class BlockChangesBlock {
+export class BlockDiffBlock {
   id: number;
   nodeId: string;
-  addition?: BlockChangesBlockAddition | undefined;
-  modification?: BlockChangesBlockModification | undefined;
-  deletion?: BlockChangesBlockDeletion | undefined;
+  addition?: BlockDiffBlockAddition | undefined;
+  modification?: BlockDiffBlockModification | undefined;
+  deletion?: BlockDiffBlockDeletion | undefined;
 }
 
-export class BlockChangesBlockAddition {
-  content?: BlockChangesBlockBody;
+export class BlockDiffBlockAddition {
+  content?: BlockDiffBlockBody;
 }
 
-export class BlockChangesBlockModification {
-  deletion?: BlockChangesBlockBody;
-  addition?: BlockChangesBlockBody;
+export class BlockDiffBlockModification {
+  deletion?: BlockDiffBlockBody;
+  addition?: BlockDiffBlockBody;
 }
 
-export class BlockChangesBlockDeletion {
-  content?: BlockChangesBlockBody;
+export class BlockDiffBlockDeletion {
+  content?: BlockDiffBlockBody;
 }
 
-export class BlockChangesBlockBody {
+export class BlockDiffBlockBody {
   name: string;
   blockType: string;
   parentNodeId: string;
@@ -569,17 +586,231 @@ export const ERDConfigColumnData = {
   },
 };
 
-function createBaseBlockChanges(): BlockChanges {
-  return { projectId: 0, projectGenerateQueueId: 0, id: 0, nodeId: "", blocks: [] };
+function createBaseBusinessLogicChanges(): BusinessLogicChanges {
+  return { projectGenerateQueueId: 0, tables: [] };
 }
 
-export const BlockChangesData = {
-  encode(message: BlockChanges, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const BusinessLogicChangesData = {
+  encode(message: BusinessLogicChanges, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.projectGenerateQueueId !== 0) {
+      writer.uint32(8).int32(message.projectGenerateQueueId);
+    }
+    for (const v of message.tables) {
+      BusinessLogicChangesTableData.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.projectSource !== undefined) {
+      ProjectSourceData.encode(message.projectSource, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.blockDiff !== undefined) {
+      BlockDiffData.encode(message.blockDiff, writer.uint32(34).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): BusinessLogicChanges {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBusinessLogicChanges();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.projectGenerateQueueId = reader.int32();
+          break;
+        case 2:
+          message.tables.push(BusinessLogicChangesTableData.decode(reader, reader.uint32()));
+          break;
+        case 3:
+          message.projectSource = ProjectSourceData.decode(reader, reader.uint32());
+          break;
+        case 4:
+          message.blockDiff = BlockDiffData.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BusinessLogicChanges {
+    return {
+      projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
+      tables: Array.isArray(object?.tables)
+        ? object.tables.map((e: any) => BusinessLogicChangesTableData.fromJSON(e))
+        : [],
+      projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
+      blockDiff: isSet(object.blockDiff) ? BlockDiffData.fromJSON(object.blockDiff) : undefined,
+    };
+  },
+
+  toJSON(message: BusinessLogicChanges): unknown {
+    const obj: any = {};
+    message.projectGenerateQueueId !== undefined &&
+      (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
+    if (message.tables) {
+      obj.tables = message.tables.map((e) => e ? BusinessLogicChangesTableData.toJSON(e) : undefined);
+    } else {
+      obj.tables = [];
+    }
+    message.projectSource !== undefined &&
+      (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
+    message.blockDiff !== undefined &&
+      (obj.blockDiff = message.blockDiff ? BlockDiffData.toJSON(message.blockDiff) : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<BusinessLogicChanges>): BusinessLogicChanges {
+    const message = createBaseBusinessLogicChanges();
+    message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
+    message.tables = object.tables?.map((e) => BusinessLogicChangesTableData.fromPartial(e)) || [];
+    message.projectSource = (object.projectSource !== undefined && object.projectSource !== null)
+      ? ProjectSourceData.fromPartial(object.projectSource)
+      : undefined;
+    message.blockDiff = (object.blockDiff !== undefined && object.blockDiff !== null)
+      ? BlockDiffData.fromPartial(object.blockDiff)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseBusinessLogicChangesTable(): BusinessLogicChangesTable {
+  return { id: 0, name: "", columns: [] };
+}
+
+export const BusinessLogicChangesTableData = {
+  encode(message: BusinessLogicChangesTable, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
+    for (const v of message.columns) {
+      BusinessLogicChangesColumnData.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): BusinessLogicChangesTable {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBusinessLogicChangesTable();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.int32();
+          break;
+        case 2:
+          message.name = reader.string();
+          break;
+        case 3:
+          message.columns.push(BusinessLogicChangesColumnData.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BusinessLogicChangesTable {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      name: isSet(object.name) ? String(object.name) : "",
+      columns: Array.isArray(object?.columns)
+        ? object.columns.map((e: any) => BusinessLogicChangesColumnData.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: BusinessLogicChangesTable): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.name !== undefined && (obj.name = message.name);
+    if (message.columns) {
+      obj.columns = message.columns.map((e) => e ? BusinessLogicChangesColumnData.toJSON(e) : undefined);
+    } else {
+      obj.columns = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<BusinessLogicChangesTable>): BusinessLogicChangesTable {
+    const message = createBaseBusinessLogicChangesTable();
+    message.id = object.id ?? 0;
+    message.name = object.name ?? "";
+    message.columns = object.columns?.map((e) => BusinessLogicChangesColumnData.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseBusinessLogicChangesColumn(): BusinessLogicChangesColumn {
+  return { id: 0, name: "" };
+}
+
+export const BusinessLogicChangesColumnData = {
+  encode(message: BusinessLogicChangesColumn, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): BusinessLogicChangesColumn {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBusinessLogicChangesColumn();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.int32();
+          break;
+        case 2:
+          message.name = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BusinessLogicChangesColumn {
+    return { id: isSet(object.id) ? Number(object.id) : 0, name: isSet(object.name) ? String(object.name) : "" };
+  },
+
+  toJSON(message: BusinessLogicChangesColumn): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.name !== undefined && (obj.name = message.name);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<BusinessLogicChangesColumn>): BusinessLogicChangesColumn {
+    const message = createBaseBusinessLogicChangesColumn();
+    message.id = object.id ?? 0;
+    message.name = object.name ?? "";
+    return message;
+  },
+};
+
+function createBaseBlockDiff(): BlockDiff {
+  return { projectId: 0, id: 0, nodeId: "", blocks: [] };
+}
+
+export const BlockDiffData = {
+  encode(message: BlockDiff, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectId !== 0) {
       writer.uint32(8).int32(message.projectId);
-    }
-    if (message.projectGenerateQueueId !== 0) {
-      writer.uint32(16).int32(message.projectGenerateQueueId);
     }
     if (message.id !== 0) {
       writer.uint32(24).int32(message.id);
@@ -588,23 +819,20 @@ export const BlockChangesData = {
       writer.uint32(34).string(message.nodeId);
     }
     for (const v of message.blocks) {
-      BlockChangesBlockData.encode(v!, writer.uint32(42).fork()).ldelim();
+      BlockDiffBlockData.encode(v!, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): BlockChanges {
+  decode(input: _m0.Reader | Uint8Array, length?: number): BlockDiff {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseBlockChanges();
+    const message = createBaseBlockDiff();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
           message.projectId = reader.int32();
-          break;
-        case 2:
-          message.projectGenerateQueueId = reader.int32();
           break;
         case 3:
           message.id = reader.int32();
@@ -613,7 +841,7 @@ export const BlockChangesData = {
           message.nodeId = reader.string();
           break;
         case 5:
-          message.blocks.push(BlockChangesBlockData.decode(reader, reader.uint32()));
+          message.blocks.push(BlockDiffBlockData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -623,48 +851,44 @@ export const BlockChangesData = {
     return message;
   },
 
-  fromJSON(object: any): BlockChanges {
+  fromJSON(object: any): BlockDiff {
     return {
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       id: isSet(object.id) ? Number(object.id) : 0,
       nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
-      blocks: Array.isArray(object?.blocks) ? object.blocks.map((e: any) => BlockChangesBlockData.fromJSON(e)) : [],
+      blocks: Array.isArray(object?.blocks) ? object.blocks.map((e: any) => BlockDiffBlockData.fromJSON(e)) : [],
     };
   },
 
-  toJSON(message: BlockChanges): unknown {
+  toJSON(message: BlockDiff): unknown {
     const obj: any = {};
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
-    message.projectGenerateQueueId !== undefined &&
-      (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.id !== undefined && (obj.id = Math.round(message.id));
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
     if (message.blocks) {
-      obj.blocks = message.blocks.map((e) => e ? BlockChangesBlockData.toJSON(e) : undefined);
+      obj.blocks = message.blocks.map((e) => e ? BlockDiffBlockData.toJSON(e) : undefined);
     } else {
       obj.blocks = [];
     }
     return obj;
   },
 
-  fromPartial(object: DeepPartial<BlockChanges>): BlockChanges {
-    const message = createBaseBlockChanges();
+  fromPartial(object: DeepPartial<BlockDiff>): BlockDiff {
+    const message = createBaseBlockDiff();
     message.projectId = object.projectId ?? 0;
-    message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.id = object.id ?? 0;
     message.nodeId = object.nodeId ?? "";
-    message.blocks = object.blocks?.map((e) => BlockChangesBlockData.fromPartial(e)) || [];
+    message.blocks = object.blocks?.map((e) => BlockDiffBlockData.fromPartial(e)) || [];
     return message;
   },
 };
 
-function createBaseBlockChangesBlock(): BlockChangesBlock {
+function createBaseBlockDiffBlock(): BlockDiffBlock {
   return { id: 0, nodeId: "" };
 }
 
-export const BlockChangesBlockData = {
-  encode(message: BlockChangesBlock, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const BlockDiffBlockData = {
+  encode(message: BlockDiffBlock, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== 0) {
       writer.uint32(8).int32(message.id);
     }
@@ -672,21 +896,21 @@ export const BlockChangesBlockData = {
       writer.uint32(18).string(message.nodeId);
     }
     if (message.addition !== undefined) {
-      BlockChangesBlockAdditionData.encode(message.addition, writer.uint32(26).fork()).ldelim();
+      BlockDiffBlockAdditionData.encode(message.addition, writer.uint32(26).fork()).ldelim();
     }
     if (message.modification !== undefined) {
-      BlockChangesBlockModificationData.encode(message.modification, writer.uint32(34).fork()).ldelim();
+      BlockDiffBlockModificationData.encode(message.modification, writer.uint32(34).fork()).ldelim();
     }
     if (message.deletion !== undefined) {
-      BlockChangesBlockDeletionData.encode(message.deletion, writer.uint32(42).fork()).ldelim();
+      BlockDiffBlockDeletionData.encode(message.deletion, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): BlockChangesBlock {
+  decode(input: _m0.Reader | Uint8Array, length?: number): BlockDiffBlock {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseBlockChangesBlock();
+    const message = createBaseBlockDiffBlock();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -697,13 +921,13 @@ export const BlockChangesBlockData = {
           message.nodeId = reader.string();
           break;
         case 3:
-          message.addition = BlockChangesBlockAdditionData.decode(reader, reader.uint32());
+          message.addition = BlockDiffBlockAdditionData.decode(reader, reader.uint32());
           break;
         case 4:
-          message.modification = BlockChangesBlockModificationData.decode(reader, reader.uint32());
+          message.modification = BlockDiffBlockModificationData.decode(reader, reader.uint32());
           break;
         case 5:
-          message.deletion = BlockChangesBlockDeletionData.decode(reader, reader.uint32());
+          message.deletion = BlockDiffBlockDeletionData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -713,70 +937,71 @@ export const BlockChangesBlockData = {
     return message;
   },
 
-  fromJSON(object: any): BlockChangesBlock {
+  fromJSON(object: any): BlockDiffBlock {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
       nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
-      addition: isSet(object.addition) ? BlockChangesBlockAdditionData.fromJSON(object.addition) : undefined,
+      addition: isSet(object.addition) ? BlockDiffBlockAdditionData.fromJSON(object.addition) : undefined,
       modification: isSet(object.modification)
-        ? BlockChangesBlockModificationData.fromJSON(object.modification)
+        ? BlockDiffBlockModificationData.fromJSON(object.modification)
         : undefined,
-      deletion: isSet(object.deletion) ? BlockChangesBlockDeletionData.fromJSON(object.deletion) : undefined,
+      deletion: isSet(object.deletion) ? BlockDiffBlockDeletionData.fromJSON(object.deletion) : undefined,
     };
   },
 
-  toJSON(message: BlockChangesBlock): unknown {
+  toJSON(message: BlockDiffBlock): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
     message.addition !== undefined &&
-      (obj.addition = message.addition ? BlockChangesBlockAdditionData.toJSON(message.addition) : undefined);
-    message.modification !== undefined && (obj.modification = message.modification
-      ? BlockChangesBlockModificationData.toJSON(message.modification)
-      : undefined);
+      (obj.addition = message.addition ? BlockDiffBlockAdditionData.toJSON(message.addition) : undefined);
+    message.modification !== undefined &&
+      (obj.modification = message.modification
+        ? BlockDiffBlockModificationData.toJSON(message.modification)
+        : undefined);
     message.deletion !== undefined &&
-      (obj.deletion = message.deletion ? BlockChangesBlockDeletionData.toJSON(message.deletion) : undefined);
+      (obj.deletion = message.deletion ? BlockDiffBlockDeletionData.toJSON(message.deletion) : undefined);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<BlockChangesBlock>): BlockChangesBlock {
-    const message = createBaseBlockChangesBlock();
+  fromPartial(object: DeepPartial<BlockDiffBlock>): BlockDiffBlock {
+    const message = createBaseBlockDiffBlock();
     message.id = object.id ?? 0;
     message.nodeId = object.nodeId ?? "";
     message.addition = (object.addition !== undefined && object.addition !== null)
-      ? BlockChangesBlockAdditionData.fromPartial(object.addition)
+      ? BlockDiffBlockAdditionData.fromPartial(object.addition)
       : undefined;
     message.modification = (object.modification !== undefined && object.modification !== null)
-      ? BlockChangesBlockModificationData.fromPartial(object.modification)
+      ? BlockDiffBlockModificationData.fromPartial(object.modification)
       : undefined;
     message.deletion = (object.deletion !== undefined && object.deletion !== null)
-      ? BlockChangesBlockDeletionData.fromPartial(object.deletion)
+      ? BlockDiffBlockDeletionData.fromPartial(object.deletion)
       : undefined;
     return message;
   },
 };
 
-function createBaseBlockChangesBlockAddition(): BlockChangesBlockAddition {
+function createBaseBlockDiffBlockAddition(): BlockDiffBlockAddition {
   return {};
 }
 
-export const BlockChangesBlockAdditionData = {
-  encode(message: BlockChangesBlockAddition, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const BlockDiffBlockAdditionData = {
+  encode(message: BlockDiffBlockAddition, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.content !== undefined) {
-      BlockChangesBlockBodyData.encode(message.content, writer.uint32(10).fork()).ldelim();
+      BlockDiffBlockBodyData.encode(message.content, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): BlockChangesBlockAddition {
+  decode(input: _m0.Reader | Uint8Array, length?: number): BlockDiffBlockAddition {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseBlockChangesBlockAddition();
+    const message = createBaseBlockDiffBlockAddition();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.content = BlockChangesBlockBodyData.decode(reader, reader.uint32());
+          message.content = BlockDiffBlockBodyData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -786,53 +1011,53 @@ export const BlockChangesBlockAdditionData = {
     return message;
   },
 
-  fromJSON(object: any): BlockChangesBlockAddition {
-    return { content: isSet(object.content) ? BlockChangesBlockBodyData.fromJSON(object.content) : undefined };
+  fromJSON(object: any): BlockDiffBlockAddition {
+    return { content: isSet(object.content) ? BlockDiffBlockBodyData.fromJSON(object.content) : undefined };
   },
 
-  toJSON(message: BlockChangesBlockAddition): unknown {
+  toJSON(message: BlockDiffBlockAddition): unknown {
     const obj: any = {};
     message.content !== undefined &&
-      (obj.content = message.content ? BlockChangesBlockBodyData.toJSON(message.content) : undefined);
+      (obj.content = message.content ? BlockDiffBlockBodyData.toJSON(message.content) : undefined);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<BlockChangesBlockAddition>): BlockChangesBlockAddition {
-    const message = createBaseBlockChangesBlockAddition();
+  fromPartial(object: DeepPartial<BlockDiffBlockAddition>): BlockDiffBlockAddition {
+    const message = createBaseBlockDiffBlockAddition();
     message.content = (object.content !== undefined && object.content !== null)
-      ? BlockChangesBlockBodyData.fromPartial(object.content)
+      ? BlockDiffBlockBodyData.fromPartial(object.content)
       : undefined;
     return message;
   },
 };
 
-function createBaseBlockChangesBlockModification(): BlockChangesBlockModification {
+function createBaseBlockDiffBlockModification(): BlockDiffBlockModification {
   return {};
 }
 
-export const BlockChangesBlockModificationData = {
-  encode(message: BlockChangesBlockModification, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const BlockDiffBlockModificationData = {
+  encode(message: BlockDiffBlockModification, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.deletion !== undefined) {
-      BlockChangesBlockBodyData.encode(message.deletion, writer.uint32(10).fork()).ldelim();
+      BlockDiffBlockBodyData.encode(message.deletion, writer.uint32(10).fork()).ldelim();
     }
     if (message.addition !== undefined) {
-      BlockChangesBlockBodyData.encode(message.addition, writer.uint32(18).fork()).ldelim();
+      BlockDiffBlockBodyData.encode(message.addition, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): BlockChangesBlockModification {
+  decode(input: _m0.Reader | Uint8Array, length?: number): BlockDiffBlockModification {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseBlockChangesBlockModification();
+    const message = createBaseBlockDiffBlockModification();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.deletion = BlockChangesBlockBodyData.decode(reader, reader.uint32());
+          message.deletion = BlockDiffBlockBodyData.decode(reader, reader.uint32());
           break;
         case 2:
-          message.addition = BlockChangesBlockBodyData.decode(reader, reader.uint32());
+          message.addition = BlockDiffBlockBodyData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -842,55 +1067,55 @@ export const BlockChangesBlockModificationData = {
     return message;
   },
 
-  fromJSON(object: any): BlockChangesBlockModification {
+  fromJSON(object: any): BlockDiffBlockModification {
     return {
-      deletion: isSet(object.deletion) ? BlockChangesBlockBodyData.fromJSON(object.deletion) : undefined,
-      addition: isSet(object.addition) ? BlockChangesBlockBodyData.fromJSON(object.addition) : undefined,
+      deletion: isSet(object.deletion) ? BlockDiffBlockBodyData.fromJSON(object.deletion) : undefined,
+      addition: isSet(object.addition) ? BlockDiffBlockBodyData.fromJSON(object.addition) : undefined,
     };
   },
 
-  toJSON(message: BlockChangesBlockModification): unknown {
+  toJSON(message: BlockDiffBlockModification): unknown {
     const obj: any = {};
     message.deletion !== undefined &&
-      (obj.deletion = message.deletion ? BlockChangesBlockBodyData.toJSON(message.deletion) : undefined);
+      (obj.deletion = message.deletion ? BlockDiffBlockBodyData.toJSON(message.deletion) : undefined);
     message.addition !== undefined &&
-      (obj.addition = message.addition ? BlockChangesBlockBodyData.toJSON(message.addition) : undefined);
+      (obj.addition = message.addition ? BlockDiffBlockBodyData.toJSON(message.addition) : undefined);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<BlockChangesBlockModification>): BlockChangesBlockModification {
-    const message = createBaseBlockChangesBlockModification();
+  fromPartial(object: DeepPartial<BlockDiffBlockModification>): BlockDiffBlockModification {
+    const message = createBaseBlockDiffBlockModification();
     message.deletion = (object.deletion !== undefined && object.deletion !== null)
-      ? BlockChangesBlockBodyData.fromPartial(object.deletion)
+      ? BlockDiffBlockBodyData.fromPartial(object.deletion)
       : undefined;
     message.addition = (object.addition !== undefined && object.addition !== null)
-      ? BlockChangesBlockBodyData.fromPartial(object.addition)
+      ? BlockDiffBlockBodyData.fromPartial(object.addition)
       : undefined;
     return message;
   },
 };
 
-function createBaseBlockChangesBlockDeletion(): BlockChangesBlockDeletion {
+function createBaseBlockDiffBlockDeletion(): BlockDiffBlockDeletion {
   return {};
 }
 
-export const BlockChangesBlockDeletionData = {
-  encode(message: BlockChangesBlockDeletion, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const BlockDiffBlockDeletionData = {
+  encode(message: BlockDiffBlockDeletion, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.content !== undefined) {
-      BlockChangesBlockBodyData.encode(message.content, writer.uint32(10).fork()).ldelim();
+      BlockDiffBlockBodyData.encode(message.content, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): BlockChangesBlockDeletion {
+  decode(input: _m0.Reader | Uint8Array, length?: number): BlockDiffBlockDeletion {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseBlockChangesBlockDeletion();
+    const message = createBaseBlockDiffBlockDeletion();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.content = BlockChangesBlockBodyData.decode(reader, reader.uint32());
+          message.content = BlockDiffBlockBodyData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -900,32 +1125,32 @@ export const BlockChangesBlockDeletionData = {
     return message;
   },
 
-  fromJSON(object: any): BlockChangesBlockDeletion {
-    return { content: isSet(object.content) ? BlockChangesBlockBodyData.fromJSON(object.content) : undefined };
+  fromJSON(object: any): BlockDiffBlockDeletion {
+    return { content: isSet(object.content) ? BlockDiffBlockBodyData.fromJSON(object.content) : undefined };
   },
 
-  toJSON(message: BlockChangesBlockDeletion): unknown {
+  toJSON(message: BlockDiffBlockDeletion): unknown {
     const obj: any = {};
     message.content !== undefined &&
-      (obj.content = message.content ? BlockChangesBlockBodyData.toJSON(message.content) : undefined);
+      (obj.content = message.content ? BlockDiffBlockBodyData.toJSON(message.content) : undefined);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<BlockChangesBlockDeletion>): BlockChangesBlockDeletion {
-    const message = createBaseBlockChangesBlockDeletion();
+  fromPartial(object: DeepPartial<BlockDiffBlockDeletion>): BlockDiffBlockDeletion {
+    const message = createBaseBlockDiffBlockDeletion();
     message.content = (object.content !== undefined && object.content !== null)
-      ? BlockChangesBlockBodyData.fromPartial(object.content)
+      ? BlockDiffBlockBodyData.fromPartial(object.content)
       : undefined;
     return message;
   },
 };
 
-function createBaseBlockChangesBlockBody(): BlockChangesBlockBody {
+function createBaseBlockDiffBlockBody(): BlockDiffBlockBody {
   return { name: "", blockType: "", parentNodeId: "", content: [], children: [] };
 }
 
-export const BlockChangesBlockBodyData = {
-  encode(message: BlockChangesBlockBody, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const BlockDiffBlockBodyData = {
+  encode(message: BlockDiffBlockBody, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
@@ -947,10 +1172,10 @@ export const BlockChangesBlockBodyData = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): BlockChangesBlockBody {
+  decode(input: _m0.Reader | Uint8Array, length?: number): BlockDiffBlockBody {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseBlockChangesBlockBody();
+    const message = createBaseBlockDiffBlockBody();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -980,7 +1205,7 @@ export const BlockChangesBlockBodyData = {
     return message;
   },
 
-  fromJSON(object: any): BlockChangesBlockBody {
+  fromJSON(object: any): BlockDiffBlockBody {
     return {
       name: isSet(object.name) ? String(object.name) : "",
       blockType: isSet(object.blockType) ? String(object.blockType) : "",
@@ -991,7 +1216,7 @@ export const BlockChangesBlockBodyData = {
     };
   },
 
-  toJSON(message: BlockChangesBlockBody): unknown {
+  toJSON(message: BlockDiffBlockBody): unknown {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
     message.blockType !== undefined && (obj.blockType = message.blockType);
@@ -1010,8 +1235,8 @@ export const BlockChangesBlockBodyData = {
     return obj;
   },
 
-  fromPartial(object: DeepPartial<BlockChangesBlockBody>): BlockChangesBlockBody {
-    const message = createBaseBlockChangesBlockBody();
+  fromPartial(object: DeepPartial<BlockDiffBlockBody>): BlockDiffBlockBody {
+    const message = createBaseBlockDiffBlockBody();
     message.name = object.name ?? "";
     message.blockType = object.blockType ?? "";
     message.parentNodeId = object.parentNodeId ?? "";
