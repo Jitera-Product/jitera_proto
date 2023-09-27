@@ -22,9 +22,9 @@ class BusinessLogic extends \Google\Protobuf\Internal\Message
      */
     protected $name = '';
     /**
-     * Generated from protobuf field <code>int32 usecaseId = 3;</code>
+     * Generated from protobuf field <code>optional int32 usecaseId = 3;</code>
      */
-    protected $usecaseId = 0;
+    protected $usecaseId = null;
 
     /**
      * Constructor.
@@ -87,16 +87,26 @@ class BusinessLogic extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>int32 usecaseId = 3;</code>
+     * Generated from protobuf field <code>optional int32 usecaseId = 3;</code>
      * @return int
      */
     public function getUsecaseId()
     {
-        return $this->usecaseId;
+        return isset($this->usecaseId) ? $this->usecaseId : 0;
+    }
+
+    public function hasUsecaseId()
+    {
+        return isset($this->usecaseId);
+    }
+
+    public function clearUsecaseId()
+    {
+        unset($this->usecaseId);
     }
 
     /**
-     * Generated from protobuf field <code>int32 usecaseId = 3;</code>
+     * Generated from protobuf field <code>optional int32 usecaseId = 3;</code>
      * @param int $var
      * @return $this
      */

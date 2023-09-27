@@ -215,7 +215,7 @@ export class ApiChangesApiSchema {
 export class ApiChangesBusinessLogic {
   id: number;
   name: string;
-  usecaseId: number;
+  usecaseId?: number | undefined;
 }
 
 export class ApiChangesRequestItem {
@@ -1459,7 +1459,7 @@ export const ApiChangesApiSchemaData = {
 };
 
 function createBaseApiChangesBusinessLogic(): ApiChangesBusinessLogic {
-  return { id: 0, name: "", usecaseId: 0 };
+  return { id: 0, name: "" };
 }
 
 export const ApiChangesBusinessLogicData = {
@@ -1470,7 +1470,7 @@ export const ApiChangesBusinessLogicData = {
     if (message.name !== "") {
       writer.uint32(18).string(message.name);
     }
-    if (message.usecaseId !== 0) {
+    if (message.usecaseId !== undefined) {
       writer.uint32(24).int32(message.usecaseId);
     }
     return writer;
@@ -1504,7 +1504,7 @@ export const ApiChangesBusinessLogicData = {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
       name: isSet(object.name) ? String(object.name) : "",
-      usecaseId: isSet(object.usecaseId) ? Number(object.usecaseId) : 0,
+      usecaseId: isSet(object.usecaseId) ? Number(object.usecaseId) : undefined,
     };
   },
 
@@ -1520,7 +1520,7 @@ export const ApiChangesBusinessLogicData = {
     const message = createBaseApiChangesBusinessLogic();
     message.id = object.id ?? 0;
     message.name = object.name ?? "";
-    message.usecaseId = object.usecaseId ?? 0;
+    message.usecaseId = object.usecaseId ?? undefined;
     return message;
   },
 };
