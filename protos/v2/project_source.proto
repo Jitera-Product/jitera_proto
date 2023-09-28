@@ -55,8 +55,9 @@ message ERDConfig {
 message BusinessLogicChanges {
 	int32 project_generate_queue_id = 1;
 	repeated Table tables = 2;
-	ProjectSource project_source = 3;
-	BlockDiff block_diff = 4;
+	repeated Relation relations = 3;
+	ProjectSource project_source = 4;
+	BlockDiff block_diff = 5;
 
 	message Table {
 		int32 id = 1;
@@ -67,6 +68,15 @@ message BusinessLogicChanges {
 	message Column {
 		int32 id = 1;
 		string name = 2;
+		string type = 3;
+	}
+
+	message Relation {
+		int32 id = 1;
+		string column = 2;
+		string table = 3;
+		string related_table = 4;
+		string type = 5;
 	}
 }
 

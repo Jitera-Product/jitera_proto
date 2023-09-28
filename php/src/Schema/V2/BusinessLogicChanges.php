@@ -22,11 +22,15 @@ class BusinessLogicChanges extends \Google\Protobuf\Internal\Message
      */
     private $tables;
     /**
-     * Generated from protobuf field <code>.schema.v2.ProjectSource project_source = 3;</code>
+     * Generated from protobuf field <code>repeated .schema.v2.BusinessLogicChanges.Relation relations = 3;</code>
+     */
+    private $relations;
+    /**
+     * Generated from protobuf field <code>.schema.v2.ProjectSource project_source = 4;</code>
      */
     protected $project_source = null;
     /**
-     * Generated from protobuf field <code>.schema.v2.BlockDiff block_diff = 4;</code>
+     * Generated from protobuf field <code>.schema.v2.BlockDiff block_diff = 5;</code>
      */
     protected $block_diff = null;
 
@@ -38,6 +42,7 @@ class BusinessLogicChanges extends \Google\Protobuf\Internal\Message
      *
      *     @type int $project_generate_queue_id
      *     @type array<\Schema\V2\BusinessLogicChanges\Table>|\Google\Protobuf\Internal\RepeatedField $tables
+     *     @type array<\Schema\V2\BusinessLogicChanges\Relation>|\Google\Protobuf\Internal\RepeatedField $relations
      *     @type \Schema\V2\ProjectSource $project_source
      *     @type \Schema\V2\BlockDiff $block_diff
      * }
@@ -92,7 +97,29 @@ class BusinessLogicChanges extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>.schema.v2.ProjectSource project_source = 3;</code>
+     * Generated from protobuf field <code>repeated .schema.v2.BusinessLogicChanges.Relation relations = 3;</code>
+     * @return \Google\Protobuf\Internal\RepeatedField
+     */
+    public function getRelations()
+    {
+        return $this->relations;
+    }
+
+    /**
+     * Generated from protobuf field <code>repeated .schema.v2.BusinessLogicChanges.Relation relations = 3;</code>
+     * @param array<\Schema\V2\BusinessLogicChanges\Relation>|\Google\Protobuf\Internal\RepeatedField $var
+     * @return $this
+     */
+    public function setRelations($var)
+    {
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Schema\V2\BusinessLogicChanges\Relation::class);
+        $this->relations = $arr;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.schema.v2.ProjectSource project_source = 4;</code>
      * @return \Schema\V2\ProjectSource|null
      */
     public function getProjectSource()
@@ -111,7 +138,7 @@ class BusinessLogicChanges extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>.schema.v2.ProjectSource project_source = 3;</code>
+     * Generated from protobuf field <code>.schema.v2.ProjectSource project_source = 4;</code>
      * @param \Schema\V2\ProjectSource $var
      * @return $this
      */
@@ -124,7 +151,7 @@ class BusinessLogicChanges extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>.schema.v2.BlockDiff block_diff = 4;</code>
+     * Generated from protobuf field <code>.schema.v2.BlockDiff block_diff = 5;</code>
      * @return \Schema\V2\BlockDiff|null
      */
     public function getBlockDiff()
@@ -143,7 +170,7 @@ class BusinessLogicChanges extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>.schema.v2.BlockDiff block_diff = 4;</code>
+     * Generated from protobuf field <code>.schema.v2.BlockDiff block_diff = 5;</code>
      * @param \Schema\V2\BlockDiff $var
      * @return $this
      */
