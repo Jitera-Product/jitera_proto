@@ -25,7 +25,7 @@ message BusinessLogic {
   }
 
   message Property {
-    optional int32 use_case_id = 1;
+    optional string use_case_id = 1;
     optional string category = 2;
     optional int32 level = 3;
     optional string text_color = 4;

@@ -26,7 +26,7 @@ export class BusinessLogicContent {
 }
 
 export class BusinessLogicProperty {
-  useCaseId?: number | undefined;
+  useCaseId?: string | undefined;
   category?: string | undefined;
   level?: number | undefined;
   textColor?: string | undefined;
@@ -325,7 +325,7 @@ function createBaseBusinessLogicProperty(): BusinessLogicProperty {
 export const BusinessLogicPropertyData = {
   encode(message: BusinessLogicProperty, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.useCaseId !== undefined) {
-      writer.uint32(8).int32(message.useCaseId);
+      writer.uint32(10).string(message.useCaseId);
     }
     if (message.category !== undefined) {
       writer.uint32(18).string(message.category);
@@ -353,7 +353,7 @@ export const BusinessLogicPropertyData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.useCaseId = reader.int32();
+          message.useCaseId = reader.string();
           break;
         case 2:
           message.category = reader.string();
@@ -380,7 +380,7 @@ export const BusinessLogicPropertyData = {
 
   fromJSON(object: any): BusinessLogicProperty {
     return {
-      useCaseId: isSet(object.useCaseId) ? Number(object.useCaseId) : undefined,
+      useCaseId: isSet(object.useCaseId) ? String(object.useCaseId) : undefined,
       category: isSet(object.category) ? String(object.category) : undefined,
       level: isSet(object.level) ? Number(object.level) : undefined,
       textColor: isSet(object.textColor) ? String(object.textColor) : undefined,
@@ -391,7 +391,7 @@ export const BusinessLogicPropertyData = {
 
   toJSON(message: BusinessLogicProperty): unknown {
     const obj: any = {};
-    message.useCaseId !== undefined && (obj.useCaseId = Math.round(message.useCaseId));
+    message.useCaseId !== undefined && (obj.useCaseId = message.useCaseId);
     message.category !== undefined && (obj.category = message.category);
     message.level !== undefined && (obj.level = Math.round(message.level));
     message.textColor !== undefined && (obj.textColor = message.textColor);
