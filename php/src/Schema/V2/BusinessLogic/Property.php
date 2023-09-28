@@ -14,7 +14,7 @@ use Google\Protobuf\Internal\GPBUtil;
 class Property extends \Google\Protobuf\Internal\Message
 {
     /**
-     * Generated from protobuf field <code>optional int32 use_case_id = 1;</code>
+     * Generated from protobuf field <code>optional string use_case_id = 1;</code>
      */
     protected $use_case_id = null;
     /**
@@ -44,7 +44,7 @@ class Property extends \Google\Protobuf\Internal\Message
      * @param array $data {
      *     Optional. Data for populating the Message object.
      *
-     *     @type int $use_case_id
+     *     @type string $use_case_id
      *     @type string $category
      *     @type int $level
      *     @type string $text_color
@@ -58,12 +58,12 @@ class Property extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>optional int32 use_case_id = 1;</code>
-     * @return int
+     * Generated from protobuf field <code>optional string use_case_id = 1;</code>
+     * @return string
      */
     public function getUseCaseId()
     {
-        return isset($this->use_case_id) ? $this->use_case_id : 0;
+        return isset($this->use_case_id) ? $this->use_case_id : '';
     }
 
     public function hasUseCaseId()
@@ -77,13 +77,13 @@ class Property extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>optional int32 use_case_id = 1;</code>
-     * @param int $var
+     * Generated from protobuf field <code>optional string use_case_id = 1;</code>
+     * @param string $var
      * @return $this
      */
     public function setUseCaseId($var)
     {
-        GPBUtil::checkInt32($var);
+        GPBUtil::checkString($var, True);
         $this->use_case_id = $var;
 
         return $this;
