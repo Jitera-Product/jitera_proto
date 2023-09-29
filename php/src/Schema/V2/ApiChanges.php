@@ -18,21 +18,13 @@ class ApiChanges extends \Google\Protobuf\Internal\Message
      */
     protected $project_source = null;
     /**
-     * Generated from protobuf field <code>.schema.v2.ApiChanges.ApiSchema api = 2;</code>
+     * Generated from protobuf field <code>.schema.v2.BlockDiff block_diff = 2;</code>
      */
-    protected $api = null;
+    protected $block_diff = null;
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.ApiChanges.RequestItem requests = 3;</code>
+     * Generated from protobuf field <code>int32 project_generate_queue_id = 4;</code>
      */
-    private $requests;
-    /**
-     * Generated from protobuf field <code>repeated .schema.v2.ApiChanges.RequestItem responses = 4;</code>
-     */
-    private $responses;
-    /**
-     * Generated from protobuf field <code>repeated .schema.v2.ApiChanges.BusinessLogic business_logics = 5;</code>
-     */
-    private $business_logics;
+    protected $project_generate_queue_id = 0;
 
     /**
      * Constructor.
@@ -41,10 +33,8 @@ class ApiChanges extends \Google\Protobuf\Internal\Message
      *     Optional. Data for populating the Message object.
      *
      *     @type \Schema\V2\ProjectSource $project_source
-     *     @type \Schema\V2\ApiChanges\ApiSchema $api
-     *     @type array<\Schema\V2\ApiChanges\RequestItem>|\Google\Protobuf\Internal\RepeatedField $requests
-     *     @type array<\Schema\V2\ApiChanges\RequestItem>|\Google\Protobuf\Internal\RepeatedField $responses
-     *     @type array<\Schema\V2\ApiChanges\BusinessLogic>|\Google\Protobuf\Internal\RepeatedField $business_logics
+     *     @type \Schema\V2\BlockDiff $block_diff
+     *     @type int $project_generate_queue_id
      * }
      */
     public function __construct($data = NULL) {
@@ -85,99 +75,55 @@ class ApiChanges extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>.schema.v2.ApiChanges.ApiSchema api = 2;</code>
-     * @return \Schema\V2\ApiChanges\ApiSchema|null
+     * Generated from protobuf field <code>.schema.v2.BlockDiff block_diff = 2;</code>
+     * @return \Schema\V2\BlockDiff|null
      */
-    public function getApi()
+    public function getBlockDiff()
     {
-        return $this->api;
+        return $this->block_diff;
     }
 
-    public function hasApi()
+    public function hasBlockDiff()
     {
-        return isset($this->api);
+        return isset($this->block_diff);
     }
 
-    public function clearApi()
+    public function clearBlockDiff()
     {
-        unset($this->api);
+        unset($this->block_diff);
     }
 
     /**
-     * Generated from protobuf field <code>.schema.v2.ApiChanges.ApiSchema api = 2;</code>
-     * @param \Schema\V2\ApiChanges\ApiSchema $var
+     * Generated from protobuf field <code>.schema.v2.BlockDiff block_diff = 2;</code>
+     * @param \Schema\V2\BlockDiff $var
      * @return $this
      */
-    public function setApi($var)
+    public function setBlockDiff($var)
     {
-        GPBUtil::checkMessage($var, \Schema\V2\ApiChanges\ApiSchema::class);
-        $this->api = $var;
+        GPBUtil::checkMessage($var, \Schema\V2\BlockDiff::class);
+        $this->block_diff = $var;
 
         return $this;
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.ApiChanges.RequestItem requests = 3;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * Generated from protobuf field <code>int32 project_generate_queue_id = 4;</code>
+     * @return int
      */
-    public function getRequests()
+    public function getProjectGenerateQueueId()
     {
-        return $this->requests;
+        return $this->project_generate_queue_id;
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.ApiChanges.RequestItem requests = 3;</code>
-     * @param array<\Schema\V2\ApiChanges\RequestItem>|\Google\Protobuf\Internal\RepeatedField $var
+     * Generated from protobuf field <code>int32 project_generate_queue_id = 4;</code>
+     * @param int $var
      * @return $this
      */
-    public function setRequests($var)
+    public function setProjectGenerateQueueId($var)
     {
-        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Schema\V2\ApiChanges\RequestItem::class);
-        $this->requests = $arr;
-
-        return $this;
-    }
-
-    /**
-     * Generated from protobuf field <code>repeated .schema.v2.ApiChanges.RequestItem responses = 4;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
-     */
-    public function getResponses()
-    {
-        return $this->responses;
-    }
-
-    /**
-     * Generated from protobuf field <code>repeated .schema.v2.ApiChanges.RequestItem responses = 4;</code>
-     * @param array<\Schema\V2\ApiChanges\RequestItem>|\Google\Protobuf\Internal\RepeatedField $var
-     * @return $this
-     */
-    public function setResponses($var)
-    {
-        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Schema\V2\ApiChanges\RequestItem::class);
-        $this->responses = $arr;
-
-        return $this;
-    }
-
-    /**
-     * Generated from protobuf field <code>repeated .schema.v2.ApiChanges.BusinessLogic business_logics = 5;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
-     */
-    public function getBusinessLogics()
-    {
-        return $this->business_logics;
-    }
-
-    /**
-     * Generated from protobuf field <code>repeated .schema.v2.ApiChanges.BusinessLogic business_logics = 5;</code>
-     * @param array<\Schema\V2\ApiChanges\BusinessLogic>|\Google\Protobuf\Internal\RepeatedField $var
-     * @return $this
-     */
-    public function setBusinessLogics($var)
-    {
-        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Schema\V2\ApiChanges\BusinessLogic::class);
-        $this->business_logics = $arr;
+        GPBUtil::checkInt32($var);
+        $this->project_generate_queue_id = $var;
 
         return $this;
     }
