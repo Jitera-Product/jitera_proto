@@ -26,7 +26,11 @@ class BlockDiff extends \Google\Protobuf\Internal\Message
      */
     protected $node_id = '';
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.BlockDiff.Block blocks = 5;</code>
+     * Generated from protobuf field <code>.schema.v2.BlockDiff.BlockBody content = 5;</code>
+     */
+    protected $content = null;
+    /**
+     * Generated from protobuf field <code>repeated .schema.v2.BlockDiff.Block blocks = 6;</code>
      */
     private $blocks;
 
@@ -39,6 +43,7 @@ class BlockDiff extends \Google\Protobuf\Internal\Message
      *     @type int $project_id
      *     @type int $id
      *     @type string $node_id
+     *     @type \Schema\V2\BlockDiff\BlockBody $content
      *     @type array<\Schema\V2\BlockDiff\Block>|\Google\Protobuf\Internal\RepeatedField $blocks
      * }
      */
@@ -114,7 +119,39 @@ class BlockDiff extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.BlockDiff.Block blocks = 5;</code>
+     * Generated from protobuf field <code>.schema.v2.BlockDiff.BlockBody content = 5;</code>
+     * @return \Schema\V2\BlockDiff\BlockBody|null
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    public function hasContent()
+    {
+        return isset($this->content);
+    }
+
+    public function clearContent()
+    {
+        unset($this->content);
+    }
+
+    /**
+     * Generated from protobuf field <code>.schema.v2.BlockDiff.BlockBody content = 5;</code>
+     * @param \Schema\V2\BlockDiff\BlockBody $var
+     * @return $this
+     */
+    public function setContent($var)
+    {
+        GPBUtil::checkMessage($var, \Schema\V2\BlockDiff\BlockBody::class);
+        $this->content = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>repeated .schema.v2.BlockDiff.Block blocks = 6;</code>
      * @return \Google\Protobuf\Internal\RepeatedField
      */
     public function getBlocks()
@@ -123,7 +160,7 @@ class BlockDiff extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.BlockDiff.Block blocks = 5;</code>
+     * Generated from protobuf field <code>repeated .schema.v2.BlockDiff.Block blocks = 6;</code>
      * @param array<\Schema\V2\BlockDiff\Block>|\Google\Protobuf\Internal\RepeatedField $var
      * @return $this
      */
