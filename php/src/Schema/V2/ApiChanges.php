@@ -22,11 +22,11 @@ class ApiChanges extends \Google\Protobuf\Internal\Message
      */
     protected $block_diff = null;
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.Table tables = 3;</code>
+     * Generated from protobuf field <code>repeated .schema.v2.ProjectSource.Table tables = 3;</code>
      */
     private $tables;
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.Table.Relation relations = 4;</code>
+     * Generated from protobuf field <code>repeated .schema.v2.ProjectSource.Relation relations = 4;</code>
      */
     private $relations;
     /**
@@ -42,8 +42,8 @@ class ApiChanges extends \Google\Protobuf\Internal\Message
      *
      *     @type \Schema\V2\ProjectSource $project_source
      *     @type \Schema\V2\BlockDiff $block_diff
-     *     @type array<\Schema\V2\Table>|\Google\Protobuf\Internal\RepeatedField $tables
-     *     @type array<\Schema\V2\Table\Relation>|\Google\Protobuf\Internal\RepeatedField $relations
+     *     @type array<\Schema\V2\ProjectSource\Table>|\Google\Protobuf\Internal\RepeatedField $tables
+     *     @type array<\Schema\V2\ProjectSource\Relation>|\Google\Protobuf\Internal\RepeatedField $relations
      *     @type int $project_generate_queue_id
      * }
      */
@@ -117,7 +117,7 @@ class ApiChanges extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.Table tables = 3;</code>
+     * Generated from protobuf field <code>repeated .schema.v2.ProjectSource.Table tables = 3;</code>
      * @return \Google\Protobuf\Internal\RepeatedField
      */
     public function getTables()
@@ -126,20 +126,20 @@ class ApiChanges extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.Table tables = 3;</code>
-     * @param array<\Schema\V2\Table>|\Google\Protobuf\Internal\RepeatedField $var
+     * Generated from protobuf field <code>repeated .schema.v2.ProjectSource.Table tables = 3;</code>
+     * @param array<\Schema\V2\ProjectSource\Table>|\Google\Protobuf\Internal\RepeatedField $var
      * @return $this
      */
     public function setTables($var)
     {
-        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Schema\V2\Table::class);
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Schema\V2\ProjectSource\Table::class);
         $this->tables = $arr;
 
         return $this;
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.Table.Relation relations = 4;</code>
+     * Generated from protobuf field <code>repeated .schema.v2.ProjectSource.Relation relations = 4;</code>
      * @return \Google\Protobuf\Internal\RepeatedField
      */
     public function getRelations()
@@ -148,13 +148,13 @@ class ApiChanges extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.Table.Relation relations = 4;</code>
-     * @param array<\Schema\V2\Table\Relation>|\Google\Protobuf\Internal\RepeatedField $var
+     * Generated from protobuf field <code>repeated .schema.v2.ProjectSource.Relation relations = 4;</code>
+     * @param array<\Schema\V2\ProjectSource\Relation>|\Google\Protobuf\Internal\RepeatedField $var
      * @return $this
      */
     public function setRelations($var)
     {
-        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Schema\V2\Table\Relation::class);
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Schema\V2\ProjectSource\Relation::class);
         $this->relations = $arr;
 
         return $this;

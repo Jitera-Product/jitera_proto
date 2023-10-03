@@ -18,7 +18,7 @@ class ERDConfig extends \Google\Protobuf\Internal\Message
      */
     protected $project_generate_queue_id = 0;
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.ERDConfig.Table tables = 2;</code>
+     * Generated from protobuf field <code>repeated .schema.v2.ProjectSource.Table tables = 2;</code>
      */
     private $tables;
     /**
@@ -37,7 +37,7 @@ class ERDConfig extends \Google\Protobuf\Internal\Message
      *     Optional. Data for populating the Message object.
      *
      *     @type int $project_generate_queue_id
-     *     @type array<\Schema\V2\ERDConfig\Table>|\Google\Protobuf\Internal\RepeatedField $tables
+     *     @type array<\Schema\V2\ProjectSource\Table>|\Google\Protobuf\Internal\RepeatedField $tables
      *     @type string $source_path
      *     @type \Schema\V2\ProjectSource $project_source
      * }
@@ -70,7 +70,7 @@ class ERDConfig extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.ERDConfig.Table tables = 2;</code>
+     * Generated from protobuf field <code>repeated .schema.v2.ProjectSource.Table tables = 2;</code>
      * @return \Google\Protobuf\Internal\RepeatedField
      */
     public function getTables()
@@ -79,13 +79,13 @@ class ERDConfig extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.ERDConfig.Table tables = 2;</code>
-     * @param array<\Schema\V2\ERDConfig\Table>|\Google\Protobuf\Internal\RepeatedField $var
+     * Generated from protobuf field <code>repeated .schema.v2.ProjectSource.Table tables = 2;</code>
+     * @param array<\Schema\V2\ProjectSource\Table>|\Google\Protobuf\Internal\RepeatedField $var
      * @return $this
      */
     public function setTables($var)
     {
-        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Schema\V2\ERDConfig\Table::class);
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Schema\V2\ProjectSource\Table::class);
         $this->tables = $arr;
 
         return $this;
