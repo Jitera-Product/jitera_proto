@@ -22,6 +22,10 @@ class ApiChanges extends \Google\Protobuf\Internal\Message
      */
     protected $block_diff = null;
     /**
+     * Generated from protobuf field <code>repeated .schema.v2.ApiChanges.Table tables = 3;</code>
+     */
+    private $tables;
+    /**
      * Generated from protobuf field <code>int32 project_generate_queue_id = 4;</code>
      */
     protected $project_generate_queue_id = 0;
@@ -34,6 +38,7 @@ class ApiChanges extends \Google\Protobuf\Internal\Message
      *
      *     @type \Schema\V2\ProjectSource $project_source
      *     @type \Schema\V2\BlockDiff $block_diff
+     *     @type array<\Schema\V2\ApiChanges\Table>|\Google\Protobuf\Internal\RepeatedField $tables
      *     @type int $project_generate_queue_id
      * }
      */
@@ -102,6 +107,28 @@ class ApiChanges extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkMessage($var, \Schema\V2\BlockDiff::class);
         $this->block_diff = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>repeated .schema.v2.ApiChanges.Table tables = 3;</code>
+     * @return \Google\Protobuf\Internal\RepeatedField
+     */
+    public function getTables()
+    {
+        return $this->tables;
+    }
+
+    /**
+     * Generated from protobuf field <code>repeated .schema.v2.ApiChanges.Table tables = 3;</code>
+     * @param array<\Schema\V2\ApiChanges\Table>|\Google\Protobuf\Internal\RepeatedField $var
+     * @return $this
+     */
+    public function setTables($var)
+    {
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Schema\V2\ApiChanges\Table::class);
+        $this->tables = $arr;
 
         return $this;
     }

@@ -124,7 +124,28 @@ message BlockDiff {
 message ApiChanges {
 	ProjectSource project_source = 1;
 	BlockDiff block_diff = 2;
+	repeated Table tables = 3;
 	int32 project_generate_queue_id = 4;
+
+	message Table {
+		int32 id = 1;
+		string name = 2;
+		repeated Column columns = 3;
+	}
+
+	message Column {
+		int32 id = 1;
+		string name = 2;
+		string type = 3;
+	}
+
+	message Relation {
+		int32 id = 1;
+		string column = 2;
+		string table = 3;
+		string related_table = 4;
+		string type = 5;
+	}
 }
 
 message ProjectSourceReport {

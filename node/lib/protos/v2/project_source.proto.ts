@@ -211,13 +211,28 @@ export class BlockDiffBlockBody {
 export class ApiChanges {
   projectSource?: ProjectSource;
   blockDiff?: BlockDiff;
-  businessLogics: ApiChangesBusinessLogic[];
+  tables: ApiChangesTable[];
   projectGenerateQueueId: number;
 }
 
-export class ApiChangesBusinessLogic {
+export class ApiChangesTable {
   id: number;
-  nodeId: string;
+  name: string;
+  columns: ApiChangesColumn[];
+}
+
+export class ApiChangesColumn {
+  id: number;
+  name: string;
+  type: string;
+}
+
+export class ApiChangesRelation {
+  id: number;
+  column: string;
+  table: string;
+  relatedTable: string;
+  type: string;
 }
 
 export class ProjectSourceReport {
@@ -1395,7 +1410,7 @@ export const BlockDiffBlockBodyData = {
 };
 
 function createBaseApiChanges(): ApiChanges {
-  return { businessLogics: [], projectGenerateQueueId: 0 };
+  return { tables: [], projectGenerateQueueId: 0 };
 }
 
 export const ApiChangesData = {
@@ -1406,8 +1421,8 @@ export const ApiChangesData = {
     if (message.blockDiff !== undefined) {
       BlockDiffData.encode(message.blockDiff, writer.uint32(18).fork()).ldelim();
     }
-    for (const v of message.businessLogics) {
-      ApiChangesBusinessLogicData.encode(v!, writer.uint32(26).fork()).ldelim();
+    for (const v of message.tables) {
+      ApiChangesTableData.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(32).int32(message.projectGenerateQueueId);
@@ -1429,7 +1444,7 @@ export const ApiChangesData = {
           message.blockDiff = BlockDiffData.decode(reader, reader.uint32());
           break;
         case 3:
-          message.businessLogics.push(ApiChangesBusinessLogicData.decode(reader, reader.uint32()));
+          message.tables.push(ApiChangesTableData.decode(reader, reader.uint32()));
           break;
         case 4:
           message.projectGenerateQueueId = reader.int32();
@@ -1446,9 +1461,7 @@ export const ApiChangesData = {
     return {
       projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
       blockDiff: isSet(object.blockDiff) ? BlockDiffData.fromJSON(object.blockDiff) : undefined,
-      businessLogics: Array.isArray(object?.businessLogics)
-        ? object.businessLogics.map((e: any) => ApiChangesBusinessLogicData.fromJSON(e))
-        : [],
+      tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => ApiChangesTableData.fromJSON(e)) : [],
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
     };
   },
@@ -1459,10 +1472,10 @@ export const ApiChangesData = {
       (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
     message.blockDiff !== undefined &&
       (obj.blockDiff = message.blockDiff ? BlockDiffData.toJSON(message.blockDiff) : undefined);
-    if (message.businessLogics) {
-      obj.businessLogics = message.businessLogics.map((e) => e ? ApiChangesBusinessLogicData.toJSON(e) : undefined);
+    if (message.tables) {
+      obj.tables = message.tables.map((e) => e ? ApiChangesTableData.toJSON(e) : undefined);
     } else {
-      obj.businessLogics = [];
+      obj.tables = [];
     }
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
@@ -1477,31 +1490,34 @@ export const ApiChangesData = {
     message.blockDiff = (object.blockDiff !== undefined && object.blockDiff !== null)
       ? BlockDiffData.fromPartial(object.blockDiff)
       : undefined;
-    message.businessLogics = object.businessLogics?.map((e) => ApiChangesBusinessLogicData.fromPartial(e)) || [];
+    message.tables = object.tables?.map((e) => ApiChangesTableData.fromPartial(e)) || [];
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     return message;
   },
 };
 
-function createBaseApiChangesBusinessLogic(): ApiChangesBusinessLogic {
-  return { id: 0, nodeId: "" };
+function createBaseApiChangesTable(): ApiChangesTable {
+  return { id: 0, name: "", columns: [] };
 }
 
-export const ApiChangesBusinessLogicData = {
-  encode(message: ApiChangesBusinessLogic, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const ApiChangesTableData = {
+  encode(message: ApiChangesTable, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== 0) {
       writer.uint32(8).int32(message.id);
     }
-    if (message.nodeId !== "") {
-      writer.uint32(18).string(message.nodeId);
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
+    for (const v of message.columns) {
+      ApiChangesColumnData.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ApiChangesBusinessLogic {
+  decode(input: _m0.Reader | Uint8Array, length?: number): ApiChangesTable {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseApiChangesBusinessLogic();
+    const message = createBaseApiChangesTable();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1509,7 +1525,10 @@ export const ApiChangesBusinessLogicData = {
           message.id = reader.int32();
           break;
         case 2:
-          message.nodeId = reader.string();
+          message.name = reader.string();
+          break;
+        case 3:
+          message.columns.push(ApiChangesColumnData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -1519,21 +1538,183 @@ export const ApiChangesBusinessLogicData = {
     return message;
   },
 
-  fromJSON(object: any): ApiChangesBusinessLogic {
-    return { id: isSet(object.id) ? Number(object.id) : 0, nodeId: isSet(object.nodeId) ? String(object.nodeId) : "" };
+  fromJSON(object: any): ApiChangesTable {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      name: isSet(object.name) ? String(object.name) : "",
+      columns: Array.isArray(object?.columns) ? object.columns.map((e: any) => ApiChangesColumnData.fromJSON(e)) : [],
+    };
   },
 
-  toJSON(message: ApiChangesBusinessLogic): unknown {
+  toJSON(message: ApiChangesTable): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
-    message.nodeId !== undefined && (obj.nodeId = message.nodeId);
+    message.name !== undefined && (obj.name = message.name);
+    if (message.columns) {
+      obj.columns = message.columns.map((e) => e ? ApiChangesColumnData.toJSON(e) : undefined);
+    } else {
+      obj.columns = [];
+    }
     return obj;
   },
 
-  fromPartial(object: DeepPartial<ApiChangesBusinessLogic>): ApiChangesBusinessLogic {
-    const message = createBaseApiChangesBusinessLogic();
+  fromPartial(object: DeepPartial<ApiChangesTable>): ApiChangesTable {
+    const message = createBaseApiChangesTable();
     message.id = object.id ?? 0;
-    message.nodeId = object.nodeId ?? "";
+    message.name = object.name ?? "";
+    message.columns = object.columns?.map((e) => ApiChangesColumnData.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseApiChangesColumn(): ApiChangesColumn {
+  return { id: 0, name: "", type: "" };
+}
+
+export const ApiChangesColumnData = {
+  encode(message: ApiChangesColumn, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
+    if (message.type !== "") {
+      writer.uint32(26).string(message.type);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ApiChangesColumn {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseApiChangesColumn();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.int32();
+          break;
+        case 2:
+          message.name = reader.string();
+          break;
+        case 3:
+          message.type = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ApiChangesColumn {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      name: isSet(object.name) ? String(object.name) : "",
+      type: isSet(object.type) ? String(object.type) : "",
+    };
+  },
+
+  toJSON(message: ApiChangesColumn): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.name !== undefined && (obj.name = message.name);
+    message.type !== undefined && (obj.type = message.type);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ApiChangesColumn>): ApiChangesColumn {
+    const message = createBaseApiChangesColumn();
+    message.id = object.id ?? 0;
+    message.name = object.name ?? "";
+    message.type = object.type ?? "";
+    return message;
+  },
+};
+
+function createBaseApiChangesRelation(): ApiChangesRelation {
+  return { id: 0, column: "", table: "", relatedTable: "", type: "" };
+}
+
+export const ApiChangesRelationData = {
+  encode(message: ApiChangesRelation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
+    if (message.column !== "") {
+      writer.uint32(18).string(message.column);
+    }
+    if (message.table !== "") {
+      writer.uint32(26).string(message.table);
+    }
+    if (message.relatedTable !== "") {
+      writer.uint32(34).string(message.relatedTable);
+    }
+    if (message.type !== "") {
+      writer.uint32(42).string(message.type);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ApiChangesRelation {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseApiChangesRelation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.int32();
+          break;
+        case 2:
+          message.column = reader.string();
+          break;
+        case 3:
+          message.table = reader.string();
+          break;
+        case 4:
+          message.relatedTable = reader.string();
+          break;
+        case 5:
+          message.type = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ApiChangesRelation {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      column: isSet(object.column) ? String(object.column) : "",
+      table: isSet(object.table) ? String(object.table) : "",
+      relatedTable: isSet(object.relatedTable) ? String(object.relatedTable) : "",
+      type: isSet(object.type) ? String(object.type) : "",
+    };
+  },
+
+  toJSON(message: ApiChangesRelation): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.column !== undefined && (obj.column = message.column);
+    message.table !== undefined && (obj.table = message.table);
+    message.relatedTable !== undefined && (obj.relatedTable = message.relatedTable);
+    message.type !== undefined && (obj.type = message.type);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ApiChangesRelation>): ApiChangesRelation {
+    const message = createBaseApiChangesRelation();
+    message.id = object.id ?? 0;
+    message.column = object.column ?? "";
+    message.table = object.table ?? "";
+    message.relatedTable = object.relatedTable ?? "";
+    message.type = object.type ?? "";
     return message;
   },
 };
