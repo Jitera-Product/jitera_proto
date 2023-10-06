@@ -18,11 +18,11 @@ class BusinessLogicChanges extends \Google\Protobuf\Internal\Message
      */
     protected $project_generate_queue_id = 0;
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.BusinessLogicChanges.Table tables = 2;</code>
+     * Generated from protobuf field <code>repeated .schema.v2.ProjectSource.Table tables = 2;</code>
      */
     private $tables;
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.BusinessLogicChanges.Relation relations = 3;</code>
+     * Generated from protobuf field <code>repeated .schema.v2.ProjectSource.Relation relations = 3;</code>
      */
     private $relations;
     /**
@@ -41,8 +41,8 @@ class BusinessLogicChanges extends \Google\Protobuf\Internal\Message
      *     Optional. Data for populating the Message object.
      *
      *     @type int $project_generate_queue_id
-     *     @type array<\Schema\V2\BusinessLogicChanges\Table>|\Google\Protobuf\Internal\RepeatedField $tables
-     *     @type array<\Schema\V2\BusinessLogicChanges\Relation>|\Google\Protobuf\Internal\RepeatedField $relations
+     *     @type array<\Schema\V2\ProjectSource\Table>|\Google\Protobuf\Internal\RepeatedField $tables
+     *     @type array<\Schema\V2\ProjectSource\Relation>|\Google\Protobuf\Internal\RepeatedField $relations
      *     @type \Schema\V2\ProjectSource $project_source
      *     @type \Schema\V2\BlockDiff $block_diff
      * }
@@ -75,7 +75,7 @@ class BusinessLogicChanges extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.BusinessLogicChanges.Table tables = 2;</code>
+     * Generated from protobuf field <code>repeated .schema.v2.ProjectSource.Table tables = 2;</code>
      * @return \Google\Protobuf\Internal\RepeatedField
      */
     public function getTables()
@@ -84,20 +84,20 @@ class BusinessLogicChanges extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.BusinessLogicChanges.Table tables = 2;</code>
-     * @param array<\Schema\V2\BusinessLogicChanges\Table>|\Google\Protobuf\Internal\RepeatedField $var
+     * Generated from protobuf field <code>repeated .schema.v2.ProjectSource.Table tables = 2;</code>
+     * @param array<\Schema\V2\ProjectSource\Table>|\Google\Protobuf\Internal\RepeatedField $var
      * @return $this
      */
     public function setTables($var)
     {
-        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Schema\V2\BusinessLogicChanges\Table::class);
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Schema\V2\ProjectSource\Table::class);
         $this->tables = $arr;
 
         return $this;
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.BusinessLogicChanges.Relation relations = 3;</code>
+     * Generated from protobuf field <code>repeated .schema.v2.ProjectSource.Relation relations = 3;</code>
      * @return \Google\Protobuf\Internal\RepeatedField
      */
     public function getRelations()
@@ -106,13 +106,13 @@ class BusinessLogicChanges extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.BusinessLogicChanges.Relation relations = 3;</code>
-     * @param array<\Schema\V2\BusinessLogicChanges\Relation>|\Google\Protobuf\Internal\RepeatedField $var
+     * Generated from protobuf field <code>repeated .schema.v2.ProjectSource.Relation relations = 3;</code>
+     * @param array<\Schema\V2\ProjectSource\Relation>|\Google\Protobuf\Internal\RepeatedField $var
      * @return $this
      */
     public function setRelations($var)
     {
-        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Schema\V2\BusinessLogicChanges\Relation::class);
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Schema\V2\ProjectSource\Relation::class);
         $this->relations = $arr;
 
         return $this;

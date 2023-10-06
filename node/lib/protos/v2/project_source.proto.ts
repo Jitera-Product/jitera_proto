@@ -118,6 +118,26 @@ export function projectSourceLayerToJSON(object: ProjectSourceLayer): string {
   }
 }
 
+export class ProjectSourceTable {
+  id: number;
+  name: string;
+  columns: ProjectSourceTableColumn[];
+}
+
+export class ProjectSourceTableColumn {
+  id: number;
+  name: string;
+  type: string;
+}
+
+export class ProjectSourceRelation {
+  id: number;
+  column: string;
+  table: string;
+  relatedTable: string;
+  type: string;
+}
+
 export class ProjectSourceCreation {
   projectGenerateQueueId: number;
   projectSource?: ProjectSource;
@@ -126,48 +146,17 @@ export class ProjectSourceCreation {
 
 export class ERDConfig {
   projectGenerateQueueId: number;
-  tables: ERDConfigTable[];
+  tables: ProjectSourceTable[];
   sourcePath: string;
   projectSource?: ProjectSource;
 }
 
-export class ERDConfigTable {
-  id: number;
-  name: string;
-  columns: ERDConfigColumn[];
-}
-
-export class ERDConfigColumn {
-  id: number;
-  name: string;
-}
-
 export class BusinessLogicChanges {
   projectGenerateQueueId: number;
-  tables: BusinessLogicChangesTable[];
-  relations: BusinessLogicChangesRelation[];
+  tables: ProjectSourceTable[];
+  relations: ProjectSourceRelation[];
   projectSource?: ProjectSource;
   blockDiff?: BlockDiff;
-}
-
-export class BusinessLogicChangesTable {
-  id: number;
-  name: string;
-  columns: BusinessLogicChangesColumn[];
-}
-
-export class BusinessLogicChangesColumn {
-  id: number;
-  name: string;
-  type: string;
-}
-
-export class BusinessLogicChangesRelation {
-  id: number;
-  column: string;
-  table: string;
-  relatedTable: string;
-  type: string;
 }
 
 export class BlockDiff {
@@ -211,13 +200,9 @@ export class BlockDiffBlockBody {
 export class ApiChanges {
   projectSource?: ProjectSource;
   blockDiff?: BlockDiff;
-  businessLogics: ApiChangesBusinessLogic[];
+  tables: ProjectSourceTable[];
+  relations: ProjectSourceRelation[];
   projectGenerateQueueId: number;
-}
-
-export class ApiChangesBusinessLogic {
-  id: number;
-  nodeId: string;
 }
 
 export class ProjectSourceReport {
@@ -328,6 +313,231 @@ export const ProjectSourceData = {
   },
 };
 
+function createBaseProjectSourceTable(): ProjectSourceTable {
+  return { id: 0, name: "", columns: [] };
+}
+
+export const ProjectSourceTableData = {
+  encode(message: ProjectSourceTable, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
+    for (const v of message.columns) {
+      ProjectSourceTableColumnData.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectSourceTable {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseProjectSourceTable();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.int32();
+          break;
+        case 2:
+          message.name = reader.string();
+          break;
+        case 3:
+          message.columns.push(ProjectSourceTableColumnData.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ProjectSourceTable {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      name: isSet(object.name) ? String(object.name) : "",
+      columns: Array.isArray(object?.columns)
+        ? object.columns.map((e: any) => ProjectSourceTableColumnData.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: ProjectSourceTable): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.name !== undefined && (obj.name = message.name);
+    if (message.columns) {
+      obj.columns = message.columns.map((e) => e ? ProjectSourceTableColumnData.toJSON(e) : undefined);
+    } else {
+      obj.columns = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ProjectSourceTable>): ProjectSourceTable {
+    const message = createBaseProjectSourceTable();
+    message.id = object.id ?? 0;
+    message.name = object.name ?? "";
+    message.columns = object.columns?.map((e) => ProjectSourceTableColumnData.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseProjectSourceTableColumn(): ProjectSourceTableColumn {
+  return { id: 0, name: "", type: "" };
+}
+
+export const ProjectSourceTableColumnData = {
+  encode(message: ProjectSourceTableColumn, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
+    if (message.type !== "") {
+      writer.uint32(26).string(message.type);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectSourceTableColumn {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseProjectSourceTableColumn();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.int32();
+          break;
+        case 2:
+          message.name = reader.string();
+          break;
+        case 3:
+          message.type = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ProjectSourceTableColumn {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      name: isSet(object.name) ? String(object.name) : "",
+      type: isSet(object.type) ? String(object.type) : "",
+    };
+  },
+
+  toJSON(message: ProjectSourceTableColumn): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.name !== undefined && (obj.name = message.name);
+    message.type !== undefined && (obj.type = message.type);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ProjectSourceTableColumn>): ProjectSourceTableColumn {
+    const message = createBaseProjectSourceTableColumn();
+    message.id = object.id ?? 0;
+    message.name = object.name ?? "";
+    message.type = object.type ?? "";
+    return message;
+  },
+};
+
+function createBaseProjectSourceRelation(): ProjectSourceRelation {
+  return { id: 0, column: "", table: "", relatedTable: "", type: "" };
+}
+
+export const ProjectSourceRelationData = {
+  encode(message: ProjectSourceRelation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
+    if (message.column !== "") {
+      writer.uint32(18).string(message.column);
+    }
+    if (message.table !== "") {
+      writer.uint32(26).string(message.table);
+    }
+    if (message.relatedTable !== "") {
+      writer.uint32(34).string(message.relatedTable);
+    }
+    if (message.type !== "") {
+      writer.uint32(42).string(message.type);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectSourceRelation {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseProjectSourceRelation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.int32();
+          break;
+        case 2:
+          message.column = reader.string();
+          break;
+        case 3:
+          message.table = reader.string();
+          break;
+        case 4:
+          message.relatedTable = reader.string();
+          break;
+        case 5:
+          message.type = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ProjectSourceRelation {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      column: isSet(object.column) ? String(object.column) : "",
+      table: isSet(object.table) ? String(object.table) : "",
+      relatedTable: isSet(object.relatedTable) ? String(object.relatedTable) : "",
+      type: isSet(object.type) ? String(object.type) : "",
+    };
+  },
+
+  toJSON(message: ProjectSourceRelation): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.column !== undefined && (obj.column = message.column);
+    message.table !== undefined && (obj.table = message.table);
+    message.relatedTable !== undefined && (obj.relatedTable = message.relatedTable);
+    message.type !== undefined && (obj.type = message.type);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ProjectSourceRelation>): ProjectSourceRelation {
+    const message = createBaseProjectSourceRelation();
+    message.id = object.id ?? 0;
+    message.column = object.column ?? "";
+    message.table = object.table ?? "";
+    message.relatedTable = object.relatedTable ?? "";
+    message.type = object.type ?? "";
+    return message;
+  },
+};
+
 function createBaseProjectSourceCreation(): ProjectSourceCreation {
   return { projectGenerateQueueId: 0, sourcePath: "" };
 }
@@ -409,7 +619,7 @@ export const ERDConfigData = {
       writer.uint32(8).int32(message.projectGenerateQueueId);
     }
     for (const v of message.tables) {
-      ERDConfigTableData.encode(v!, writer.uint32(18).fork()).ldelim();
+      ProjectSourceTableData.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     if (message.sourcePath !== "") {
       writer.uint32(26).string(message.sourcePath);
@@ -431,7 +641,7 @@ export const ERDConfigData = {
           message.projectGenerateQueueId = reader.int32();
           break;
         case 2:
-          message.tables.push(ERDConfigTableData.decode(reader, reader.uint32()));
+          message.tables.push(ProjectSourceTableData.decode(reader, reader.uint32()));
           break;
         case 3:
           message.sourcePath = reader.string();
@@ -450,7 +660,7 @@ export const ERDConfigData = {
   fromJSON(object: any): ERDConfig {
     return {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
-      tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => ERDConfigTableData.fromJSON(e)) : [],
+      tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => ProjectSourceTableData.fromJSON(e)) : [],
       sourcePath: isSet(object.sourcePath) ? String(object.sourcePath) : "",
       projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
     };
@@ -461,7 +671,7 @@ export const ERDConfigData = {
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     if (message.tables) {
-      obj.tables = message.tables.map((e) => e ? ERDConfigTableData.toJSON(e) : undefined);
+      obj.tables = message.tables.map((e) => e ? ProjectSourceTableData.toJSON(e) : undefined);
     } else {
       obj.tables = [];
     }
@@ -474,137 +684,11 @@ export const ERDConfigData = {
   fromPartial(object: DeepPartial<ERDConfig>): ERDConfig {
     const message = createBaseERDConfig();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
-    message.tables = object.tables?.map((e) => ERDConfigTableData.fromPartial(e)) || [];
+    message.tables = object.tables?.map((e) => ProjectSourceTableData.fromPartial(e)) || [];
     message.sourcePath = object.sourcePath ?? "";
     message.projectSource = (object.projectSource !== undefined && object.projectSource !== null)
       ? ProjectSourceData.fromPartial(object.projectSource)
       : undefined;
-    return message;
-  },
-};
-
-function createBaseERDConfigTable(): ERDConfigTable {
-  return { id: 0, name: "", columns: [] };
-}
-
-export const ERDConfigTableData = {
-  encode(message: ERDConfigTable, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== 0) {
-      writer.uint32(8).int32(message.id);
-    }
-    if (message.name !== "") {
-      writer.uint32(18).string(message.name);
-    }
-    for (const v of message.columns) {
-      ERDConfigColumnData.encode(v!, writer.uint32(26).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ERDConfigTable {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseERDConfigTable();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.id = reader.int32();
-          break;
-        case 2:
-          message.name = reader.string();
-          break;
-        case 3:
-          message.columns.push(ERDConfigColumnData.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): ERDConfigTable {
-    return {
-      id: isSet(object.id) ? Number(object.id) : 0,
-      name: isSet(object.name) ? String(object.name) : "",
-      columns: Array.isArray(object?.columns) ? object.columns.map((e: any) => ERDConfigColumnData.fromJSON(e)) : [],
-    };
-  },
-
-  toJSON(message: ERDConfigTable): unknown {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.name !== undefined && (obj.name = message.name);
-    if (message.columns) {
-      obj.columns = message.columns.map((e) => e ? ERDConfigColumnData.toJSON(e) : undefined);
-    } else {
-      obj.columns = [];
-    }
-    return obj;
-  },
-
-  fromPartial(object: DeepPartial<ERDConfigTable>): ERDConfigTable {
-    const message = createBaseERDConfigTable();
-    message.id = object.id ?? 0;
-    message.name = object.name ?? "";
-    message.columns = object.columns?.map((e) => ERDConfigColumnData.fromPartial(e)) || [];
-    return message;
-  },
-};
-
-function createBaseERDConfigColumn(): ERDConfigColumn {
-  return { id: 0, name: "" };
-}
-
-export const ERDConfigColumnData = {
-  encode(message: ERDConfigColumn, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== 0) {
-      writer.uint32(8).int32(message.id);
-    }
-    if (message.name !== "") {
-      writer.uint32(18).string(message.name);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ERDConfigColumn {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseERDConfigColumn();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.id = reader.int32();
-          break;
-        case 2:
-          message.name = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): ERDConfigColumn {
-    return { id: isSet(object.id) ? Number(object.id) : 0, name: isSet(object.name) ? String(object.name) : "" };
-  },
-
-  toJSON(message: ERDConfigColumn): unknown {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.name !== undefined && (obj.name = message.name);
-    return obj;
-  },
-
-  fromPartial(object: DeepPartial<ERDConfigColumn>): ERDConfigColumn {
-    const message = createBaseERDConfigColumn();
-    message.id = object.id ?? 0;
-    message.name = object.name ?? "";
     return message;
   },
 };
@@ -619,10 +703,10 @@ export const BusinessLogicChangesData = {
       writer.uint32(8).int32(message.projectGenerateQueueId);
     }
     for (const v of message.tables) {
-      BusinessLogicChangesTableData.encode(v!, writer.uint32(18).fork()).ldelim();
+      ProjectSourceTableData.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     for (const v of message.relations) {
-      BusinessLogicChangesRelationData.encode(v!, writer.uint32(26).fork()).ldelim();
+      ProjectSourceRelationData.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     if (message.projectSource !== undefined) {
       ProjectSourceData.encode(message.projectSource, writer.uint32(34).fork()).ldelim();
@@ -644,10 +728,10 @@ export const BusinessLogicChangesData = {
           message.projectGenerateQueueId = reader.int32();
           break;
         case 2:
-          message.tables.push(BusinessLogicChangesTableData.decode(reader, reader.uint32()));
+          message.tables.push(ProjectSourceTableData.decode(reader, reader.uint32()));
           break;
         case 3:
-          message.relations.push(BusinessLogicChangesRelationData.decode(reader, reader.uint32()));
+          message.relations.push(ProjectSourceRelationData.decode(reader, reader.uint32()));
           break;
         case 4:
           message.projectSource = ProjectSourceData.decode(reader, reader.uint32());
@@ -666,11 +750,9 @@ export const BusinessLogicChangesData = {
   fromJSON(object: any): BusinessLogicChanges {
     return {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
-      tables: Array.isArray(object?.tables)
-        ? object.tables.map((e: any) => BusinessLogicChangesTableData.fromJSON(e))
-        : [],
+      tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => ProjectSourceTableData.fromJSON(e)) : [],
       relations: Array.isArray(object?.relations)
-        ? object.relations.map((e: any) => BusinessLogicChangesRelationData.fromJSON(e))
+        ? object.relations.map((e: any) => ProjectSourceRelationData.fromJSON(e))
         : [],
       projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
       blockDiff: isSet(object.blockDiff) ? BlockDiffData.fromJSON(object.blockDiff) : undefined,
@@ -682,12 +764,12 @@ export const BusinessLogicChangesData = {
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     if (message.tables) {
-      obj.tables = message.tables.map((e) => e ? BusinessLogicChangesTableData.toJSON(e) : undefined);
+      obj.tables = message.tables.map((e) => e ? ProjectSourceTableData.toJSON(e) : undefined);
     } else {
       obj.tables = [];
     }
     if (message.relations) {
-      obj.relations = message.relations.map((e) => e ? BusinessLogicChangesRelationData.toJSON(e) : undefined);
+      obj.relations = message.relations.map((e) => e ? ProjectSourceRelationData.toJSON(e) : undefined);
     } else {
       obj.relations = [];
     }
@@ -701,239 +783,14 @@ export const BusinessLogicChangesData = {
   fromPartial(object: DeepPartial<BusinessLogicChanges>): BusinessLogicChanges {
     const message = createBaseBusinessLogicChanges();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
-    message.tables = object.tables?.map((e) => BusinessLogicChangesTableData.fromPartial(e)) || [];
-    message.relations = object.relations?.map((e) => BusinessLogicChangesRelationData.fromPartial(e)) || [];
+    message.tables = object.tables?.map((e) => ProjectSourceTableData.fromPartial(e)) || [];
+    message.relations = object.relations?.map((e) => ProjectSourceRelationData.fromPartial(e)) || [];
     message.projectSource = (object.projectSource !== undefined && object.projectSource !== null)
       ? ProjectSourceData.fromPartial(object.projectSource)
       : undefined;
     message.blockDiff = (object.blockDiff !== undefined && object.blockDiff !== null)
       ? BlockDiffData.fromPartial(object.blockDiff)
       : undefined;
-    return message;
-  },
-};
-
-function createBaseBusinessLogicChangesTable(): BusinessLogicChangesTable {
-  return { id: 0, name: "", columns: [] };
-}
-
-export const BusinessLogicChangesTableData = {
-  encode(message: BusinessLogicChangesTable, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== 0) {
-      writer.uint32(8).int32(message.id);
-    }
-    if (message.name !== "") {
-      writer.uint32(18).string(message.name);
-    }
-    for (const v of message.columns) {
-      BusinessLogicChangesColumnData.encode(v!, writer.uint32(26).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): BusinessLogicChangesTable {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseBusinessLogicChangesTable();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.id = reader.int32();
-          break;
-        case 2:
-          message.name = reader.string();
-          break;
-        case 3:
-          message.columns.push(BusinessLogicChangesColumnData.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): BusinessLogicChangesTable {
-    return {
-      id: isSet(object.id) ? Number(object.id) : 0,
-      name: isSet(object.name) ? String(object.name) : "",
-      columns: Array.isArray(object?.columns)
-        ? object.columns.map((e: any) => BusinessLogicChangesColumnData.fromJSON(e))
-        : [],
-    };
-  },
-
-  toJSON(message: BusinessLogicChangesTable): unknown {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.name !== undefined && (obj.name = message.name);
-    if (message.columns) {
-      obj.columns = message.columns.map((e) => e ? BusinessLogicChangesColumnData.toJSON(e) : undefined);
-    } else {
-      obj.columns = [];
-    }
-    return obj;
-  },
-
-  fromPartial(object: DeepPartial<BusinessLogicChangesTable>): BusinessLogicChangesTable {
-    const message = createBaseBusinessLogicChangesTable();
-    message.id = object.id ?? 0;
-    message.name = object.name ?? "";
-    message.columns = object.columns?.map((e) => BusinessLogicChangesColumnData.fromPartial(e)) || [];
-    return message;
-  },
-};
-
-function createBaseBusinessLogicChangesColumn(): BusinessLogicChangesColumn {
-  return { id: 0, name: "", type: "" };
-}
-
-export const BusinessLogicChangesColumnData = {
-  encode(message: BusinessLogicChangesColumn, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== 0) {
-      writer.uint32(8).int32(message.id);
-    }
-    if (message.name !== "") {
-      writer.uint32(18).string(message.name);
-    }
-    if (message.type !== "") {
-      writer.uint32(26).string(message.type);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): BusinessLogicChangesColumn {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseBusinessLogicChangesColumn();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.id = reader.int32();
-          break;
-        case 2:
-          message.name = reader.string();
-          break;
-        case 3:
-          message.type = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): BusinessLogicChangesColumn {
-    return {
-      id: isSet(object.id) ? Number(object.id) : 0,
-      name: isSet(object.name) ? String(object.name) : "",
-      type: isSet(object.type) ? String(object.type) : "",
-    };
-  },
-
-  toJSON(message: BusinessLogicChangesColumn): unknown {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.name !== undefined && (obj.name = message.name);
-    message.type !== undefined && (obj.type = message.type);
-    return obj;
-  },
-
-  fromPartial(object: DeepPartial<BusinessLogicChangesColumn>): BusinessLogicChangesColumn {
-    const message = createBaseBusinessLogicChangesColumn();
-    message.id = object.id ?? 0;
-    message.name = object.name ?? "";
-    message.type = object.type ?? "";
-    return message;
-  },
-};
-
-function createBaseBusinessLogicChangesRelation(): BusinessLogicChangesRelation {
-  return { id: 0, column: "", table: "", relatedTable: "", type: "" };
-}
-
-export const BusinessLogicChangesRelationData = {
-  encode(message: BusinessLogicChangesRelation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== 0) {
-      writer.uint32(8).int32(message.id);
-    }
-    if (message.column !== "") {
-      writer.uint32(18).string(message.column);
-    }
-    if (message.table !== "") {
-      writer.uint32(26).string(message.table);
-    }
-    if (message.relatedTable !== "") {
-      writer.uint32(34).string(message.relatedTable);
-    }
-    if (message.type !== "") {
-      writer.uint32(42).string(message.type);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): BusinessLogicChangesRelation {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseBusinessLogicChangesRelation();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.id = reader.int32();
-          break;
-        case 2:
-          message.column = reader.string();
-          break;
-        case 3:
-          message.table = reader.string();
-          break;
-        case 4:
-          message.relatedTable = reader.string();
-          break;
-        case 5:
-          message.type = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): BusinessLogicChangesRelation {
-    return {
-      id: isSet(object.id) ? Number(object.id) : 0,
-      column: isSet(object.column) ? String(object.column) : "",
-      table: isSet(object.table) ? String(object.table) : "",
-      relatedTable: isSet(object.relatedTable) ? String(object.relatedTable) : "",
-      type: isSet(object.type) ? String(object.type) : "",
-    };
-  },
-
-  toJSON(message: BusinessLogicChangesRelation): unknown {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.column !== undefined && (obj.column = message.column);
-    message.table !== undefined && (obj.table = message.table);
-    message.relatedTable !== undefined && (obj.relatedTable = message.relatedTable);
-    message.type !== undefined && (obj.type = message.type);
-    return obj;
-  },
-
-  fromPartial(object: DeepPartial<BusinessLogicChangesRelation>): BusinessLogicChangesRelation {
-    const message = createBaseBusinessLogicChangesRelation();
-    message.id = object.id ?? 0;
-    message.column = object.column ?? "";
-    message.table = object.table ?? "";
-    message.relatedTable = object.relatedTable ?? "";
-    message.type = object.type ?? "";
     return message;
   },
 };
@@ -1395,7 +1252,7 @@ export const BlockDiffBlockBodyData = {
 };
 
 function createBaseApiChanges(): ApiChanges {
-  return { businessLogics: [], projectGenerateQueueId: 0 };
+  return { tables: [], relations: [], projectGenerateQueueId: 0 };
 }
 
 export const ApiChangesData = {
@@ -1406,11 +1263,14 @@ export const ApiChangesData = {
     if (message.blockDiff !== undefined) {
       BlockDiffData.encode(message.blockDiff, writer.uint32(18).fork()).ldelim();
     }
-    for (const v of message.businessLogics) {
-      ApiChangesBusinessLogicData.encode(v!, writer.uint32(26).fork()).ldelim();
+    for (const v of message.tables) {
+      ProjectSourceTableData.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    for (const v of message.relations) {
+      ProjectSourceRelationData.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     if (message.projectGenerateQueueId !== 0) {
-      writer.uint32(32).int32(message.projectGenerateQueueId);
+      writer.uint32(40).int32(message.projectGenerateQueueId);
     }
     return writer;
   },
@@ -1429,9 +1289,12 @@ export const ApiChangesData = {
           message.blockDiff = BlockDiffData.decode(reader, reader.uint32());
           break;
         case 3:
-          message.businessLogics.push(ApiChangesBusinessLogicData.decode(reader, reader.uint32()));
+          message.tables.push(ProjectSourceTableData.decode(reader, reader.uint32()));
           break;
         case 4:
+          message.relations.push(ProjectSourceRelationData.decode(reader, reader.uint32()));
+          break;
+        case 5:
           message.projectGenerateQueueId = reader.int32();
           break;
         default:
@@ -1446,8 +1309,9 @@ export const ApiChangesData = {
     return {
       projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
       blockDiff: isSet(object.blockDiff) ? BlockDiffData.fromJSON(object.blockDiff) : undefined,
-      businessLogics: Array.isArray(object?.businessLogics)
-        ? object.businessLogics.map((e: any) => ApiChangesBusinessLogicData.fromJSON(e))
+      tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => ProjectSourceTableData.fromJSON(e)) : [],
+      relations: Array.isArray(object?.relations)
+        ? object.relations.map((e: any) => ProjectSourceRelationData.fromJSON(e))
         : [],
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
     };
@@ -1459,10 +1323,15 @@ export const ApiChangesData = {
       (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
     message.blockDiff !== undefined &&
       (obj.blockDiff = message.blockDiff ? BlockDiffData.toJSON(message.blockDiff) : undefined);
-    if (message.businessLogics) {
-      obj.businessLogics = message.businessLogics.map((e) => e ? ApiChangesBusinessLogicData.toJSON(e) : undefined);
+    if (message.tables) {
+      obj.tables = message.tables.map((e) => e ? ProjectSourceTableData.toJSON(e) : undefined);
     } else {
-      obj.businessLogics = [];
+      obj.tables = [];
+    }
+    if (message.relations) {
+      obj.relations = message.relations.map((e) => e ? ProjectSourceRelationData.toJSON(e) : undefined);
+    } else {
+      obj.relations = [];
     }
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
@@ -1477,63 +1346,9 @@ export const ApiChangesData = {
     message.blockDiff = (object.blockDiff !== undefined && object.blockDiff !== null)
       ? BlockDiffData.fromPartial(object.blockDiff)
       : undefined;
-    message.businessLogics = object.businessLogics?.map((e) => ApiChangesBusinessLogicData.fromPartial(e)) || [];
+    message.tables = object.tables?.map((e) => ProjectSourceTableData.fromPartial(e)) || [];
+    message.relations = object.relations?.map((e) => ProjectSourceRelationData.fromPartial(e)) || [];
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
-    return message;
-  },
-};
-
-function createBaseApiChangesBusinessLogic(): ApiChangesBusinessLogic {
-  return { id: 0, nodeId: "" };
-}
-
-export const ApiChangesBusinessLogicData = {
-  encode(message: ApiChangesBusinessLogic, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== 0) {
-      writer.uint32(8).int32(message.id);
-    }
-    if (message.nodeId !== "") {
-      writer.uint32(18).string(message.nodeId);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ApiChangesBusinessLogic {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseApiChangesBusinessLogic();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.id = reader.int32();
-          break;
-        case 2:
-          message.nodeId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): ApiChangesBusinessLogic {
-    return { id: isSet(object.id) ? Number(object.id) : 0, nodeId: isSet(object.nodeId) ? String(object.nodeId) : "" };
-  },
-
-  toJSON(message: ApiChangesBusinessLogic): unknown {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.nodeId !== undefined && (obj.nodeId = message.nodeId);
-    return obj;
-  },
-
-  fromPartial(object: DeepPartial<ApiChangesBusinessLogic>): ApiChangesBusinessLogic {
-    const message = createBaseApiChangesBusinessLogic();
-    message.id = object.id ?? 0;
-    message.nodeId = object.nodeId ?? "";
     return message;
   },
 };

@@ -26,6 +26,26 @@ message ProjectSource {
 		FRONTEND = 2;
 		MOBILE = 3;
 	}
+
+	message Table {
+		int32 id = 1;
+		string name = 2;
+		repeated Column columns = 3;
+	
+		message Column {
+			int32 id = 1;
+			string name = 2;
+			string type = 3;
+		}
+	}
+
+	message Relation {
+		int32 id = 1;
+		string column = 2;
+		string table = 3;
+		string related_table = 4;
+		string type = 5;
+	}
 }
 
 message ProjectSourceCreation {
@@ -36,48 +56,17 @@ message ProjectSourceCreation {
 
 message ERDConfig {
 	int32 project_generate_queue_id = 1;
-	repeated Table tables = 2;
+	repeated ProjectSource.Table tables = 2;
 	string source_path = 3;
 	ProjectSource project_source = 4;
-
-	message Table {
-		int32 id = 1;
-		string name = 2;
-		repeated Column columns = 3;
-	}
-
-	message Column {
-		int32 id = 1;
-		string name = 2;
-	}
 }
 
 message BusinessLogicChanges {
 	int32 project_generate_queue_id = 1;
-	repeated Table tables = 2;
-	repeated Relation relations = 3;
+	repeated ProjectSource.Table tables = 2;
+	repeated ProjectSource.Relation relations = 3;
 	ProjectSource project_source = 4;
 	BlockDiff block_diff = 5;
-
-	message Table {
-		int32 id = 1;
-		string name = 2;
-		repeated Column columns = 3;
-	}
-
-	message Column {
-		int32 id = 1;
-		string name = 2;
-		string type = 3;
-	}
-
-	message Relation {
-		int32 id = 1;
-		string column = 2;
-		string table = 3;
-		string related_table = 4;
-		string type = 5;
-	}
 }
 
 message BlockDiff {
@@ -124,7 +113,9 @@ message BlockDiff {
 message ApiChanges {
 	ProjectSource project_source = 1;
 	BlockDiff block_diff = 2;
-	int32 project_generate_queue_id = 4;
+	repeated ProjectSource.Table tables = 3;
+	repeated ProjectSource.Relation relations = 4;
+	int32 project_generate_queue_id = 5;
 }
 
 message ProjectSourceReport {
