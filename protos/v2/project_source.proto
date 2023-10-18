@@ -51,7 +51,18 @@ message ProjectSource {
 message ProjectSourceCreation {
 	int32 project_generate_queue_id = 1;
 	ProjectSource project_source = 2;
-	string source_path = 3;
+
+	oneof source {
+		string source_path = 3;
+		Git git = 4;	
+	}
+
+	message Git {
+		string repo = 3;
+		string owner = 4;
+		string branch = 5;
+		string token = 6;
+	}
 }
 
 message ERDConfig {
@@ -131,8 +142,9 @@ message ProjectSourceReport {
 	}
 
 	message Progress {
-		int32 precentage = 1;
+		int32 percentage = 1;
 		string message = 2;
+		string payload = 3;
 	}
 
 	message Error {
@@ -143,4 +155,3 @@ message ProjectSourceReport {
 		string files = 4;
 	}
 }
-

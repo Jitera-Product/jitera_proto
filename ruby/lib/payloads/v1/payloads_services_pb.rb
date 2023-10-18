@@ -7,7 +7,6 @@ module Schema
   module V1
     module CoreService
       class Service
-
         include ::GRPC::GenericService
 
         self.marshal_class_method = :encode

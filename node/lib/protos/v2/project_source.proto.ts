@@ -141,7 +141,15 @@ export class ProjectSourceRelation {
 export class ProjectSourceCreation {
   projectGenerateQueueId: number;
   projectSource?: ProjectSource;
-  sourcePath: string;
+  sourcePath?: string | undefined;
+  git?: ProjectSourceCreationGit | undefined;
+}
+
+export class ProjectSourceCreationGit {
+  repo: string;
+  owner: string;
+  branch: string;
+  token: string;
 }
 
 export class ERDConfig {
@@ -216,8 +224,9 @@ export class ProjectSourceReport {
 }
 
 export class ProjectSourceReportProgress {
-  precentage: number;
+  percentage: number;
   message: string;
+  payload: string;
 }
 
 export class ProjectSourceReportError {
@@ -539,7 +548,7 @@ export const ProjectSourceRelationData = {
 };
 
 function createBaseProjectSourceCreation(): ProjectSourceCreation {
-  return { projectGenerateQueueId: 0, sourcePath: "" };
+  return { projectGenerateQueueId: 0 };
 }
 
 export const ProjectSourceCreationData = {
@@ -550,8 +559,11 @@ export const ProjectSourceCreationData = {
     if (message.projectSource !== undefined) {
       ProjectSourceData.encode(message.projectSource, writer.uint32(18).fork()).ldelim();
     }
-    if (message.sourcePath !== "") {
+    if (message.sourcePath !== undefined) {
       writer.uint32(26).string(message.sourcePath);
+    }
+    if (message.git !== undefined) {
+      ProjectSourceCreationGitData.encode(message.git, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -572,6 +584,9 @@ export const ProjectSourceCreationData = {
         case 3:
           message.sourcePath = reader.string();
           break;
+        case 4:
+          message.git = ProjectSourceCreationGitData.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -584,7 +599,8 @@ export const ProjectSourceCreationData = {
     return {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
-      sourcePath: isSet(object.sourcePath) ? String(object.sourcePath) : "",
+      sourcePath: isSet(object.sourcePath) ? String(object.sourcePath) : undefined,
+      git: isSet(object.git) ? ProjectSourceCreationGitData.fromJSON(object.git) : undefined,
     };
   },
 
@@ -595,6 +611,7 @@ export const ProjectSourceCreationData = {
     message.projectSource !== undefined &&
       (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
     message.sourcePath !== undefined && (obj.sourcePath = message.sourcePath);
+    message.git !== undefined && (obj.git = message.git ? ProjectSourceCreationGitData.toJSON(message.git) : undefined);
     return obj;
   },
 
@@ -604,7 +621,86 @@ export const ProjectSourceCreationData = {
     message.projectSource = (object.projectSource !== undefined && object.projectSource !== null)
       ? ProjectSourceData.fromPartial(object.projectSource)
       : undefined;
-    message.sourcePath = object.sourcePath ?? "";
+    message.sourcePath = object.sourcePath ?? undefined;
+    message.git = (object.git !== undefined && object.git !== null)
+      ? ProjectSourceCreationGitData.fromPartial(object.git)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseProjectSourceCreationGit(): ProjectSourceCreationGit {
+  return { repo: "", owner: "", branch: "", token: "" };
+}
+
+export const ProjectSourceCreationGitData = {
+  encode(message: ProjectSourceCreationGit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.repo !== "") {
+      writer.uint32(26).string(message.repo);
+    }
+    if (message.owner !== "") {
+      writer.uint32(34).string(message.owner);
+    }
+    if (message.branch !== "") {
+      writer.uint32(42).string(message.branch);
+    }
+    if (message.token !== "") {
+      writer.uint32(50).string(message.token);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectSourceCreationGit {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseProjectSourceCreationGit();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 3:
+          message.repo = reader.string();
+          break;
+        case 4:
+          message.owner = reader.string();
+          break;
+        case 5:
+          message.branch = reader.string();
+          break;
+        case 6:
+          message.token = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ProjectSourceCreationGit {
+    return {
+      repo: isSet(object.repo) ? String(object.repo) : "",
+      owner: isSet(object.owner) ? String(object.owner) : "",
+      branch: isSet(object.branch) ? String(object.branch) : "",
+      token: isSet(object.token) ? String(object.token) : "",
+    };
+  },
+
+  toJSON(message: ProjectSourceCreationGit): unknown {
+    const obj: any = {};
+    message.repo !== undefined && (obj.repo = message.repo);
+    message.owner !== undefined && (obj.owner = message.owner);
+    message.branch !== undefined && (obj.branch = message.branch);
+    message.token !== undefined && (obj.token = message.token);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ProjectSourceCreationGit>): ProjectSourceCreationGit {
+    const message = createBaseProjectSourceCreationGit();
+    message.repo = object.repo ?? "";
+    message.owner = object.owner ?? "";
+    message.branch = object.branch ?? "";
+    message.token = object.token ?? "";
     return message;
   },
 };
@@ -1467,16 +1563,19 @@ export const ProjectSourceReportData = {
 };
 
 function createBaseProjectSourceReportProgress(): ProjectSourceReportProgress {
-  return { precentage: 0, message: "" };
+  return { percentage: 0, message: "", payload: "" };
 }
 
 export const ProjectSourceReportProgressData = {
   encode(message: ProjectSourceReportProgress, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.precentage !== 0) {
-      writer.uint32(8).int32(message.precentage);
+    if (message.percentage !== 0) {
+      writer.uint32(8).int32(message.percentage);
     }
     if (message.message !== "") {
       writer.uint32(18).string(message.message);
+    }
+    if (message.payload !== "") {
+      writer.uint32(26).string(message.payload);
     }
     return writer;
   },
@@ -1489,10 +1588,13 @@ export const ProjectSourceReportProgressData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.precentage = reader.int32();
+          message.percentage = reader.int32();
           break;
         case 2:
           message.message = reader.string();
+          break;
+        case 3:
+          message.payload = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1504,22 +1606,25 @@ export const ProjectSourceReportProgressData = {
 
   fromJSON(object: any): ProjectSourceReportProgress {
     return {
-      precentage: isSet(object.precentage) ? Number(object.precentage) : 0,
+      percentage: isSet(object.percentage) ? Number(object.percentage) : 0,
       message: isSet(object.message) ? String(object.message) : "",
+      payload: isSet(object.payload) ? String(object.payload) : "",
     };
   },
 
   toJSON(message: ProjectSourceReportProgress): unknown {
     const obj: any = {};
-    message.precentage !== undefined && (obj.precentage = Math.round(message.precentage));
+    message.percentage !== undefined && (obj.percentage = Math.round(message.percentage));
     message.message !== undefined && (obj.message = message.message);
+    message.payload !== undefined && (obj.payload = message.payload);
     return obj;
   },
 
   fromPartial(object: DeepPartial<ProjectSourceReportProgress>): ProjectSourceReportProgress {
     const message = createBaseProjectSourceReportProgress();
-    message.precentage = object.precentage ?? 0;
+    message.percentage = object.percentage ?? 0;
     message.message = object.message ?? "";
+    message.payload = object.payload ?? "";
     return message;
   },
 };
