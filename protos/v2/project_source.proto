@@ -67,9 +67,42 @@ message ProjectSourceCreation {
 
 message ERDConfig {
 	int32 project_generate_queue_id = 1;
-	repeated ProjectSource.Table tables = 2;
-	string source_path = 3;
-	ProjectSource project_source = 4;
+	ProjectSource project_source = 2;
+
+	oneof source {
+		Import import = 3;
+		Local local = 4;
+	}
+
+	message Local {
+		string source_path = 1;
+		repeated ProjectSource.Table tables = 2;
+	}
+
+
+	message Import {
+		Git git = 1;
+		repeated TableChanged tables = 2;
+	}
+	
+	message Git {
+		string repo = 3;
+		string owner = 4;
+		string branch = 5;
+		string token = 6;
+	}
+
+	message TableChanged {
+		TableChangedType type = 1;
+		ProjectSource.Table table = 2;
+	}
+
+	enum TableChangedType {
+		TABLECHANGEDTYPE_UNSPECIFIED = 0;
+		ADDED = 1;
+		UPDATED = 2;
+		DELETED = 3;
+	}
 }
 
 message BusinessLogicChanges {
