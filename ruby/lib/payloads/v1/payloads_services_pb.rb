@@ -22,6 +22,7 @@ module Schema
         rpc :ListMigrations, ::Schema::V1::ListMigrationsRequest, ::Schema::V1::ListMigrationsResponse
         rpc :GetBackend, ::Schema::V1::GetBackendRequest, ::Schema::V1::GetBackendResponse
         rpc :GetWebApp, ::Schema::V1::GetWebAppRequest, ::Schema::V1::GetWebAppResponse
+        rpc :GetGitAccessToken, ::Schema::V1::GetGitAccessTokenRequest, ::Schema::V1::GetGitAccessTokenResponse
       end
 
       Stub = Service.rpc_stub_class

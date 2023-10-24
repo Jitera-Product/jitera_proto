@@ -1479,6 +1479,16 @@ service CoreService {
 	rpc ListMigrations (ListMigrationsRequest) returns (ListMigrationsResponse) {}
 	rpc GetBackend (GetBackendRequest) returns (GetBackendResponse) {}
 	rpc GetWebApp (GetWebAppRequest) returns (GetWebAppResponse) {}
+	rpc GetGitAccessToken (GetGitAccessTokenRequest) returns (GetGitAccessTokenResponse) {}
+}
+
+message GetGitAccessTokenRequest {
+	int32 project_id = 1;
+	int32 user_id = 2;
+}
+
+message GetGitAccessTokenResponse {
+	string access_token = 1;
 }
 
 message GetWebAppRequest {
