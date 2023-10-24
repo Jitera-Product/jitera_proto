@@ -1078,6 +1078,7 @@ export function controllerAuthorizationConditionJoiningConditionToJSON(
 }
 
 export class Table {
+  id: number;
   name: string;
   columns: TableColumn[];
   relations: TableRelation[];
@@ -1085,6 +1086,7 @@ export class Table {
 }
 
 export class TableColumn {
+  id: number;
   name: string;
   type?: TableColumnColumnType;
   constraints: TableConstraint[];
@@ -7151,22 +7153,25 @@ export const ControllerAuthorizationConditionData = {
 };
 
 function createBaseTable(): Table {
-  return { name: "", columns: [], relations: [], indexes: [] };
+  return { id: 0, name: "", columns: [], relations: [], indexes: [] };
 }
 
 export const TableData = {
   encode(message: Table, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
     if (message.name !== "") {
-      writer.uint32(10).string(message.name);
+      writer.uint32(18).string(message.name);
     }
     for (const v of message.columns) {
-      TableColumnData.encode(v!, writer.uint32(18).fork()).ldelim();
+      TableColumnData.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     for (const v of message.relations) {
-      TableRelationData.encode(v!, writer.uint32(26).fork()).ldelim();
+      TableRelationData.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     for (const v of message.indexes) {
-      TableIndexData.encode(v!, writer.uint32(34).fork()).ldelim();
+      TableIndexData.encode(v!, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -7179,15 +7184,18 @@ export const TableData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.name = reader.string();
+          message.id = reader.int32();
           break;
         case 2:
-          message.columns.push(TableColumnData.decode(reader, reader.uint32()));
+          message.name = reader.string();
           break;
         case 3:
-          message.relations.push(TableRelationData.decode(reader, reader.uint32()));
+          message.columns.push(TableColumnData.decode(reader, reader.uint32()));
           break;
         case 4:
+          message.relations.push(TableRelationData.decode(reader, reader.uint32()));
+          break;
+        case 5:
           message.indexes.push(TableIndexData.decode(reader, reader.uint32()));
           break;
         default:
@@ -7200,6 +7208,7 @@ export const TableData = {
 
   fromJSON(object: any): Table {
     return {
+      id: isSet(object.id) ? Number(object.id) : 0,
       name: isSet(object.name) ? String(object.name) : "",
       columns: Array.isArray(object?.columns) ? object.columns.map((e: any) => TableColumnData.fromJSON(e)) : [],
       relations: Array.isArray(object?.relations)
@@ -7211,6 +7220,7 @@ export const TableData = {
 
   toJSON(message: Table): unknown {
     const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
     message.name !== undefined && (obj.name = message.name);
     if (message.columns) {
       obj.columns = message.columns.map((e) => e ? TableColumnData.toJSON(e) : undefined);
@@ -7232,6 +7242,7 @@ export const TableData = {
 
   fromPartial(object: DeepPartial<Table>): Table {
     const message = createBaseTable();
+    message.id = object.id ?? 0;
     message.name = object.name ?? "";
     message.columns = object.columns?.map((e) => TableColumnData.fromPartial(e)) || [];
     message.relations = object.relations?.map((e) => TableRelationData.fromPartial(e)) || [];
@@ -7241,25 +7252,28 @@ export const TableData = {
 };
 
 function createBaseTableColumn(): TableColumn {
-  return { name: "", constraints: [] };
+  return { id: 0, name: "", constraints: [] };
 }
 
 export const TableColumnData = {
   encode(message: TableColumn, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
     if (message.name !== "") {
-      writer.uint32(10).string(message.name);
+      writer.uint32(18).string(message.name);
     }
     if (message.type !== undefined) {
-      TableColumnColumnTypeData.encode(message.type, writer.uint32(18).fork()).ldelim();
+      TableColumnColumnTypeData.encode(message.type, writer.uint32(26).fork()).ldelim();
     }
     for (const v of message.constraints) {
-      TableConstraintData.encode(v!, writer.uint32(26).fork()).ldelim();
+      TableConstraintData.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     if (message.hidden !== undefined) {
-      writer.uint32(32).bool(message.hidden);
+      writer.uint32(40).bool(message.hidden);
     }
     if (message.columnValidation !== undefined) {
-      TableColumnValidationData.encode(message.columnValidation, writer.uint32(42).fork()).ldelim();
+      TableColumnValidationData.encode(message.columnValidation, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -7272,18 +7286,21 @@ export const TableColumnData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.name = reader.string();
+          message.id = reader.int32();
           break;
         case 2:
-          message.type = TableColumnColumnTypeData.decode(reader, reader.uint32());
+          message.name = reader.string();
           break;
         case 3:
-          message.constraints.push(TableConstraintData.decode(reader, reader.uint32()));
+          message.type = TableColumnColumnTypeData.decode(reader, reader.uint32());
           break;
         case 4:
-          message.hidden = reader.bool();
+          message.constraints.push(TableConstraintData.decode(reader, reader.uint32()));
           break;
         case 5:
+          message.hidden = reader.bool();
+          break;
+        case 6:
           message.columnValidation = TableColumnValidationData.decode(reader, reader.uint32());
           break;
         default:
@@ -7296,6 +7313,7 @@ export const TableColumnData = {
 
   fromJSON(object: any): TableColumn {
     return {
+      id: isSet(object.id) ? Number(object.id) : 0,
       name: isSet(object.name) ? String(object.name) : "",
       type: isSet(object.type) ? TableColumnColumnTypeData.fromJSON(object.type) : undefined,
       constraints: Array.isArray(object?.constraints)
@@ -7310,6 +7328,7 @@ export const TableColumnData = {
 
   toJSON(message: TableColumn): unknown {
     const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
     message.name !== undefined && (obj.name = message.name);
     message.type !== undefined &&
       (obj.type = message.type ? TableColumnColumnTypeData.toJSON(message.type) : undefined);
@@ -7327,6 +7346,7 @@ export const TableColumnData = {
 
   fromPartial(object: DeepPartial<TableColumn>): TableColumn {
     const message = createBaseTableColumn();
+    message.id = object.id ?? 0;
     message.name = object.name ?? "";
     message.type = (object.type !== undefined && object.type !== null)
       ? TableColumnColumnTypeData.fromPartial(object.type)

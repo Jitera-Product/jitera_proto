@@ -495,17 +495,19 @@ message Controller {
 }
 
 message Table {
-	string name = 1;
-	repeated Column columns = 2;
-	repeated Relation relations = 3;
-	repeated Index indexes = 4;
+	int32 id = 1;
+	string name = 2;
+	repeated Column columns = 3;
+	repeated Relation relations = 4;
+	repeated Index indexes = 5;
 
 	message Column {
-		string name = 1;
-		ColumnType type = 2;
-		repeated Constraint constraints = 3;
-		optional bool hidden = 4;
-		optional ColumnValidation column_validation = 5;
+		int32 id = 1;
+		string name = 2;
+		ColumnType type = 3;
+		repeated Constraint constraints = 4;
+		optional bool hidden = 5;
+		optional ColumnValidation column_validation = 6;
 
 		message ColumnType {
 			oneof types {

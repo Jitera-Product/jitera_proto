@@ -1,6 +1,7 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { StructData } from "../google/protobuf/struct.proto";
+import { Table, TableData } from "../v1/payloads.proto";
 
 export class ProjectSource {
   id: number;
@@ -155,6 +156,7 @@ export class ProjectSourceCreationGit {
 export class ERDConfig {
   projectGenerateQueueId: number;
   projectSource?: ProjectSource;
+  git?: ERDConfigGit;
   import?: ERDConfigImport | undefined;
   local?: ERDConfigLocal | undefined;
 }
@@ -206,11 +208,10 @@ export function eRDConfigTableChangedTypeToJSON(object: ERDConfigTableChangedTyp
 
 export class ERDConfigLocal {
   sourcePath: string;
-  tables: ProjectSourceTable[];
+  tables: Table[];
 }
 
 export class ERDConfigImport {
-  git?: ERDConfigGit;
   tables: ERDConfigTableChanged[];
 }
 
@@ -223,7 +224,7 @@ export class ERDConfigGit {
 
 export class ERDConfigTableChanged {
   type: ERDConfigTableChangedType;
-  table?: ProjectSourceTable;
+  table?: Table;
 }
 
 export class BusinessLogicChanges {
@@ -784,11 +785,14 @@ export const ERDConfigData = {
     if (message.projectSource !== undefined) {
       ProjectSourceData.encode(message.projectSource, writer.uint32(18).fork()).ldelim();
     }
+    if (message.git !== undefined) {
+      ERDConfigGitData.encode(message.git, writer.uint32(26).fork()).ldelim();
+    }
     if (message.import !== undefined) {
-      ERDConfigImportData.encode(message.import, writer.uint32(26).fork()).ldelim();
+      ERDConfigImportData.encode(message.import, writer.uint32(34).fork()).ldelim();
     }
     if (message.local !== undefined) {
-      ERDConfigLocalData.encode(message.local, writer.uint32(34).fork()).ldelim();
+      ERDConfigLocalData.encode(message.local, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -807,9 +811,12 @@ export const ERDConfigData = {
           message.projectSource = ProjectSourceData.decode(reader, reader.uint32());
           break;
         case 3:
-          message.import = ERDConfigImportData.decode(reader, reader.uint32());
+          message.git = ERDConfigGitData.decode(reader, reader.uint32());
           break;
         case 4:
+          message.import = ERDConfigImportData.decode(reader, reader.uint32());
+          break;
+        case 5:
           message.local = ERDConfigLocalData.decode(reader, reader.uint32());
           break;
         default:
@@ -824,6 +831,7 @@ export const ERDConfigData = {
     return {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
+      git: isSet(object.git) ? ERDConfigGitData.fromJSON(object.git) : undefined,
       import: isSet(object.import) ? ERDConfigImportData.fromJSON(object.import) : undefined,
       local: isSet(object.local) ? ERDConfigLocalData.fromJSON(object.local) : undefined,
     };
@@ -835,6 +843,7 @@ export const ERDConfigData = {
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.projectSource !== undefined &&
       (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
+    message.git !== undefined && (obj.git = message.git ? ERDConfigGitData.toJSON(message.git) : undefined);
     message.import !== undefined &&
       (obj.import = message.import ? ERDConfigImportData.toJSON(message.import) : undefined);
     message.local !== undefined && (obj.local = message.local ? ERDConfigLocalData.toJSON(message.local) : undefined);
@@ -846,6 +855,9 @@ export const ERDConfigData = {
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectSource = (object.projectSource !== undefined && object.projectSource !== null)
       ? ProjectSourceData.fromPartial(object.projectSource)
+      : undefined;
+    message.git = (object.git !== undefined && object.git !== null)
+      ? ERDConfigGitData.fromPartial(object.git)
       : undefined;
     message.import = (object.import !== undefined && object.import !== null)
       ? ERDConfigImportData.fromPartial(object.import)
@@ -867,7 +879,7 @@ export const ERDConfigLocalData = {
       writer.uint32(10).string(message.sourcePath);
     }
     for (const v of message.tables) {
-      ProjectSourceTableData.encode(v!, writer.uint32(18).fork()).ldelim();
+      TableData.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -883,7 +895,7 @@ export const ERDConfigLocalData = {
           message.sourcePath = reader.string();
           break;
         case 2:
-          message.tables.push(ProjectSourceTableData.decode(reader, reader.uint32()));
+          message.tables.push(TableData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -896,7 +908,7 @@ export const ERDConfigLocalData = {
   fromJSON(object: any): ERDConfigLocal {
     return {
       sourcePath: isSet(object.sourcePath) ? String(object.sourcePath) : "",
-      tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => ProjectSourceTableData.fromJSON(e)) : [],
+      tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => TableData.fromJSON(e)) : [],
     };
   },
 
@@ -904,7 +916,7 @@ export const ERDConfigLocalData = {
     const obj: any = {};
     message.sourcePath !== undefined && (obj.sourcePath = message.sourcePath);
     if (message.tables) {
-      obj.tables = message.tables.map((e) => e ? ProjectSourceTableData.toJSON(e) : undefined);
+      obj.tables = message.tables.map((e) => e ? TableData.toJSON(e) : undefined);
     } else {
       obj.tables = [];
     }
@@ -914,7 +926,7 @@ export const ERDConfigLocalData = {
   fromPartial(object: DeepPartial<ERDConfigLocal>): ERDConfigLocal {
     const message = createBaseERDConfigLocal();
     message.sourcePath = object.sourcePath ?? "";
-    message.tables = object.tables?.map((e) => ProjectSourceTableData.fromPartial(e)) || [];
+    message.tables = object.tables?.map((e) => TableData.fromPartial(e)) || [];
     return message;
   },
 };
@@ -925,9 +937,6 @@ function createBaseERDConfigImport(): ERDConfigImport {
 
 export const ERDConfigImportData = {
   encode(message: ERDConfigImport, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.git !== undefined) {
-      ERDConfigGitData.encode(message.git, writer.uint32(10).fork()).ldelim();
-    }
     for (const v of message.tables) {
       ERDConfigTableChangedData.encode(v!, writer.uint32(18).fork()).ldelim();
     }
@@ -941,9 +950,6 @@ export const ERDConfigImportData = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 1:
-          message.git = ERDConfigGitData.decode(reader, reader.uint32());
-          break;
         case 2:
           message.tables.push(ERDConfigTableChangedData.decode(reader, reader.uint32()));
           break;
@@ -957,14 +963,12 @@ export const ERDConfigImportData = {
 
   fromJSON(object: any): ERDConfigImport {
     return {
-      git: isSet(object.git) ? ERDConfigGitData.fromJSON(object.git) : undefined,
       tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => ERDConfigTableChangedData.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: ERDConfigImport): unknown {
     const obj: any = {};
-    message.git !== undefined && (obj.git = message.git ? ERDConfigGitData.toJSON(message.git) : undefined);
     if (message.tables) {
       obj.tables = message.tables.map((e) => e ? ERDConfigTableChangedData.toJSON(e) : undefined);
     } else {
@@ -975,9 +979,6 @@ export const ERDConfigImportData = {
 
   fromPartial(object: DeepPartial<ERDConfigImport>): ERDConfigImport {
     const message = createBaseERDConfigImport();
-    message.git = (object.git !== undefined && object.git !== null)
-      ? ERDConfigGitData.fromPartial(object.git)
-      : undefined;
     message.tables = object.tables?.map((e) => ERDConfigTableChangedData.fromPartial(e)) || [];
     return message;
   },
@@ -1069,7 +1070,7 @@ export const ERDConfigTableChangedData = {
       writer.uint32(8).int32(message.type);
     }
     if (message.table !== undefined) {
-      ProjectSourceTableData.encode(message.table, writer.uint32(18).fork()).ldelim();
+      TableData.encode(message.table, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -1085,7 +1086,7 @@ export const ERDConfigTableChangedData = {
           message.type = reader.int32() as any;
           break;
         case 2:
-          message.table = ProjectSourceTableData.decode(reader, reader.uint32());
+          message.table = TableData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1098,15 +1099,14 @@ export const ERDConfigTableChangedData = {
   fromJSON(object: any): ERDConfigTableChanged {
     return {
       type: isSet(object.type) ? eRDConfigTableChangedTypeFromJSON(object.type) : 0,
-      table: isSet(object.table) ? ProjectSourceTableData.fromJSON(object.table) : undefined,
+      table: isSet(object.table) ? TableData.fromJSON(object.table) : undefined,
     };
   },
 
   toJSON(message: ERDConfigTableChanged): unknown {
     const obj: any = {};
     message.type !== undefined && (obj.type = eRDConfigTableChangedTypeToJSON(message.type));
-    message.table !== undefined &&
-      (obj.table = message.table ? ProjectSourceTableData.toJSON(message.table) : undefined);
+    message.table !== undefined && (obj.table = message.table ? TableData.toJSON(message.table) : undefined);
     return obj;
   },
 
@@ -1114,7 +1114,7 @@ export const ERDConfigTableChangedData = {
     const message = createBaseERDConfigTableChanged();
     message.type = object.type ?? 0;
     message.table = (object.table !== undefined && object.table !== null)
-      ? ProjectSourceTableData.fromPartial(object.table)
+      ? TableData.fromPartial(object.table)
       : undefined;
     return message;
   },

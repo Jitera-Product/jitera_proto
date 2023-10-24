@@ -2,6 +2,7 @@ syntax = "proto3";
 package schema.v2;
 
 import "google/protobuf/struct.proto";
+import "v1/payloads.proto";
 
 message ProjectSource {
 	int32 id = 1;
@@ -68,20 +69,20 @@ message ProjectSourceCreation {
 message ERDConfig {
 	int32 project_generate_queue_id = 1;
 	ProjectSource project_source = 2;
+	Git git = 3;
 
 	oneof source {
-		Import import = 3;
-		Local local = 4;
+		Import import = 4;
+		Local local = 5;
 	}
 
 	message Local {
 		string source_path = 1;
-		repeated ProjectSource.Table tables = 2;
+		repeated schema.v1.Table tables = 2;
 	}
 
 
 	message Import {
-		Git git = 1;
 		repeated TableChanged tables = 2;
 	}
 	
@@ -94,7 +95,7 @@ message ERDConfig {
 
 	message TableChanged {
 		TableChangedType type = 1;
-		ProjectSource.Table table = 2;
+		schema.v1.Table table = 2;
 	}
 
 	enum TableChangedType {
