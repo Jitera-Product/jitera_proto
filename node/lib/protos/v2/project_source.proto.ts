@@ -1,6 +1,7 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { StructData } from "../google/protobuf/struct.proto";
+import { Table, TableData } from "../v1/payloads.proto";
 
 export class ProjectSource {
   id: number;
@@ -154,9 +155,76 @@ export class ProjectSourceCreationGit {
 
 export class ERDConfig {
   projectGenerateQueueId: number;
-  tables: ProjectSourceTable[];
-  sourcePath: string;
   projectSource?: ProjectSource;
+  git?: ERDConfigGit;
+  import?: ERDConfigImport | undefined;
+  local?: ERDConfigLocal | undefined;
+}
+
+export enum ERDConfigTableChangedType {
+  TABLECHANGEDTYPE_UNSPECIFIED = 0,
+  ADDED = 1,
+  UPDATED = 2,
+  DELETED = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function eRDConfigTableChangedTypeFromJSON(object: any): ERDConfigTableChangedType {
+  switch (object) {
+    case 0:
+    case "TABLECHANGEDTYPE_UNSPECIFIED":
+      return ERDConfigTableChangedType.TABLECHANGEDTYPE_UNSPECIFIED;
+    case 1:
+    case "ADDED":
+      return ERDConfigTableChangedType.ADDED;
+    case 2:
+    case "UPDATED":
+      return ERDConfigTableChangedType.UPDATED;
+    case 3:
+    case "DELETED":
+      return ERDConfigTableChangedType.DELETED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ERDConfigTableChangedType.UNRECOGNIZED;
+  }
+}
+
+export function eRDConfigTableChangedTypeToJSON(object: ERDConfigTableChangedType): string {
+  switch (object) {
+    case ERDConfigTableChangedType.TABLECHANGEDTYPE_UNSPECIFIED:
+      return "TABLECHANGEDTYPE_UNSPECIFIED";
+    case ERDConfigTableChangedType.ADDED:
+      return "ADDED";
+    case ERDConfigTableChangedType.UPDATED:
+      return "UPDATED";
+    case ERDConfigTableChangedType.DELETED:
+      return "DELETED";
+    case ERDConfigTableChangedType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export class ERDConfigLocal {
+  sourcePath: string;
+  tables: Table[];
+}
+
+export class ERDConfigImport {
+  tables: ERDConfigTableChanged[];
+}
+
+export class ERDConfigGit {
+  repo: string;
+  owner: string;
+  branch: string;
+  token: string;
+}
+
+export class ERDConfigTableChanged {
+  type: ERDConfigTableChangedType;
+  table?: Table;
 }
 
 export class BusinessLogicChanges {
@@ -706,7 +774,7 @@ export const ProjectSourceCreationGitData = {
 };
 
 function createBaseERDConfig(): ERDConfig {
-  return { projectGenerateQueueId: 0, tables: [], sourcePath: "" };
+  return { projectGenerateQueueId: 0 };
 }
 
 export const ERDConfigData = {
@@ -714,14 +782,17 @@ export const ERDConfigData = {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
     }
-    for (const v of message.tables) {
-      ProjectSourceTableData.encode(v!, writer.uint32(18).fork()).ldelim();
-    }
-    if (message.sourcePath !== "") {
-      writer.uint32(26).string(message.sourcePath);
-    }
     if (message.projectSource !== undefined) {
-      ProjectSourceData.encode(message.projectSource, writer.uint32(34).fork()).ldelim();
+      ProjectSourceData.encode(message.projectSource, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.git !== undefined) {
+      ERDConfigGitData.encode(message.git, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.import !== undefined) {
+      ERDConfigImportData.encode(message.import, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.local !== undefined) {
+      ERDConfigLocalData.encode(message.local, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -737,13 +808,16 @@ export const ERDConfigData = {
           message.projectGenerateQueueId = reader.int32();
           break;
         case 2:
-          message.tables.push(ProjectSourceTableData.decode(reader, reader.uint32()));
+          message.projectSource = ProjectSourceData.decode(reader, reader.uint32());
           break;
         case 3:
-          message.sourcePath = reader.string();
+          message.git = ERDConfigGitData.decode(reader, reader.uint32());
           break;
         case 4:
-          message.projectSource = ProjectSourceData.decode(reader, reader.uint32());
+          message.import = ERDConfigImportData.decode(reader, reader.uint32());
+          break;
+        case 5:
+          message.local = ERDConfigLocalData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -756,9 +830,10 @@ export const ERDConfigData = {
   fromJSON(object: any): ERDConfig {
     return {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
-      tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => ProjectSourceTableData.fromJSON(e)) : [],
-      sourcePath: isSet(object.sourcePath) ? String(object.sourcePath) : "",
       projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
+      git: isSet(object.git) ? ERDConfigGitData.fromJSON(object.git) : undefined,
+      import: isSet(object.import) ? ERDConfigImportData.fromJSON(object.import) : undefined,
+      local: isSet(object.local) ? ERDConfigLocalData.fromJSON(object.local) : undefined,
     };
   },
 
@@ -766,24 +841,280 @@ export const ERDConfigData = {
     const obj: any = {};
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
-    if (message.tables) {
-      obj.tables = message.tables.map((e) => e ? ProjectSourceTableData.toJSON(e) : undefined);
-    } else {
-      obj.tables = [];
-    }
-    message.sourcePath !== undefined && (obj.sourcePath = message.sourcePath);
     message.projectSource !== undefined &&
       (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
+    message.git !== undefined && (obj.git = message.git ? ERDConfigGitData.toJSON(message.git) : undefined);
+    message.import !== undefined &&
+      (obj.import = message.import ? ERDConfigImportData.toJSON(message.import) : undefined);
+    message.local !== undefined && (obj.local = message.local ? ERDConfigLocalData.toJSON(message.local) : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<ERDConfig>): ERDConfig {
     const message = createBaseERDConfig();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
-    message.tables = object.tables?.map((e) => ProjectSourceTableData.fromPartial(e)) || [];
-    message.sourcePath = object.sourcePath ?? "";
     message.projectSource = (object.projectSource !== undefined && object.projectSource !== null)
       ? ProjectSourceData.fromPartial(object.projectSource)
+      : undefined;
+    message.git = (object.git !== undefined && object.git !== null)
+      ? ERDConfigGitData.fromPartial(object.git)
+      : undefined;
+    message.import = (object.import !== undefined && object.import !== null)
+      ? ERDConfigImportData.fromPartial(object.import)
+      : undefined;
+    message.local = (object.local !== undefined && object.local !== null)
+      ? ERDConfigLocalData.fromPartial(object.local)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseERDConfigLocal(): ERDConfigLocal {
+  return { sourcePath: "", tables: [] };
+}
+
+export const ERDConfigLocalData = {
+  encode(message: ERDConfigLocal, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.sourcePath !== "") {
+      writer.uint32(10).string(message.sourcePath);
+    }
+    for (const v of message.tables) {
+      TableData.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ERDConfigLocal {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseERDConfigLocal();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.sourcePath = reader.string();
+          break;
+        case 2:
+          message.tables.push(TableData.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ERDConfigLocal {
+    return {
+      sourcePath: isSet(object.sourcePath) ? String(object.sourcePath) : "",
+      tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => TableData.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: ERDConfigLocal): unknown {
+    const obj: any = {};
+    message.sourcePath !== undefined && (obj.sourcePath = message.sourcePath);
+    if (message.tables) {
+      obj.tables = message.tables.map((e) => e ? TableData.toJSON(e) : undefined);
+    } else {
+      obj.tables = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ERDConfigLocal>): ERDConfigLocal {
+    const message = createBaseERDConfigLocal();
+    message.sourcePath = object.sourcePath ?? "";
+    message.tables = object.tables?.map((e) => TableData.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseERDConfigImport(): ERDConfigImport {
+  return { tables: [] };
+}
+
+export const ERDConfigImportData = {
+  encode(message: ERDConfigImport, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.tables) {
+      ERDConfigTableChangedData.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ERDConfigImport {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseERDConfigImport();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 2:
+          message.tables.push(ERDConfigTableChangedData.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ERDConfigImport {
+    return {
+      tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => ERDConfigTableChangedData.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: ERDConfigImport): unknown {
+    const obj: any = {};
+    if (message.tables) {
+      obj.tables = message.tables.map((e) => e ? ERDConfigTableChangedData.toJSON(e) : undefined);
+    } else {
+      obj.tables = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ERDConfigImport>): ERDConfigImport {
+    const message = createBaseERDConfigImport();
+    message.tables = object.tables?.map((e) => ERDConfigTableChangedData.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseERDConfigGit(): ERDConfigGit {
+  return { repo: "", owner: "", branch: "", token: "" };
+}
+
+export const ERDConfigGitData = {
+  encode(message: ERDConfigGit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.repo !== "") {
+      writer.uint32(26).string(message.repo);
+    }
+    if (message.owner !== "") {
+      writer.uint32(34).string(message.owner);
+    }
+    if (message.branch !== "") {
+      writer.uint32(42).string(message.branch);
+    }
+    if (message.token !== "") {
+      writer.uint32(50).string(message.token);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ERDConfigGit {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseERDConfigGit();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 3:
+          message.repo = reader.string();
+          break;
+        case 4:
+          message.owner = reader.string();
+          break;
+        case 5:
+          message.branch = reader.string();
+          break;
+        case 6:
+          message.token = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ERDConfigGit {
+    return {
+      repo: isSet(object.repo) ? String(object.repo) : "",
+      owner: isSet(object.owner) ? String(object.owner) : "",
+      branch: isSet(object.branch) ? String(object.branch) : "",
+      token: isSet(object.token) ? String(object.token) : "",
+    };
+  },
+
+  toJSON(message: ERDConfigGit): unknown {
+    const obj: any = {};
+    message.repo !== undefined && (obj.repo = message.repo);
+    message.owner !== undefined && (obj.owner = message.owner);
+    message.branch !== undefined && (obj.branch = message.branch);
+    message.token !== undefined && (obj.token = message.token);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ERDConfigGit>): ERDConfigGit {
+    const message = createBaseERDConfigGit();
+    message.repo = object.repo ?? "";
+    message.owner = object.owner ?? "";
+    message.branch = object.branch ?? "";
+    message.token = object.token ?? "";
+    return message;
+  },
+};
+
+function createBaseERDConfigTableChanged(): ERDConfigTableChanged {
+  return { type: 0 };
+}
+
+export const ERDConfigTableChangedData = {
+  encode(message: ERDConfigTableChanged, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.type !== 0) {
+      writer.uint32(8).int32(message.type);
+    }
+    if (message.table !== undefined) {
+      TableData.encode(message.table, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ERDConfigTableChanged {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseERDConfigTableChanged();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.type = reader.int32() as any;
+          break;
+        case 2:
+          message.table = TableData.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ERDConfigTableChanged {
+    return {
+      type: isSet(object.type) ? eRDConfigTableChangedTypeFromJSON(object.type) : 0,
+      table: isSet(object.table) ? TableData.fromJSON(object.table) : undefined,
+    };
+  },
+
+  toJSON(message: ERDConfigTableChanged): unknown {
+    const obj: any = {};
+    message.type !== undefined && (obj.type = eRDConfigTableChangedTypeToJSON(message.type));
+    message.table !== undefined && (obj.table = message.table ? TableData.toJSON(message.table) : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ERDConfigTableChanged>): ERDConfigTableChanged {
+    const message = createBaseERDConfigTableChanged();
+    message.type = object.type ?? 0;
+    message.table = (object.table !== undefined && object.table !== null)
+      ? TableData.fromPartial(object.table)
       : undefined;
     return message;
   },
