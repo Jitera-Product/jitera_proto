@@ -14,13 +14,17 @@ use Google\Protobuf\Internal\GPBUtil;
 class Progress extends \Google\Protobuf\Internal\Message
 {
     /**
-     * Generated from protobuf field <code>int32 precentage = 1;</code>
+     * Generated from protobuf field <code>int32 percentage = 1;</code>
      */
-    protected $precentage = 0;
+    protected $percentage = 0;
     /**
      * Generated from protobuf field <code>string message = 2;</code>
      */
     protected $message = '';
+    /**
+     * Generated from protobuf field <code>string payload = 3;</code>
+     */
+    protected $payload = '';
 
     /**
      * Constructor.
@@ -28,8 +32,9 @@ class Progress extends \Google\Protobuf\Internal\Message
      * @param array $data {
      *     Optional. Data for populating the Message object.
      *
-     *     @type int $precentage
+     *     @type int $percentage
      *     @type string $message
+     *     @type string $payload
      * }
      */
     public function __construct($data = NULL) {
@@ -38,23 +43,23 @@ class Progress extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>int32 precentage = 1;</code>
+     * Generated from protobuf field <code>int32 percentage = 1;</code>
      * @return int
      */
-    public function getPrecentage()
+    public function getPercentage()
     {
-        return $this->precentage;
+        return $this->percentage;
     }
 
     /**
-     * Generated from protobuf field <code>int32 precentage = 1;</code>
+     * Generated from protobuf field <code>int32 percentage = 1;</code>
      * @param int $var
      * @return $this
      */
-    public function setPrecentage($var)
+    public function setPercentage($var)
     {
         GPBUtil::checkInt32($var);
-        $this->precentage = $var;
+        $this->percentage = $var;
 
         return $this;
     }
@@ -77,6 +82,28 @@ class Progress extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkString($var, True);
         $this->message = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string payload = 3;</code>
+     * @return string
+     */
+    public function getPayload()
+    {
+        return $this->payload;
+    }
+
+    /**
+     * Generated from protobuf field <code>string payload = 3;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setPayload($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->payload = $var;
 
         return $this;
     }

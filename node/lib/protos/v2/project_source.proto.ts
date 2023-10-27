@@ -139,24 +139,24 @@ export class ProjectSourceRelation {
   type: string;
 }
 
-export class ProjectSourceCreation {
-  projectGenerateQueueId: number;
-  projectSource?: ProjectSource;
-  sourcePath?: string | undefined;
-  git?: ProjectSourceCreationGit | undefined;
-}
-
-export class ProjectSourceCreationGit {
+export class Git {
   repo: string;
   owner: string;
   branch: string;
   token: string;
 }
 
+export class ProjectSourceCreation {
+  projectGenerateQueueId: number;
+  projectSource?: ProjectSource;
+  sourcePath?: string | undefined;
+  git?: Git | undefined;
+}
+
 export class ERDConfig {
   projectGenerateQueueId: number;
   projectSource?: ProjectSource;
-  git?: ERDConfigGit;
+  git?: Git;
   import?: ERDConfigImport | undefined;
   local?: ERDConfigLocal | undefined;
 }
@@ -215,13 +215,6 @@ export class ERDConfigImport {
   tables: ERDConfigTableChanged[];
 }
 
-export class ERDConfigGit {
-  repo: string;
-  owner: string;
-  branch: string;
-  token: string;
-}
-
 export class ERDConfigTableChanged {
   type: ERDConfigTableChangedType;
   table?: Table;
@@ -233,6 +226,7 @@ export class BusinessLogicChanges {
   relations: ProjectSourceRelation[];
   projectSource?: ProjectSource;
   blockDiff?: BlockDiff;
+  git?: Git;
 }
 
 export class BlockDiff {
@@ -279,6 +273,7 @@ export class ApiChanges {
   tables: ProjectSourceTable[];
   relations: ProjectSourceRelation[];
   projectGenerateQueueId: number;
+  git?: Git;
 }
 
 export class ProjectSourceReport {
@@ -615,94 +610,12 @@ export const ProjectSourceRelationData = {
   },
 };
 
-function createBaseProjectSourceCreation(): ProjectSourceCreation {
-  return { projectGenerateQueueId: 0 };
-}
-
-export const ProjectSourceCreationData = {
-  encode(message: ProjectSourceCreation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.projectGenerateQueueId !== 0) {
-      writer.uint32(8).int32(message.projectGenerateQueueId);
-    }
-    if (message.projectSource !== undefined) {
-      ProjectSourceData.encode(message.projectSource, writer.uint32(18).fork()).ldelim();
-    }
-    if (message.sourcePath !== undefined) {
-      writer.uint32(26).string(message.sourcePath);
-    }
-    if (message.git !== undefined) {
-      ProjectSourceCreationGitData.encode(message.git, writer.uint32(34).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectSourceCreation {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseProjectSourceCreation();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.projectGenerateQueueId = reader.int32();
-          break;
-        case 2:
-          message.projectSource = ProjectSourceData.decode(reader, reader.uint32());
-          break;
-        case 3:
-          message.sourcePath = reader.string();
-          break;
-        case 4:
-          message.git = ProjectSourceCreationGitData.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): ProjectSourceCreation {
-    return {
-      projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
-      projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
-      sourcePath: isSet(object.sourcePath) ? String(object.sourcePath) : undefined,
-      git: isSet(object.git) ? ProjectSourceCreationGitData.fromJSON(object.git) : undefined,
-    };
-  },
-
-  toJSON(message: ProjectSourceCreation): unknown {
-    const obj: any = {};
-    message.projectGenerateQueueId !== undefined &&
-      (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
-    message.projectSource !== undefined &&
-      (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
-    message.sourcePath !== undefined && (obj.sourcePath = message.sourcePath);
-    message.git !== undefined && (obj.git = message.git ? ProjectSourceCreationGitData.toJSON(message.git) : undefined);
-    return obj;
-  },
-
-  fromPartial(object: DeepPartial<ProjectSourceCreation>): ProjectSourceCreation {
-    const message = createBaseProjectSourceCreation();
-    message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
-    message.projectSource = (object.projectSource !== undefined && object.projectSource !== null)
-      ? ProjectSourceData.fromPartial(object.projectSource)
-      : undefined;
-    message.sourcePath = object.sourcePath ?? undefined;
-    message.git = (object.git !== undefined && object.git !== null)
-      ? ProjectSourceCreationGitData.fromPartial(object.git)
-      : undefined;
-    return message;
-  },
-};
-
-function createBaseProjectSourceCreationGit(): ProjectSourceCreationGit {
+function createBaseGit(): Git {
   return { repo: "", owner: "", branch: "", token: "" };
 }
 
-export const ProjectSourceCreationGitData = {
-  encode(message: ProjectSourceCreationGit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const GitData = {
+  encode(message: Git, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.repo !== "") {
       writer.uint32(26).string(message.repo);
     }
@@ -718,10 +631,10 @@ export const ProjectSourceCreationGitData = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectSourceCreationGit {
+  decode(input: _m0.Reader | Uint8Array, length?: number): Git {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseProjectSourceCreationGit();
+    const message = createBaseGit();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -745,7 +658,7 @@ export const ProjectSourceCreationGitData = {
     return message;
   },
 
-  fromJSON(object: any): ProjectSourceCreationGit {
+  fromJSON(object: any): Git {
     return {
       repo: isSet(object.repo) ? String(object.repo) : "",
       owner: isSet(object.owner) ? String(object.owner) : "",
@@ -754,7 +667,7 @@ export const ProjectSourceCreationGitData = {
     };
   },
 
-  toJSON(message: ProjectSourceCreationGit): unknown {
+  toJSON(message: Git): unknown {
     const obj: any = {};
     message.repo !== undefined && (obj.repo = message.repo);
     message.owner !== undefined && (obj.owner = message.owner);
@@ -763,12 +676,92 @@ export const ProjectSourceCreationGitData = {
     return obj;
   },
 
-  fromPartial(object: DeepPartial<ProjectSourceCreationGit>): ProjectSourceCreationGit {
-    const message = createBaseProjectSourceCreationGit();
+  fromPartial(object: DeepPartial<Git>): Git {
+    const message = createBaseGit();
     message.repo = object.repo ?? "";
     message.owner = object.owner ?? "";
     message.branch = object.branch ?? "";
     message.token = object.token ?? "";
+    return message;
+  },
+};
+
+function createBaseProjectSourceCreation(): ProjectSourceCreation {
+  return { projectGenerateQueueId: 0 };
+}
+
+export const ProjectSourceCreationData = {
+  encode(message: ProjectSourceCreation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.projectGenerateQueueId !== 0) {
+      writer.uint32(8).int32(message.projectGenerateQueueId);
+    }
+    if (message.projectSource !== undefined) {
+      ProjectSourceData.encode(message.projectSource, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.sourcePath !== undefined) {
+      writer.uint32(26).string(message.sourcePath);
+    }
+    if (message.git !== undefined) {
+      GitData.encode(message.git, writer.uint32(34).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectSourceCreation {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseProjectSourceCreation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.projectGenerateQueueId = reader.int32();
+          break;
+        case 2:
+          message.projectSource = ProjectSourceData.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.sourcePath = reader.string();
+          break;
+        case 4:
+          message.git = GitData.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ProjectSourceCreation {
+    return {
+      projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
+      projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
+      sourcePath: isSet(object.sourcePath) ? String(object.sourcePath) : undefined,
+      git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
+    };
+  },
+
+  toJSON(message: ProjectSourceCreation): unknown {
+    const obj: any = {};
+    message.projectGenerateQueueId !== undefined &&
+      (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
+    message.projectSource !== undefined &&
+      (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
+    message.sourcePath !== undefined && (obj.sourcePath = message.sourcePath);
+    message.git !== undefined && (obj.git = message.git ? GitData.toJSON(message.git) : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ProjectSourceCreation>): ProjectSourceCreation {
+    const message = createBaseProjectSourceCreation();
+    message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
+    message.projectSource = (object.projectSource !== undefined && object.projectSource !== null)
+      ? ProjectSourceData.fromPartial(object.projectSource)
+      : undefined;
+    message.sourcePath = object.sourcePath ?? undefined;
+    message.git = (object.git !== undefined && object.git !== null) ? GitData.fromPartial(object.git) : undefined;
     return message;
   },
 };
@@ -786,7 +779,7 @@ export const ERDConfigData = {
       ProjectSourceData.encode(message.projectSource, writer.uint32(18).fork()).ldelim();
     }
     if (message.git !== undefined) {
-      ERDConfigGitData.encode(message.git, writer.uint32(26).fork()).ldelim();
+      GitData.encode(message.git, writer.uint32(26).fork()).ldelim();
     }
     if (message.import !== undefined) {
       ERDConfigImportData.encode(message.import, writer.uint32(34).fork()).ldelim();
@@ -811,7 +804,7 @@ export const ERDConfigData = {
           message.projectSource = ProjectSourceData.decode(reader, reader.uint32());
           break;
         case 3:
-          message.git = ERDConfigGitData.decode(reader, reader.uint32());
+          message.git = GitData.decode(reader, reader.uint32());
           break;
         case 4:
           message.import = ERDConfigImportData.decode(reader, reader.uint32());
@@ -831,7 +824,7 @@ export const ERDConfigData = {
     return {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
-      git: isSet(object.git) ? ERDConfigGitData.fromJSON(object.git) : undefined,
+      git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
       import: isSet(object.import) ? ERDConfigImportData.fromJSON(object.import) : undefined,
       local: isSet(object.local) ? ERDConfigLocalData.fromJSON(object.local) : undefined,
     };
@@ -843,7 +836,7 @@ export const ERDConfigData = {
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.projectSource !== undefined &&
       (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
-    message.git !== undefined && (obj.git = message.git ? ERDConfigGitData.toJSON(message.git) : undefined);
+    message.git !== undefined && (obj.git = message.git ? GitData.toJSON(message.git) : undefined);
     message.import !== undefined &&
       (obj.import = message.import ? ERDConfigImportData.toJSON(message.import) : undefined);
     message.local !== undefined && (obj.local = message.local ? ERDConfigLocalData.toJSON(message.local) : undefined);
@@ -856,9 +849,7 @@ export const ERDConfigData = {
     message.projectSource = (object.projectSource !== undefined && object.projectSource !== null)
       ? ProjectSourceData.fromPartial(object.projectSource)
       : undefined;
-    message.git = (object.git !== undefined && object.git !== null)
-      ? ERDConfigGitData.fromPartial(object.git)
-      : undefined;
+    message.git = (object.git !== undefined && object.git !== null) ? GitData.fromPartial(object.git) : undefined;
     message.import = (object.import !== undefined && object.import !== null)
       ? ERDConfigImportData.fromPartial(object.import)
       : undefined;
@@ -984,82 +975,6 @@ export const ERDConfigImportData = {
   },
 };
 
-function createBaseERDConfigGit(): ERDConfigGit {
-  return { repo: "", owner: "", branch: "", token: "" };
-}
-
-export const ERDConfigGitData = {
-  encode(message: ERDConfigGit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.repo !== "") {
-      writer.uint32(26).string(message.repo);
-    }
-    if (message.owner !== "") {
-      writer.uint32(34).string(message.owner);
-    }
-    if (message.branch !== "") {
-      writer.uint32(42).string(message.branch);
-    }
-    if (message.token !== "") {
-      writer.uint32(50).string(message.token);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ERDConfigGit {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseERDConfigGit();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 3:
-          message.repo = reader.string();
-          break;
-        case 4:
-          message.owner = reader.string();
-          break;
-        case 5:
-          message.branch = reader.string();
-          break;
-        case 6:
-          message.token = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): ERDConfigGit {
-    return {
-      repo: isSet(object.repo) ? String(object.repo) : "",
-      owner: isSet(object.owner) ? String(object.owner) : "",
-      branch: isSet(object.branch) ? String(object.branch) : "",
-      token: isSet(object.token) ? String(object.token) : "",
-    };
-  },
-
-  toJSON(message: ERDConfigGit): unknown {
-    const obj: any = {};
-    message.repo !== undefined && (obj.repo = message.repo);
-    message.owner !== undefined && (obj.owner = message.owner);
-    message.branch !== undefined && (obj.branch = message.branch);
-    message.token !== undefined && (obj.token = message.token);
-    return obj;
-  },
-
-  fromPartial(object: DeepPartial<ERDConfigGit>): ERDConfigGit {
-    const message = createBaseERDConfigGit();
-    message.repo = object.repo ?? "";
-    message.owner = object.owner ?? "";
-    message.branch = object.branch ?? "";
-    message.token = object.token ?? "";
-    return message;
-  },
-};
-
 function createBaseERDConfigTableChanged(): ERDConfigTableChanged {
   return { type: 0 };
 }
@@ -1141,6 +1056,9 @@ export const BusinessLogicChangesData = {
     if (message.blockDiff !== undefined) {
       BlockDiffData.encode(message.blockDiff, writer.uint32(42).fork()).ldelim();
     }
+    if (message.git !== undefined) {
+      GitData.encode(message.git, writer.uint32(50).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -1166,6 +1084,9 @@ export const BusinessLogicChangesData = {
         case 5:
           message.blockDiff = BlockDiffData.decode(reader, reader.uint32());
           break;
+        case 6:
+          message.git = GitData.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1183,6 +1104,7 @@ export const BusinessLogicChangesData = {
         : [],
       projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
       blockDiff: isSet(object.blockDiff) ? BlockDiffData.fromJSON(object.blockDiff) : undefined,
+      git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
     };
   },
 
@@ -1204,6 +1126,7 @@ export const BusinessLogicChangesData = {
       (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
     message.blockDiff !== undefined &&
       (obj.blockDiff = message.blockDiff ? BlockDiffData.toJSON(message.blockDiff) : undefined);
+    message.git !== undefined && (obj.git = message.git ? GitData.toJSON(message.git) : undefined);
     return obj;
   },
 
@@ -1218,6 +1141,7 @@ export const BusinessLogicChangesData = {
     message.blockDiff = (object.blockDiff !== undefined && object.blockDiff !== null)
       ? BlockDiffData.fromPartial(object.blockDiff)
       : undefined;
+    message.git = (object.git !== undefined && object.git !== null) ? GitData.fromPartial(object.git) : undefined;
     return message;
   },
 };
@@ -1699,6 +1623,9 @@ export const ApiChangesData = {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(40).int32(message.projectGenerateQueueId);
     }
+    if (message.git !== undefined) {
+      GitData.encode(message.git, writer.uint32(50).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -1724,6 +1651,9 @@ export const ApiChangesData = {
         case 5:
           message.projectGenerateQueueId = reader.int32();
           break;
+        case 6:
+          message.git = GitData.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1741,6 +1671,7 @@ export const ApiChangesData = {
         ? object.relations.map((e: any) => ProjectSourceRelationData.fromJSON(e))
         : [],
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
+      git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
     };
   },
 
@@ -1762,6 +1693,7 @@ export const ApiChangesData = {
     }
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
+    message.git !== undefined && (obj.git = message.git ? GitData.toJSON(message.git) : undefined);
     return obj;
   },
 
@@ -1776,6 +1708,7 @@ export const ApiChangesData = {
     message.tables = object.tables?.map((e) => ProjectSourceTableData.fromPartial(e)) || [];
     message.relations = object.relations?.map((e) => ProjectSourceRelationData.fromPartial(e)) || [];
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
+    message.git = (object.git !== undefined && object.git !== null) ? GitData.fromPartial(object.git) : undefined;
     return message;
   },
 };

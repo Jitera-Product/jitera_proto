@@ -2,11 +2,13 @@
 # Source: v1/payloads.proto for package 'schema.v1'
 
 require 'grpc'
+require 'v1/payloads_pb'
 
 module Schema
   module V1
     module CoreService
       class Service
+
         include ::GRPC::GenericService
 
         self.marshal_class_method = :encode

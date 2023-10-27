@@ -14,23 +14,27 @@ use Google\Protobuf\Internal\GPBUtil;
 class Column extends \Google\Protobuf\Internal\Message
 {
     /**
-     * Generated from protobuf field <code>string name = 1;</code>
+     * Generated from protobuf field <code>int32 id = 1;</code>
+     */
+    protected $id = 0;
+    /**
+     * Generated from protobuf field <code>string name = 2;</code>
      */
     protected $name = '';
     /**
-     * Generated from protobuf field <code>.schema.v1.Table.Column.ColumnType type = 2;</code>
+     * Generated from protobuf field <code>.schema.v1.Table.Column.ColumnType type = 3;</code>
      */
     protected $type = null;
     /**
-     * Generated from protobuf field <code>repeated .schema.v1.Table.Constraint constraints = 3;</code>
+     * Generated from protobuf field <code>repeated .schema.v1.Table.Constraint constraints = 4;</code>
      */
     private $constraints;
     /**
-     * Generated from protobuf field <code>optional bool hidden = 4;</code>
+     * Generated from protobuf field <code>optional bool hidden = 5;</code>
      */
     protected $hidden = null;
     /**
-     * Generated from protobuf field <code>optional .schema.v1.Table.ColumnValidation column_validation = 5;</code>
+     * Generated from protobuf field <code>optional .schema.v1.Table.ColumnValidation column_validation = 6;</code>
      */
     protected $column_validation = null;
 
@@ -40,6 +44,7 @@ class Column extends \Google\Protobuf\Internal\Message
      * @param array $data {
      *     Optional. Data for populating the Message object.
      *
+     *     @type int $id
      *     @type string $name
      *     @type \Schema\V1\Table\Column\ColumnType $type
      *     @type array<\Schema\V1\Table\Constraint>|\Google\Protobuf\Internal\RepeatedField $constraints
@@ -53,7 +58,29 @@ class Column extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>string name = 1;</code>
+     * Generated from protobuf field <code>int32 id = 1;</code>
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Generated from protobuf field <code>int32 id = 1;</code>
+     * @param int $var
+     * @return $this
+     */
+    public function setId($var)
+    {
+        GPBUtil::checkInt32($var);
+        $this->id = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string name = 2;</code>
      * @return string
      */
     public function getName()
@@ -62,7 +89,7 @@ class Column extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>string name = 1;</code>
+     * Generated from protobuf field <code>string name = 2;</code>
      * @param string $var
      * @return $this
      */
@@ -75,7 +102,7 @@ class Column extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>.schema.v1.Table.Column.ColumnType type = 2;</code>
+     * Generated from protobuf field <code>.schema.v1.Table.Column.ColumnType type = 3;</code>
      * @return \Schema\V1\Table\Column\ColumnType|null
      */
     public function getType()
@@ -94,7 +121,7 @@ class Column extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>.schema.v1.Table.Column.ColumnType type = 2;</code>
+     * Generated from protobuf field <code>.schema.v1.Table.Column.ColumnType type = 3;</code>
      * @param \Schema\V1\Table\Column\ColumnType $var
      * @return $this
      */
@@ -107,7 +134,7 @@ class Column extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v1.Table.Constraint constraints = 3;</code>
+     * Generated from protobuf field <code>repeated .schema.v1.Table.Constraint constraints = 4;</code>
      * @return \Google\Protobuf\Internal\RepeatedField
      */
     public function getConstraints()
@@ -116,7 +143,7 @@ class Column extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v1.Table.Constraint constraints = 3;</code>
+     * Generated from protobuf field <code>repeated .schema.v1.Table.Constraint constraints = 4;</code>
      * @param array<\Schema\V1\Table\Constraint>|\Google\Protobuf\Internal\RepeatedField $var
      * @return $this
      */
@@ -129,7 +156,7 @@ class Column extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>optional bool hidden = 4;</code>
+     * Generated from protobuf field <code>optional bool hidden = 5;</code>
      * @return bool
      */
     public function getHidden()
@@ -148,7 +175,7 @@ class Column extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>optional bool hidden = 4;</code>
+     * Generated from protobuf field <code>optional bool hidden = 5;</code>
      * @param bool $var
      * @return $this
      */
@@ -161,7 +188,7 @@ class Column extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>optional .schema.v1.Table.ColumnValidation column_validation = 5;</code>
+     * Generated from protobuf field <code>optional .schema.v1.Table.ColumnValidation column_validation = 6;</code>
      * @return \Schema\V1\Table\ColumnValidation|null
      */
     public function getColumnValidation()
@@ -180,7 +207,7 @@ class Column extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>optional .schema.v1.Table.ColumnValidation column_validation = 5;</code>
+     * Generated from protobuf field <code>optional .schema.v1.Table.ColumnValidation column_validation = 6;</code>
      * @param \Schema\V1\Table\ColumnValidation $var
      * @return $this
      */

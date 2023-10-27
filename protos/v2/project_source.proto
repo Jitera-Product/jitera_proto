@@ -49,6 +49,13 @@ message ProjectSource {
 	}
 }
 
+message Git {
+	string repo = 3;
+	string owner = 4;
+	string branch = 5;
+	string token = 6;
+}
+
 message ProjectSourceCreation {
 	int32 project_generate_queue_id = 1;
 	ProjectSource project_source = 2;
@@ -56,13 +63,6 @@ message ProjectSourceCreation {
 	oneof source {
 		string source_path = 3;
 		Git git = 4;	
-	}
-
-	message Git {
-		string repo = 3;
-		string owner = 4;
-		string branch = 5;
-		string token = 6;
 	}
 }
 
@@ -81,16 +81,8 @@ message ERDConfig {
 		repeated schema.v1.Table tables = 2;
 	}
 
-
 	message Import {
 		repeated TableChanged tables = 2;
-	}
-	
-	message Git {
-		string repo = 3;
-		string owner = 4;
-		string branch = 5;
-		string token = 6;
 	}
 
 	message TableChanged {
@@ -112,6 +104,7 @@ message BusinessLogicChanges {
 	repeated ProjectSource.Relation relations = 3;
 	ProjectSource project_source = 4;
 	BlockDiff block_diff = 5;
+	Git git = 6;
 }
 
 message BlockDiff {
@@ -161,6 +154,7 @@ message ApiChanges {
 	repeated ProjectSource.Table tables = 3;
 	repeated ProjectSource.Relation relations = 4;
 	int32 project_generate_queue_id = 5;
+	Git git = 6;
 }
 
 message ProjectSourceReport {
