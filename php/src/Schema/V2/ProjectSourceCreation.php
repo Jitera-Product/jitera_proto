@@ -21,10 +21,7 @@ class ProjectSourceCreation extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>.schema.v2.ProjectSource project_source = 2;</code>
      */
     protected $project_source = null;
-    /**
-     * Generated from protobuf field <code>string source_path = 3;</code>
-     */
-    protected $source_path = '';
+    protected $source;
 
     /**
      * Constructor.
@@ -35,6 +32,7 @@ class ProjectSourceCreation extends \Google\Protobuf\Internal\Message
      *     @type int $project_generate_queue_id
      *     @type \Schema\V2\ProjectSource $project_source
      *     @type string $source_path
+     *     @type \Schema\V2\Git $git
      * }
      */
     public function __construct($data = NULL) {
@@ -102,7 +100,12 @@ class ProjectSourceCreation extends \Google\Protobuf\Internal\Message
      */
     public function getSourcePath()
     {
-        return $this->source_path;
+        return $this->readOneof(3);
+    }
+
+    public function hasSourcePath()
+    {
+        return $this->hasOneof(3);
     }
 
     /**
@@ -113,9 +116,44 @@ class ProjectSourceCreation extends \Google\Protobuf\Internal\Message
     public function setSourcePath($var)
     {
         GPBUtil::checkString($var, True);
-        $this->source_path = $var;
+        $this->writeOneof(3, $var);
 
         return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.schema.v2.Git git = 4;</code>
+     * @return \Schema\V2\Git|null
+     */
+    public function getGit()
+    {
+        return $this->readOneof(4);
+    }
+
+    public function hasGit()
+    {
+        return $this->hasOneof(4);
+    }
+
+    /**
+     * Generated from protobuf field <code>.schema.v2.Git git = 4;</code>
+     * @param \Schema\V2\Git $var
+     * @return $this
+     */
+    public function setGit($var)
+    {
+        GPBUtil::checkMessage($var, \Schema\V2\Git::class);
+        $this->writeOneof(4, $var);
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSource()
+    {
+        return $this->whichOneof("source");
     }
 
 }

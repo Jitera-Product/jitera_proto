@@ -14,19 +14,23 @@ use Google\Protobuf\Internal\GPBUtil;
 class Table extends \Google\Protobuf\Internal\Message
 {
     /**
-     * Generated from protobuf field <code>string name = 1;</code>
+     * Generated from protobuf field <code>int32 id = 1;</code>
+     */
+    protected $id = 0;
+    /**
+     * Generated from protobuf field <code>string name = 2;</code>
      */
     protected $name = '';
     /**
-     * Generated from protobuf field <code>repeated .schema.v1.Table.Column columns = 2;</code>
+     * Generated from protobuf field <code>repeated .schema.v1.Table.Column columns = 3;</code>
      */
     private $columns;
     /**
-     * Generated from protobuf field <code>repeated .schema.v1.Table.Relation relations = 3;</code>
+     * Generated from protobuf field <code>repeated .schema.v1.Table.Relation relations = 4;</code>
      */
     private $relations;
     /**
-     * Generated from protobuf field <code>repeated .schema.v1.Table.Index indexes = 4;</code>
+     * Generated from protobuf field <code>repeated .schema.v1.Table.Index indexes = 5;</code>
      */
     private $indexes;
 
@@ -36,6 +40,7 @@ class Table extends \Google\Protobuf\Internal\Message
      * @param array $data {
      *     Optional. Data for populating the Message object.
      *
+     *     @type int $id
      *     @type string $name
      *     @type array<\Schema\V1\Table\Column>|\Google\Protobuf\Internal\RepeatedField $columns
      *     @type array<\Schema\V1\Table\Relation>|\Google\Protobuf\Internal\RepeatedField $relations
@@ -48,7 +53,29 @@ class Table extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>string name = 1;</code>
+     * Generated from protobuf field <code>int32 id = 1;</code>
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Generated from protobuf field <code>int32 id = 1;</code>
+     * @param int $var
+     * @return $this
+     */
+    public function setId($var)
+    {
+        GPBUtil::checkInt32($var);
+        $this->id = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string name = 2;</code>
      * @return string
      */
     public function getName()
@@ -57,7 +84,7 @@ class Table extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>string name = 1;</code>
+     * Generated from protobuf field <code>string name = 2;</code>
      * @param string $var
      * @return $this
      */
@@ -70,7 +97,7 @@ class Table extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v1.Table.Column columns = 2;</code>
+     * Generated from protobuf field <code>repeated .schema.v1.Table.Column columns = 3;</code>
      * @return \Google\Protobuf\Internal\RepeatedField
      */
     public function getColumns()
@@ -79,7 +106,7 @@ class Table extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v1.Table.Column columns = 2;</code>
+     * Generated from protobuf field <code>repeated .schema.v1.Table.Column columns = 3;</code>
      * @param array<\Schema\V1\Table\Column>|\Google\Protobuf\Internal\RepeatedField $var
      * @return $this
      */
@@ -92,7 +119,7 @@ class Table extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v1.Table.Relation relations = 3;</code>
+     * Generated from protobuf field <code>repeated .schema.v1.Table.Relation relations = 4;</code>
      * @return \Google\Protobuf\Internal\RepeatedField
      */
     public function getRelations()
@@ -101,7 +128,7 @@ class Table extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v1.Table.Relation relations = 3;</code>
+     * Generated from protobuf field <code>repeated .schema.v1.Table.Relation relations = 4;</code>
      * @param array<\Schema\V1\Table\Relation>|\Google\Protobuf\Internal\RepeatedField $var
      * @return $this
      */
@@ -114,7 +141,7 @@ class Table extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v1.Table.Index indexes = 4;</code>
+     * Generated from protobuf field <code>repeated .schema.v1.Table.Index indexes = 5;</code>
      * @return \Google\Protobuf\Internal\RepeatedField
      */
     public function getIndexes()
@@ -123,7 +150,7 @@ class Table extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v1.Table.Index indexes = 4;</code>
+     * Generated from protobuf field <code>repeated .schema.v1.Table.Index indexes = 5;</code>
      * @param array<\Schema\V1\Table\Index>|\Google\Protobuf\Internal\RepeatedField $var
      * @return $this
      */

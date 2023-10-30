@@ -33,6 +33,10 @@ class ApiChanges extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>int32 project_generate_queue_id = 5;</code>
      */
     protected $project_generate_queue_id = 0;
+    /**
+     * Generated from protobuf field <code>.schema.v2.Git git = 6;</code>
+     */
+    protected $git = null;
 
     /**
      * Constructor.
@@ -45,6 +49,7 @@ class ApiChanges extends \Google\Protobuf\Internal\Message
      *     @type array<\Schema\V2\ProjectSource\Table>|\Google\Protobuf\Internal\RepeatedField $tables
      *     @type array<\Schema\V2\ProjectSource\Relation>|\Google\Protobuf\Internal\RepeatedField $relations
      *     @type int $project_generate_queue_id
+     *     @type \Schema\V2\Git $git
      * }
      */
     public function __construct($data = NULL) {
@@ -178,6 +183,38 @@ class ApiChanges extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkInt32($var);
         $this->project_generate_queue_id = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.schema.v2.Git git = 6;</code>
+     * @return \Schema\V2\Git|null
+     */
+    public function getGit()
+    {
+        return $this->git;
+    }
+
+    public function hasGit()
+    {
+        return isset($this->git);
+    }
+
+    public function clearGit()
+    {
+        unset($this->git);
+    }
+
+    /**
+     * Generated from protobuf field <code>.schema.v2.Git git = 6;</code>
+     * @param \Schema\V2\Git $var
+     * @return $this
+     */
+    public function setGit($var)
+    {
+        GPBUtil::checkMessage($var, \Schema\V2\Git::class);
+        $this->git = $var;
 
         return $this;
     }

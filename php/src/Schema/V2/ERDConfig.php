@@ -18,17 +18,14 @@ class ERDConfig extends \Google\Protobuf\Internal\Message
      */
     protected $project_generate_queue_id = 0;
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.ProjectSource.Table tables = 2;</code>
-     */
-    private $tables;
-    /**
-     * Generated from protobuf field <code>string source_path = 3;</code>
-     */
-    protected $source_path = '';
-    /**
-     * Generated from protobuf field <code>.schema.v2.ProjectSource project_source = 4;</code>
+     * Generated from protobuf field <code>.schema.v2.ProjectSource project_source = 2;</code>
      */
     protected $project_source = null;
+    /**
+     * Generated from protobuf field <code>.schema.v2.Git git = 3;</code>
+     */
+    protected $git = null;
+    protected $source;
 
     /**
      * Constructor.
@@ -37,9 +34,10 @@ class ERDConfig extends \Google\Protobuf\Internal\Message
      *     Optional. Data for populating the Message object.
      *
      *     @type int $project_generate_queue_id
-     *     @type array<\Schema\V2\ProjectSource\Table>|\Google\Protobuf\Internal\RepeatedField $tables
-     *     @type string $source_path
      *     @type \Schema\V2\ProjectSource $project_source
+     *     @type \Schema\V2\Git $git
+     *     @type \Schema\V2\ERDConfig\Import $import
+     *     @type \Schema\V2\ERDConfig\Local $local
      * }
      */
     public function __construct($data = NULL) {
@@ -70,51 +68,7 @@ class ERDConfig extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated .schema.v2.ProjectSource.Table tables = 2;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
-     */
-    public function getTables()
-    {
-        return $this->tables;
-    }
-
-    /**
-     * Generated from protobuf field <code>repeated .schema.v2.ProjectSource.Table tables = 2;</code>
-     * @param array<\Schema\V2\ProjectSource\Table>|\Google\Protobuf\Internal\RepeatedField $var
-     * @return $this
-     */
-    public function setTables($var)
-    {
-        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Schema\V2\ProjectSource\Table::class);
-        $this->tables = $arr;
-
-        return $this;
-    }
-
-    /**
-     * Generated from protobuf field <code>string source_path = 3;</code>
-     * @return string
-     */
-    public function getSourcePath()
-    {
-        return $this->source_path;
-    }
-
-    /**
-     * Generated from protobuf field <code>string source_path = 3;</code>
-     * @param string $var
-     * @return $this
-     */
-    public function setSourcePath($var)
-    {
-        GPBUtil::checkString($var, True);
-        $this->source_path = $var;
-
-        return $this;
-    }
-
-    /**
-     * Generated from protobuf field <code>.schema.v2.ProjectSource project_source = 4;</code>
+     * Generated from protobuf field <code>.schema.v2.ProjectSource project_source = 2;</code>
      * @return \Schema\V2\ProjectSource|null
      */
     public function getProjectSource()
@@ -133,7 +87,7 @@ class ERDConfig extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>.schema.v2.ProjectSource project_source = 4;</code>
+     * Generated from protobuf field <code>.schema.v2.ProjectSource project_source = 2;</code>
      * @param \Schema\V2\ProjectSource $var
      * @return $this
      */
@@ -143,6 +97,100 @@ class ERDConfig extends \Google\Protobuf\Internal\Message
         $this->project_source = $var;
 
         return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.schema.v2.Git git = 3;</code>
+     * @return \Schema\V2\Git|null
+     */
+    public function getGit()
+    {
+        return $this->git;
+    }
+
+    public function hasGit()
+    {
+        return isset($this->git);
+    }
+
+    public function clearGit()
+    {
+        unset($this->git);
+    }
+
+    /**
+     * Generated from protobuf field <code>.schema.v2.Git git = 3;</code>
+     * @param \Schema\V2\Git $var
+     * @return $this
+     */
+    public function setGit($var)
+    {
+        GPBUtil::checkMessage($var, \Schema\V2\Git::class);
+        $this->git = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.schema.v2.ERDConfig.Import import = 4;</code>
+     * @return \Schema\V2\ERDConfig\Import|null
+     */
+    public function getImport()
+    {
+        return $this->readOneof(4);
+    }
+
+    public function hasImport()
+    {
+        return $this->hasOneof(4);
+    }
+
+    /**
+     * Generated from protobuf field <code>.schema.v2.ERDConfig.Import import = 4;</code>
+     * @param \Schema\V2\ERDConfig\Import $var
+     * @return $this
+     */
+    public function setImport($var)
+    {
+        GPBUtil::checkMessage($var, \Schema\V2\ERDConfig\Import::class);
+        $this->writeOneof(4, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.schema.v2.ERDConfig.Local local = 5;</code>
+     * @return \Schema\V2\ERDConfig\Local|null
+     */
+    public function getLocal()
+    {
+        return $this->readOneof(5);
+    }
+
+    public function hasLocal()
+    {
+        return $this->hasOneof(5);
+    }
+
+    /**
+     * Generated from protobuf field <code>.schema.v2.ERDConfig.Local local = 5;</code>
+     * @param \Schema\V2\ERDConfig\Local $var
+     * @return $this
+     */
+    public function setLocal($var)
+    {
+        GPBUtil::checkMessage($var, \Schema\V2\ERDConfig\Local::class);
+        $this->writeOneof(5, $var);
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSource()
+    {
+        return $this->whichOneof("source");
     }
 
 }
