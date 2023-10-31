@@ -1082,6 +1082,7 @@ export class Table {
   columns: TableColumn[];
   relations: TableRelation[];
   indexes: TableIndex[];
+  id: number;
 }
 
 export class TableColumn {
@@ -1090,6 +1091,7 @@ export class TableColumn {
   constraints: TableConstraint[];
   hidden?: boolean | undefined;
   columnValidation?: TableColumnValidation | undefined;
+  id: number;
 }
 
 export enum TableColumnOperator {
@@ -2782,6 +2784,15 @@ export class FormValidationFormValidationsRule {
   valueType: string;
   errorMessages: NodeVariable[];
   ruleType: FormValidationRuleType;
+}
+
+export class GetGitAccessTokenRequest {
+  projectId: number;
+  userId: number;
+}
+
+export class GetGitAccessTokenResponse {
+  accessToken: string;
 }
 
 export class GetWebAppRequest {
@@ -7142,7 +7153,7 @@ export const ControllerAuthorizationConditionData = {
 };
 
 function createBaseTable(): Table {
-  return { name: "", columns: [], relations: [], indexes: [] };
+  return { name: "", columns: [], relations: [], indexes: [], id: 0 };
 }
 
 export const TableData = {
@@ -7158,6 +7169,9 @@ export const TableData = {
     }
     for (const v of message.indexes) {
       TableIndexData.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.id !== 0) {
+      writer.uint32(40).int32(message.id);
     }
     return writer;
   },
@@ -7181,6 +7195,9 @@ export const TableData = {
         case 4:
           message.indexes.push(TableIndexData.decode(reader, reader.uint32()));
           break;
+        case 5:
+          message.id = reader.int32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -7197,6 +7214,7 @@ export const TableData = {
         ? object.relations.map((e: any) => TableRelationData.fromJSON(e))
         : [],
       indexes: Array.isArray(object?.indexes) ? object.indexes.map((e: any) => TableIndexData.fromJSON(e)) : [],
+      id: isSet(object.id) ? Number(object.id) : 0,
     };
   },
 
@@ -7218,6 +7236,7 @@ export const TableData = {
     } else {
       obj.indexes = [];
     }
+    message.id !== undefined && (obj.id = Math.round(message.id));
     return obj;
   },
 
@@ -7227,12 +7246,13 @@ export const TableData = {
     message.columns = object.columns?.map((e) => TableColumnData.fromPartial(e)) || [];
     message.relations = object.relations?.map((e) => TableRelationData.fromPartial(e)) || [];
     message.indexes = object.indexes?.map((e) => TableIndexData.fromPartial(e)) || [];
+    message.id = object.id ?? 0;
     return message;
   },
 };
 
 function createBaseTableColumn(): TableColumn {
-  return { name: "", constraints: [] };
+  return { name: "", constraints: [], id: 0 };
 }
 
 export const TableColumnData = {
@@ -7251,6 +7271,9 @@ export const TableColumnData = {
     }
     if (message.columnValidation !== undefined) {
       TableColumnValidationData.encode(message.columnValidation, writer.uint32(42).fork()).ldelim();
+    }
+    if (message.id !== 0) {
+      writer.uint32(48).int32(message.id);
     }
     return writer;
   },
@@ -7277,6 +7300,9 @@ export const TableColumnData = {
         case 5:
           message.columnValidation = TableColumnValidationData.decode(reader, reader.uint32());
           break;
+        case 6:
+          message.id = reader.int32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -7296,6 +7322,7 @@ export const TableColumnData = {
       columnValidation: isSet(object.columnValidation)
         ? TableColumnValidationData.fromJSON(object.columnValidation)
         : undefined,
+      id: isSet(object.id) ? Number(object.id) : 0,
     };
   },
 
@@ -7313,6 +7340,7 @@ export const TableColumnData = {
     message.columnValidation !== undefined && (obj.columnValidation = message.columnValidation
       ? TableColumnValidationData.toJSON(message.columnValidation)
       : undefined);
+    message.id !== undefined && (obj.id = Math.round(message.id));
     return obj;
   },
 
@@ -7327,6 +7355,7 @@ export const TableColumnData = {
     message.columnValidation = (object.columnValidation !== undefined && object.columnValidation !== null)
       ? TableColumnValidationData.fromPartial(object.columnValidation)
       : undefined;
+    message.id = object.id ?? 0;
     return message;
   },
 };
@@ -16798,6 +16827,111 @@ export const FormValidationFormValidationsRuleData = {
   },
 };
 
+function createBaseGetGitAccessTokenRequest(): GetGitAccessTokenRequest {
+  return { projectId: 0, userId: 0 };
+}
+
+export const GetGitAccessTokenRequestData = {
+  encode(message: GetGitAccessTokenRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.projectId !== 0) {
+      writer.uint32(8).int32(message.projectId);
+    }
+    if (message.userId !== 0) {
+      writer.uint32(16).int32(message.userId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetGitAccessTokenRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetGitAccessTokenRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.projectId = reader.int32();
+          break;
+        case 2:
+          message.userId = reader.int32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetGitAccessTokenRequest {
+    return {
+      projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
+      userId: isSet(object.userId) ? Number(object.userId) : 0,
+    };
+  },
+
+  toJSON(message: GetGitAccessTokenRequest): unknown {
+    const obj: any = {};
+    message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
+    message.userId !== undefined && (obj.userId = Math.round(message.userId));
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<GetGitAccessTokenRequest>): GetGitAccessTokenRequest {
+    const message = createBaseGetGitAccessTokenRequest();
+    message.projectId = object.projectId ?? 0;
+    message.userId = object.userId ?? 0;
+    return message;
+  },
+};
+
+function createBaseGetGitAccessTokenResponse(): GetGitAccessTokenResponse {
+  return { accessToken: "" };
+}
+
+export const GetGitAccessTokenResponseData = {
+  encode(message: GetGitAccessTokenResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.accessToken !== "") {
+      writer.uint32(10).string(message.accessToken);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetGitAccessTokenResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetGitAccessTokenResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.accessToken = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetGitAccessTokenResponse {
+    return { accessToken: isSet(object.accessToken) ? String(object.accessToken) : "" };
+  },
+
+  toJSON(message: GetGitAccessTokenResponse): unknown {
+    const obj: any = {};
+    message.accessToken !== undefined && (obj.accessToken = message.accessToken);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<GetGitAccessTokenResponse>): GetGitAccessTokenResponse {
+    const message = createBaseGetGitAccessTokenResponse();
+    message.accessToken = object.accessToken ?? "";
+    return message;
+  },
+};
+
 function createBaseGetWebAppRequest(): GetWebAppRequest {
   return { projectId: 0 };
 }
@@ -17671,6 +17805,14 @@ export const CoreServiceDefinition = {
       responseStream: false,
       options: {},
     },
+    getGitAccessToken: {
+      name: "GetGitAccessToken",
+      requestType: GetGitAccessTokenRequestData,
+      requestStream: false,
+      responseType: GetGitAccessTokenResponseData,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
@@ -17708,6 +17850,10 @@ export interface CoreServiceImplementation<CallContextExt = {}> {
     context: CallContext & CallContextExt,
   ): Promise<DeepPartial<GetBackendResponse>>;
   getWebApp(request: GetWebAppRequest, context: CallContext & CallContextExt): Promise<DeepPartial<GetWebAppResponse>>;
+  getGitAccessToken(
+    request: GetGitAccessTokenRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<DeepPartial<GetGitAccessTokenResponse>>;
 }
 
 export interface CoreServiceClient<CallOptionsExt = {}> {
@@ -17744,6 +17890,10 @@ export interface CoreServiceClient<CallOptionsExt = {}> {
     options?: CallOptions & CallOptionsExt,
   ): Promise<GetBackendResponse>;
   getWebApp(request: DeepPartial<GetWebAppRequest>, options?: CallOptions & CallOptionsExt): Promise<GetWebAppResponse>;
+  getGitAccessToken(
+    request: DeepPartial<GetGitAccessTokenRequest>,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<GetGitAccessTokenResponse>;
 }
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

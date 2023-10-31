@@ -33,6 +33,10 @@ class BusinessLogicChanges extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>.schema.v2.BlockDiff block_diff = 5;</code>
      */
     protected $block_diff = null;
+    /**
+     * Generated from protobuf field <code>.schema.v2.Git git = 6;</code>
+     */
+    protected $git = null;
 
     /**
      * Constructor.
@@ -45,6 +49,7 @@ class BusinessLogicChanges extends \Google\Protobuf\Internal\Message
      *     @type array<\Schema\V2\ProjectSource\Relation>|\Google\Protobuf\Internal\RepeatedField $relations
      *     @type \Schema\V2\ProjectSource $project_source
      *     @type \Schema\V2\BlockDiff $block_diff
+     *     @type \Schema\V2\Git $git
      * }
      */
     public function __construct($data = NULL) {
@@ -178,6 +183,38 @@ class BusinessLogicChanges extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkMessage($var, \Schema\V2\BlockDiff::class);
         $this->block_diff = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.schema.v2.Git git = 6;</code>
+     * @return \Schema\V2\Git|null
+     */
+    public function getGit()
+    {
+        return $this->git;
+    }
+
+    public function hasGit()
+    {
+        return isset($this->git);
+    }
+
+    public function clearGit()
+    {
+        unset($this->git);
+    }
+
+    /**
+     * Generated from protobuf field <code>.schema.v2.Git git = 6;</code>
+     * @param \Schema\V2\Git $var
+     * @return $this
+     */
+    public function setGit($var)
+    {
+        GPBUtil::checkMessage($var, \Schema\V2\Git::class);
+        $this->git = $var;
 
         return $this;
     }
