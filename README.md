@@ -8,6 +8,11 @@ cd node
 yarn protobuf:generate
 ```
 NPM package: https://www.npmjs.com/package/@jitera/proto
+```
+yarn build
+// Please check version in package.json first
+npm publish
+```
 Know issues:
 ```
 Struct.wrap -> StructData.wrap

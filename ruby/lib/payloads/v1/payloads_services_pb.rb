@@ -3,7 +3,6 @@
 
 require 'grpc'
 
-
 module Schema
   module V1
     module CoreService
