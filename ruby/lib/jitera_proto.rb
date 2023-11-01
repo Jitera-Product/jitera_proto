@@ -9,6 +9,7 @@ require_relative 'payloads/v2/specification_pb'
 require_relative 'payloads/v2/project_generate_queue_pb'
 require_relative 'payloads/v2/user_case_creation_pb'
 require_relative 'payloads/v2/business_logic_pb'
+require_relative 'payloads/v2/block_pb'
 
 module JiteraProto
 end

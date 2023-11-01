@@ -1,0 +1,68 @@
+syntax = "proto3";
+package schema.v2;
+
+message BusinessLogicSync {
+  int32 project_generate_queue_id = 1;
+  int32 project_id = 2;
+  Block use_case = 3;
+  repeated Block business_logics = 4;
+}
+
+message BusinessLogicSyncResponse {
+	int32 project_generate_queue_id = 1;
+	string message = 2;
+	Status status = 3;
+	int32 token_usage = 4;
+
+	enum Status {
+		STATUS_UNSPECIFIED = 0;
+		STARTED = 1;
+		SUCCEEDED = 2;
+		FAILED = 3;
+	}
+}
+
+message Block {
+  int32 id = 1;
+  string node_id = 2;
+  string parent_node_id = 3;
+  string page_node_id = 4;
+  string block_type = 5;
+  string name = 6;
+  int32 project_id = 7;
+  Property properties = 8;
+  repeated Content content = 9;
+  repeated Block children = 10;
+
+  message Content {
+    string type = 1;
+    string value = 2;
+    optional string href = 3;
+    Style styles = 4;
+  }
+
+  message Style {
+    optional bool bold = 1;
+    optional bool italic = 2;
+    optional bool underline = 3;
+    optional bool strike = 4;
+    optional bool code = 5;
+    optional string textColor = 6;
+    optional string backgroundColor = 7;
+  }
+
+  message Property {
+    optional string use_case_id = 1;
+    optional string category = 2;
+    optional int32 level = 3;
+    optional string text_color = 4;
+    optional string background_color = 5;
+    optional string text_alignment = 6;
+    optional int32 table_width = 7;
+    optional bool has_column_header = 8;
+    optional bool has_row_header = 9;
+    optional bool unsupported = 10;
+    optional bool is_toggleable = 11;
+    optional bool ai_generated = 12;
+  }
+}
