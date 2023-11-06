@@ -1,7 +1,52 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-import { StructData } from "../google/protobuf/struct.proto";
+import { Struct, StructData } from "../google/protobuf/struct.proto";
 import { Table, TableData } from "../v1/payloads.proto";
+
+export enum ImportBy {
+  github = 0,
+  notion = 1,
+  google_docs = 2,
+  figma = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function importByFromJSON(object: any): ImportBy {
+  switch (object) {
+    case 0:
+    case "github":
+      return ImportBy.github;
+    case 1:
+    case "notion":
+      return ImportBy.notion;
+    case 2:
+    case "google_docs":
+      return ImportBy.google_docs;
+    case 3:
+    case "figma":
+      return ImportBy.figma;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ImportBy.UNRECOGNIZED;
+  }
+}
+
+export function importByToJSON(object: ImportBy): string {
+  switch (object) {
+    case ImportBy.github:
+      return "github";
+    case ImportBy.notion:
+      return "notion";
+    case ImportBy.google_docs:
+      return "google_docs";
+    case ImportBy.figma:
+      return "figma";
+    case ImportBy.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
 
 export class ProjectSource {
   id: number;
@@ -149,6 +194,7 @@ export class Git {
 export class ProjectSourceCreation {
   projectGenerateQueueId: number;
   projectSource?: ProjectSource;
+  importBy?: ImportBy | undefined;
   sourcePath?: string | undefined;
   git?: Git | undefined;
 }
@@ -157,6 +203,7 @@ export class ERDConfig {
   projectGenerateQueueId: number;
   projectSource?: ProjectSource;
   git?: Git;
+  importBy?: ImportBy | undefined;
   import?: ERDConfigImport | undefined;
   local?: ERDConfigLocal | undefined;
 }
@@ -227,6 +274,7 @@ export class BusinessLogicChanges {
   projectSource?: ProjectSource;
   blockDiff?: BlockDiff;
   git?: Git;
+  importBy?: ImportBy | undefined;
 }
 
 export class BlockDiff {
@@ -274,6 +322,7 @@ export class ApiChanges {
   relations: ProjectSourceRelation[];
   projectGenerateQueueId: number;
   git?: Git;
+  importBy?: ImportBy | undefined;
 }
 
 export class ProjectSourceReport {
@@ -698,6 +747,9 @@ export const ProjectSourceCreationData = {
     if (message.projectSource !== undefined) {
       ProjectSourceData.encode(message.projectSource, writer.uint32(18).fork()).ldelim();
     }
+    if (message.importBy !== undefined) {
+      writer.uint32(40).int32(message.importBy);
+    }
     if (message.sourcePath !== undefined) {
       writer.uint32(26).string(message.sourcePath);
     }
@@ -720,6 +772,9 @@ export const ProjectSourceCreationData = {
         case 2:
           message.projectSource = ProjectSourceData.decode(reader, reader.uint32());
           break;
+        case 5:
+          message.importBy = reader.int32() as any;
+          break;
         case 3:
           message.sourcePath = reader.string();
           break;
@@ -738,6 +793,7 @@ export const ProjectSourceCreationData = {
     return {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
+      importBy: isSet(object.importBy) ? importByFromJSON(object.importBy) : undefined,
       sourcePath: isSet(object.sourcePath) ? String(object.sourcePath) : undefined,
       git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
     };
@@ -749,6 +805,8 @@ export const ProjectSourceCreationData = {
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.projectSource !== undefined &&
       (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
+    message.importBy !== undefined &&
+      (obj.importBy = message.importBy !== undefined ? importByToJSON(message.importBy) : undefined);
     message.sourcePath !== undefined && (obj.sourcePath = message.sourcePath);
     message.git !== undefined && (obj.git = message.git ? GitData.toJSON(message.git) : undefined);
     return obj;
@@ -760,6 +818,7 @@ export const ProjectSourceCreationData = {
     message.projectSource = (object.projectSource !== undefined && object.projectSource !== null)
       ? ProjectSourceData.fromPartial(object.projectSource)
       : undefined;
+    message.importBy = object.importBy ?? undefined;
     message.sourcePath = object.sourcePath ?? undefined;
     message.git = (object.git !== undefined && object.git !== null) ? GitData.fromPartial(object.git) : undefined;
     return message;
@@ -780,6 +839,9 @@ export const ERDConfigData = {
     }
     if (message.git !== undefined) {
       GitData.encode(message.git, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.importBy !== undefined) {
+      writer.uint32(48).int32(message.importBy);
     }
     if (message.import !== undefined) {
       ERDConfigImportData.encode(message.import, writer.uint32(34).fork()).ldelim();
@@ -806,6 +868,9 @@ export const ERDConfigData = {
         case 3:
           message.git = GitData.decode(reader, reader.uint32());
           break;
+        case 6:
+          message.importBy = reader.int32() as any;
+          break;
         case 4:
           message.import = ERDConfigImportData.decode(reader, reader.uint32());
           break;
@@ -825,6 +890,7 @@ export const ERDConfigData = {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
       git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
+      importBy: isSet(object.importBy) ? importByFromJSON(object.importBy) : undefined,
       import: isSet(object.import) ? ERDConfigImportData.fromJSON(object.import) : undefined,
       local: isSet(object.local) ? ERDConfigLocalData.fromJSON(object.local) : undefined,
     };
@@ -837,6 +903,8 @@ export const ERDConfigData = {
     message.projectSource !== undefined &&
       (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
     message.git !== undefined && (obj.git = message.git ? GitData.toJSON(message.git) : undefined);
+    message.importBy !== undefined &&
+      (obj.importBy = message.importBy !== undefined ? importByToJSON(message.importBy) : undefined);
     message.import !== undefined &&
       (obj.import = message.import ? ERDConfigImportData.toJSON(message.import) : undefined);
     message.local !== undefined && (obj.local = message.local ? ERDConfigLocalData.toJSON(message.local) : undefined);
@@ -850,6 +918,7 @@ export const ERDConfigData = {
       ? ProjectSourceData.fromPartial(object.projectSource)
       : undefined;
     message.git = (object.git !== undefined && object.git !== null) ? GitData.fromPartial(object.git) : undefined;
+    message.importBy = object.importBy ?? undefined;
     message.import = (object.import !== undefined && object.import !== null)
       ? ERDConfigImportData.fromPartial(object.import)
       : undefined;
@@ -1059,6 +1128,9 @@ export const BusinessLogicChangesData = {
     if (message.git !== undefined) {
       GitData.encode(message.git, writer.uint32(50).fork()).ldelim();
     }
+    if (message.importBy !== undefined) {
+      writer.uint32(56).int32(message.importBy);
+    }
     return writer;
   },
 
@@ -1087,6 +1159,9 @@ export const BusinessLogicChangesData = {
         case 6:
           message.git = GitData.decode(reader, reader.uint32());
           break;
+        case 7:
+          message.importBy = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1105,6 +1180,7 @@ export const BusinessLogicChangesData = {
       projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
       blockDiff: isSet(object.blockDiff) ? BlockDiffData.fromJSON(object.blockDiff) : undefined,
       git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
+      importBy: isSet(object.importBy) ? importByFromJSON(object.importBy) : undefined,
     };
   },
 
@@ -1127,6 +1203,8 @@ export const BusinessLogicChangesData = {
     message.blockDiff !== undefined &&
       (obj.blockDiff = message.blockDiff ? BlockDiffData.toJSON(message.blockDiff) : undefined);
     message.git !== undefined && (obj.git = message.git ? GitData.toJSON(message.git) : undefined);
+    message.importBy !== undefined &&
+      (obj.importBy = message.importBy !== undefined ? importByToJSON(message.importBy) : undefined);
     return obj;
   },
 
@@ -1142,6 +1220,7 @@ export const BusinessLogicChangesData = {
       ? BlockDiffData.fromPartial(object.blockDiff)
       : undefined;
     message.git = (object.git !== undefined && object.git !== null) ? GitData.fromPartial(object.git) : undefined;
+    message.importBy = object.importBy ?? undefined;
     return message;
   },
 };
@@ -1626,6 +1705,9 @@ export const ApiChangesData = {
     if (message.git !== undefined) {
       GitData.encode(message.git, writer.uint32(50).fork()).ldelim();
     }
+    if (message.importBy !== undefined) {
+      writer.uint32(56).int32(message.importBy);
+    }
     return writer;
   },
 
@@ -1654,6 +1736,9 @@ export const ApiChangesData = {
         case 6:
           message.git = GitData.decode(reader, reader.uint32());
           break;
+        case 7:
+          message.importBy = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1672,6 +1757,7 @@ export const ApiChangesData = {
         : [],
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
+      importBy: isSet(object.importBy) ? importByFromJSON(object.importBy) : undefined,
     };
   },
 
@@ -1694,6 +1780,8 @@ export const ApiChangesData = {
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.git !== undefined && (obj.git = message.git ? GitData.toJSON(message.git) : undefined);
+    message.importBy !== undefined &&
+      (obj.importBy = message.importBy !== undefined ? importByToJSON(message.importBy) : undefined);
     return obj;
   },
 
@@ -1709,6 +1797,7 @@ export const ApiChangesData = {
     message.relations = object.relations?.map((e) => ProjectSourceRelationData.fromPartial(e)) || [];
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.git = (object.git !== undefined && object.git !== null) ? GitData.fromPartial(object.git) : undefined;
+    message.importBy = object.importBy ?? undefined;
     return message;
   },
 };
