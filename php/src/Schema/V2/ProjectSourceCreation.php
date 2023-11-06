@@ -21,6 +21,10 @@ class ProjectSourceCreation extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>.schema.v2.ProjectSource project_source = 2;</code>
      */
     protected $project_source = null;
+    /**
+     * Generated from protobuf field <code>optional .schema.v2.ImportBy import_by = 5;</code>
+     */
+    protected $import_by = null;
     protected $source;
 
     /**
@@ -31,6 +35,7 @@ class ProjectSourceCreation extends \Google\Protobuf\Internal\Message
      *
      *     @type int $project_generate_queue_id
      *     @type \Schema\V2\ProjectSource $project_source
+     *     @type int $import_by
      *     @type string $source_path
      *     @type \Schema\V2\Git $git
      * }
@@ -90,6 +95,38 @@ class ProjectSourceCreation extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkMessage($var, \Schema\V2\ProjectSource::class);
         $this->project_source = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>optional .schema.v2.ImportBy import_by = 5;</code>
+     * @return int
+     */
+    public function getImportBy()
+    {
+        return isset($this->import_by) ? $this->import_by : 0;
+    }
+
+    public function hasImportBy()
+    {
+        return isset($this->import_by);
+    }
+
+    public function clearImportBy()
+    {
+        unset($this->import_by);
+    }
+
+    /**
+     * Generated from protobuf field <code>optional .schema.v2.ImportBy import_by = 5;</code>
+     * @param int $var
+     * @return $this
+     */
+    public function setImportBy($var)
+    {
+        GPBUtil::checkEnum($var, \Schema\V2\ImportBy::class);
+        $this->import_by = $var;
 
         return $this;
     }

@@ -56,9 +56,17 @@ message Git {
 	string token = 6;
 }
 
+enum ImportBy {
+	github = 0;
+	notion = 1;
+	google_docs = 2;
+	figma = 3;
+}
+
 message ProjectSourceCreation {
 	int32 project_generate_queue_id = 1;
 	ProjectSource project_source = 2;
+	optional ImportBy import_by = 5;
 
 	oneof source {
 		string source_path = 3;
@@ -70,6 +78,7 @@ message ERDConfig {
 	int32 project_generate_queue_id = 1;
 	ProjectSource project_source = 2;
 	Git git = 3;
+	optional ImportBy import_by = 6;
 
 	oneof source {
 		Import import = 4;
@@ -105,6 +114,7 @@ message BusinessLogicChanges {
 	ProjectSource project_source = 4;
 	BlockDiff block_diff = 5;
 	Git git = 6;
+	optional ImportBy import_by = 7;
 }
 
 message BlockDiff {
@@ -155,6 +165,7 @@ message ApiChanges {
 	repeated ProjectSource.Relation relations = 4;
 	int32 project_generate_queue_id = 5;
 	Git git = 6;
+	optional ImportBy import_by = 7;
 }
 
 message ProjectSourceReport {
