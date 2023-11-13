@@ -201,23 +201,23 @@ export class ProjectSourceCreation {
 }
 
 export enum ProjectSourceCreationAction {
-  INDEX = 0,
-  ANALYZE = 1,
-  ERD = 2,
+  INDEX_CODE = 0,
+  ANALYZE_CODE = 1,
+  CODE_TO_ERD = 2,
   UNRECOGNIZED = -1,
 }
 
 export function projectSourceCreationActionFromJSON(object: any): ProjectSourceCreationAction {
   switch (object) {
     case 0:
-    case "INDEX":
-      return ProjectSourceCreationAction.INDEX;
+    case "INDEX_CODE":
+      return ProjectSourceCreationAction.INDEX_CODE;
     case 1:
-    case "ANALYZE":
-      return ProjectSourceCreationAction.ANALYZE;
+    case "ANALYZE_CODE":
+      return ProjectSourceCreationAction.ANALYZE_CODE;
     case 2:
-    case "ERD":
-      return ProjectSourceCreationAction.ERD;
+    case "CODE_TO_ERD":
+      return ProjectSourceCreationAction.CODE_TO_ERD;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -227,12 +227,12 @@ export function projectSourceCreationActionFromJSON(object: any): ProjectSourceC
 
 export function projectSourceCreationActionToJSON(object: ProjectSourceCreationAction): string {
   switch (object) {
-    case ProjectSourceCreationAction.INDEX:
-      return "INDEX";
-    case ProjectSourceCreationAction.ANALYZE:
-      return "ANALYZE";
-    case ProjectSourceCreationAction.ERD:
-      return "ERD";
+    case ProjectSourceCreationAction.INDEX_CODE:
+      return "INDEX_CODE";
+    case ProjectSourceCreationAction.ANALYZE_CODE:
+      return "ANALYZE_CODE";
+    case ProjectSourceCreationAction.CODE_TO_ERD:
+      return "CODE_TO_ERD";
     case ProjectSourceCreationAction.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";

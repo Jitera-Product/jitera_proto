@@ -70,9 +70,9 @@ message ProjectSourceCreation {
 	optional Action action = 6;
 
 	enum Action {
-		INDEX = 0;
-		ANALYZE = 1;
-		ERD = 2;
+		INDEX_CODE = 0;
+		ANALYZE_CODE = 1;
+		CODE_TO_ERD = 2;
 	}
 
 	oneof source {
