@@ -67,6 +67,13 @@ message ProjectSourceCreation {
 	int32 project_generate_queue_id = 1;
 	ProjectSource project_source = 2;
 	optional ImportBy import_by = 5;
+	optional Action action = 6;
+
+	enum Action {
+		INDEX = 0;
+		ANALYZE = 1;
+		ERD = 2;
+	}
 
 	oneof source {
 		string source_path = 3;
