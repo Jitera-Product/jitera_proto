@@ -29,6 +29,10 @@ class Git extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>string token = 6;</code>
      */
     protected $token = '';
+    /**
+     * Generated from protobuf field <code>string jitera_branch = 7;</code>
+     */
+    protected $jitera_branch = '';
 
     /**
      * Constructor.
@@ -40,6 +44,7 @@ class Git extends \Google\Protobuf\Internal\Message
      *     @type string $owner
      *     @type string $branch
      *     @type string $token
+     *     @type string $jitera_branch
      * }
      */
     public function __construct($data = NULL) {
@@ -131,6 +136,28 @@ class Git extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkString($var, True);
         $this->token = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string jitera_branch = 7;</code>
+     * @return string
+     */
+    public function getJiteraBranch()
+    {
+        return $this->jitera_branch;
+    }
+
+    /**
+     * Generated from protobuf field <code>string jitera_branch = 7;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setJiteraBranch($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->jitera_branch = $var;
 
         return $this;
     }

@@ -189,6 +189,7 @@ export class Git {
   owner: string;
   branch: string;
   token: string;
+  jiteraBranch: string;
 }
 
 export class ProjectSourceCreation {
@@ -700,7 +701,7 @@ export const ProjectSourceRelationData = {
 };
 
 function createBaseGit(): Git {
-  return { repo: "", owner: "", branch: "", token: "" };
+  return { repo: "", owner: "", branch: "", token: "", jiteraBranch: "" };
 }
 
 export const GitData = {
@@ -716,6 +717,9 @@ export const GitData = {
     }
     if (message.token !== "") {
       writer.uint32(50).string(message.token);
+    }
+    if (message.jiteraBranch !== "") {
+      writer.uint32(58).string(message.jiteraBranch);
     }
     return writer;
   },
@@ -739,6 +743,9 @@ export const GitData = {
         case 6:
           message.token = reader.string();
           break;
+        case 7:
+          message.jiteraBranch = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -753,6 +760,7 @@ export const GitData = {
       owner: isSet(object.owner) ? String(object.owner) : "",
       branch: isSet(object.branch) ? String(object.branch) : "",
       token: isSet(object.token) ? String(object.token) : "",
+      jiteraBranch: isSet(object.jiteraBranch) ? String(object.jiteraBranch) : "",
     };
   },
 
@@ -762,6 +770,7 @@ export const GitData = {
     message.owner !== undefined && (obj.owner = message.owner);
     message.branch !== undefined && (obj.branch = message.branch);
     message.token !== undefined && (obj.token = message.token);
+    message.jiteraBranch !== undefined && (obj.jiteraBranch = message.jiteraBranch);
     return obj;
   },
 
@@ -771,6 +780,7 @@ export const GitData = {
     message.owner = object.owner ?? "";
     message.branch = object.branch ?? "";
     message.token = object.token ?? "";
+    message.jiteraBranch = object.jiteraBranch ?? "";
     return message;
   },
 };

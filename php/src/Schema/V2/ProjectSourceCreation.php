@@ -25,6 +25,10 @@ class ProjectSourceCreation extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>optional .schema.v2.ImportBy import_by = 5;</code>
      */
     protected $import_by = null;
+    /**
+     * Generated from protobuf field <code>optional .schema.v2.ProjectSourceCreation.Action action = 6;</code>
+     */
+    protected $action = null;
     protected $source;
 
     /**
@@ -36,6 +40,7 @@ class ProjectSourceCreation extends \Google\Protobuf\Internal\Message
      *     @type int $project_generate_queue_id
      *     @type \Schema\V2\ProjectSource $project_source
      *     @type int $import_by
+     *     @type int $action
      *     @type string $source_path
      *     @type \Schema\V2\Git $git
      * }
@@ -127,6 +132,38 @@ class ProjectSourceCreation extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkEnum($var, \Schema\V2\ImportBy::class);
         $this->import_by = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>optional .schema.v2.ProjectSourceCreation.Action action = 6;</code>
+     * @return int
+     */
+    public function getAction()
+    {
+        return isset($this->action) ? $this->action : 0;
+    }
+
+    public function hasAction()
+    {
+        return isset($this->action);
+    }
+
+    public function clearAction()
+    {
+        unset($this->action);
+    }
+
+    /**
+     * Generated from protobuf field <code>optional .schema.v2.ProjectSourceCreation.Action action = 6;</code>
+     * @param int $var
+     * @return $this
+     */
+    public function setAction($var)
+    {
+        GPBUtil::checkEnum($var, \Schema\V2\ProjectSourceCreation\Action::class);
+        $this->action = $var;
 
         return $this;
     }

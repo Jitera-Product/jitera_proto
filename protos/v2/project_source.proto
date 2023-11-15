@@ -54,6 +54,7 @@ message Git {
 	string owner = 4;
 	string branch = 5;
 	string token = 6;
+	string jitera_branch = 7;
 }
 
 enum ImportBy {
