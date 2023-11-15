@@ -1,6 +1,6 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-import { Struct, StructData } from "../google/protobuf/struct.proto";
+import { StructData } from "../google/protobuf/struct.proto";
 import { Table, TableData } from "../v1/payloads.proto";
 
 export enum ImportBy {
@@ -195,8 +195,48 @@ export class ProjectSourceCreation {
   projectGenerateQueueId: number;
   projectSource?: ProjectSource;
   importBy?: ImportBy | undefined;
+  action?: ProjectSourceCreationAction | undefined;
   sourcePath?: string | undefined;
   git?: Git | undefined;
+}
+
+export enum ProjectSourceCreationAction {
+  INDEX_CODE = 0,
+  ANALYZE_CODE = 1,
+  CODE_TO_ERD = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function projectSourceCreationActionFromJSON(object: any): ProjectSourceCreationAction {
+  switch (object) {
+    case 0:
+    case "INDEX_CODE":
+      return ProjectSourceCreationAction.INDEX_CODE;
+    case 1:
+    case "ANALYZE_CODE":
+      return ProjectSourceCreationAction.ANALYZE_CODE;
+    case 2:
+    case "CODE_TO_ERD":
+      return ProjectSourceCreationAction.CODE_TO_ERD;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ProjectSourceCreationAction.UNRECOGNIZED;
+  }
+}
+
+export function projectSourceCreationActionToJSON(object: ProjectSourceCreationAction): string {
+  switch (object) {
+    case ProjectSourceCreationAction.INDEX_CODE:
+      return "INDEX_CODE";
+    case ProjectSourceCreationAction.ANALYZE_CODE:
+      return "ANALYZE_CODE";
+    case ProjectSourceCreationAction.CODE_TO_ERD:
+      return "CODE_TO_ERD";
+    case ProjectSourceCreationAction.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
 }
 
 export class ERDConfig {
@@ -750,6 +790,9 @@ export const ProjectSourceCreationData = {
     if (message.importBy !== undefined) {
       writer.uint32(40).int32(message.importBy);
     }
+    if (message.action !== undefined) {
+      writer.uint32(48).int32(message.action);
+    }
     if (message.sourcePath !== undefined) {
       writer.uint32(26).string(message.sourcePath);
     }
@@ -775,6 +818,9 @@ export const ProjectSourceCreationData = {
         case 5:
           message.importBy = reader.int32() as any;
           break;
+        case 6:
+          message.action = reader.int32() as any;
+          break;
         case 3:
           message.sourcePath = reader.string();
           break;
@@ -794,6 +840,7 @@ export const ProjectSourceCreationData = {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
       importBy: isSet(object.importBy) ? importByFromJSON(object.importBy) : undefined,
+      action: isSet(object.action) ? projectSourceCreationActionFromJSON(object.action) : undefined,
       sourcePath: isSet(object.sourcePath) ? String(object.sourcePath) : undefined,
       git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
     };
@@ -807,6 +854,8 @@ export const ProjectSourceCreationData = {
       (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
     message.importBy !== undefined &&
       (obj.importBy = message.importBy !== undefined ? importByToJSON(message.importBy) : undefined);
+    message.action !== undefined &&
+      (obj.action = message.action !== undefined ? projectSourceCreationActionToJSON(message.action) : undefined);
     message.sourcePath !== undefined && (obj.sourcePath = message.sourcePath);
     message.git !== undefined && (obj.git = message.git ? GitData.toJSON(message.git) : undefined);
     return obj;
@@ -819,6 +868,7 @@ export const ProjectSourceCreationData = {
       ? ProjectSourceData.fromPartial(object.projectSource)
       : undefined;
     message.importBy = object.importBy ?? undefined;
+    message.action = object.action ?? undefined;
     message.sourcePath = object.sourcePath ?? undefined;
     message.git = (object.git !== undefined && object.git !== null) ? GitData.fromPartial(object.git) : undefined;
     return message;
