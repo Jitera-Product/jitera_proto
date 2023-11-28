@@ -390,6 +390,26 @@ export class ProjectSourceReportComplete {
   files: string;
 }
 
+export class UseCaseRemoval {
+  projectSource?: ProjectSource;
+  projectGenerateQueueId: number;
+  git?: Git;
+  importBy?: ImportBy | undefined;
+  useCaseBlocks: UseCaseRemovalBlock[];
+  businessLogicBlocks: UseCaseRemovalBlock[];
+  apiBlocks: UseCaseRemovalBlock[];
+}
+
+export class UseCaseRemovalBlock {
+  id: number;
+  nodeId: string;
+  name: string;
+  blockType: string;
+  parentNodeId: string;
+  properties?: { [key: string]: any };
+  children: string[];
+}
+
 function createBaseProjectSource(): ProjectSource {
   return { id: 0, projectId: 0, framework: 0, layer: 0, files: "" };
 }
@@ -2132,6 +2152,241 @@ export const ProjectSourceReportCompleteData = {
   fromPartial(object: DeepPartial<ProjectSourceReportComplete>): ProjectSourceReportComplete {
     const message = createBaseProjectSourceReportComplete();
     message.files = object.files ?? "";
+    return message;
+  },
+};
+
+function createBaseUseCaseRemoval(): UseCaseRemoval {
+  return { projectGenerateQueueId: 0, useCaseBlocks: [], businessLogicBlocks: [], apiBlocks: [] };
+}
+
+export const UseCaseRemovalData = {
+  encode(message: UseCaseRemoval, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.projectSource !== undefined) {
+      ProjectSourceData.encode(message.projectSource, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.projectGenerateQueueId !== 0) {
+      writer.uint32(16).int32(message.projectGenerateQueueId);
+    }
+    if (message.git !== undefined) {
+      GitData.encode(message.git, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.importBy !== undefined) {
+      writer.uint32(32).int32(message.importBy);
+    }
+    for (const v of message.useCaseBlocks) {
+      UseCaseRemovalBlockData.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
+    for (const v of message.businessLogicBlocks) {
+      UseCaseRemovalBlockData.encode(v!, writer.uint32(50).fork()).ldelim();
+    }
+    for (const v of message.apiBlocks) {
+      UseCaseRemovalBlockData.encode(v!, writer.uint32(58).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): UseCaseRemoval {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUseCaseRemoval();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.projectSource = ProjectSourceData.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.projectGenerateQueueId = reader.int32();
+          break;
+        case 3:
+          message.git = GitData.decode(reader, reader.uint32());
+          break;
+        case 4:
+          message.importBy = reader.int32() as any;
+          break;
+        case 5:
+          message.useCaseBlocks.push(UseCaseRemovalBlockData.decode(reader, reader.uint32()));
+          break;
+        case 6:
+          message.businessLogicBlocks.push(UseCaseRemovalBlockData.decode(reader, reader.uint32()));
+          break;
+        case 7:
+          message.apiBlocks.push(UseCaseRemovalBlockData.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UseCaseRemoval {
+    return {
+      projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
+      projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
+      git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
+      importBy: isSet(object.importBy) ? importByFromJSON(object.importBy) : undefined,
+      useCaseBlocks: Array.isArray(object?.useCaseBlocks)
+        ? object.useCaseBlocks.map((e: any) => UseCaseRemovalBlockData.fromJSON(e))
+        : [],
+      businessLogicBlocks: Array.isArray(object?.businessLogicBlocks)
+        ? object.businessLogicBlocks.map((e: any) => UseCaseRemovalBlockData.fromJSON(e))
+        : [],
+      apiBlocks: Array.isArray(object?.apiBlocks)
+        ? object.apiBlocks.map((e: any) => UseCaseRemovalBlockData.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: UseCaseRemoval): unknown {
+    const obj: any = {};
+    message.projectSource !== undefined &&
+      (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
+    message.projectGenerateQueueId !== undefined &&
+      (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
+    message.git !== undefined && (obj.git = message.git ? GitData.toJSON(message.git) : undefined);
+    message.importBy !== undefined &&
+      (obj.importBy = message.importBy !== undefined ? importByToJSON(message.importBy) : undefined);
+    if (message.useCaseBlocks) {
+      obj.useCaseBlocks = message.useCaseBlocks.map((e) => e ? UseCaseRemovalBlockData.toJSON(e) : undefined);
+    } else {
+      obj.useCaseBlocks = [];
+    }
+    if (message.businessLogicBlocks) {
+      obj.businessLogicBlocks = message.businessLogicBlocks.map((e) =>
+        e ? UseCaseRemovalBlockData.toJSON(e) : undefined
+      );
+    } else {
+      obj.businessLogicBlocks = [];
+    }
+    if (message.apiBlocks) {
+      obj.apiBlocks = message.apiBlocks.map((e) => e ? UseCaseRemovalBlockData.toJSON(e) : undefined);
+    } else {
+      obj.apiBlocks = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<UseCaseRemoval>): UseCaseRemoval {
+    const message = createBaseUseCaseRemoval();
+    message.projectSource = (object.projectSource !== undefined && object.projectSource !== null)
+      ? ProjectSourceData.fromPartial(object.projectSource)
+      : undefined;
+    message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
+    message.git = (object.git !== undefined && object.git !== null) ? GitData.fromPartial(object.git) : undefined;
+    message.importBy = object.importBy ?? undefined;
+    message.useCaseBlocks = object.useCaseBlocks?.map((e) => UseCaseRemovalBlockData.fromPartial(e)) || [];
+    message.businessLogicBlocks = object.businessLogicBlocks?.map((e) => UseCaseRemovalBlockData.fromPartial(e)) || [];
+    message.apiBlocks = object.apiBlocks?.map((e) => UseCaseRemovalBlockData.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseUseCaseRemovalBlock(): UseCaseRemovalBlock {
+  return { id: 0, nodeId: "", name: "", blockType: "", parentNodeId: "", children: [] };
+}
+
+export const UseCaseRemovalBlockData = {
+  encode(message: UseCaseRemovalBlock, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
+    if (message.nodeId !== "") {
+      writer.uint32(18).string(message.nodeId);
+    }
+    if (message.name !== "") {
+      writer.uint32(26).string(message.name);
+    }
+    if (message.blockType !== "") {
+      writer.uint32(34).string(message.blockType);
+    }
+    if (message.parentNodeId !== "") {
+      writer.uint32(42).string(message.parentNodeId);
+    }
+    if (message.properties !== undefined) {
+      StructData.encode(StructData.wrap(message.properties), writer.uint32(50).fork()).ldelim();
+    }
+    for (const v of message.children) {
+      writer.uint32(58).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): UseCaseRemovalBlock {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUseCaseRemovalBlock();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.int32();
+          break;
+        case 2:
+          message.nodeId = reader.string();
+          break;
+        case 3:
+          message.name = reader.string();
+          break;
+        case 4:
+          message.blockType = reader.string();
+          break;
+        case 5:
+          message.parentNodeId = reader.string();
+          break;
+        case 6:
+          message.properties = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          break;
+        case 7:
+          message.children.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UseCaseRemovalBlock {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
+      name: isSet(object.name) ? String(object.name) : "",
+      blockType: isSet(object.blockType) ? String(object.blockType) : "",
+      parentNodeId: isSet(object.parentNodeId) ? String(object.parentNodeId) : "",
+      properties: isObject(object.properties) ? object.properties : undefined,
+      children: Array.isArray(object?.children) ? object.children.map((e: any) => String(e)) : [],
+    };
+  },
+
+  toJSON(message: UseCaseRemovalBlock): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.nodeId !== undefined && (obj.nodeId = message.nodeId);
+    message.name !== undefined && (obj.name = message.name);
+    message.blockType !== undefined && (obj.blockType = message.blockType);
+    message.parentNodeId !== undefined && (obj.parentNodeId = message.parentNodeId);
+    message.properties !== undefined && (obj.properties = message.properties);
+    if (message.children) {
+      obj.children = message.children.map((e) => e);
+    } else {
+      obj.children = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<UseCaseRemovalBlock>): UseCaseRemovalBlock {
+    const message = createBaseUseCaseRemovalBlock();
+    message.id = object.id ?? 0;
+    message.nodeId = object.nodeId ?? "";
+    message.name = object.name ?? "";
+    message.blockType = object.blockType ?? "";
+    message.parentNodeId = object.parentNodeId ?? "";
+    message.properties = object.properties ?? undefined;
+    message.children = object.children?.map((e) => e) || [];
     return message;
   },
 };

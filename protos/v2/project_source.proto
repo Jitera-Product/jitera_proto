@@ -202,3 +202,23 @@ message ProjectSourceReport {
 		string files = 4;
 	}
 }
+
+message UseCaseRemoval {
+	ProjectSource project_source = 1;
+	int32 project_generate_queue_id = 2;
+	Git git = 3;
+	optional ImportBy import_by = 4;
+	repeated Block use_case_blocks = 5;
+	repeated Block business_logic_blocks = 6;
+	repeated Block api_blocks = 7;
+
+	message Block {
+		int32 id = 1;
+		string node_id = 2;
+		string name = 3;
+		string block_type = 4;
+		string parent_node_id = 5;
+		google.protobuf.Struct properties = 6;
+		repeated string children = 7;
+	}
+}
