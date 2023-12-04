@@ -1,6 +1,8 @@
 syntax = "proto3";
 package schema.v2;
 
+import "v2/project_source.proto";
+
 message UserCaseCreation {
 	int32 project_generate_queue_id = 1;
 	int32 project_id = 2;
@@ -11,12 +13,19 @@ message UserCaseCreation {
 		Error error = 5;
 	}
 
+	optional ProjectTable project_tables = 6;
+
 	message Progress {
 		string message = 1;
 	}
 
 	message Error {
 		string message = 1;
+	}
+
+	message ProjectTable {
+		repeated ProjectSource.Table tables = 1;
+		repeated ProjectSource.Relation relations = 2;
 	}
 }
 
