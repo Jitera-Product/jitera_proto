@@ -64,5 +64,6 @@ message Block {
     optional bool unsupported = 10;
     optional bool is_toggleable = 11;
     optional bool ai_generated = 12;
+    optional string figma_node_ids = 13;
   }
 }
