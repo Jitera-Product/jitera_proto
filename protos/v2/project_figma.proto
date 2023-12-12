@@ -8,6 +8,7 @@ message ProjectFigmaImportRequest {
 	int32 project_id = 2;
 	string access_token = 3;
 	string node_ids = 4;
+	string file_key = 5;
 }
 
 message ProjectFigmaImportResponse {
