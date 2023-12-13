@@ -103,6 +103,7 @@ export class BlockProperty {
   unsupported?: boolean | undefined;
   isToggleable?: boolean | undefined;
   aiGenerated?: boolean | undefined;
+  figmaNodeIds?: string | undefined;
 }
 
 function createBaseBusinessLogicSync(): BusinessLogicSync {
@@ -641,6 +642,9 @@ export const BlockPropertyData = {
     if (message.aiGenerated !== undefined) {
       writer.uint32(96).bool(message.aiGenerated);
     }
+    if (message.figmaNodeIds !== undefined) {
+      writer.uint32(106).string(message.figmaNodeIds);
+    }
     return writer;
   },
 
@@ -687,6 +691,9 @@ export const BlockPropertyData = {
         case 12:
           message.aiGenerated = reader.bool();
           break;
+        case 13:
+          message.figmaNodeIds = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -709,6 +716,7 @@ export const BlockPropertyData = {
       unsupported: isSet(object.unsupported) ? Boolean(object.unsupported) : undefined,
       isToggleable: isSet(object.isToggleable) ? Boolean(object.isToggleable) : undefined,
       aiGenerated: isSet(object.aiGenerated) ? Boolean(object.aiGenerated) : undefined,
+      figmaNodeIds: isSet(object.figmaNodeIds) ? String(object.figmaNodeIds) : undefined,
     };
   },
 
@@ -726,6 +734,7 @@ export const BlockPropertyData = {
     message.unsupported !== undefined && (obj.unsupported = message.unsupported);
     message.isToggleable !== undefined && (obj.isToggleable = message.isToggleable);
     message.aiGenerated !== undefined && (obj.aiGenerated = message.aiGenerated);
+    message.figmaNodeIds !== undefined && (obj.figmaNodeIds = message.figmaNodeIds);
     return obj;
   },
 
@@ -743,6 +752,7 @@ export const BlockPropertyData = {
     message.unsupported = object.unsupported ?? undefined;
     message.isToggleable = object.isToggleable ?? undefined;
     message.aiGenerated = object.aiGenerated ?? undefined;
+    message.figmaNodeIds = object.figmaNodeIds ?? undefined;
     return message;
   },
 };
