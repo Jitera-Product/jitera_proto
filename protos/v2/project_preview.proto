@@ -1,0 +1,59 @@
+syntax = "proto3";
+package schema.v2;
+
+import "v2/project_source.proto";
+
+message ProjectPreviewRequest {
+  int32 project_preview_id = 1;
+  int32 project_id = 2;
+  ProjectSource project_source = 3;
+  Git git = 4;
+  repeated Log logs = 5;
+
+  message Log {
+    string command = 1;
+    string description = 2;
+    string content = 3;
+  }
+}
+
+message ProjectPreviewResponse {
+  int32 project_preview_id = 1;
+  int32 project_id = 2;
+  Status status = 4;
+  int32 token_usage = 5;
+
+  enum Status {
+    SUCCEEDED = 0;
+    INPROGRESS = 1;
+    FAILED = 2;
+  }
+}
+
+message DeployGenerateScriptItem {
+  string command = 1;
+  string description = 2;
+}
+
+message ProjectPreviewDeployGenerateRequest {
+  int32 project_preview_id = 1;
+  int32 project_id = 2;
+  ProjectSource project_source = 3;
+  Git git = 4;
+  repeated DeployGenerateScriptItem previous_scripts = 5;
+}
+
+message ProjectPreviewDeployGenerateResponse {
+  int32 project_preview_id = 1;
+  int32 project_id = 2;
+  Status status = 4;
+  int32 token_usage = 5;
+  repeated DeployGenerateScriptItem scripts = 6;
+
+
+  enum Status {
+    SUCCEEDED = 0;
+    INPROGRESS = 1;
+    FAILED = 2;
+  }
+}
