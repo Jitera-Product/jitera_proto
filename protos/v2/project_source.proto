@@ -32,7 +32,7 @@ message ProjectSource {
 		int32 id = 1;
 		string name = 2;
 		repeated Column columns = 3;
-	
+
 		message Column {
 			int32 id = 1;
 			string name = 2;
@@ -54,7 +54,8 @@ message Git {
 	string owner = 4;
 	string branch = 5;
 	string token = 6;
-	string jitera_branch = 7;
+	string erd_branch= 7;
+	string use_case_branch=8;
 }
 
 enum ImportBy {
@@ -78,7 +79,7 @@ message ProjectSourceCreation {
 
 	oneof source {
 		string source_path = 3;
-		Git git = 4;	
+		Git git = 4;
 	}
 }
 
