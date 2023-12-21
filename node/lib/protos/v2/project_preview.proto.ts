@@ -1,6 +1,6 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-import { Git, ProjectSource } from "./project_source.proto";
+import { Git, GitData, ProjectSource, ProjectSourceData } from "./project_source.proto";
 
 export class ProjectPreviewRequest {
   projectPreviewId: number;
