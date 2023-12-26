@@ -81,6 +81,7 @@ export class ProjectPreviewDeployGenerateResponse {
   status: ProjectPreviewDeployGenerateResponseStatus;
   tokenUsage: number;
   scripts: DeployGenerateScriptItem[];
+  baseImageName: string;
 }
 
 export enum ProjectPreviewDeployGenerateResponseStatus {
@@ -514,7 +515,7 @@ export const ProjectPreviewDeployGenerateRequestData = {
 };
 
 function createBaseProjectPreviewDeployGenerateResponse(): ProjectPreviewDeployGenerateResponse {
-  return { projectPreviewId: 0, projectId: 0, status: 0, tokenUsage: 0, scripts: [] };
+  return { projectPreviewId: 0, projectId: 0, status: 0, tokenUsage: 0, scripts: [], baseImageName: "" };
 }
 
 export const ProjectPreviewDeployGenerateResponseData = {
@@ -533,6 +534,9 @@ export const ProjectPreviewDeployGenerateResponseData = {
     }
     for (const v of message.scripts) {
       DeployGenerateScriptItemData.encode(v!, writer.uint32(50).fork()).ldelim();
+    }
+    if (message.baseImageName !== "") {
+      writer.uint32(58).string(message.baseImageName);
     }
     return writer;
   },
@@ -559,6 +563,9 @@ export const ProjectPreviewDeployGenerateResponseData = {
         case 6:
           message.scripts.push(DeployGenerateScriptItemData.decode(reader, reader.uint32()));
           break;
+        case 7:
+          message.baseImageName = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -576,6 +583,7 @@ export const ProjectPreviewDeployGenerateResponseData = {
       scripts: Array.isArray(object?.scripts)
         ? object.scripts.map((e: any) => DeployGenerateScriptItemData.fromJSON(e))
         : [],
+      baseImageName: isSet(object.baseImageName) ? String(object.baseImageName) : "",
     };
   },
 
@@ -590,6 +598,7 @@ export const ProjectPreviewDeployGenerateResponseData = {
     } else {
       obj.scripts = [];
     }
+    message.baseImageName !== undefined && (obj.baseImageName = message.baseImageName);
     return obj;
   },
 
@@ -600,6 +609,7 @@ export const ProjectPreviewDeployGenerateResponseData = {
     message.status = object.status ?? 0;
     message.tokenUsage = object.tokenUsage ?? 0;
     message.scripts = object.scripts?.map((e) => DeployGenerateScriptItemData.fromPartial(e)) || [];
+    message.baseImageName = object.baseImageName ?? "";
     return message;
   },
 };
