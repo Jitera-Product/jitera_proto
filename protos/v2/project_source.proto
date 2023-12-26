@@ -49,6 +49,13 @@ message ProjectSource {
 	}
 }
 
+message PullRequest {
+	int32 id = 1;
+	int32 number = 2;
+	string name = 3;
+	string status = 4;
+}
+
 message Git {
 	string repo = 3;
 	string owner = 4;
@@ -56,6 +63,7 @@ message Git {
 	string token = 6;
 	string jitera_branch = 7;
 	string target_branch = 8;
+	PullRequest pull_request = 9;
 }
 
 enum ImportBy {
