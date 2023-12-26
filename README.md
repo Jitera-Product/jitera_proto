@@ -29,7 +29,8 @@ cd ruby
 grpc_tools_ruby_protoc -I ../protos --ruby_out=./lib/payloads --grpc_out=./lib/payloads ../protos/**/*.proto --proto_path=lib/payloads
 ```
 Know issues:
-Remove below require
+Remove related require
+Example:
 ```
 require 'v1/payloads_pb'
 ```
