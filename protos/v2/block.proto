@@ -65,5 +65,17 @@ message Block {
     optional bool is_toggleable = 11;
     optional bool ai_generated = 12;
     optional string figma_node_ids = 13;
+    optional string caption = 14;
+    optional ExternalUrl external = 15;
+    optional InternalUrl internal = 16;
+  }
+
+  message ExternalUrl {
+    string url = 1;
+  }
+
+  message InternalUrl {
+    int32 id = 1;
+    string url = 2;
   }
 }

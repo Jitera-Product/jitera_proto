@@ -1,7 +1,7 @@
 /* eslint-disable */
 import type { CallContext, CallOptions } from "nice-grpc-common";
 import * as _m0 from "protobufjs/minimal";
-import { StructData } from "../google/protobuf/struct.proto";
+import { Struct } from "../google/protobuf/struct.proto";
 
 export enum DataTypeName {
   BOOLEAN = 0,
@@ -255,7 +255,7 @@ export function operatorToJSON(object: Operator): string {
   }
 }
 
-export class Project {
+export interface Project {
   id: string;
   projectName: string;
   projectId: number;
@@ -311,40 +311,40 @@ export function projectEnvironmentToJSON(object: ProjectEnvironment): string {
   }
 }
 
-export class ProjectCredential {
+export interface ProjectCredential {
   name: ProjectEnvironment;
   value: string;
 }
 
-export class Placeholder {
+export interface Placeholder {
   example?: CodePreview;
   project?: CodePreview;
 }
 
-export class PreviewUrls {
+export interface PreviewUrls {
   frontend: string;
   api: string;
 }
 
-export class CodePreview {
+export interface CodePreview {
   id: number;
   backend?: Backend | undefined;
   webApp?: WebApp | undefined;
 }
 
-export class ProjectExport {
+export interface ProjectExport {
   id: number;
 }
 
-export class ProjectPreview {
+export interface ProjectPreview {
   id: number;
 }
 
-export class Infra {
+export interface Infra {
   path: string;
 }
 
-export class Backend {
+export interface Backend {
   tables: Table[];
   controllers: Controller[];
   features: Feature[];
@@ -353,32 +353,32 @@ export class Backend {
   migrations: Migration[];
 }
 
-export class Localization {
+export interface Localization {
   lang: string;
   namespaces: LocalizationNamespace[];
 }
 
-export class LocalizationNamespace {
+export interface LocalizationNamespace {
   name: string;
   translates: LocalizationTranslate[];
 }
 
-export class LocalizationTranslate {
+export interface LocalizationTranslate {
   key: string;
   value: string;
 }
 
-export class DataType {
+export interface DataType {
   name: DataTypeName;
 }
 
-export class Authorization {
+export interface Authorization {
   name: string;
   id: number;
   policies: AuthorizationPolicy[];
 }
 
-export class AuthorizationPolicy {
+export interface AuthorizationPolicy {
   resource: string;
   roleBinding?: AuthorizationPolicyRoleBinding;
   rule?: AuthorizationPolicyRule;
@@ -418,23 +418,23 @@ export function authorizationPolicyScopeToJSON(object: AuthorizationPolicyScope)
   }
 }
 
-export class AuthorizationPolicyRoleBinding {
+export interface AuthorizationPolicyRoleBinding {
   table: string;
   column: string;
   role: string;
 }
 
-export class AuthorizationPolicyRule {
+export interface AuthorizationPolicyRule {
   operands: AuthorizationPolicyRuleOperand[];
   operators: Operator[];
 }
 
-export class AuthorizationPolicyRuleOperand {
+export interface AuthorizationPolicyRuleOperand {
   expr?: AuthorizationPolicyRuleExpr | undefined;
   rule?: AuthorizationPolicyRule | undefined;
 }
 
-export class AuthorizationPolicyRuleExpr {
+export interface AuthorizationPolicyRuleExpr {
   column: string;
   value?: string | undefined;
   paths?: string | undefined;
@@ -442,7 +442,7 @@ export class AuthorizationPolicyRuleExpr {
   operator: Operator;
 }
 
-export class Feature {
+export interface Feature {
   name: FeatureFeatureName;
   env: FeatureEnvironment;
   emailLogin?: FeatureEmailLogin | undefined;
@@ -693,7 +693,7 @@ export function featureEnvironmentToJSON(object: FeatureEnvironment): string {
   }
 }
 
-export class FeatureEmailLogin {
+export interface FeatureEmailLogin {
   tables: string[];
   passwordMinLength: number;
   rememberFor: number;
@@ -744,15 +744,15 @@ export function featureEmailLoginUnlockStrategyToJSON(object: FeatureEmailLoginU
   }
 }
 
-export class FeatureJPBankData {
+export interface FeatureJPBankData {
 }
 
-export class FeatureBasicAuth {
+export interface FeatureBasicAuth {
   username: string;
   password: string;
 }
 
-export class FeatureTwilioLogin {
+export interface FeatureTwilioLogin {
   userTables: string[];
   serviceId: string;
   sid: string;
@@ -764,11 +764,11 @@ export class FeatureTwilioLogin {
   recaptchaSecretKey: string;
 }
 
-export class FeatureRollbar {
+export interface FeatureRollbar {
   accessToken: string;
 }
 
-export class FeatureDeepLink {
+export interface FeatureDeepLink {
   iosAppStoreId: string;
   iosBundleId: string;
   iosAppLink: string;
@@ -778,7 +778,7 @@ export class FeatureDeepLink {
   firebaseDomain: string;
 }
 
-export class FeatureStripe {
+export interface FeatureStripe {
   subscriptionTables: string[];
   userTables: string[];
   publicKey: string;
@@ -790,25 +790,25 @@ export class FeatureStripe {
   addIntentApi: boolean;
 }
 
-export class FeatureLineLogin {
+export interface FeatureLineLogin {
   userTables: string[];
   clientId: string;
   secretKey: string;
 }
 
-export class FeatureGoogleAnalytics {
+export interface FeatureGoogleAnalytics {
   measurementId: string;
 }
 
-export class FeatureGoogleTagManager {
+export interface FeatureGoogleTagManager {
   containerId: string;
 }
 
-export class FeatureScoutApm {
+export interface FeatureScoutApm {
   keyId: string;
 }
 
-export class FeatureEmailConfig {
+export interface FeatureEmailConfig {
   address: string;
   username: string;
   password: string;
@@ -818,12 +818,12 @@ export class FeatureEmailConfig {
   authentication: FeatureEmailConfigAuthentication;
 }
 
-export class Controller {
+export interface Controller {
   name: string;
   endpoints: ControllerEndpoint[];
 }
 
-export class ControllerEndpoint {
+export interface ControllerEndpoint {
   path: string;
   name: string;
   table?: string | undefined;
@@ -844,49 +844,49 @@ export class ControllerEndpoint {
   restrictAccess: boolean;
 }
 
-export class ControllerEndpointList {
+export interface ControllerEndpointList {
   queries?: ControllerRequestContent;
   conditions?: ControllerResourceCondition;
 }
 
-export class ControllerEndpointGet {
+export interface ControllerEndpointGet {
   queries?: ControllerRequestContent;
   conditions?: ControllerResourceCondition;
 }
 
-export class ControllerEndpointCreate {
+export interface ControllerEndpointCreate {
   body?: ControllerRequestContent;
   conditions?: ControllerResourceCondition;
   resources?: ControllerResourceUpdate;
 }
 
-export class ControllerEndpointUpdate {
+export interface ControllerEndpointUpdate {
   body?: ControllerRequestContent;
   conditions?: ControllerResourceCondition;
   resources?: ControllerResourceUpdate;
 }
 
-export class ControllerEndpointDelete {
+export interface ControllerEndpointDelete {
   body?: ControllerRequestContent;
   conditions?: ControllerResourceCondition;
 }
 
-export class ControllerRequestContent {
+export interface ControllerRequestContent {
   fields: ControllerRequestContentField[];
 }
 
-export class ControllerRequestContentField {
+export interface ControllerRequestContentField {
   name: string;
   dataType?: DataType;
   children: ControllerRequestContentField[];
   enumValues: string[];
 }
 
-export class ControllerResponse {
+export interface ControllerResponse {
   fields: ControllerResponseField[];
 }
 
-export class ControllerResponseField {
+export interface ControllerResponseField {
   name: string;
   resource?: string | undefined;
   property?: string | undefined;
@@ -897,7 +897,7 @@ export class ControllerResponseField {
   alias: string;
 }
 
-export class ControllerResourceCondition {
+export interface ControllerResourceCondition {
   operands: ControllerResourceConditionOperand[];
   operators: Operator[];
 }
@@ -929,12 +929,12 @@ export function controllerResourceConditionSystemToJSON(object: ControllerResour
   }
 }
 
-export class ControllerResourceConditionOperand {
+export interface ControllerResourceConditionOperand {
   expr?: ControllerResourceConditionExpr | undefined;
   condition?: ControllerResourceCondition | undefined;
 }
 
-export class ControllerResourceConditionExpr {
+export interface ControllerResourceConditionExpr {
   paths: string[];
   query?: string | undefined;
   params?: string | undefined;
@@ -945,11 +945,11 @@ export class ControllerResourceConditionExpr {
   operator: Operator;
 }
 
-export class ControllerResourceUpdate {
+export interface ControllerResourceUpdate {
   fields: ControllerResourceUpdateField[];
 }
 
-export class ControllerResourceUpdateField {
+export interface ControllerResourceUpdateField {
   name: string;
   query?: string | undefined;
   params?: string | undefined;
@@ -959,22 +959,22 @@ export class ControllerResourceUpdateField {
   children: ControllerResourceUpdateField[];
 }
 
-export class ControllerAuthentication {
+export interface ControllerAuthentication {
   tableName: string;
 }
 
-export class ControllerAuthorization {
+export interface ControllerAuthorization {
   authorizationId: number;
   tableName: string;
 }
 
-export class ControllerAuthorizationGroup {
+export interface ControllerAuthorizationGroup {
   tableName: string;
   authorizationConditions: ControllerAuthorizationCondition[];
   authenticationModel: boolean;
 }
 
-export class ControllerAuthorizationCondition {
+export interface ControllerAuthorizationCondition {
   columnDefinitionName: string;
   columnDefinitionDisplayName: string;
   joiningCondition: ControllerAuthorizationConditionJoiningCondition;
@@ -1077,7 +1077,7 @@ export function controllerAuthorizationConditionJoiningConditionToJSON(
   }
 }
 
-export class Table {
+export interface Table {
   name: string;
   columns: TableColumn[];
   relations: TableRelation[];
@@ -1085,7 +1085,7 @@ export class Table {
   id: number;
 }
 
-export class TableColumn {
+export interface TableColumn {
   name: string;
   type?: TableColumnColumnType;
   constraints: TableConstraint[];
@@ -1151,7 +1151,7 @@ export function tableColumnOperatorToJSON(object: TableColumnOperator): string {
   }
 }
 
-export class TableColumnColumnType {
+export interface TableColumnColumnType {
   integerType?: TableColumnIntegerType | undefined;
   stringType?: TableColumnStringType | undefined;
   floatType?: TableColumnFloatType | undefined;
@@ -1163,14 +1163,14 @@ export class TableColumnColumnType {
   idType?: TableColumnIDType | undefined;
 }
 
-export class TableColumnIDType {
+export interface TableColumnIDType {
 }
 
-export class TableColumnCounterCacheType {
+export interface TableColumnCounterCacheType {
   tableName: string;
 }
 
-export class TableColumnStringType {
+export interface TableColumnStringType {
   defaultValue?: string | undefined;
   isText: boolean;
   formats: TableColumnStringTypeFormat[];
@@ -1228,39 +1228,39 @@ export function tableColumnStringTypeFormatToJSON(object: TableColumnStringTypeF
   }
 }
 
-export class TableColumnStringTypeCondition {
+export interface TableColumnStringTypeCondition {
   operator: TableColumnOperator;
   value?: number | undefined;
   columnName?: string | undefined;
 }
 
-export class TableColumnIntegerType {
+export interface TableColumnIntegerType {
   defaultValue?: number | undefined;
   conditions: TableColumnIntegerTypeCondition[];
 }
 
-export class TableColumnIntegerTypeCondition {
+export interface TableColumnIntegerTypeCondition {
   operator: TableColumnOperator;
   value?: number | undefined;
   columnName?: string | undefined;
 }
 
-export class TableColumnFloatType {
+export interface TableColumnFloatType {
   defaultValue?: number | undefined;
   conditions: TableColumnFloatTypeCondition[];
 }
 
-export class TableColumnFloatTypeCondition {
+export interface TableColumnFloatTypeCondition {
   operator: TableColumnOperator;
   value?: number | undefined;
   columnName?: string | undefined;
 }
 
-export class TableColumnBooleanType {
+export interface TableColumnBooleanType {
   defaultValue: boolean;
 }
 
-export class TableColumnDateType {
+export interface TableColumnDateType {
   withTime: boolean;
   conditions: TableColumnDateTypeCondition[];
 }
@@ -1298,7 +1298,7 @@ export function tableColumnDateTypeConditionToJSON(object: TableColumnDateTypeCo
   }
 }
 
-export class TableColumnFileType {
+export interface TableColumnFileType {
   maximumSize: number;
   numberOfFiles?: TableColumnFileTypeNumberOfFiles;
   contentTypes: TableColumnFileTypeContentType[];
@@ -1362,24 +1362,24 @@ export function tableColumnFileTypeContentTypeToJSON(object: TableColumnFileType
   }
 }
 
-export class TableColumnFileTypeNumberOfFiles {
+export interface TableColumnFileTypeNumberOfFiles {
   minimum: number;
   maximum: number;
 }
 
-export class TableColumnEnumType {
+export interface TableColumnEnumType {
   defaultValue: string;
   values: string[];
 }
 
-export class TableColumnValidation {
+export interface TableColumnValidation {
   columnValidationOptions: TableColumnValidationOption[];
   presence: boolean;
   uniqueness: boolean;
   allowNil: boolean;
 }
 
-export class TableColumnValidationOption {
+export interface TableColumnValidationOption {
   lengthValidation?: TableColumnValidationOptionLengthValidation | undefined;
   charValidation?: TableColumnValidationOptionCharValidation | undefined;
   dateValidation?: TableColumnValidationOptionDateValidation | undefined;
@@ -1388,13 +1388,13 @@ export class TableColumnValidationOption {
   fileValidation?: TableColumnValidationOptionFileValidation | undefined;
 }
 
-export class TableColumnValidationOptionLengthValidation {
+export interface TableColumnValidationOptionLengthValidation {
   maximum: number;
   minimum: number;
   is: number;
 }
 
-export class TableColumnValidationOptionCharValidation {
+export interface TableColumnValidationOptionCharValidation {
   email: boolean;
   hiragana: boolean;
   katakana: boolean;
@@ -1402,51 +1402,51 @@ export class TableColumnValidationOptionCharValidation {
   url: boolean;
 }
 
-export class TableColumnValidationOptionDateValidation {
+export interface TableColumnValidationOptionDateValidation {
   past: boolean;
   future: boolean;
 }
 
-export class TableColumnValidationOptionNumericalityValidation {
+export interface TableColumnValidationOptionNumericalityValidation {
   greaterThan: number;
   greaterThanOrEqualTo: number;
   lessThan: number;
   lessThanOrEqualTo: number;
 }
 
-export class TableColumnValidationOptionFileValidation {
+export interface TableColumnValidationOptionFileValidation {
   single: boolean;
   contentTypes: string[];
 }
 
-export class TableConstraint {
+export interface TableConstraint {
   primaryKey?: TableConstraintPrimaryKey | undefined;
   foreignKey?: TableConstraintForeignKey | undefined;
   notNull?: TableConstraintNotNull | undefined;
   unique?: TableConstraintUnique | undefined;
 }
 
-export class TableConstraintPrimaryKey {
+export interface TableConstraintPrimaryKey {
 }
 
-export class TableConstraintForeignKey {
+export interface TableConstraintForeignKey {
   tableName: string;
   primaryKey: string;
 }
 
-export class TableConstraintNotNull {
+export interface TableConstraintNotNull {
 }
 
-export class TableConstraintUnique {
+export interface TableConstraintUnique {
 }
 
-export class TableIndex {
+export interface TableIndex {
   name: string;
   unique: boolean;
   columns: string[];
 }
 
-export class TableRelation {
+export interface TableRelation {
   hasOne?: TableRelationRelationHasOne | undefined;
   belongTo?: TableRelationRelationBelongTo | undefined;
   oneMany?: TableRelationRelationOneMany | undefined;
@@ -1454,42 +1454,42 @@ export class TableRelation {
   manyMany?: TableRelationRelationManyMany | undefined;
 }
 
-export class TableRelationRelationHasOne {
+export interface TableRelationRelationHasOne {
   tableName: string;
   columnName: string;
   relationName: string;
 }
 
-export class TableRelationRelationBelongTo {
+export interface TableRelationRelationBelongTo {
   tableName: string;
   columnName: string;
   relationName: string;
 }
 
-export class TableRelationRelationManyOne {
+export interface TableRelationRelationManyOne {
   tableName: string;
   columnName: string;
   relationName: string;
 }
 
-export class TableRelationRelationOneMany {
+export interface TableRelationRelationOneMany {
   tableName: string;
   columnName: string;
   relationName: string;
 }
 
-export class TableRelationRelationManyMany {
+export interface TableRelationRelationManyMany {
   tableName: string;
   joinedName: string;
   relationName: string;
 }
 
-export class Migration {
+export interface Migration {
   migrationId: string;
   changes: MigrationChange[];
 }
 
-export class MigrationChange {
+export interface MigrationChange {
   createTable?: CreateTable | undefined;
   changeTableName?: ChangeTableName | undefined;
   changeTableComment?: ChangeTableComment | undefined;
@@ -1510,7 +1510,7 @@ export class MigrationChange {
   changeColumnUnique?: ChangeColumnUnique | undefined;
 }
 
-export class CreateTable {
+export interface CreateTable {
   key: string;
   changeTo?: CreateTableChange;
   prevUuid: string;
@@ -1518,7 +1518,7 @@ export class CreateTable {
   nextRecord?: CreateTableNextRecord;
 }
 
-export class ChangeTableName {
+export interface ChangeTableName {
   key: string;
   changeFrom: string;
   changeTo: string;
@@ -1528,7 +1528,7 @@ export class ChangeTableName {
   nextRecord?: CreateTableNextRecord;
 }
 
-export class ChangeTableComment {
+export interface ChangeTableComment {
   key: string;
   changeFrom: string;
   changeTo: string;
@@ -1538,13 +1538,13 @@ export class ChangeTableComment {
   nextRecord?: CreateTableNextRecord;
 }
 
-export class CreateTableChange {
+export interface CreateTableChange {
   name: string;
   uuid: string;
   comment?: string | undefined;
 }
 
-export class AddColumn {
+export interface AddColumn {
   key: string;
   changeTo?: MigrationColumnDefinition;
   prevUuid: string;
@@ -1552,7 +1552,7 @@ export class AddColumn {
   nextRecord?: MigrationColumnDefinition;
 }
 
-export class RenameColumn {
+export interface RenameColumn {
   key: string;
   changeFrom: string;
   changeTo: string;
@@ -1562,7 +1562,7 @@ export class RenameColumn {
   nextRecord?: MigrationColumnDefinition;
 }
 
-export class ChangeColumnComment {
+export interface ChangeColumnComment {
   key: string;
   changeFrom: string;
   changeTo: string;
@@ -1572,7 +1572,7 @@ export class ChangeColumnComment {
   nextRecord?: MigrationColumnDefinition;
 }
 
-export class ChangeColumn {
+export interface ChangeColumn {
   key: string;
   changeFrom: string;
   changeTo: string;
@@ -1582,7 +1582,7 @@ export class ChangeColumn {
   nextRecord?: MigrationColumnDefinition;
 }
 
-export class ChangeColumnDefault {
+export interface ChangeColumnDefault {
   key: string;
   changeFrom: string;
   changeTo: string;
@@ -1592,7 +1592,7 @@ export class ChangeColumnDefault {
   nextRecord?: MigrationColumnDefinition;
 }
 
-export class ChangeColumnNull {
+export interface ChangeColumnNull {
   key: string;
   changeFrom: string;
   changeTo: string;
@@ -1602,7 +1602,7 @@ export class ChangeColumnNull {
   nextRecord?: MigrationColumnDefinition;
 }
 
-export class RemoveTableIndex {
+export interface RemoveTableIndex {
   key: string;
   changeFrom?: TableIndexMigration;
   prevUuid: string;
@@ -1610,14 +1610,14 @@ export class RemoveTableIndex {
   prevRecord?: TableIndexMigration;
 }
 
-export class RemoveTableRelation {
+export interface RemoveTableRelation {
   key: string;
   prevUuid: string;
   nextUuid: string;
   prevRecord?: TableRelationMigration;
 }
 
-export class CreateTableRelation {
+export interface CreateTableRelation {
   key: string;
   changeTo?: TableRelationMigration;
   prevUuid: string;
@@ -1625,7 +1625,7 @@ export class CreateTableRelation {
   nextRecord?: TableRelationMigration;
 }
 
-export class RemoveColumn {
+export interface RemoveColumn {
   key: string;
   changeFrom?: MigrationColumnDefinition;
   prevUuid: string;
@@ -1633,7 +1633,7 @@ export class RemoveColumn {
   prevRecord?: MigrationColumnDefinition;
 }
 
-export class DropTable {
+export interface DropTable {
   key: string;
   changeFrom?: CreateTableNextRecord;
   prevUuid: string;
@@ -1641,7 +1641,7 @@ export class DropTable {
   prevRecord?: CreateTableNextRecord;
 }
 
-export class ChangeTableIndex {
+export interface ChangeTableIndex {
   key: string;
   changeFrom: string;
   changeTo: string;
@@ -1651,18 +1651,18 @@ export class ChangeTableIndex {
   nextRecord?: TableIndexMigration;
 }
 
-export class CreateTableIndex {
+export interface CreateTableIndex {
   key: string;
   changeTo?: TableIndexMigration;
   nextUuid: string;
   nextRecord?: TableIndexMigration;
 }
 
-export class AddUniqColumn {
+export interface AddUniqColumn {
   nextRecord?: MigrationColumnDefinition;
 }
 
-export class ChangeColumnUnique {
+export interface ChangeColumnUnique {
   key: string;
   changeFrom: boolean;
   changeTo: boolean;
@@ -1672,14 +1672,14 @@ export class ChangeColumnUnique {
   nextRecord?: MigrationColumnDefinition;
 }
 
-export class CreateTableNextRecord {
+export interface CreateTableNextRecord {
   name: string;
   uuid: string;
   comment: string;
   columnDefinitions: MigrationColumnDefinition[];
 }
 
-export class MigrationColumnDefinition {
+export interface MigrationColumnDefinition {
   name: string;
   columnType: string;
   required: boolean;
@@ -1693,12 +1693,12 @@ export class MigrationColumnDefinition {
   id: number;
 }
 
-export class TableMetaDataMigration {
+export interface TableMetaDataMigration {
   name: string;
   uuid: string;
 }
 
-export class TableIndexMigration {
+export interface TableIndexMigration {
   name: string;
   unique: boolean;
   uuid: string;
@@ -1709,7 +1709,7 @@ export class TableIndexMigration {
   id: number;
 }
 
-export class TableRelationMigration {
+export interface TableRelationMigration {
   foreignKey: string;
   relationType: string;
   required: boolean;
@@ -1722,7 +1722,7 @@ export class TableRelationMigration {
   id: number;
 }
 
-export class WebApp {
+export interface WebApp {
   appPages: AppPage[];
   assets: Asset[];
   variables: WebAppVariable[];
@@ -1763,14 +1763,14 @@ export function webAppVariableTypeToJSON(object: WebAppVariableType): string {
   }
 }
 
-export class WebAppVariable {
+export interface WebAppVariable {
   id: string;
   type: WebAppVariableType;
   name: string;
   value: string;
 }
 
-export class Asset {
+export interface Asset {
   id: string;
   url: string;
   fileName: string;
@@ -1778,7 +1778,7 @@ export class Asset {
   contentType: string;
 }
 
-export class AppPage {
+export interface AppPage {
   id: string;
   pageName: string;
   slug: string;
@@ -1820,12 +1820,12 @@ export function appPagePageTypeToJSON(object: AppPagePageType): string {
   }
 }
 
-export class AppPageCategory {
+export interface AppPageCategory {
   id: string;
   name: string;
 }
 
-export class PageNode {
+export interface PageNode {
   id: string;
   displayName: string;
   name: string;
@@ -1838,12 +1838,12 @@ export class PageNode {
   mobileProps?: MobileNodeProps | undefined;
 }
 
-export class PageNodeLinkedNodesEntry {
+export interface PageNodeLinkedNodesEntry {
   key: string;
   value: string;
 }
 
-export class WebNodeProps {
+export interface WebNodeProps {
   elementKey: string;
   buttonType?: string | undefined;
   span?: string | undefined;
@@ -1886,7 +1886,9 @@ export class WebNodeProps {
   md?: number | undefined;
   lg?: number | undefined;
   xl?: number | undefined;
-  xxl?: number | undefined;
+  xxl?:
+    | number
+    | undefined;
   /** { gutter: number, xs: number, md: number, xl: number } */
   grid?: { [key: string]: any };
   /** { slidesToShow: number } */
@@ -1977,7 +1979,7 @@ export class WebNodeProps {
   dateTimeMode: NodeVariable[];
 }
 
-export class WebNodePropsTableColumn {
+export interface WebNodePropsTableColumn {
   molecule?: RenderMolecule;
   sortable: boolean;
   filterable: boolean;
@@ -1986,7 +1988,7 @@ export class WebNodePropsTableColumn {
   columnPath: NodeVariable[];
 }
 
-export class MobileNodeProps {
+export interface MobileNodeProps {
   elementKey: string;
   backgroundColor?: string | undefined;
   safeArea?: string | undefined;
@@ -2057,13 +2059,13 @@ export class MobileNodeProps {
   childrenData: NodeVariable[];
 }
 
-export class RenderMolecule {
+export interface RenderMolecule {
   reference?: NodeReference | undefined;
   arguments: FunctionArgument[];
   props: NodeParam[];
 }
 
-export class NodeReference {
+export interface NodeReference {
   name: string;
   refId: string;
   refData?: { [key: string]: any };
@@ -2200,14 +2202,14 @@ export function nodeReferenceReferenceRefTypeToJSON(object: NodeReferenceReferen
   }
 }
 
-export class FunctionArgument {
+export interface FunctionArgument {
   name: string;
   argumentType: string;
   plural: boolean;
   reference?: NodeReference;
 }
 
-export class NodeParam {
+export interface NodeParam {
   name: string;
   paramType: string;
   paramTypeEnum: string[];
@@ -2220,7 +2222,7 @@ export class NodeParam {
   functionArguments: FunctionArgument[];
 }
 
-export class NodeVariable {
+export interface NodeVariable {
   localId: string;
   name: string;
   value: string;
@@ -2398,7 +2400,7 @@ export function nodeVariableVariableTypeToJSON(object: NodeVariableVariableType)
   }
 }
 
-export class NodeAction {
+export interface NodeAction {
   action: string;
   value: string;
   actionType: NodeActionActionType;
@@ -2524,18 +2526,18 @@ export function nodeActionActionSourceToJSON(object: NodeActionActionSource): st
   }
 }
 
-export class NodePayload {
+export interface NodePayload {
   value?: NodeVariable;
   reference?: NodeReference;
   actions: NodeAction[];
 }
 
-export class MoleculeComponent {
+export interface MoleculeComponent {
   reference?: NodeReference;
   props: NodeParam[];
 }
 
-export class NodeCustom {
+export interface NodeCustom {
   usePropStyle?: boolean | undefined;
   ignorePropStyle?: boolean | undefined;
   form?: NodeReference | undefined;
@@ -2553,18 +2555,18 @@ export class NodeCustom {
   formDefaultValues: FormDefaultValue[];
 }
 
-export class FormDefaultValue {
+export interface FormDefaultValue {
   reference?: NodeReference;
   value?: NodeVariable;
 }
 
-export class NodeMediaQuery {
+export interface NodeMediaQuery {
   lower: number;
   upper: number;
   style?: { [key: string]: any };
 }
 
-export class RenderCondition {
+export interface RenderCondition {
   enabled: boolean;
   conditions: RenderConditionCondition[];
 }
@@ -2671,14 +2673,14 @@ export function renderConditionOperatorToJSON(object: RenderConditionOperator): 
   }
 }
 
-export class RenderConditionCondition {
+export interface RenderConditionCondition {
   source: RenderConditionSource;
   operator: RenderConditionOperator;
   left?: NodeVariable;
   right?: NodeVariable;
 }
 
-export class FormValidation {
+export interface FormValidation {
   validationType: FormValidationValidationType;
   validationRules: FormValidationFormValidationsRule[];
 }
@@ -2779,83 +2781,83 @@ export function formValidationRuleTypeToJSON(object: FormValidationRuleType): st
   }
 }
 
-export class FormValidationFormValidationsRule {
+export interface FormValidationFormValidationsRule {
   value: string;
   valueType: string;
   errorMessages: NodeVariable[];
   ruleType: FormValidationRuleType;
 }
 
-export class GetGitAccessTokenRequest {
+export interface GetGitAccessTokenRequest {
   projectId: number;
   userId: number;
 }
 
-export class GetGitAccessTokenResponse {
+export interface GetGitAccessTokenResponse {
   accessToken: string;
 }
 
-export class GetWebAppRequest {
+export interface GetWebAppRequest {
   projectId: number;
 }
 
-export class GetWebAppResponse {
+export interface GetWebAppResponse {
   webApp?: WebApp;
 }
 
-export class GetBackendRequest {
+export interface GetBackendRequest {
   projectId: number;
 }
 
-export class GetBackendResponse {
+export interface GetBackendResponse {
   backend?: Backend;
 }
 
-export class ListTablesRequest {
+export interface ListTablesRequest {
   projectId: number;
 }
 
-export class ListTablesResponse {
+export interface ListTablesResponse {
   tables: Table[];
 }
 
-export class ListMigrationsRequest {
+export interface ListMigrationsRequest {
   projectId: number;
 }
 
-export class ListControllersRequest {
+export interface ListControllersRequest {
   projectId: number;
 }
 
-export class ListControllersResponse {
+export interface ListControllersResponse {
   controllers: Controller[];
 }
 
-export class ListFeaturesRequest {
+export interface ListFeaturesRequest {
   projectId: number;
 }
 
-export class ListFeaturesResponse {
+export interface ListFeaturesResponse {
   features: Feature[];
 }
 
-export class ListAuthorizationsRequest {
+export interface ListAuthorizationsRequest {
   projectId: number;
 }
 
-export class ListAuthorizationsResponse {
+export interface ListAuthorizationsResponse {
   authorizations: Authorization[];
 }
 
-export class ListLocalizationsRequest {
+export interface ListLocalizationsRequest {
   projectId: number;
 }
 
-export class ListLocalizationsResponse {
+export interface ListLocalizationsResponse {
   localizations: Localization[];
 }
 
-export class ListMigrationsResponse {
+export interface ListMigrationsResponse {
   migrations: Migration[];
 }
 
@@ -2872,7 +2874,7 @@ function createBaseProject(): Project {
   };
 }
 
-export const ProjectData = {
+export const Project = {
   encode(message: Project, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
@@ -2884,7 +2886,7 @@ export const ProjectData = {
       writer.uint32(24).int32(message.projectId);
     }
     if (message.infra !== undefined) {
-      InfraData.encode(message.infra, writer.uint32(34).fork()).ldelim();
+      Infra.encode(message.infra, writer.uint32(34).fork()).ldelim();
     }
     if (message.timeZone !== "") {
       writer.uint32(42).string(message.timeZone);
@@ -2896,25 +2898,25 @@ export const ProjectData = {
       writer.uint32(58).string(v!);
     }
     for (const v of message.credentials) {
-      ProjectCredentialData.encode(v!, writer.uint32(98).fork()).ldelim();
+      ProjectCredential.encode(v!, writer.uint32(98).fork()).ldelim();
     }
     if (message.eventType !== "") {
       writer.uint32(106).string(message.eventType);
     }
     if (message.previewUrls !== undefined) {
-      PreviewUrlsData.encode(message.previewUrls, writer.uint32(114).fork()).ldelim();
+      PreviewUrls.encode(message.previewUrls, writer.uint32(114).fork()).ldelim();
     }
     if (message.projectExport !== undefined) {
-      ProjectExportData.encode(message.projectExport, writer.uint32(74).fork()).ldelim();
+      ProjectExport.encode(message.projectExport, writer.uint32(74).fork()).ldelim();
     }
     if (message.projectPreview !== undefined) {
-      ProjectPreviewData.encode(message.projectPreview, writer.uint32(82).fork()).ldelim();
+      ProjectPreview.encode(message.projectPreview, writer.uint32(82).fork()).ldelim();
     }
     if (message.codePreview !== undefined) {
-      CodePreviewData.encode(message.codePreview, writer.uint32(90).fork()).ldelim();
+      CodePreview.encode(message.codePreview, writer.uint32(90).fork()).ldelim();
     }
     if (message.placeholder !== undefined) {
-      PlaceholderData.encode(message.placeholder, writer.uint32(122).fork()).ldelim();
+      Placeholder.encode(message.placeholder, writer.uint32(122).fork()).ldelim();
     }
     return writer;
   },
@@ -2936,7 +2938,7 @@ export const ProjectData = {
           message.projectId = reader.int32();
           break;
         case 4:
-          message.infra = InfraData.decode(reader, reader.uint32());
+          message.infra = Infra.decode(reader, reader.uint32());
           break;
         case 5:
           message.timeZone = reader.string();
@@ -2948,25 +2950,25 @@ export const ProjectData = {
           message.languageCodes.push(reader.string());
           break;
         case 12:
-          message.credentials.push(ProjectCredentialData.decode(reader, reader.uint32()));
+          message.credentials.push(ProjectCredential.decode(reader, reader.uint32()));
           break;
         case 13:
           message.eventType = reader.string();
           break;
         case 14:
-          message.previewUrls = PreviewUrlsData.decode(reader, reader.uint32());
+          message.previewUrls = PreviewUrls.decode(reader, reader.uint32());
           break;
         case 9:
-          message.projectExport = ProjectExportData.decode(reader, reader.uint32());
+          message.projectExport = ProjectExport.decode(reader, reader.uint32());
           break;
         case 10:
-          message.projectPreview = ProjectPreviewData.decode(reader, reader.uint32());
+          message.projectPreview = ProjectPreview.decode(reader, reader.uint32());
           break;
         case 11:
-          message.codePreview = CodePreviewData.decode(reader, reader.uint32());
+          message.codePreview = CodePreview.decode(reader, reader.uint32());
           break;
         case 15:
-          message.placeholder = PlaceholderData.decode(reader, reader.uint32());
+          message.placeholder = Placeholder.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -2981,19 +2983,19 @@ export const ProjectData = {
       id: isSet(object.id) ? String(object.id) : "",
       projectName: isSet(object.projectName) ? String(object.projectName) : "",
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      infra: isSet(object.infra) ? InfraData.fromJSON(object.infra) : undefined,
+      infra: isSet(object.infra) ? Infra.fromJSON(object.infra) : undefined,
       timeZone: isSet(object.timeZone) ? String(object.timeZone) : "",
       defaultLanguageCode: isSet(object.defaultLanguageCode) ? String(object.defaultLanguageCode) : "",
       languageCodes: Array.isArray(object?.languageCodes) ? object.languageCodes.map((e: any) => String(e)) : [],
       credentials: Array.isArray(object?.credentials)
-        ? object.credentials.map((e: any) => ProjectCredentialData.fromJSON(e))
+        ? object.credentials.map((e: any) => ProjectCredential.fromJSON(e))
         : [],
       eventType: isSet(object.eventType) ? String(object.eventType) : "",
-      previewUrls: isSet(object.previewUrls) ? PreviewUrlsData.fromJSON(object.previewUrls) : undefined,
-      projectExport: isSet(object.projectExport) ? ProjectExportData.fromJSON(object.projectExport) : undefined,
-      projectPreview: isSet(object.projectPreview) ? ProjectPreviewData.fromJSON(object.projectPreview) : undefined,
-      codePreview: isSet(object.codePreview) ? CodePreviewData.fromJSON(object.codePreview) : undefined,
-      placeholder: isSet(object.placeholder) ? PlaceholderData.fromJSON(object.placeholder) : undefined,
+      previewUrls: isSet(object.previewUrls) ? PreviewUrls.fromJSON(object.previewUrls) : undefined,
+      projectExport: isSet(object.projectExport) ? ProjectExport.fromJSON(object.projectExport) : undefined,
+      projectPreview: isSet(object.projectPreview) ? ProjectPreview.fromJSON(object.projectPreview) : undefined,
+      codePreview: isSet(object.codePreview) ? CodePreview.fromJSON(object.codePreview) : undefined,
+      placeholder: isSet(object.placeholder) ? Placeholder.fromJSON(object.placeholder) : undefined,
     };
   },
 
@@ -3002,7 +3004,7 @@ export const ProjectData = {
     message.id !== undefined && (obj.id = message.id);
     message.projectName !== undefined && (obj.projectName = message.projectName);
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
-    message.infra !== undefined && (obj.infra = message.infra ? InfraData.toJSON(message.infra) : undefined);
+    message.infra !== undefined && (obj.infra = message.infra ? Infra.toJSON(message.infra) : undefined);
     message.timeZone !== undefined && (obj.timeZone = message.timeZone);
     message.defaultLanguageCode !== undefined && (obj.defaultLanguageCode = message.defaultLanguageCode);
     if (message.languageCodes) {
@@ -3011,21 +3013,21 @@ export const ProjectData = {
       obj.languageCodes = [];
     }
     if (message.credentials) {
-      obj.credentials = message.credentials.map((e) => e ? ProjectCredentialData.toJSON(e) : undefined);
+      obj.credentials = message.credentials.map((e) => e ? ProjectCredential.toJSON(e) : undefined);
     } else {
       obj.credentials = [];
     }
     message.eventType !== undefined && (obj.eventType = message.eventType);
     message.previewUrls !== undefined &&
-      (obj.previewUrls = message.previewUrls ? PreviewUrlsData.toJSON(message.previewUrls) : undefined);
+      (obj.previewUrls = message.previewUrls ? PreviewUrls.toJSON(message.previewUrls) : undefined);
     message.projectExport !== undefined &&
-      (obj.projectExport = message.projectExport ? ProjectExportData.toJSON(message.projectExport) : undefined);
+      (obj.projectExport = message.projectExport ? ProjectExport.toJSON(message.projectExport) : undefined);
     message.projectPreview !== undefined &&
-      (obj.projectPreview = message.projectPreview ? ProjectPreviewData.toJSON(message.projectPreview) : undefined);
+      (obj.projectPreview = message.projectPreview ? ProjectPreview.toJSON(message.projectPreview) : undefined);
     message.codePreview !== undefined &&
-      (obj.codePreview = message.codePreview ? CodePreviewData.toJSON(message.codePreview) : undefined);
+      (obj.codePreview = message.codePreview ? CodePreview.toJSON(message.codePreview) : undefined);
     message.placeholder !== undefined &&
-      (obj.placeholder = message.placeholder ? PlaceholderData.toJSON(message.placeholder) : undefined);
+      (obj.placeholder = message.placeholder ? Placeholder.toJSON(message.placeholder) : undefined);
     return obj;
   },
 
@@ -3034,28 +3036,26 @@ export const ProjectData = {
     message.id = object.id ?? "";
     message.projectName = object.projectName ?? "";
     message.projectId = object.projectId ?? 0;
-    message.infra = (object.infra !== undefined && object.infra !== null)
-      ? InfraData.fromPartial(object.infra)
-      : undefined;
+    message.infra = (object.infra !== undefined && object.infra !== null) ? Infra.fromPartial(object.infra) : undefined;
     message.timeZone = object.timeZone ?? "";
     message.defaultLanguageCode = object.defaultLanguageCode ?? "";
     message.languageCodes = object.languageCodes?.map((e) => e) || [];
-    message.credentials = object.credentials?.map((e) => ProjectCredentialData.fromPartial(e)) || [];
+    message.credentials = object.credentials?.map((e) => ProjectCredential.fromPartial(e)) || [];
     message.eventType = object.eventType ?? "";
     message.previewUrls = (object.previewUrls !== undefined && object.previewUrls !== null)
-      ? PreviewUrlsData.fromPartial(object.previewUrls)
+      ? PreviewUrls.fromPartial(object.previewUrls)
       : undefined;
     message.projectExport = (object.projectExport !== undefined && object.projectExport !== null)
-      ? ProjectExportData.fromPartial(object.projectExport)
+      ? ProjectExport.fromPartial(object.projectExport)
       : undefined;
     message.projectPreview = (object.projectPreview !== undefined && object.projectPreview !== null)
-      ? ProjectPreviewData.fromPartial(object.projectPreview)
+      ? ProjectPreview.fromPartial(object.projectPreview)
       : undefined;
     message.codePreview = (object.codePreview !== undefined && object.codePreview !== null)
-      ? CodePreviewData.fromPartial(object.codePreview)
+      ? CodePreview.fromPartial(object.codePreview)
       : undefined;
     message.placeholder = (object.placeholder !== undefined && object.placeholder !== null)
-      ? PlaceholderData.fromPartial(object.placeholder)
+      ? Placeholder.fromPartial(object.placeholder)
       : undefined;
     return message;
   },
@@ -3065,7 +3065,7 @@ function createBaseProjectCredential(): ProjectCredential {
   return { name: 0, value: "" };
 }
 
-export const ProjectCredentialData = {
+export const ProjectCredential = {
   encode(message: ProjectCredential, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.name !== 0) {
       writer.uint32(8).int32(message.name);
@@ -3123,13 +3123,13 @@ function createBasePlaceholder(): Placeholder {
   return {};
 }
 
-export const PlaceholderData = {
+export const Placeholder = {
   encode(message: Placeholder, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.example !== undefined) {
-      CodePreviewData.encode(message.example, writer.uint32(10).fork()).ldelim();
+      CodePreview.encode(message.example, writer.uint32(10).fork()).ldelim();
     }
     if (message.project !== undefined) {
-      CodePreviewData.encode(message.project, writer.uint32(18).fork()).ldelim();
+      CodePreview.encode(message.project, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -3142,10 +3142,10 @@ export const PlaceholderData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.example = CodePreviewData.decode(reader, reader.uint32());
+          message.example = CodePreview.decode(reader, reader.uint32());
           break;
         case 2:
-          message.project = CodePreviewData.decode(reader, reader.uint32());
+          message.project = CodePreview.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -3157,27 +3157,25 @@ export const PlaceholderData = {
 
   fromJSON(object: any): Placeholder {
     return {
-      example: isSet(object.example) ? CodePreviewData.fromJSON(object.example) : undefined,
-      project: isSet(object.project) ? CodePreviewData.fromJSON(object.project) : undefined,
+      example: isSet(object.example) ? CodePreview.fromJSON(object.example) : undefined,
+      project: isSet(object.project) ? CodePreview.fromJSON(object.project) : undefined,
     };
   },
 
   toJSON(message: Placeholder): unknown {
     const obj: any = {};
-    message.example !== undefined &&
-      (obj.example = message.example ? CodePreviewData.toJSON(message.example) : undefined);
-    message.project !== undefined &&
-      (obj.project = message.project ? CodePreviewData.toJSON(message.project) : undefined);
+    message.example !== undefined && (obj.example = message.example ? CodePreview.toJSON(message.example) : undefined);
+    message.project !== undefined && (obj.project = message.project ? CodePreview.toJSON(message.project) : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<Placeholder>): Placeholder {
     const message = createBasePlaceholder();
     message.example = (object.example !== undefined && object.example !== null)
-      ? CodePreviewData.fromPartial(object.example)
+      ? CodePreview.fromPartial(object.example)
       : undefined;
     message.project = (object.project !== undefined && object.project !== null)
-      ? CodePreviewData.fromPartial(object.project)
+      ? CodePreview.fromPartial(object.project)
       : undefined;
     return message;
   },
@@ -3187,7 +3185,7 @@ function createBasePreviewUrls(): PreviewUrls {
   return { frontend: "", api: "" };
 }
 
-export const PreviewUrlsData = {
+export const PreviewUrls = {
   encode(message: PreviewUrls, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.frontend !== "") {
       writer.uint32(10).string(message.frontend);
@@ -3245,16 +3243,16 @@ function createBaseCodePreview(): CodePreview {
   return { id: 0 };
 }
 
-export const CodePreviewData = {
+export const CodePreview = {
   encode(message: CodePreview, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== 0) {
       writer.uint32(8).int32(message.id);
     }
     if (message.backend !== undefined) {
-      BackendData.encode(message.backend, writer.uint32(18).fork()).ldelim();
+      Backend.encode(message.backend, writer.uint32(18).fork()).ldelim();
     }
     if (message.webApp !== undefined) {
-      WebAppData.encode(message.webApp, writer.uint32(26).fork()).ldelim();
+      WebApp.encode(message.webApp, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -3270,10 +3268,10 @@ export const CodePreviewData = {
           message.id = reader.int32();
           break;
         case 2:
-          message.backend = BackendData.decode(reader, reader.uint32());
+          message.backend = Backend.decode(reader, reader.uint32());
           break;
         case 3:
-          message.webApp = WebAppData.decode(reader, reader.uint32());
+          message.webApp = WebApp.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -3286,16 +3284,16 @@ export const CodePreviewData = {
   fromJSON(object: any): CodePreview {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
-      backend: isSet(object.backend) ? BackendData.fromJSON(object.backend) : undefined,
-      webApp: isSet(object.webApp) ? WebAppData.fromJSON(object.webApp) : undefined,
+      backend: isSet(object.backend) ? Backend.fromJSON(object.backend) : undefined,
+      webApp: isSet(object.webApp) ? WebApp.fromJSON(object.webApp) : undefined,
     };
   },
 
   toJSON(message: CodePreview): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
-    message.backend !== undefined && (obj.backend = message.backend ? BackendData.toJSON(message.backend) : undefined);
-    message.webApp !== undefined && (obj.webApp = message.webApp ? WebAppData.toJSON(message.webApp) : undefined);
+    message.backend !== undefined && (obj.backend = message.backend ? Backend.toJSON(message.backend) : undefined);
+    message.webApp !== undefined && (obj.webApp = message.webApp ? WebApp.toJSON(message.webApp) : undefined);
     return obj;
   },
 
@@ -3303,10 +3301,10 @@ export const CodePreviewData = {
     const message = createBaseCodePreview();
     message.id = object.id ?? 0;
     message.backend = (object.backend !== undefined && object.backend !== null)
-      ? BackendData.fromPartial(object.backend)
+      ? Backend.fromPartial(object.backend)
       : undefined;
     message.webApp = (object.webApp !== undefined && object.webApp !== null)
-      ? WebAppData.fromPartial(object.webApp)
+      ? WebApp.fromPartial(object.webApp)
       : undefined;
     return message;
   },
@@ -3316,7 +3314,7 @@ function createBaseProjectExport(): ProjectExport {
   return { id: 0 };
 }
 
-export const ProjectExportData = {
+export const ProjectExport = {
   encode(message: ProjectExport, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== 0) {
       writer.uint32(8).int32(message.id);
@@ -3363,7 +3361,7 @@ function createBaseProjectPreview(): ProjectPreview {
   return { id: 0 };
 }
 
-export const ProjectPreviewData = {
+export const ProjectPreview = {
   encode(message: ProjectPreview, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== 0) {
       writer.uint32(8).int32(message.id);
@@ -3410,7 +3408,7 @@ function createBaseInfra(): Infra {
   return { path: "" };
 }
 
-export const InfraData = {
+export const Infra = {
   encode(message: Infra, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.path !== "") {
       writer.uint32(10).string(message.path);
@@ -3457,25 +3455,25 @@ function createBaseBackend(): Backend {
   return { tables: [], controllers: [], features: [], authorizations: [], localizations: [], migrations: [] };
 }
 
-export const BackendData = {
+export const Backend = {
   encode(message: Backend, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.tables) {
-      TableData.encode(v!, writer.uint32(34).fork()).ldelim();
+      Table.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     for (const v of message.controllers) {
-      ControllerData.encode(v!, writer.uint32(42).fork()).ldelim();
+      Controller.encode(v!, writer.uint32(42).fork()).ldelim();
     }
     for (const v of message.features) {
-      FeatureData.encode(v!, writer.uint32(50).fork()).ldelim();
+      Feature.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     for (const v of message.authorizations) {
-      AuthorizationData.encode(v!, writer.uint32(58).fork()).ldelim();
+      Authorization.encode(v!, writer.uint32(58).fork()).ldelim();
     }
     for (const v of message.localizations) {
-      LocalizationData.encode(v!, writer.uint32(66).fork()).ldelim();
+      Localization.encode(v!, writer.uint32(66).fork()).ldelim();
     }
     for (const v of message.migrations) {
-      MigrationData.encode(v!, writer.uint32(74).fork()).ldelim();
+      Migration.encode(v!, writer.uint32(74).fork()).ldelim();
     }
     return writer;
   },
@@ -3488,22 +3486,22 @@ export const BackendData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 4:
-          message.tables.push(TableData.decode(reader, reader.uint32()));
+          message.tables.push(Table.decode(reader, reader.uint32()));
           break;
         case 5:
-          message.controllers.push(ControllerData.decode(reader, reader.uint32()));
+          message.controllers.push(Controller.decode(reader, reader.uint32()));
           break;
         case 6:
-          message.features.push(FeatureData.decode(reader, reader.uint32()));
+          message.features.push(Feature.decode(reader, reader.uint32()));
           break;
         case 7:
-          message.authorizations.push(AuthorizationData.decode(reader, reader.uint32()));
+          message.authorizations.push(Authorization.decode(reader, reader.uint32()));
           break;
         case 8:
-          message.localizations.push(LocalizationData.decode(reader, reader.uint32()));
+          message.localizations.push(Localization.decode(reader, reader.uint32()));
           break;
         case 9:
-          message.migrations.push(MigrationData.decode(reader, reader.uint32()));
+          message.migrations.push(Migration.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -3515,50 +3513,48 @@ export const BackendData = {
 
   fromJSON(object: any): Backend {
     return {
-      tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => TableData.fromJSON(e)) : [],
-      controllers: Array.isArray(object?.controllers)
-        ? object.controllers.map((e: any) => ControllerData.fromJSON(e))
-        : [],
-      features: Array.isArray(object?.features) ? object.features.map((e: any) => FeatureData.fromJSON(e)) : [],
+      tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => Table.fromJSON(e)) : [],
+      controllers: Array.isArray(object?.controllers) ? object.controllers.map((e: any) => Controller.fromJSON(e)) : [],
+      features: Array.isArray(object?.features) ? object.features.map((e: any) => Feature.fromJSON(e)) : [],
       authorizations: Array.isArray(object?.authorizations)
-        ? object.authorizations.map((e: any) => AuthorizationData.fromJSON(e))
+        ? object.authorizations.map((e: any) => Authorization.fromJSON(e))
         : [],
       localizations: Array.isArray(object?.localizations)
-        ? object.localizations.map((e: any) => LocalizationData.fromJSON(e))
+        ? object.localizations.map((e: any) => Localization.fromJSON(e))
         : [],
-      migrations: Array.isArray(object?.migrations) ? object.migrations.map((e: any) => MigrationData.fromJSON(e)) : [],
+      migrations: Array.isArray(object?.migrations) ? object.migrations.map((e: any) => Migration.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: Backend): unknown {
     const obj: any = {};
     if (message.tables) {
-      obj.tables = message.tables.map((e) => e ? TableData.toJSON(e) : undefined);
+      obj.tables = message.tables.map((e) => e ? Table.toJSON(e) : undefined);
     } else {
       obj.tables = [];
     }
     if (message.controllers) {
-      obj.controllers = message.controllers.map((e) => e ? ControllerData.toJSON(e) : undefined);
+      obj.controllers = message.controllers.map((e) => e ? Controller.toJSON(e) : undefined);
     } else {
       obj.controllers = [];
     }
     if (message.features) {
-      obj.features = message.features.map((e) => e ? FeatureData.toJSON(e) : undefined);
+      obj.features = message.features.map((e) => e ? Feature.toJSON(e) : undefined);
     } else {
       obj.features = [];
     }
     if (message.authorizations) {
-      obj.authorizations = message.authorizations.map((e) => e ? AuthorizationData.toJSON(e) : undefined);
+      obj.authorizations = message.authorizations.map((e) => e ? Authorization.toJSON(e) : undefined);
     } else {
       obj.authorizations = [];
     }
     if (message.localizations) {
-      obj.localizations = message.localizations.map((e) => e ? LocalizationData.toJSON(e) : undefined);
+      obj.localizations = message.localizations.map((e) => e ? Localization.toJSON(e) : undefined);
     } else {
       obj.localizations = [];
     }
     if (message.migrations) {
-      obj.migrations = message.migrations.map((e) => e ? MigrationData.toJSON(e) : undefined);
+      obj.migrations = message.migrations.map((e) => e ? Migration.toJSON(e) : undefined);
     } else {
       obj.migrations = [];
     }
@@ -3567,12 +3563,12 @@ export const BackendData = {
 
   fromPartial(object: DeepPartial<Backend>): Backend {
     const message = createBaseBackend();
-    message.tables = object.tables?.map((e) => TableData.fromPartial(e)) || [];
-    message.controllers = object.controllers?.map((e) => ControllerData.fromPartial(e)) || [];
-    message.features = object.features?.map((e) => FeatureData.fromPartial(e)) || [];
-    message.authorizations = object.authorizations?.map((e) => AuthorizationData.fromPartial(e)) || [];
-    message.localizations = object.localizations?.map((e) => LocalizationData.fromPartial(e)) || [];
-    message.migrations = object.migrations?.map((e) => MigrationData.fromPartial(e)) || [];
+    message.tables = object.tables?.map((e) => Table.fromPartial(e)) || [];
+    message.controllers = object.controllers?.map((e) => Controller.fromPartial(e)) || [];
+    message.features = object.features?.map((e) => Feature.fromPartial(e)) || [];
+    message.authorizations = object.authorizations?.map((e) => Authorization.fromPartial(e)) || [];
+    message.localizations = object.localizations?.map((e) => Localization.fromPartial(e)) || [];
+    message.migrations = object.migrations?.map((e) => Migration.fromPartial(e)) || [];
     return message;
   },
 };
@@ -3581,13 +3577,13 @@ function createBaseLocalization(): Localization {
   return { lang: "", namespaces: [] };
 }
 
-export const LocalizationData = {
+export const Localization = {
   encode(message: Localization, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.lang !== "") {
       writer.uint32(10).string(message.lang);
     }
     for (const v of message.namespaces) {
-      LocalizationNamespaceData.encode(v!, writer.uint32(26).fork()).ldelim();
+      LocalizationNamespace.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -3603,7 +3599,7 @@ export const LocalizationData = {
           message.lang = reader.string();
           break;
         case 3:
-          message.namespaces.push(LocalizationNamespaceData.decode(reader, reader.uint32()));
+          message.namespaces.push(LocalizationNamespace.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -3617,7 +3613,7 @@ export const LocalizationData = {
     return {
       lang: isSet(object.lang) ? String(object.lang) : "",
       namespaces: Array.isArray(object?.namespaces)
-        ? object.namespaces.map((e: any) => LocalizationNamespaceData.fromJSON(e))
+        ? object.namespaces.map((e: any) => LocalizationNamespace.fromJSON(e))
         : [],
     };
   },
@@ -3626,7 +3622,7 @@ export const LocalizationData = {
     const obj: any = {};
     message.lang !== undefined && (obj.lang = message.lang);
     if (message.namespaces) {
-      obj.namespaces = message.namespaces.map((e) => e ? LocalizationNamespaceData.toJSON(e) : undefined);
+      obj.namespaces = message.namespaces.map((e) => e ? LocalizationNamespace.toJSON(e) : undefined);
     } else {
       obj.namespaces = [];
     }
@@ -3636,7 +3632,7 @@ export const LocalizationData = {
   fromPartial(object: DeepPartial<Localization>): Localization {
     const message = createBaseLocalization();
     message.lang = object.lang ?? "";
-    message.namespaces = object.namespaces?.map((e) => LocalizationNamespaceData.fromPartial(e)) || [];
+    message.namespaces = object.namespaces?.map((e) => LocalizationNamespace.fromPartial(e)) || [];
     return message;
   },
 };
@@ -3645,13 +3641,13 @@ function createBaseLocalizationNamespace(): LocalizationNamespace {
   return { name: "", translates: [] };
 }
 
-export const LocalizationNamespaceData = {
+export const LocalizationNamespace = {
   encode(message: LocalizationNamespace, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
     for (const v of message.translates) {
-      LocalizationTranslateData.encode(v!, writer.uint32(18).fork()).ldelim();
+      LocalizationTranslate.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -3667,7 +3663,7 @@ export const LocalizationNamespaceData = {
           message.name = reader.string();
           break;
         case 2:
-          message.translates.push(LocalizationTranslateData.decode(reader, reader.uint32()));
+          message.translates.push(LocalizationTranslate.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -3681,7 +3677,7 @@ export const LocalizationNamespaceData = {
     return {
       name: isSet(object.name) ? String(object.name) : "",
       translates: Array.isArray(object?.translates)
-        ? object.translates.map((e: any) => LocalizationTranslateData.fromJSON(e))
+        ? object.translates.map((e: any) => LocalizationTranslate.fromJSON(e))
         : [],
     };
   },
@@ -3690,7 +3686,7 @@ export const LocalizationNamespaceData = {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
     if (message.translates) {
-      obj.translates = message.translates.map((e) => e ? LocalizationTranslateData.toJSON(e) : undefined);
+      obj.translates = message.translates.map((e) => e ? LocalizationTranslate.toJSON(e) : undefined);
     } else {
       obj.translates = [];
     }
@@ -3700,7 +3696,7 @@ export const LocalizationNamespaceData = {
   fromPartial(object: DeepPartial<LocalizationNamespace>): LocalizationNamespace {
     const message = createBaseLocalizationNamespace();
     message.name = object.name ?? "";
-    message.translates = object.translates?.map((e) => LocalizationTranslateData.fromPartial(e)) || [];
+    message.translates = object.translates?.map((e) => LocalizationTranslate.fromPartial(e)) || [];
     return message;
   },
 };
@@ -3709,7 +3705,7 @@ function createBaseLocalizationTranslate(): LocalizationTranslate {
   return { key: "", value: "" };
 }
 
-export const LocalizationTranslateData = {
+export const LocalizationTranslate = {
   encode(message: LocalizationTranslate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
@@ -3764,7 +3760,7 @@ function createBaseDataType(): DataType {
   return { name: 0 };
 }
 
-export const DataTypeData = {
+export const DataType = {
   encode(message: DataType, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.name !== 0) {
       writer.uint32(8).int32(message.name);
@@ -3811,7 +3807,7 @@ function createBaseAuthorization(): Authorization {
   return { name: "", id: 0, policies: [] };
 }
 
-export const AuthorizationData = {
+export const Authorization = {
   encode(message: Authorization, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
@@ -3820,7 +3816,7 @@ export const AuthorizationData = {
       writer.uint32(16).int32(message.id);
     }
     for (const v of message.policies) {
-      AuthorizationPolicyData.encode(v!, writer.uint32(26).fork()).ldelim();
+      AuthorizationPolicy.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -3839,7 +3835,7 @@ export const AuthorizationData = {
           message.id = reader.int32();
           break;
         case 3:
-          message.policies.push(AuthorizationPolicyData.decode(reader, reader.uint32()));
+          message.policies.push(AuthorizationPolicy.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -3853,9 +3849,7 @@ export const AuthorizationData = {
     return {
       name: isSet(object.name) ? String(object.name) : "",
       id: isSet(object.id) ? Number(object.id) : 0,
-      policies: Array.isArray(object?.policies)
-        ? object.policies.map((e: any) => AuthorizationPolicyData.fromJSON(e))
-        : [],
+      policies: Array.isArray(object?.policies) ? object.policies.map((e: any) => AuthorizationPolicy.fromJSON(e)) : [],
     };
   },
 
@@ -3864,7 +3858,7 @@ export const AuthorizationData = {
     message.name !== undefined && (obj.name = message.name);
     message.id !== undefined && (obj.id = Math.round(message.id));
     if (message.policies) {
-      obj.policies = message.policies.map((e) => e ? AuthorizationPolicyData.toJSON(e) : undefined);
+      obj.policies = message.policies.map((e) => e ? AuthorizationPolicy.toJSON(e) : undefined);
     } else {
       obj.policies = [];
     }
@@ -3875,7 +3869,7 @@ export const AuthorizationData = {
     const message = createBaseAuthorization();
     message.name = object.name ?? "";
     message.id = object.id ?? 0;
-    message.policies = object.policies?.map((e) => AuthorizationPolicyData.fromPartial(e)) || [];
+    message.policies = object.policies?.map((e) => AuthorizationPolicy.fromPartial(e)) || [];
     return message;
   },
 };
@@ -3884,16 +3878,16 @@ function createBaseAuthorizationPolicy(): AuthorizationPolicy {
   return { resource: "", scope: 0 };
 }
 
-export const AuthorizationPolicyData = {
+export const AuthorizationPolicy = {
   encode(message: AuthorizationPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.resource !== "") {
       writer.uint32(26).string(message.resource);
     }
     if (message.roleBinding !== undefined) {
-      AuthorizationPolicyRoleBindingData.encode(message.roleBinding, writer.uint32(34).fork()).ldelim();
+      AuthorizationPolicyRoleBinding.encode(message.roleBinding, writer.uint32(34).fork()).ldelim();
     }
     if (message.rule !== undefined) {
-      AuthorizationPolicyRuleData.encode(message.rule, writer.uint32(42).fork()).ldelim();
+      AuthorizationPolicyRule.encode(message.rule, writer.uint32(42).fork()).ldelim();
     }
     if (message.scope !== 0) {
       writer.uint32(48).int32(message.scope);
@@ -3912,10 +3906,10 @@ export const AuthorizationPolicyData = {
           message.resource = reader.string();
           break;
         case 4:
-          message.roleBinding = AuthorizationPolicyRoleBindingData.decode(reader, reader.uint32());
+          message.roleBinding = AuthorizationPolicyRoleBinding.decode(reader, reader.uint32());
           break;
         case 5:
-          message.rule = AuthorizationPolicyRuleData.decode(reader, reader.uint32());
+          message.rule = AuthorizationPolicyRule.decode(reader, reader.uint32());
           break;
         case 6:
           message.scope = reader.int32() as any;
@@ -3931,10 +3925,8 @@ export const AuthorizationPolicyData = {
   fromJSON(object: any): AuthorizationPolicy {
     return {
       resource: isSet(object.resource) ? String(object.resource) : "",
-      roleBinding: isSet(object.roleBinding)
-        ? AuthorizationPolicyRoleBindingData.fromJSON(object.roleBinding)
-        : undefined,
-      rule: isSet(object.rule) ? AuthorizationPolicyRuleData.fromJSON(object.rule) : undefined,
+      roleBinding: isSet(object.roleBinding) ? AuthorizationPolicyRoleBinding.fromJSON(object.roleBinding) : undefined,
+      rule: isSet(object.rule) ? AuthorizationPolicyRule.fromJSON(object.rule) : undefined,
       scope: isSet(object.scope) ? authorizationPolicyScopeFromJSON(object.scope) : 0,
     };
   },
@@ -3942,11 +3934,9 @@ export const AuthorizationPolicyData = {
   toJSON(message: AuthorizationPolicy): unknown {
     const obj: any = {};
     message.resource !== undefined && (obj.resource = message.resource);
-    message.roleBinding !== undefined && (obj.roleBinding = message.roleBinding
-      ? AuthorizationPolicyRoleBindingData.toJSON(message.roleBinding)
-      : undefined);
-    message.rule !== undefined &&
-      (obj.rule = message.rule ? AuthorizationPolicyRuleData.toJSON(message.rule) : undefined);
+    message.roleBinding !== undefined &&
+      (obj.roleBinding = message.roleBinding ? AuthorizationPolicyRoleBinding.toJSON(message.roleBinding) : undefined);
+    message.rule !== undefined && (obj.rule = message.rule ? AuthorizationPolicyRule.toJSON(message.rule) : undefined);
     message.scope !== undefined && (obj.scope = authorizationPolicyScopeToJSON(message.scope));
     return obj;
   },
@@ -3955,10 +3945,10 @@ export const AuthorizationPolicyData = {
     const message = createBaseAuthorizationPolicy();
     message.resource = object.resource ?? "";
     message.roleBinding = (object.roleBinding !== undefined && object.roleBinding !== null)
-      ? AuthorizationPolicyRoleBindingData.fromPartial(object.roleBinding)
+      ? AuthorizationPolicyRoleBinding.fromPartial(object.roleBinding)
       : undefined;
     message.rule = (object.rule !== undefined && object.rule !== null)
-      ? AuthorizationPolicyRuleData.fromPartial(object.rule)
+      ? AuthorizationPolicyRule.fromPartial(object.rule)
       : undefined;
     message.scope = object.scope ?? 0;
     return message;
@@ -3969,7 +3959,7 @@ function createBaseAuthorizationPolicyRoleBinding(): AuthorizationPolicyRoleBind
   return { table: "", column: "", role: "" };
 }
 
-export const AuthorizationPolicyRoleBindingData = {
+export const AuthorizationPolicyRoleBinding = {
   encode(message: AuthorizationPolicyRoleBinding, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.table !== "") {
       writer.uint32(10).string(message.table);
@@ -4036,10 +4026,10 @@ function createBaseAuthorizationPolicyRule(): AuthorizationPolicyRule {
   return { operands: [], operators: [] };
 }
 
-export const AuthorizationPolicyRuleData = {
+export const AuthorizationPolicyRule = {
   encode(message: AuthorizationPolicyRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.operands) {
-      AuthorizationPolicyRuleOperandData.encode(v!, writer.uint32(10).fork()).ldelim();
+      AuthorizationPolicyRuleOperand.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     writer.uint32(18).fork();
     for (const v of message.operators) {
@@ -4057,7 +4047,7 @@ export const AuthorizationPolicyRuleData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.operands.push(AuthorizationPolicyRuleOperandData.decode(reader, reader.uint32()));
+          message.operands.push(AuthorizationPolicyRuleOperand.decode(reader, reader.uint32()));
           break;
         case 2:
           if ((tag & 7) === 2) {
@@ -4080,7 +4070,7 @@ export const AuthorizationPolicyRuleData = {
   fromJSON(object: any): AuthorizationPolicyRule {
     return {
       operands: Array.isArray(object?.operands)
-        ? object.operands.map((e: any) => AuthorizationPolicyRuleOperandData.fromJSON(e))
+        ? object.operands.map((e: any) => AuthorizationPolicyRuleOperand.fromJSON(e))
         : [],
       operators: Array.isArray(object?.operators) ? object.operators.map((e: any) => operatorFromJSON(e)) : [],
     };
@@ -4089,7 +4079,7 @@ export const AuthorizationPolicyRuleData = {
   toJSON(message: AuthorizationPolicyRule): unknown {
     const obj: any = {};
     if (message.operands) {
-      obj.operands = message.operands.map((e) => e ? AuthorizationPolicyRuleOperandData.toJSON(e) : undefined);
+      obj.operands = message.operands.map((e) => e ? AuthorizationPolicyRuleOperand.toJSON(e) : undefined);
     } else {
       obj.operands = [];
     }
@@ -4103,7 +4093,7 @@ export const AuthorizationPolicyRuleData = {
 
   fromPartial(object: DeepPartial<AuthorizationPolicyRule>): AuthorizationPolicyRule {
     const message = createBaseAuthorizationPolicyRule();
-    message.operands = object.operands?.map((e) => AuthorizationPolicyRuleOperandData.fromPartial(e)) || [];
+    message.operands = object.operands?.map((e) => AuthorizationPolicyRuleOperand.fromPartial(e)) || [];
     message.operators = object.operators?.map((e) => e) || [];
     return message;
   },
@@ -4113,13 +4103,13 @@ function createBaseAuthorizationPolicyRuleOperand(): AuthorizationPolicyRuleOper
   return {};
 }
 
-export const AuthorizationPolicyRuleOperandData = {
+export const AuthorizationPolicyRuleOperand = {
   encode(message: AuthorizationPolicyRuleOperand, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.expr !== undefined) {
-      AuthorizationPolicyRuleExprData.encode(message.expr, writer.uint32(10).fork()).ldelim();
+      AuthorizationPolicyRuleExpr.encode(message.expr, writer.uint32(10).fork()).ldelim();
     }
     if (message.rule !== undefined) {
-      AuthorizationPolicyRuleData.encode(message.rule, writer.uint32(18).fork()).ldelim();
+      AuthorizationPolicyRule.encode(message.rule, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -4132,10 +4122,10 @@ export const AuthorizationPolicyRuleOperandData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.expr = AuthorizationPolicyRuleExprData.decode(reader, reader.uint32());
+          message.expr = AuthorizationPolicyRuleExpr.decode(reader, reader.uint32());
           break;
         case 2:
-          message.rule = AuthorizationPolicyRuleData.decode(reader, reader.uint32());
+          message.rule = AuthorizationPolicyRule.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -4147,27 +4137,26 @@ export const AuthorizationPolicyRuleOperandData = {
 
   fromJSON(object: any): AuthorizationPolicyRuleOperand {
     return {
-      expr: isSet(object.expr) ? AuthorizationPolicyRuleExprData.fromJSON(object.expr) : undefined,
-      rule: isSet(object.rule) ? AuthorizationPolicyRuleData.fromJSON(object.rule) : undefined,
+      expr: isSet(object.expr) ? AuthorizationPolicyRuleExpr.fromJSON(object.expr) : undefined,
+      rule: isSet(object.rule) ? AuthorizationPolicyRule.fromJSON(object.rule) : undefined,
     };
   },
 
   toJSON(message: AuthorizationPolicyRuleOperand): unknown {
     const obj: any = {};
     message.expr !== undefined &&
-      (obj.expr = message.expr ? AuthorizationPolicyRuleExprData.toJSON(message.expr) : undefined);
-    message.rule !== undefined &&
-      (obj.rule = message.rule ? AuthorizationPolicyRuleData.toJSON(message.rule) : undefined);
+      (obj.expr = message.expr ? AuthorizationPolicyRuleExpr.toJSON(message.expr) : undefined);
+    message.rule !== undefined && (obj.rule = message.rule ? AuthorizationPolicyRule.toJSON(message.rule) : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<AuthorizationPolicyRuleOperand>): AuthorizationPolicyRuleOperand {
     const message = createBaseAuthorizationPolicyRuleOperand();
     message.expr = (object.expr !== undefined && object.expr !== null)
-      ? AuthorizationPolicyRuleExprData.fromPartial(object.expr)
+      ? AuthorizationPolicyRuleExpr.fromPartial(object.expr)
       : undefined;
     message.rule = (object.rule !== undefined && object.rule !== null)
-      ? AuthorizationPolicyRuleData.fromPartial(object.rule)
+      ? AuthorizationPolicyRule.fromPartial(object.rule)
       : undefined;
     return message;
   },
@@ -4177,7 +4166,7 @@ function createBaseAuthorizationPolicyRuleExpr(): AuthorizationPolicyRuleExpr {
   return { column: "", operator: 0 };
 }
 
-export const AuthorizationPolicyRuleExprData = {
+export const AuthorizationPolicyRuleExpr = {
   encode(message: AuthorizationPolicyRuleExpr, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.column !== "") {
       writer.uint32(10).string(message.column);
@@ -4189,7 +4178,7 @@ export const AuthorizationPolicyRuleExprData = {
       writer.uint32(26).string(message.paths);
     }
     if (message.dataType !== undefined) {
-      DataTypeData.encode(message.dataType, writer.uint32(34).fork()).ldelim();
+      DataType.encode(message.dataType, writer.uint32(34).fork()).ldelim();
     }
     if (message.operator !== 0) {
       writer.uint32(40).int32(message.operator);
@@ -4214,7 +4203,7 @@ export const AuthorizationPolicyRuleExprData = {
           message.paths = reader.string();
           break;
         case 4:
-          message.dataType = DataTypeData.decode(reader, reader.uint32());
+          message.dataType = DataType.decode(reader, reader.uint32());
           break;
         case 5:
           message.operator = reader.int32() as any;
@@ -4232,7 +4221,7 @@ export const AuthorizationPolicyRuleExprData = {
       column: isSet(object.column) ? String(object.column) : "",
       value: isSet(object.value) ? String(object.value) : undefined,
       paths: isSet(object.paths) ? String(object.paths) : undefined,
-      dataType: isSet(object.dataType) ? DataTypeData.fromJSON(object.dataType) : undefined,
+      dataType: isSet(object.dataType) ? DataType.fromJSON(object.dataType) : undefined,
       operator: isSet(object.operator) ? operatorFromJSON(object.operator) : 0,
     };
   },
@@ -4242,8 +4231,7 @@ export const AuthorizationPolicyRuleExprData = {
     message.column !== undefined && (obj.column = message.column);
     message.value !== undefined && (obj.value = message.value);
     message.paths !== undefined && (obj.paths = message.paths);
-    message.dataType !== undefined &&
-      (obj.dataType = message.dataType ? DataTypeData.toJSON(message.dataType) : undefined);
+    message.dataType !== undefined && (obj.dataType = message.dataType ? DataType.toJSON(message.dataType) : undefined);
     message.operator !== undefined && (obj.operator = operatorToJSON(message.operator));
     return obj;
   },
@@ -4254,7 +4242,7 @@ export const AuthorizationPolicyRuleExprData = {
     message.value = object.value ?? undefined;
     message.paths = object.paths ?? undefined;
     message.dataType = (object.dataType !== undefined && object.dataType !== null)
-      ? DataTypeData.fromPartial(object.dataType)
+      ? DataType.fromPartial(object.dataType)
       : undefined;
     message.operator = object.operator ?? 0;
     return message;
@@ -4265,7 +4253,7 @@ function createBaseFeature(): Feature {
   return { name: 0, env: 0 };
 }
 
-export const FeatureData = {
+export const Feature = {
   encode(message: Feature, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.name !== 0) {
       writer.uint32(8).int32(message.name);
@@ -4274,40 +4262,40 @@ export const FeatureData = {
       writer.uint32(16).int32(message.env);
     }
     if (message.emailLogin !== undefined) {
-      FeatureEmailLoginData.encode(message.emailLogin, writer.uint32(26).fork()).ldelim();
+      FeatureEmailLogin.encode(message.emailLogin, writer.uint32(26).fork()).ldelim();
     }
     if (message.jpBankData !== undefined) {
-      FeatureJPBankDataData.encode(message.jpBankData, writer.uint32(34).fork()).ldelim();
+      FeatureJPBankData.encode(message.jpBankData, writer.uint32(34).fork()).ldelim();
     }
     if (message.basicAuth !== undefined) {
-      FeatureBasicAuthData.encode(message.basicAuth, writer.uint32(42).fork()).ldelim();
+      FeatureBasicAuth.encode(message.basicAuth, writer.uint32(42).fork()).ldelim();
     }
     if (message.twilioLogin !== undefined) {
-      FeatureTwilioLoginData.encode(message.twilioLogin, writer.uint32(50).fork()).ldelim();
+      FeatureTwilioLogin.encode(message.twilioLogin, writer.uint32(50).fork()).ldelim();
     }
     if (message.rollbar !== undefined) {
-      FeatureRollbarData.encode(message.rollbar, writer.uint32(58).fork()).ldelim();
+      FeatureRollbar.encode(message.rollbar, writer.uint32(58).fork()).ldelim();
     }
     if (message.deepLink !== undefined) {
-      FeatureDeepLinkData.encode(message.deepLink, writer.uint32(66).fork()).ldelim();
+      FeatureDeepLink.encode(message.deepLink, writer.uint32(66).fork()).ldelim();
     }
     if (message.stripe !== undefined) {
-      FeatureStripeData.encode(message.stripe, writer.uint32(74).fork()).ldelim();
+      FeatureStripe.encode(message.stripe, writer.uint32(74).fork()).ldelim();
     }
     if (message.lineLogin !== undefined) {
-      FeatureLineLoginData.encode(message.lineLogin, writer.uint32(82).fork()).ldelim();
+      FeatureLineLogin.encode(message.lineLogin, writer.uint32(82).fork()).ldelim();
     }
     if (message.googleAnalytics !== undefined) {
-      FeatureGoogleAnalyticsData.encode(message.googleAnalytics, writer.uint32(90).fork()).ldelim();
+      FeatureGoogleAnalytics.encode(message.googleAnalytics, writer.uint32(90).fork()).ldelim();
     }
     if (message.scoutApm !== undefined) {
-      FeatureScoutApmData.encode(message.scoutApm, writer.uint32(98).fork()).ldelim();
+      FeatureScoutApm.encode(message.scoutApm, writer.uint32(98).fork()).ldelim();
     }
     if (message.googleTagManager !== undefined) {
-      FeatureGoogleTagManagerData.encode(message.googleTagManager, writer.uint32(106).fork()).ldelim();
+      FeatureGoogleTagManager.encode(message.googleTagManager, writer.uint32(106).fork()).ldelim();
     }
     if (message.emailConfig !== undefined) {
-      FeatureEmailConfigData.encode(message.emailConfig, writer.uint32(114).fork()).ldelim();
+      FeatureEmailConfig.encode(message.emailConfig, writer.uint32(114).fork()).ldelim();
     }
     return writer;
   },
@@ -4326,40 +4314,40 @@ export const FeatureData = {
           message.env = reader.int32() as any;
           break;
         case 3:
-          message.emailLogin = FeatureEmailLoginData.decode(reader, reader.uint32());
+          message.emailLogin = FeatureEmailLogin.decode(reader, reader.uint32());
           break;
         case 4:
-          message.jpBankData = FeatureJPBankDataData.decode(reader, reader.uint32());
+          message.jpBankData = FeatureJPBankData.decode(reader, reader.uint32());
           break;
         case 5:
-          message.basicAuth = FeatureBasicAuthData.decode(reader, reader.uint32());
+          message.basicAuth = FeatureBasicAuth.decode(reader, reader.uint32());
           break;
         case 6:
-          message.twilioLogin = FeatureTwilioLoginData.decode(reader, reader.uint32());
+          message.twilioLogin = FeatureTwilioLogin.decode(reader, reader.uint32());
           break;
         case 7:
-          message.rollbar = FeatureRollbarData.decode(reader, reader.uint32());
+          message.rollbar = FeatureRollbar.decode(reader, reader.uint32());
           break;
         case 8:
-          message.deepLink = FeatureDeepLinkData.decode(reader, reader.uint32());
+          message.deepLink = FeatureDeepLink.decode(reader, reader.uint32());
           break;
         case 9:
-          message.stripe = FeatureStripeData.decode(reader, reader.uint32());
+          message.stripe = FeatureStripe.decode(reader, reader.uint32());
           break;
         case 10:
-          message.lineLogin = FeatureLineLoginData.decode(reader, reader.uint32());
+          message.lineLogin = FeatureLineLogin.decode(reader, reader.uint32());
           break;
         case 11:
-          message.googleAnalytics = FeatureGoogleAnalyticsData.decode(reader, reader.uint32());
+          message.googleAnalytics = FeatureGoogleAnalytics.decode(reader, reader.uint32());
           break;
         case 12:
-          message.scoutApm = FeatureScoutApmData.decode(reader, reader.uint32());
+          message.scoutApm = FeatureScoutApm.decode(reader, reader.uint32());
           break;
         case 13:
-          message.googleTagManager = FeatureGoogleTagManagerData.decode(reader, reader.uint32());
+          message.googleTagManager = FeatureGoogleTagManager.decode(reader, reader.uint32());
           break;
         case 14:
-          message.emailConfig = FeatureEmailConfigData.decode(reader, reader.uint32());
+          message.emailConfig = FeatureEmailConfig.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -4373,22 +4361,22 @@ export const FeatureData = {
     return {
       name: isSet(object.name) ? featureFeatureNameFromJSON(object.name) : 0,
       env: isSet(object.env) ? featureEnvironmentFromJSON(object.env) : 0,
-      emailLogin: isSet(object.emailLogin) ? FeatureEmailLoginData.fromJSON(object.emailLogin) : undefined,
-      jpBankData: isSet(object.jpBankData) ? FeatureJPBankDataData.fromJSON(object.jpBankData) : undefined,
-      basicAuth: isSet(object.basicAuth) ? FeatureBasicAuthData.fromJSON(object.basicAuth) : undefined,
-      twilioLogin: isSet(object.twilioLogin) ? FeatureTwilioLoginData.fromJSON(object.twilioLogin) : undefined,
-      rollbar: isSet(object.rollbar) ? FeatureRollbarData.fromJSON(object.rollbar) : undefined,
-      deepLink: isSet(object.deepLink) ? FeatureDeepLinkData.fromJSON(object.deepLink) : undefined,
-      stripe: isSet(object.stripe) ? FeatureStripeData.fromJSON(object.stripe) : undefined,
-      lineLogin: isSet(object.lineLogin) ? FeatureLineLoginData.fromJSON(object.lineLogin) : undefined,
+      emailLogin: isSet(object.emailLogin) ? FeatureEmailLogin.fromJSON(object.emailLogin) : undefined,
+      jpBankData: isSet(object.jpBankData) ? FeatureJPBankData.fromJSON(object.jpBankData) : undefined,
+      basicAuth: isSet(object.basicAuth) ? FeatureBasicAuth.fromJSON(object.basicAuth) : undefined,
+      twilioLogin: isSet(object.twilioLogin) ? FeatureTwilioLogin.fromJSON(object.twilioLogin) : undefined,
+      rollbar: isSet(object.rollbar) ? FeatureRollbar.fromJSON(object.rollbar) : undefined,
+      deepLink: isSet(object.deepLink) ? FeatureDeepLink.fromJSON(object.deepLink) : undefined,
+      stripe: isSet(object.stripe) ? FeatureStripe.fromJSON(object.stripe) : undefined,
+      lineLogin: isSet(object.lineLogin) ? FeatureLineLogin.fromJSON(object.lineLogin) : undefined,
       googleAnalytics: isSet(object.googleAnalytics)
-        ? FeatureGoogleAnalyticsData.fromJSON(object.googleAnalytics)
+        ? FeatureGoogleAnalytics.fromJSON(object.googleAnalytics)
         : undefined,
-      scoutApm: isSet(object.scoutApm) ? FeatureScoutApmData.fromJSON(object.scoutApm) : undefined,
+      scoutApm: isSet(object.scoutApm) ? FeatureScoutApm.fromJSON(object.scoutApm) : undefined,
       googleTagManager: isSet(object.googleTagManager)
-        ? FeatureGoogleTagManagerData.fromJSON(object.googleTagManager)
+        ? FeatureGoogleTagManager.fromJSON(object.googleTagManager)
         : undefined,
-      emailConfig: isSet(object.emailConfig) ? FeatureEmailConfigData.fromJSON(object.emailConfig) : undefined,
+      emailConfig: isSet(object.emailConfig) ? FeatureEmailConfig.fromJSON(object.emailConfig) : undefined,
     };
   },
 
@@ -4397,31 +4385,30 @@ export const FeatureData = {
     message.name !== undefined && (obj.name = featureFeatureNameToJSON(message.name));
     message.env !== undefined && (obj.env = featureEnvironmentToJSON(message.env));
     message.emailLogin !== undefined &&
-      (obj.emailLogin = message.emailLogin ? FeatureEmailLoginData.toJSON(message.emailLogin) : undefined);
+      (obj.emailLogin = message.emailLogin ? FeatureEmailLogin.toJSON(message.emailLogin) : undefined);
     message.jpBankData !== undefined &&
-      (obj.jpBankData = message.jpBankData ? FeatureJPBankDataData.toJSON(message.jpBankData) : undefined);
+      (obj.jpBankData = message.jpBankData ? FeatureJPBankData.toJSON(message.jpBankData) : undefined);
     message.basicAuth !== undefined &&
-      (obj.basicAuth = message.basicAuth ? FeatureBasicAuthData.toJSON(message.basicAuth) : undefined);
+      (obj.basicAuth = message.basicAuth ? FeatureBasicAuth.toJSON(message.basicAuth) : undefined);
     message.twilioLogin !== undefined &&
-      (obj.twilioLogin = message.twilioLogin ? FeatureTwilioLoginData.toJSON(message.twilioLogin) : undefined);
+      (obj.twilioLogin = message.twilioLogin ? FeatureTwilioLogin.toJSON(message.twilioLogin) : undefined);
     message.rollbar !== undefined &&
-      (obj.rollbar = message.rollbar ? FeatureRollbarData.toJSON(message.rollbar) : undefined);
+      (obj.rollbar = message.rollbar ? FeatureRollbar.toJSON(message.rollbar) : undefined);
     message.deepLink !== undefined &&
-      (obj.deepLink = message.deepLink ? FeatureDeepLinkData.toJSON(message.deepLink) : undefined);
-    message.stripe !== undefined &&
-      (obj.stripe = message.stripe ? FeatureStripeData.toJSON(message.stripe) : undefined);
+      (obj.deepLink = message.deepLink ? FeatureDeepLink.toJSON(message.deepLink) : undefined);
+    message.stripe !== undefined && (obj.stripe = message.stripe ? FeatureStripe.toJSON(message.stripe) : undefined);
     message.lineLogin !== undefined &&
-      (obj.lineLogin = message.lineLogin ? FeatureLineLoginData.toJSON(message.lineLogin) : undefined);
+      (obj.lineLogin = message.lineLogin ? FeatureLineLogin.toJSON(message.lineLogin) : undefined);
     message.googleAnalytics !== undefined && (obj.googleAnalytics = message.googleAnalytics
-      ? FeatureGoogleAnalyticsData.toJSON(message.googleAnalytics)
+      ? FeatureGoogleAnalytics.toJSON(message.googleAnalytics)
       : undefined);
     message.scoutApm !== undefined &&
-      (obj.scoutApm = message.scoutApm ? FeatureScoutApmData.toJSON(message.scoutApm) : undefined);
+      (obj.scoutApm = message.scoutApm ? FeatureScoutApm.toJSON(message.scoutApm) : undefined);
     message.googleTagManager !== undefined && (obj.googleTagManager = message.googleTagManager
-      ? FeatureGoogleTagManagerData.toJSON(message.googleTagManager)
+      ? FeatureGoogleTagManager.toJSON(message.googleTagManager)
       : undefined);
     message.emailConfig !== undefined &&
-      (obj.emailConfig = message.emailConfig ? FeatureEmailConfigData.toJSON(message.emailConfig) : undefined);
+      (obj.emailConfig = message.emailConfig ? FeatureEmailConfig.toJSON(message.emailConfig) : undefined);
     return obj;
   },
 
@@ -4430,40 +4417,40 @@ export const FeatureData = {
     message.name = object.name ?? 0;
     message.env = object.env ?? 0;
     message.emailLogin = (object.emailLogin !== undefined && object.emailLogin !== null)
-      ? FeatureEmailLoginData.fromPartial(object.emailLogin)
+      ? FeatureEmailLogin.fromPartial(object.emailLogin)
       : undefined;
     message.jpBankData = (object.jpBankData !== undefined && object.jpBankData !== null)
-      ? FeatureJPBankDataData.fromPartial(object.jpBankData)
+      ? FeatureJPBankData.fromPartial(object.jpBankData)
       : undefined;
     message.basicAuth = (object.basicAuth !== undefined && object.basicAuth !== null)
-      ? FeatureBasicAuthData.fromPartial(object.basicAuth)
+      ? FeatureBasicAuth.fromPartial(object.basicAuth)
       : undefined;
     message.twilioLogin = (object.twilioLogin !== undefined && object.twilioLogin !== null)
-      ? FeatureTwilioLoginData.fromPartial(object.twilioLogin)
+      ? FeatureTwilioLogin.fromPartial(object.twilioLogin)
       : undefined;
     message.rollbar = (object.rollbar !== undefined && object.rollbar !== null)
-      ? FeatureRollbarData.fromPartial(object.rollbar)
+      ? FeatureRollbar.fromPartial(object.rollbar)
       : undefined;
     message.deepLink = (object.deepLink !== undefined && object.deepLink !== null)
-      ? FeatureDeepLinkData.fromPartial(object.deepLink)
+      ? FeatureDeepLink.fromPartial(object.deepLink)
       : undefined;
     message.stripe = (object.stripe !== undefined && object.stripe !== null)
-      ? FeatureStripeData.fromPartial(object.stripe)
+      ? FeatureStripe.fromPartial(object.stripe)
       : undefined;
     message.lineLogin = (object.lineLogin !== undefined && object.lineLogin !== null)
-      ? FeatureLineLoginData.fromPartial(object.lineLogin)
+      ? FeatureLineLogin.fromPartial(object.lineLogin)
       : undefined;
     message.googleAnalytics = (object.googleAnalytics !== undefined && object.googleAnalytics !== null)
-      ? FeatureGoogleAnalyticsData.fromPartial(object.googleAnalytics)
+      ? FeatureGoogleAnalytics.fromPartial(object.googleAnalytics)
       : undefined;
     message.scoutApm = (object.scoutApm !== undefined && object.scoutApm !== null)
-      ? FeatureScoutApmData.fromPartial(object.scoutApm)
+      ? FeatureScoutApm.fromPartial(object.scoutApm)
       : undefined;
     message.googleTagManager = (object.googleTagManager !== undefined && object.googleTagManager !== null)
-      ? FeatureGoogleTagManagerData.fromPartial(object.googleTagManager)
+      ? FeatureGoogleTagManager.fromPartial(object.googleTagManager)
       : undefined;
     message.emailConfig = (object.emailConfig !== undefined && object.emailConfig !== null)
-      ? FeatureEmailConfigData.fromPartial(object.emailConfig)
+      ? FeatureEmailConfig.fromPartial(object.emailConfig)
       : undefined;
     return message;
   },
@@ -4483,7 +4470,7 @@ function createBaseFeatureEmailLogin(): FeatureEmailLogin {
   };
 }
 
-export const FeatureEmailLoginData = {
+export const FeatureEmailLogin = {
   encode(message: FeatureEmailLogin, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.tables) {
       writer.uint32(10).string(v!);
@@ -4609,7 +4596,7 @@ function createBaseFeatureJPBankData(): FeatureJPBankData {
   return {};
 }
 
-export const FeatureJPBankDataData = {
+export const FeatureJPBankData = {
   encode(_: FeatureJPBankData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
@@ -4648,7 +4635,7 @@ function createBaseFeatureBasicAuth(): FeatureBasicAuth {
   return { username: "", password: "" };
 }
 
-export const FeatureBasicAuthData = {
+export const FeatureBasicAuth = {
   encode(message: FeatureBasicAuth, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.username !== "") {
       writer.uint32(10).string(message.username);
@@ -4716,7 +4703,7 @@ function createBaseFeatureTwilioLogin(): FeatureTwilioLogin {
   };
 }
 
-export const FeatureTwilioLoginData = {
+export const FeatureTwilioLogin = {
   encode(message: FeatureTwilioLogin, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.userTables) {
       writer.uint32(10).string(v!);
@@ -4841,7 +4828,7 @@ function createBaseFeatureRollbar(): FeatureRollbar {
   return { accessToken: "" };
 }
 
-export const FeatureRollbarData = {
+export const FeatureRollbar = {
   encode(message: FeatureRollbar, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.accessToken !== "") {
       writer.uint32(10).string(message.accessToken);
@@ -4896,7 +4883,7 @@ function createBaseFeatureDeepLink(): FeatureDeepLink {
   };
 }
 
-export const FeatureDeepLinkData = {
+export const FeatureDeepLink = {
   encode(message: FeatureDeepLink, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.iosAppStoreId !== "") {
       writer.uint32(10).string(message.iosAppStoreId);
@@ -5009,7 +4996,7 @@ function createBaseFeatureStripe(): FeatureStripe {
   };
 }
 
-export const FeatureStripeData = {
+export const FeatureStripe = {
   encode(message: FeatureStripe, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.subscriptionTables) {
       writer.uint32(10).string(v!);
@@ -5140,7 +5127,7 @@ function createBaseFeatureLineLogin(): FeatureLineLogin {
   return { userTables: [], clientId: "", secretKey: "" };
 }
 
-export const FeatureLineLoginData = {
+export const FeatureLineLogin = {
   encode(message: FeatureLineLogin, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.userTables) {
       writer.uint32(10).string(v!);
@@ -5211,7 +5198,7 @@ function createBaseFeatureGoogleAnalytics(): FeatureGoogleAnalytics {
   return { measurementId: "" };
 }
 
-export const FeatureGoogleAnalyticsData = {
+export const FeatureGoogleAnalytics = {
   encode(message: FeatureGoogleAnalytics, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.measurementId !== "") {
       writer.uint32(10).string(message.measurementId);
@@ -5258,7 +5245,7 @@ function createBaseFeatureGoogleTagManager(): FeatureGoogleTagManager {
   return { containerId: "" };
 }
 
-export const FeatureGoogleTagManagerData = {
+export const FeatureGoogleTagManager = {
   encode(message: FeatureGoogleTagManager, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.containerId !== "") {
       writer.uint32(10).string(message.containerId);
@@ -5305,7 +5292,7 @@ function createBaseFeatureScoutApm(): FeatureScoutApm {
   return { keyId: "" };
 }
 
-export const FeatureScoutApmData = {
+export const FeatureScoutApm = {
   encode(message: FeatureScoutApm, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.keyId !== "") {
       writer.uint32(10).string(message.keyId);
@@ -5360,7 +5347,7 @@ function createBaseFeatureEmailConfig(): FeatureEmailConfig {
   };
 }
 
-export const FeatureEmailConfigData = {
+export const FeatureEmailConfig = {
   encode(message: FeatureEmailConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.address !== "") {
       writer.uint32(10).string(message.address);
@@ -5467,13 +5454,13 @@ function createBaseController(): Controller {
   return { name: "", endpoints: [] };
 }
 
-export const ControllerData = {
+export const Controller = {
   encode(message: Controller, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
     for (const v of message.endpoints) {
-      ControllerEndpointData.encode(v!, writer.uint32(18).fork()).ldelim();
+      ControllerEndpoint.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -5489,7 +5476,7 @@ export const ControllerData = {
           message.name = reader.string();
           break;
         case 2:
-          message.endpoints.push(ControllerEndpointData.decode(reader, reader.uint32()));
+          message.endpoints.push(ControllerEndpoint.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -5503,7 +5490,7 @@ export const ControllerData = {
     return {
       name: isSet(object.name) ? String(object.name) : "",
       endpoints: Array.isArray(object?.endpoints)
-        ? object.endpoints.map((e: any) => ControllerEndpointData.fromJSON(e))
+        ? object.endpoints.map((e: any) => ControllerEndpoint.fromJSON(e))
         : [],
     };
   },
@@ -5512,7 +5499,7 @@ export const ControllerData = {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
     if (message.endpoints) {
-      obj.endpoints = message.endpoints.map((e) => e ? ControllerEndpointData.toJSON(e) : undefined);
+      obj.endpoints = message.endpoints.map((e) => e ? ControllerEndpoint.toJSON(e) : undefined);
     } else {
       obj.endpoints = [];
     }
@@ -5522,7 +5509,7 @@ export const ControllerData = {
   fromPartial(object: DeepPartial<Controller>): Controller {
     const message = createBaseController();
     message.name = object.name ?? "";
-    message.endpoints = object.endpoints?.map((e) => ControllerEndpointData.fromPartial(e)) || [];
+    message.endpoints = object.endpoints?.map((e) => ControllerEndpoint.fromPartial(e)) || [];
     return message;
   },
 };
@@ -5531,7 +5518,7 @@ function createBaseControllerEndpoint(): ControllerEndpoint {
   return { path: "", name: "", writable: false, authorizationGroups: [], restrictAccess: false };
 }
 
-export const ControllerEndpointData = {
+export const ControllerEndpoint = {
   encode(message: ControllerEndpoint, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.path !== "") {
       writer.uint32(10).string(message.path);
@@ -5546,31 +5533,31 @@ export const ControllerEndpointData = {
       writer.uint32(32).int32(message.feature);
     }
     if (message.list !== undefined) {
-      ControllerEndpointListData.encode(message.list, writer.uint32(42).fork()).ldelim();
+      ControllerEndpointList.encode(message.list, writer.uint32(42).fork()).ldelim();
     }
     if (message.get !== undefined) {
-      ControllerEndpointGetData.encode(message.get, writer.uint32(50).fork()).ldelim();
+      ControllerEndpointGet.encode(message.get, writer.uint32(50).fork()).ldelim();
     }
     if (message.create !== undefined) {
-      ControllerEndpointCreateData.encode(message.create, writer.uint32(58).fork()).ldelim();
+      ControllerEndpointCreate.encode(message.create, writer.uint32(58).fork()).ldelim();
     }
     if (message.update !== undefined) {
-      ControllerEndpointUpdateData.encode(message.update, writer.uint32(66).fork()).ldelim();
+      ControllerEndpointUpdate.encode(message.update, writer.uint32(66).fork()).ldelim();
     }
     if (message.delete !== undefined) {
-      ControllerEndpointDeleteData.encode(message.delete, writer.uint32(74).fork()).ldelim();
+      ControllerEndpointDelete.encode(message.delete, writer.uint32(74).fork()).ldelim();
     }
     if (message.authentication !== undefined) {
-      ControllerAuthenticationData.encode(message.authentication, writer.uint32(82).fork()).ldelim();
+      ControllerAuthentication.encode(message.authentication, writer.uint32(82).fork()).ldelim();
     }
     if (message.authorization !== undefined) {
-      ControllerAuthorizationData.encode(message.authorization, writer.uint32(90).fork()).ldelim();
+      ControllerAuthorization.encode(message.authorization, writer.uint32(90).fork()).ldelim();
     }
     if (message.responses !== undefined) {
-      ControllerResponseData.encode(message.responses, writer.uint32(98).fork()).ldelim();
+      ControllerResponse.encode(message.responses, writer.uint32(98).fork()).ldelim();
     }
     if (message.params !== undefined) {
-      ControllerRequestContentData.encode(message.params, writer.uint32(106).fork()).ldelim();
+      ControllerRequestContent.encode(message.params, writer.uint32(106).fork()).ldelim();
     }
     if (message.writable === true) {
       writer.uint32(112).bool(message.writable);
@@ -5582,7 +5569,7 @@ export const ControllerEndpointData = {
       writer.uint32(130).string(message.featureTable);
     }
     for (const v of message.authorizationGroups) {
-      ControllerAuthorizationGroupData.encode(v!, writer.uint32(138).fork()).ldelim();
+      ControllerAuthorizationGroup.encode(v!, writer.uint32(138).fork()).ldelim();
     }
     if (message.restrictAccess === true) {
       writer.uint32(144).bool(message.restrictAccess);
@@ -5610,31 +5597,31 @@ export const ControllerEndpointData = {
           message.feature = reader.int32() as any;
           break;
         case 5:
-          message.list = ControllerEndpointListData.decode(reader, reader.uint32());
+          message.list = ControllerEndpointList.decode(reader, reader.uint32());
           break;
         case 6:
-          message.get = ControllerEndpointGetData.decode(reader, reader.uint32());
+          message.get = ControllerEndpointGet.decode(reader, reader.uint32());
           break;
         case 7:
-          message.create = ControllerEndpointCreateData.decode(reader, reader.uint32());
+          message.create = ControllerEndpointCreate.decode(reader, reader.uint32());
           break;
         case 8:
-          message.update = ControllerEndpointUpdateData.decode(reader, reader.uint32());
+          message.update = ControllerEndpointUpdate.decode(reader, reader.uint32());
           break;
         case 9:
-          message.delete = ControllerEndpointDeleteData.decode(reader, reader.uint32());
+          message.delete = ControllerEndpointDelete.decode(reader, reader.uint32());
           break;
         case 10:
-          message.authentication = ControllerAuthenticationData.decode(reader, reader.uint32());
+          message.authentication = ControllerAuthentication.decode(reader, reader.uint32());
           break;
         case 11:
-          message.authorization = ControllerAuthorizationData.decode(reader, reader.uint32());
+          message.authorization = ControllerAuthorization.decode(reader, reader.uint32());
           break;
         case 12:
-          message.responses = ControllerResponseData.decode(reader, reader.uint32());
+          message.responses = ControllerResponse.decode(reader, reader.uint32());
           break;
         case 13:
-          message.params = ControllerRequestContentData.decode(reader, reader.uint32());
+          message.params = ControllerRequestContent.decode(reader, reader.uint32());
           break;
         case 14:
           message.writable = reader.bool();
@@ -5646,7 +5633,7 @@ export const ControllerEndpointData = {
           message.featureTable = reader.string();
           break;
         case 17:
-          message.authorizationGroups.push(ControllerAuthorizationGroupData.decode(reader, reader.uint32()));
+          message.authorizationGroups.push(ControllerAuthorizationGroup.decode(reader, reader.uint32()));
           break;
         case 18:
           message.restrictAccess = reader.bool();
@@ -5665,24 +5652,22 @@ export const ControllerEndpointData = {
       name: isSet(object.name) ? String(object.name) : "",
       table: isSet(object.table) ? String(object.table) : undefined,
       feature: isSet(object.feature) ? featureFeatureNameFromJSON(object.feature) : undefined,
-      list: isSet(object.list) ? ControllerEndpointListData.fromJSON(object.list) : undefined,
-      get: isSet(object.get) ? ControllerEndpointGetData.fromJSON(object.get) : undefined,
-      create: isSet(object.create) ? ControllerEndpointCreateData.fromJSON(object.create) : undefined,
-      update: isSet(object.update) ? ControllerEndpointUpdateData.fromJSON(object.update) : undefined,
-      delete: isSet(object.delete) ? ControllerEndpointDeleteData.fromJSON(object.delete) : undefined,
+      list: isSet(object.list) ? ControllerEndpointList.fromJSON(object.list) : undefined,
+      get: isSet(object.get) ? ControllerEndpointGet.fromJSON(object.get) : undefined,
+      create: isSet(object.create) ? ControllerEndpointCreate.fromJSON(object.create) : undefined,
+      update: isSet(object.update) ? ControllerEndpointUpdate.fromJSON(object.update) : undefined,
+      delete: isSet(object.delete) ? ControllerEndpointDelete.fromJSON(object.delete) : undefined,
       authentication: isSet(object.authentication)
-        ? ControllerAuthenticationData.fromJSON(object.authentication)
+        ? ControllerAuthentication.fromJSON(object.authentication)
         : undefined,
-      authorization: isSet(object.authorization)
-        ? ControllerAuthorizationData.fromJSON(object.authorization)
-        : undefined,
-      responses: isSet(object.responses) ? ControllerResponseData.fromJSON(object.responses) : undefined,
-      params: isSet(object.params) ? ControllerRequestContentData.fromJSON(object.params) : undefined,
+      authorization: isSet(object.authorization) ? ControllerAuthorization.fromJSON(object.authorization) : undefined,
+      responses: isSet(object.responses) ? ControllerResponse.fromJSON(object.responses) : undefined,
+      params: isSet(object.params) ? ControllerRequestContent.fromJSON(object.params) : undefined,
       writable: isSet(object.writable) ? Boolean(object.writable) : false,
       featureAction: isSet(object.featureAction) ? String(object.featureAction) : undefined,
       featureTable: isSet(object.featureTable) ? String(object.featureTable) : undefined,
       authorizationGroups: Array.isArray(object?.authorizationGroups)
-        ? object.authorizationGroups.map((e: any) => ControllerAuthorizationGroupData.fromJSON(e))
+        ? object.authorizationGroups.map((e: any) => ControllerAuthorizationGroup.fromJSON(e))
         : [],
       restrictAccess: isSet(object.restrictAccess) ? Boolean(object.restrictAccess) : false,
     };
@@ -5695,32 +5680,30 @@ export const ControllerEndpointData = {
     message.table !== undefined && (obj.table = message.table);
     message.feature !== undefined &&
       (obj.feature = message.feature !== undefined ? featureFeatureNameToJSON(message.feature) : undefined);
-    message.list !== undefined &&
-      (obj.list = message.list ? ControllerEndpointListData.toJSON(message.list) : undefined);
-    message.get !== undefined && (obj.get = message.get ? ControllerEndpointGetData.toJSON(message.get) : undefined);
+    message.list !== undefined && (obj.list = message.list ? ControllerEndpointList.toJSON(message.list) : undefined);
+    message.get !== undefined && (obj.get = message.get ? ControllerEndpointGet.toJSON(message.get) : undefined);
     message.create !== undefined &&
-      (obj.create = message.create ? ControllerEndpointCreateData.toJSON(message.create) : undefined);
+      (obj.create = message.create ? ControllerEndpointCreate.toJSON(message.create) : undefined);
     message.update !== undefined &&
-      (obj.update = message.update ? ControllerEndpointUpdateData.toJSON(message.update) : undefined);
+      (obj.update = message.update ? ControllerEndpointUpdate.toJSON(message.update) : undefined);
     message.delete !== undefined &&
-      (obj.delete = message.delete ? ControllerEndpointDeleteData.toJSON(message.delete) : undefined);
-    message.authentication !== undefined && (obj.authentication = message.authentication
-      ? ControllerAuthenticationData.toJSON(message.authentication)
-      : undefined);
-    message.authorization !== undefined &&
-      (obj.authorization = message.authorization
-        ? ControllerAuthorizationData.toJSON(message.authorization)
+      (obj.delete = message.delete ? ControllerEndpointDelete.toJSON(message.delete) : undefined);
+    message.authentication !== undefined &&
+      (obj.authentication = message.authentication
+        ? ControllerAuthentication.toJSON(message.authentication)
         : undefined);
+    message.authorization !== undefined &&
+      (obj.authorization = message.authorization ? ControllerAuthorization.toJSON(message.authorization) : undefined);
     message.responses !== undefined &&
-      (obj.responses = message.responses ? ControllerResponseData.toJSON(message.responses) : undefined);
+      (obj.responses = message.responses ? ControllerResponse.toJSON(message.responses) : undefined);
     message.params !== undefined &&
-      (obj.params = message.params ? ControllerRequestContentData.toJSON(message.params) : undefined);
+      (obj.params = message.params ? ControllerRequestContent.toJSON(message.params) : undefined);
     message.writable !== undefined && (obj.writable = message.writable);
     message.featureAction !== undefined && (obj.featureAction = message.featureAction);
     message.featureTable !== undefined && (obj.featureTable = message.featureTable);
     if (message.authorizationGroups) {
       obj.authorizationGroups = message.authorizationGroups.map((e) =>
-        e ? ControllerAuthorizationGroupData.toJSON(e) : undefined
+        e ? ControllerAuthorizationGroup.toJSON(e) : undefined
       );
     } else {
       obj.authorizationGroups = [];
@@ -5736,37 +5719,37 @@ export const ControllerEndpointData = {
     message.table = object.table ?? undefined;
     message.feature = object.feature ?? undefined;
     message.list = (object.list !== undefined && object.list !== null)
-      ? ControllerEndpointListData.fromPartial(object.list)
+      ? ControllerEndpointList.fromPartial(object.list)
       : undefined;
     message.get = (object.get !== undefined && object.get !== null)
-      ? ControllerEndpointGetData.fromPartial(object.get)
+      ? ControllerEndpointGet.fromPartial(object.get)
       : undefined;
     message.create = (object.create !== undefined && object.create !== null)
-      ? ControllerEndpointCreateData.fromPartial(object.create)
+      ? ControllerEndpointCreate.fromPartial(object.create)
       : undefined;
     message.update = (object.update !== undefined && object.update !== null)
-      ? ControllerEndpointUpdateData.fromPartial(object.update)
+      ? ControllerEndpointUpdate.fromPartial(object.update)
       : undefined;
     message.delete = (object.delete !== undefined && object.delete !== null)
-      ? ControllerEndpointDeleteData.fromPartial(object.delete)
+      ? ControllerEndpointDelete.fromPartial(object.delete)
       : undefined;
     message.authentication = (object.authentication !== undefined && object.authentication !== null)
-      ? ControllerAuthenticationData.fromPartial(object.authentication)
+      ? ControllerAuthentication.fromPartial(object.authentication)
       : undefined;
     message.authorization = (object.authorization !== undefined && object.authorization !== null)
-      ? ControllerAuthorizationData.fromPartial(object.authorization)
+      ? ControllerAuthorization.fromPartial(object.authorization)
       : undefined;
     message.responses = (object.responses !== undefined && object.responses !== null)
-      ? ControllerResponseData.fromPartial(object.responses)
+      ? ControllerResponse.fromPartial(object.responses)
       : undefined;
     message.params = (object.params !== undefined && object.params !== null)
-      ? ControllerRequestContentData.fromPartial(object.params)
+      ? ControllerRequestContent.fromPartial(object.params)
       : undefined;
     message.writable = object.writable ?? false;
     message.featureAction = object.featureAction ?? undefined;
     message.featureTable = object.featureTable ?? undefined;
-    message.authorizationGroups =
-      object.authorizationGroups?.map((e) => ControllerAuthorizationGroupData.fromPartial(e)) || [];
+    message.authorizationGroups = object.authorizationGroups?.map((e) => ControllerAuthorizationGroup.fromPartial(e)) ||
+      [];
     message.restrictAccess = object.restrictAccess ?? false;
     return message;
   },
@@ -5776,13 +5759,13 @@ function createBaseControllerEndpointList(): ControllerEndpointList {
   return {};
 }
 
-export const ControllerEndpointListData = {
+export const ControllerEndpointList = {
   encode(message: ControllerEndpointList, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.queries !== undefined) {
-      ControllerRequestContentData.encode(message.queries, writer.uint32(10).fork()).ldelim();
+      ControllerRequestContent.encode(message.queries, writer.uint32(10).fork()).ldelim();
     }
     if (message.conditions !== undefined) {
-      ControllerResourceConditionData.encode(message.conditions, writer.uint32(18).fork()).ldelim();
+      ControllerResourceCondition.encode(message.conditions, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -5795,10 +5778,10 @@ export const ControllerEndpointListData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.queries = ControllerRequestContentData.decode(reader, reader.uint32());
+          message.queries = ControllerRequestContent.decode(reader, reader.uint32());
           break;
         case 2:
-          message.conditions = ControllerResourceConditionData.decode(reader, reader.uint32());
+          message.conditions = ControllerResourceCondition.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -5810,27 +5793,27 @@ export const ControllerEndpointListData = {
 
   fromJSON(object: any): ControllerEndpointList {
     return {
-      queries: isSet(object.queries) ? ControllerRequestContentData.fromJSON(object.queries) : undefined,
-      conditions: isSet(object.conditions) ? ControllerResourceConditionData.fromJSON(object.conditions) : undefined,
+      queries: isSet(object.queries) ? ControllerRequestContent.fromJSON(object.queries) : undefined,
+      conditions: isSet(object.conditions) ? ControllerResourceCondition.fromJSON(object.conditions) : undefined,
     };
   },
 
   toJSON(message: ControllerEndpointList): unknown {
     const obj: any = {};
     message.queries !== undefined &&
-      (obj.queries = message.queries ? ControllerRequestContentData.toJSON(message.queries) : undefined);
+      (obj.queries = message.queries ? ControllerRequestContent.toJSON(message.queries) : undefined);
     message.conditions !== undefined &&
-      (obj.conditions = message.conditions ? ControllerResourceConditionData.toJSON(message.conditions) : undefined);
+      (obj.conditions = message.conditions ? ControllerResourceCondition.toJSON(message.conditions) : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<ControllerEndpointList>): ControllerEndpointList {
     const message = createBaseControllerEndpointList();
     message.queries = (object.queries !== undefined && object.queries !== null)
-      ? ControllerRequestContentData.fromPartial(object.queries)
+      ? ControllerRequestContent.fromPartial(object.queries)
       : undefined;
     message.conditions = (object.conditions !== undefined && object.conditions !== null)
-      ? ControllerResourceConditionData.fromPartial(object.conditions)
+      ? ControllerResourceCondition.fromPartial(object.conditions)
       : undefined;
     return message;
   },
@@ -5840,13 +5823,13 @@ function createBaseControllerEndpointGet(): ControllerEndpointGet {
   return {};
 }
 
-export const ControllerEndpointGetData = {
+export const ControllerEndpointGet = {
   encode(message: ControllerEndpointGet, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.queries !== undefined) {
-      ControllerRequestContentData.encode(message.queries, writer.uint32(10).fork()).ldelim();
+      ControllerRequestContent.encode(message.queries, writer.uint32(10).fork()).ldelim();
     }
     if (message.conditions !== undefined) {
-      ControllerResourceConditionData.encode(message.conditions, writer.uint32(18).fork()).ldelim();
+      ControllerResourceCondition.encode(message.conditions, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -5859,10 +5842,10 @@ export const ControllerEndpointGetData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.queries = ControllerRequestContentData.decode(reader, reader.uint32());
+          message.queries = ControllerRequestContent.decode(reader, reader.uint32());
           break;
         case 2:
-          message.conditions = ControllerResourceConditionData.decode(reader, reader.uint32());
+          message.conditions = ControllerResourceCondition.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -5874,27 +5857,27 @@ export const ControllerEndpointGetData = {
 
   fromJSON(object: any): ControllerEndpointGet {
     return {
-      queries: isSet(object.queries) ? ControllerRequestContentData.fromJSON(object.queries) : undefined,
-      conditions: isSet(object.conditions) ? ControllerResourceConditionData.fromJSON(object.conditions) : undefined,
+      queries: isSet(object.queries) ? ControllerRequestContent.fromJSON(object.queries) : undefined,
+      conditions: isSet(object.conditions) ? ControllerResourceCondition.fromJSON(object.conditions) : undefined,
     };
   },
 
   toJSON(message: ControllerEndpointGet): unknown {
     const obj: any = {};
     message.queries !== undefined &&
-      (obj.queries = message.queries ? ControllerRequestContentData.toJSON(message.queries) : undefined);
+      (obj.queries = message.queries ? ControllerRequestContent.toJSON(message.queries) : undefined);
     message.conditions !== undefined &&
-      (obj.conditions = message.conditions ? ControllerResourceConditionData.toJSON(message.conditions) : undefined);
+      (obj.conditions = message.conditions ? ControllerResourceCondition.toJSON(message.conditions) : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<ControllerEndpointGet>): ControllerEndpointGet {
     const message = createBaseControllerEndpointGet();
     message.queries = (object.queries !== undefined && object.queries !== null)
-      ? ControllerRequestContentData.fromPartial(object.queries)
+      ? ControllerRequestContent.fromPartial(object.queries)
       : undefined;
     message.conditions = (object.conditions !== undefined && object.conditions !== null)
-      ? ControllerResourceConditionData.fromPartial(object.conditions)
+      ? ControllerResourceCondition.fromPartial(object.conditions)
       : undefined;
     return message;
   },
@@ -5904,16 +5887,16 @@ function createBaseControllerEndpointCreate(): ControllerEndpointCreate {
   return {};
 }
 
-export const ControllerEndpointCreateData = {
+export const ControllerEndpointCreate = {
   encode(message: ControllerEndpointCreate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.body !== undefined) {
-      ControllerRequestContentData.encode(message.body, writer.uint32(10).fork()).ldelim();
+      ControllerRequestContent.encode(message.body, writer.uint32(10).fork()).ldelim();
     }
     if (message.conditions !== undefined) {
-      ControllerResourceConditionData.encode(message.conditions, writer.uint32(18).fork()).ldelim();
+      ControllerResourceCondition.encode(message.conditions, writer.uint32(18).fork()).ldelim();
     }
     if (message.resources !== undefined) {
-      ControllerResourceUpdateData.encode(message.resources, writer.uint32(26).fork()).ldelim();
+      ControllerResourceUpdate.encode(message.resources, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -5926,13 +5909,13 @@ export const ControllerEndpointCreateData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.body = ControllerRequestContentData.decode(reader, reader.uint32());
+          message.body = ControllerRequestContent.decode(reader, reader.uint32());
           break;
         case 2:
-          message.conditions = ControllerResourceConditionData.decode(reader, reader.uint32());
+          message.conditions = ControllerResourceCondition.decode(reader, reader.uint32());
           break;
         case 3:
-          message.resources = ControllerResourceUpdateData.decode(reader, reader.uint32());
+          message.resources = ControllerResourceUpdate.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -5944,33 +5927,32 @@ export const ControllerEndpointCreateData = {
 
   fromJSON(object: any): ControllerEndpointCreate {
     return {
-      body: isSet(object.body) ? ControllerRequestContentData.fromJSON(object.body) : undefined,
-      conditions: isSet(object.conditions) ? ControllerResourceConditionData.fromJSON(object.conditions) : undefined,
-      resources: isSet(object.resources) ? ControllerResourceUpdateData.fromJSON(object.resources) : undefined,
+      body: isSet(object.body) ? ControllerRequestContent.fromJSON(object.body) : undefined,
+      conditions: isSet(object.conditions) ? ControllerResourceCondition.fromJSON(object.conditions) : undefined,
+      resources: isSet(object.resources) ? ControllerResourceUpdate.fromJSON(object.resources) : undefined,
     };
   },
 
   toJSON(message: ControllerEndpointCreate): unknown {
     const obj: any = {};
-    message.body !== undefined &&
-      (obj.body = message.body ? ControllerRequestContentData.toJSON(message.body) : undefined);
+    message.body !== undefined && (obj.body = message.body ? ControllerRequestContent.toJSON(message.body) : undefined);
     message.conditions !== undefined &&
-      (obj.conditions = message.conditions ? ControllerResourceConditionData.toJSON(message.conditions) : undefined);
+      (obj.conditions = message.conditions ? ControllerResourceCondition.toJSON(message.conditions) : undefined);
     message.resources !== undefined &&
-      (obj.resources = message.resources ? ControllerResourceUpdateData.toJSON(message.resources) : undefined);
+      (obj.resources = message.resources ? ControllerResourceUpdate.toJSON(message.resources) : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<ControllerEndpointCreate>): ControllerEndpointCreate {
     const message = createBaseControllerEndpointCreate();
     message.body = (object.body !== undefined && object.body !== null)
-      ? ControllerRequestContentData.fromPartial(object.body)
+      ? ControllerRequestContent.fromPartial(object.body)
       : undefined;
     message.conditions = (object.conditions !== undefined && object.conditions !== null)
-      ? ControllerResourceConditionData.fromPartial(object.conditions)
+      ? ControllerResourceCondition.fromPartial(object.conditions)
       : undefined;
     message.resources = (object.resources !== undefined && object.resources !== null)
-      ? ControllerResourceUpdateData.fromPartial(object.resources)
+      ? ControllerResourceUpdate.fromPartial(object.resources)
       : undefined;
     return message;
   },
@@ -5980,16 +5962,16 @@ function createBaseControllerEndpointUpdate(): ControllerEndpointUpdate {
   return {};
 }
 
-export const ControllerEndpointUpdateData = {
+export const ControllerEndpointUpdate = {
   encode(message: ControllerEndpointUpdate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.body !== undefined) {
-      ControllerRequestContentData.encode(message.body, writer.uint32(10).fork()).ldelim();
+      ControllerRequestContent.encode(message.body, writer.uint32(10).fork()).ldelim();
     }
     if (message.conditions !== undefined) {
-      ControllerResourceConditionData.encode(message.conditions, writer.uint32(18).fork()).ldelim();
+      ControllerResourceCondition.encode(message.conditions, writer.uint32(18).fork()).ldelim();
     }
     if (message.resources !== undefined) {
-      ControllerResourceUpdateData.encode(message.resources, writer.uint32(26).fork()).ldelim();
+      ControllerResourceUpdate.encode(message.resources, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -6002,13 +5984,13 @@ export const ControllerEndpointUpdateData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.body = ControllerRequestContentData.decode(reader, reader.uint32());
+          message.body = ControllerRequestContent.decode(reader, reader.uint32());
           break;
         case 2:
-          message.conditions = ControllerResourceConditionData.decode(reader, reader.uint32());
+          message.conditions = ControllerResourceCondition.decode(reader, reader.uint32());
           break;
         case 3:
-          message.resources = ControllerResourceUpdateData.decode(reader, reader.uint32());
+          message.resources = ControllerResourceUpdate.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -6020,33 +6002,32 @@ export const ControllerEndpointUpdateData = {
 
   fromJSON(object: any): ControllerEndpointUpdate {
     return {
-      body: isSet(object.body) ? ControllerRequestContentData.fromJSON(object.body) : undefined,
-      conditions: isSet(object.conditions) ? ControllerResourceConditionData.fromJSON(object.conditions) : undefined,
-      resources: isSet(object.resources) ? ControllerResourceUpdateData.fromJSON(object.resources) : undefined,
+      body: isSet(object.body) ? ControllerRequestContent.fromJSON(object.body) : undefined,
+      conditions: isSet(object.conditions) ? ControllerResourceCondition.fromJSON(object.conditions) : undefined,
+      resources: isSet(object.resources) ? ControllerResourceUpdate.fromJSON(object.resources) : undefined,
     };
   },
 
   toJSON(message: ControllerEndpointUpdate): unknown {
     const obj: any = {};
-    message.body !== undefined &&
-      (obj.body = message.body ? ControllerRequestContentData.toJSON(message.body) : undefined);
+    message.body !== undefined && (obj.body = message.body ? ControllerRequestContent.toJSON(message.body) : undefined);
     message.conditions !== undefined &&
-      (obj.conditions = message.conditions ? ControllerResourceConditionData.toJSON(message.conditions) : undefined);
+      (obj.conditions = message.conditions ? ControllerResourceCondition.toJSON(message.conditions) : undefined);
     message.resources !== undefined &&
-      (obj.resources = message.resources ? ControllerResourceUpdateData.toJSON(message.resources) : undefined);
+      (obj.resources = message.resources ? ControllerResourceUpdate.toJSON(message.resources) : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<ControllerEndpointUpdate>): ControllerEndpointUpdate {
     const message = createBaseControllerEndpointUpdate();
     message.body = (object.body !== undefined && object.body !== null)
-      ? ControllerRequestContentData.fromPartial(object.body)
+      ? ControllerRequestContent.fromPartial(object.body)
       : undefined;
     message.conditions = (object.conditions !== undefined && object.conditions !== null)
-      ? ControllerResourceConditionData.fromPartial(object.conditions)
+      ? ControllerResourceCondition.fromPartial(object.conditions)
       : undefined;
     message.resources = (object.resources !== undefined && object.resources !== null)
-      ? ControllerResourceUpdateData.fromPartial(object.resources)
+      ? ControllerResourceUpdate.fromPartial(object.resources)
       : undefined;
     return message;
   },
@@ -6056,13 +6037,13 @@ function createBaseControllerEndpointDelete(): ControllerEndpointDelete {
   return {};
 }
 
-export const ControllerEndpointDeleteData = {
+export const ControllerEndpointDelete = {
   encode(message: ControllerEndpointDelete, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.body !== undefined) {
-      ControllerRequestContentData.encode(message.body, writer.uint32(10).fork()).ldelim();
+      ControllerRequestContent.encode(message.body, writer.uint32(10).fork()).ldelim();
     }
     if (message.conditions !== undefined) {
-      ControllerResourceConditionData.encode(message.conditions, writer.uint32(18).fork()).ldelim();
+      ControllerResourceCondition.encode(message.conditions, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -6075,10 +6056,10 @@ export const ControllerEndpointDeleteData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.body = ControllerRequestContentData.decode(reader, reader.uint32());
+          message.body = ControllerRequestContent.decode(reader, reader.uint32());
           break;
         case 2:
-          message.conditions = ControllerResourceConditionData.decode(reader, reader.uint32());
+          message.conditions = ControllerResourceCondition.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -6090,27 +6071,26 @@ export const ControllerEndpointDeleteData = {
 
   fromJSON(object: any): ControllerEndpointDelete {
     return {
-      body: isSet(object.body) ? ControllerRequestContentData.fromJSON(object.body) : undefined,
-      conditions: isSet(object.conditions) ? ControllerResourceConditionData.fromJSON(object.conditions) : undefined,
+      body: isSet(object.body) ? ControllerRequestContent.fromJSON(object.body) : undefined,
+      conditions: isSet(object.conditions) ? ControllerResourceCondition.fromJSON(object.conditions) : undefined,
     };
   },
 
   toJSON(message: ControllerEndpointDelete): unknown {
     const obj: any = {};
-    message.body !== undefined &&
-      (obj.body = message.body ? ControllerRequestContentData.toJSON(message.body) : undefined);
+    message.body !== undefined && (obj.body = message.body ? ControllerRequestContent.toJSON(message.body) : undefined);
     message.conditions !== undefined &&
-      (obj.conditions = message.conditions ? ControllerResourceConditionData.toJSON(message.conditions) : undefined);
+      (obj.conditions = message.conditions ? ControllerResourceCondition.toJSON(message.conditions) : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<ControllerEndpointDelete>): ControllerEndpointDelete {
     const message = createBaseControllerEndpointDelete();
     message.body = (object.body !== undefined && object.body !== null)
-      ? ControllerRequestContentData.fromPartial(object.body)
+      ? ControllerRequestContent.fromPartial(object.body)
       : undefined;
     message.conditions = (object.conditions !== undefined && object.conditions !== null)
-      ? ControllerResourceConditionData.fromPartial(object.conditions)
+      ? ControllerResourceCondition.fromPartial(object.conditions)
       : undefined;
     return message;
   },
@@ -6120,10 +6100,10 @@ function createBaseControllerRequestContent(): ControllerRequestContent {
   return { fields: [] };
 }
 
-export const ControllerRequestContentData = {
+export const ControllerRequestContent = {
   encode(message: ControllerRequestContent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.fields) {
-      ControllerRequestContentFieldData.encode(v!, writer.uint32(10).fork()).ldelim();
+      ControllerRequestContentField.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -6136,7 +6116,7 @@ export const ControllerRequestContentData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.fields.push(ControllerRequestContentFieldData.decode(reader, reader.uint32()));
+          message.fields.push(ControllerRequestContentField.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -6149,7 +6129,7 @@ export const ControllerRequestContentData = {
   fromJSON(object: any): ControllerRequestContent {
     return {
       fields: Array.isArray(object?.fields)
-        ? object.fields.map((e: any) => ControllerRequestContentFieldData.fromJSON(e))
+        ? object.fields.map((e: any) => ControllerRequestContentField.fromJSON(e))
         : [],
     };
   },
@@ -6157,7 +6137,7 @@ export const ControllerRequestContentData = {
   toJSON(message: ControllerRequestContent): unknown {
     const obj: any = {};
     if (message.fields) {
-      obj.fields = message.fields.map((e) => e ? ControllerRequestContentFieldData.toJSON(e) : undefined);
+      obj.fields = message.fields.map((e) => e ? ControllerRequestContentField.toJSON(e) : undefined);
     } else {
       obj.fields = [];
     }
@@ -6166,7 +6146,7 @@ export const ControllerRequestContentData = {
 
   fromPartial(object: DeepPartial<ControllerRequestContent>): ControllerRequestContent {
     const message = createBaseControllerRequestContent();
-    message.fields = object.fields?.map((e) => ControllerRequestContentFieldData.fromPartial(e)) || [];
+    message.fields = object.fields?.map((e) => ControllerRequestContentField.fromPartial(e)) || [];
     return message;
   },
 };
@@ -6175,16 +6155,16 @@ function createBaseControllerRequestContentField(): ControllerRequestContentFiel
   return { name: "", children: [], enumValues: [] };
 }
 
-export const ControllerRequestContentFieldData = {
+export const ControllerRequestContentField = {
   encode(message: ControllerRequestContentField, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
     if (message.dataType !== undefined) {
-      DataTypeData.encode(message.dataType, writer.uint32(18).fork()).ldelim();
+      DataType.encode(message.dataType, writer.uint32(18).fork()).ldelim();
     }
     for (const v of message.children) {
-      ControllerRequestContentFieldData.encode(v!, writer.uint32(26).fork()).ldelim();
+      ControllerRequestContentField.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     for (const v of message.enumValues) {
       writer.uint32(34).string(v!);
@@ -6203,10 +6183,10 @@ export const ControllerRequestContentFieldData = {
           message.name = reader.string();
           break;
         case 2:
-          message.dataType = DataTypeData.decode(reader, reader.uint32());
+          message.dataType = DataType.decode(reader, reader.uint32());
           break;
         case 3:
-          message.children.push(ControllerRequestContentFieldData.decode(reader, reader.uint32()));
+          message.children.push(ControllerRequestContentField.decode(reader, reader.uint32()));
           break;
         case 4:
           message.enumValues.push(reader.string());
@@ -6222,9 +6202,9 @@ export const ControllerRequestContentFieldData = {
   fromJSON(object: any): ControllerRequestContentField {
     return {
       name: isSet(object.name) ? String(object.name) : "",
-      dataType: isSet(object.dataType) ? DataTypeData.fromJSON(object.dataType) : undefined,
+      dataType: isSet(object.dataType) ? DataType.fromJSON(object.dataType) : undefined,
       children: Array.isArray(object?.children)
-        ? object.children.map((e: any) => ControllerRequestContentFieldData.fromJSON(e))
+        ? object.children.map((e: any) => ControllerRequestContentField.fromJSON(e))
         : [],
       enumValues: Array.isArray(object?.enumValues) ? object.enumValues.map((e: any) => String(e)) : [],
     };
@@ -6233,10 +6213,9 @@ export const ControllerRequestContentFieldData = {
   toJSON(message: ControllerRequestContentField): unknown {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
-    message.dataType !== undefined &&
-      (obj.dataType = message.dataType ? DataTypeData.toJSON(message.dataType) : undefined);
+    message.dataType !== undefined && (obj.dataType = message.dataType ? DataType.toJSON(message.dataType) : undefined);
     if (message.children) {
-      obj.children = message.children.map((e) => e ? ControllerRequestContentFieldData.toJSON(e) : undefined);
+      obj.children = message.children.map((e) => e ? ControllerRequestContentField.toJSON(e) : undefined);
     } else {
       obj.children = [];
     }
@@ -6252,9 +6231,9 @@ export const ControllerRequestContentFieldData = {
     const message = createBaseControllerRequestContentField();
     message.name = object.name ?? "";
     message.dataType = (object.dataType !== undefined && object.dataType !== null)
-      ? DataTypeData.fromPartial(object.dataType)
+      ? DataType.fromPartial(object.dataType)
       : undefined;
-    message.children = object.children?.map((e) => ControllerRequestContentFieldData.fromPartial(e)) || [];
+    message.children = object.children?.map((e) => ControllerRequestContentField.fromPartial(e)) || [];
     message.enumValues = object.enumValues?.map((e) => e) || [];
     return message;
   },
@@ -6264,10 +6243,10 @@ function createBaseControllerResponse(): ControllerResponse {
   return { fields: [] };
 }
 
-export const ControllerResponseData = {
+export const ControllerResponse = {
   encode(message: ControllerResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.fields) {
-      ControllerResponseFieldData.encode(v!, writer.uint32(10).fork()).ldelim();
+      ControllerResponseField.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -6280,7 +6259,7 @@ export const ControllerResponseData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.fields.push(ControllerResponseFieldData.decode(reader, reader.uint32()));
+          message.fields.push(ControllerResponseField.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -6292,16 +6271,14 @@ export const ControllerResponseData = {
 
   fromJSON(object: any): ControllerResponse {
     return {
-      fields: Array.isArray(object?.fields)
-        ? object.fields.map((e: any) => ControllerResponseFieldData.fromJSON(e))
-        : [],
+      fields: Array.isArray(object?.fields) ? object.fields.map((e: any) => ControllerResponseField.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: ControllerResponse): unknown {
     const obj: any = {};
     if (message.fields) {
-      obj.fields = message.fields.map((e) => e ? ControllerResponseFieldData.toJSON(e) : undefined);
+      obj.fields = message.fields.map((e) => e ? ControllerResponseField.toJSON(e) : undefined);
     } else {
       obj.fields = [];
     }
@@ -6310,7 +6287,7 @@ export const ControllerResponseData = {
 
   fromPartial(object: DeepPartial<ControllerResponse>): ControllerResponse {
     const message = createBaseControllerResponse();
-    message.fields = object.fields?.map((e) => ControllerResponseFieldData.fromPartial(e)) || [];
+    message.fields = object.fields?.map((e) => ControllerResponseField.fromPartial(e)) || [];
     return message;
   },
 };
@@ -6319,7 +6296,7 @@ function createBaseControllerResponseField(): ControllerResponseField {
   return { name: "", children: [], category: "", alias: "" };
 }
 
-export const ControllerResponseFieldData = {
+export const ControllerResponseField = {
   encode(message: ControllerResponseField, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
@@ -6334,10 +6311,10 @@ export const ControllerResponseFieldData = {
       writer.uint32(34).string(message.value);
     }
     if (message.dataType !== undefined) {
-      DataTypeData.encode(message.dataType, writer.uint32(42).fork()).ldelim();
+      DataType.encode(message.dataType, writer.uint32(42).fork()).ldelim();
     }
     for (const v of message.children) {
-      ControllerResponseFieldData.encode(v!, writer.uint32(50).fork()).ldelim();
+      ControllerResponseField.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     if (message.category !== "") {
       writer.uint32(58).string(message.category);
@@ -6368,10 +6345,10 @@ export const ControllerResponseFieldData = {
           message.value = reader.string();
           break;
         case 5:
-          message.dataType = DataTypeData.decode(reader, reader.uint32());
+          message.dataType = DataType.decode(reader, reader.uint32());
           break;
         case 6:
-          message.children.push(ControllerResponseFieldData.decode(reader, reader.uint32()));
+          message.children.push(ControllerResponseField.decode(reader, reader.uint32()));
           break;
         case 7:
           message.category = reader.string();
@@ -6393,9 +6370,9 @@ export const ControllerResponseFieldData = {
       resource: isSet(object.resource) ? String(object.resource) : undefined,
       property: isSet(object.property) ? String(object.property) : undefined,
       value: isSet(object.value) ? String(object.value) : undefined,
-      dataType: isSet(object.dataType) ? DataTypeData.fromJSON(object.dataType) : undefined,
+      dataType: isSet(object.dataType) ? DataType.fromJSON(object.dataType) : undefined,
       children: Array.isArray(object?.children)
-        ? object.children.map((e: any) => ControllerResponseFieldData.fromJSON(e))
+        ? object.children.map((e: any) => ControllerResponseField.fromJSON(e))
         : [],
       category: isSet(object.category) ? String(object.category) : "",
       alias: isSet(object.alias) ? String(object.alias) : "",
@@ -6408,10 +6385,9 @@ export const ControllerResponseFieldData = {
     message.resource !== undefined && (obj.resource = message.resource);
     message.property !== undefined && (obj.property = message.property);
     message.value !== undefined && (obj.value = message.value);
-    message.dataType !== undefined &&
-      (obj.dataType = message.dataType ? DataTypeData.toJSON(message.dataType) : undefined);
+    message.dataType !== undefined && (obj.dataType = message.dataType ? DataType.toJSON(message.dataType) : undefined);
     if (message.children) {
-      obj.children = message.children.map((e) => e ? ControllerResponseFieldData.toJSON(e) : undefined);
+      obj.children = message.children.map((e) => e ? ControllerResponseField.toJSON(e) : undefined);
     } else {
       obj.children = [];
     }
@@ -6427,9 +6403,9 @@ export const ControllerResponseFieldData = {
     message.property = object.property ?? undefined;
     message.value = object.value ?? undefined;
     message.dataType = (object.dataType !== undefined && object.dataType !== null)
-      ? DataTypeData.fromPartial(object.dataType)
+      ? DataType.fromPartial(object.dataType)
       : undefined;
-    message.children = object.children?.map((e) => ControllerResponseFieldData.fromPartial(e)) || [];
+    message.children = object.children?.map((e) => ControllerResponseField.fromPartial(e)) || [];
     message.category = object.category ?? "";
     message.alias = object.alias ?? "";
     return message;
@@ -6440,10 +6416,10 @@ function createBaseControllerResourceCondition(): ControllerResourceCondition {
   return { operands: [], operators: [] };
 }
 
-export const ControllerResourceConditionData = {
+export const ControllerResourceCondition = {
   encode(message: ControllerResourceCondition, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.operands) {
-      ControllerResourceConditionOperandData.encode(v!, writer.uint32(10).fork()).ldelim();
+      ControllerResourceConditionOperand.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     writer.uint32(18).fork();
     for (const v of message.operators) {
@@ -6461,7 +6437,7 @@ export const ControllerResourceConditionData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.operands.push(ControllerResourceConditionOperandData.decode(reader, reader.uint32()));
+          message.operands.push(ControllerResourceConditionOperand.decode(reader, reader.uint32()));
           break;
         case 2:
           if ((tag & 7) === 2) {
@@ -6484,7 +6460,7 @@ export const ControllerResourceConditionData = {
   fromJSON(object: any): ControllerResourceCondition {
     return {
       operands: Array.isArray(object?.operands)
-        ? object.operands.map((e: any) => ControllerResourceConditionOperandData.fromJSON(e))
+        ? object.operands.map((e: any) => ControllerResourceConditionOperand.fromJSON(e))
         : [],
       operators: Array.isArray(object?.operators) ? object.operators.map((e: any) => operatorFromJSON(e)) : [],
     };
@@ -6493,7 +6469,7 @@ export const ControllerResourceConditionData = {
   toJSON(message: ControllerResourceCondition): unknown {
     const obj: any = {};
     if (message.operands) {
-      obj.operands = message.operands.map((e) => e ? ControllerResourceConditionOperandData.toJSON(e) : undefined);
+      obj.operands = message.operands.map((e) => e ? ControllerResourceConditionOperand.toJSON(e) : undefined);
     } else {
       obj.operands = [];
     }
@@ -6507,7 +6483,7 @@ export const ControllerResourceConditionData = {
 
   fromPartial(object: DeepPartial<ControllerResourceCondition>): ControllerResourceCondition {
     const message = createBaseControllerResourceCondition();
-    message.operands = object.operands?.map((e) => ControllerResourceConditionOperandData.fromPartial(e)) || [];
+    message.operands = object.operands?.map((e) => ControllerResourceConditionOperand.fromPartial(e)) || [];
     message.operators = object.operators?.map((e) => e) || [];
     return message;
   },
@@ -6517,13 +6493,13 @@ function createBaseControllerResourceConditionOperand(): ControllerResourceCondi
   return {};
 }
 
-export const ControllerResourceConditionOperandData = {
+export const ControllerResourceConditionOperand = {
   encode(message: ControllerResourceConditionOperand, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.expr !== undefined) {
-      ControllerResourceConditionExprData.encode(message.expr, writer.uint32(10).fork()).ldelim();
+      ControllerResourceConditionExpr.encode(message.expr, writer.uint32(10).fork()).ldelim();
     }
     if (message.condition !== undefined) {
-      ControllerResourceConditionData.encode(message.condition, writer.uint32(18).fork()).ldelim();
+      ControllerResourceCondition.encode(message.condition, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -6536,10 +6512,10 @@ export const ControllerResourceConditionOperandData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.expr = ControllerResourceConditionExprData.decode(reader, reader.uint32());
+          message.expr = ControllerResourceConditionExpr.decode(reader, reader.uint32());
           break;
         case 2:
-          message.condition = ControllerResourceConditionData.decode(reader, reader.uint32());
+          message.condition = ControllerResourceCondition.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -6551,27 +6527,27 @@ export const ControllerResourceConditionOperandData = {
 
   fromJSON(object: any): ControllerResourceConditionOperand {
     return {
-      expr: isSet(object.expr) ? ControllerResourceConditionExprData.fromJSON(object.expr) : undefined,
-      condition: isSet(object.condition) ? ControllerResourceConditionData.fromJSON(object.condition) : undefined,
+      expr: isSet(object.expr) ? ControllerResourceConditionExpr.fromJSON(object.expr) : undefined,
+      condition: isSet(object.condition) ? ControllerResourceCondition.fromJSON(object.condition) : undefined,
     };
   },
 
   toJSON(message: ControllerResourceConditionOperand): unknown {
     const obj: any = {};
     message.expr !== undefined &&
-      (obj.expr = message.expr ? ControllerResourceConditionExprData.toJSON(message.expr) : undefined);
+      (obj.expr = message.expr ? ControllerResourceConditionExpr.toJSON(message.expr) : undefined);
     message.condition !== undefined &&
-      (obj.condition = message.condition ? ControllerResourceConditionData.toJSON(message.condition) : undefined);
+      (obj.condition = message.condition ? ControllerResourceCondition.toJSON(message.condition) : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<ControllerResourceConditionOperand>): ControllerResourceConditionOperand {
     const message = createBaseControllerResourceConditionOperand();
     message.expr = (object.expr !== undefined && object.expr !== null)
-      ? ControllerResourceConditionExprData.fromPartial(object.expr)
+      ? ControllerResourceConditionExpr.fromPartial(object.expr)
       : undefined;
     message.condition = (object.condition !== undefined && object.condition !== null)
-      ? ControllerResourceConditionData.fromPartial(object.condition)
+      ? ControllerResourceCondition.fromPartial(object.condition)
       : undefined;
     return message;
   },
@@ -6581,7 +6557,7 @@ function createBaseControllerResourceConditionExpr(): ControllerResourceConditio
   return { paths: [], operator: 0 };
 }
 
-export const ControllerResourceConditionExprData = {
+export const ControllerResourceConditionExpr = {
   encode(message: ControllerResourceConditionExpr, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.paths) {
       writer.uint32(10).string(v!);
@@ -6602,7 +6578,7 @@ export const ControllerResourceConditionExprData = {
       writer.uint32(56).int32(message.system);
     }
     if (message.dataType !== undefined) {
-      DataTypeData.encode(message.dataType, writer.uint32(66).fork()).ldelim();
+      DataType.encode(message.dataType, writer.uint32(66).fork()).ldelim();
     }
     if (message.operator !== 0) {
       writer.uint32(72).int32(message.operator);
@@ -6636,7 +6612,7 @@ export const ControllerResourceConditionExprData = {
           message.system = reader.int32() as any;
           break;
         case 8:
-          message.dataType = DataTypeData.decode(reader, reader.uint32());
+          message.dataType = DataType.decode(reader, reader.uint32());
           break;
         case 9:
           message.operator = reader.int32() as any;
@@ -6657,7 +6633,7 @@ export const ControllerResourceConditionExprData = {
       body: isSet(object.body) ? String(object.body) : undefined,
       value: isSet(object.value) ? String(object.value) : undefined,
       system: isSet(object.system) ? controllerResourceConditionSystemFromJSON(object.system) : undefined,
-      dataType: isSet(object.dataType) ? DataTypeData.fromJSON(object.dataType) : undefined,
+      dataType: isSet(object.dataType) ? DataType.fromJSON(object.dataType) : undefined,
       operator: isSet(object.operator) ? operatorFromJSON(object.operator) : 0,
     };
   },
@@ -6675,8 +6651,7 @@ export const ControllerResourceConditionExprData = {
     message.value !== undefined && (obj.value = message.value);
     message.system !== undefined &&
       (obj.system = message.system !== undefined ? controllerResourceConditionSystemToJSON(message.system) : undefined);
-    message.dataType !== undefined &&
-      (obj.dataType = message.dataType ? DataTypeData.toJSON(message.dataType) : undefined);
+    message.dataType !== undefined && (obj.dataType = message.dataType ? DataType.toJSON(message.dataType) : undefined);
     message.operator !== undefined && (obj.operator = operatorToJSON(message.operator));
     return obj;
   },
@@ -6690,7 +6665,7 @@ export const ControllerResourceConditionExprData = {
     message.value = object.value ?? undefined;
     message.system = object.system ?? undefined;
     message.dataType = (object.dataType !== undefined && object.dataType !== null)
-      ? DataTypeData.fromPartial(object.dataType)
+      ? DataType.fromPartial(object.dataType)
       : undefined;
     message.operator = object.operator ?? 0;
     return message;
@@ -6701,10 +6676,10 @@ function createBaseControllerResourceUpdate(): ControllerResourceUpdate {
   return { fields: [] };
 }
 
-export const ControllerResourceUpdateData = {
+export const ControllerResourceUpdate = {
   encode(message: ControllerResourceUpdate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.fields) {
-      ControllerResourceUpdateFieldData.encode(v!, writer.uint32(10).fork()).ldelim();
+      ControllerResourceUpdateField.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -6717,7 +6692,7 @@ export const ControllerResourceUpdateData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.fields.push(ControllerResourceUpdateFieldData.decode(reader, reader.uint32()));
+          message.fields.push(ControllerResourceUpdateField.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -6730,7 +6705,7 @@ export const ControllerResourceUpdateData = {
   fromJSON(object: any): ControllerResourceUpdate {
     return {
       fields: Array.isArray(object?.fields)
-        ? object.fields.map((e: any) => ControllerResourceUpdateFieldData.fromJSON(e))
+        ? object.fields.map((e: any) => ControllerResourceUpdateField.fromJSON(e))
         : [],
     };
   },
@@ -6738,7 +6713,7 @@ export const ControllerResourceUpdateData = {
   toJSON(message: ControllerResourceUpdate): unknown {
     const obj: any = {};
     if (message.fields) {
-      obj.fields = message.fields.map((e) => e ? ControllerResourceUpdateFieldData.toJSON(e) : undefined);
+      obj.fields = message.fields.map((e) => e ? ControllerResourceUpdateField.toJSON(e) : undefined);
     } else {
       obj.fields = [];
     }
@@ -6747,7 +6722,7 @@ export const ControllerResourceUpdateData = {
 
   fromPartial(object: DeepPartial<ControllerResourceUpdate>): ControllerResourceUpdate {
     const message = createBaseControllerResourceUpdate();
-    message.fields = object.fields?.map((e) => ControllerResourceUpdateFieldData.fromPartial(e)) || [];
+    message.fields = object.fields?.map((e) => ControllerResourceUpdateField.fromPartial(e)) || [];
     return message;
   },
 };
@@ -6756,7 +6731,7 @@ function createBaseControllerResourceUpdateField(): ControllerResourceUpdateFiel
   return { name: "", children: [] };
 }
 
-export const ControllerResourceUpdateFieldData = {
+export const ControllerResourceUpdateField = {
   encode(message: ControllerResourceUpdateField, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
@@ -6774,10 +6749,10 @@ export const ControllerResourceUpdateFieldData = {
       writer.uint32(42).string(message.value);
     }
     if (message.dataType !== undefined) {
-      DataTypeData.encode(message.dataType, writer.uint32(50).fork()).ldelim();
+      DataType.encode(message.dataType, writer.uint32(50).fork()).ldelim();
     }
     for (const v of message.children) {
-      ControllerResourceUpdateFieldData.encode(v!, writer.uint32(58).fork()).ldelim();
+      ControllerResourceUpdateField.encode(v!, writer.uint32(58).fork()).ldelim();
     }
     return writer;
   },
@@ -6805,10 +6780,10 @@ export const ControllerResourceUpdateFieldData = {
           message.value = reader.string();
           break;
         case 6:
-          message.dataType = DataTypeData.decode(reader, reader.uint32());
+          message.dataType = DataType.decode(reader, reader.uint32());
           break;
         case 7:
-          message.children.push(ControllerResourceUpdateFieldData.decode(reader, reader.uint32()));
+          message.children.push(ControllerResourceUpdateField.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -6825,9 +6800,9 @@ export const ControllerResourceUpdateFieldData = {
       params: isSet(object.params) ? String(object.params) : undefined,
       body: isSet(object.body) ? String(object.body) : undefined,
       value: isSet(object.value) ? String(object.value) : undefined,
-      dataType: isSet(object.dataType) ? DataTypeData.fromJSON(object.dataType) : undefined,
+      dataType: isSet(object.dataType) ? DataType.fromJSON(object.dataType) : undefined,
       children: Array.isArray(object?.children)
-        ? object.children.map((e: any) => ControllerResourceUpdateFieldData.fromJSON(e))
+        ? object.children.map((e: any) => ControllerResourceUpdateField.fromJSON(e))
         : [],
     };
   },
@@ -6839,10 +6814,9 @@ export const ControllerResourceUpdateFieldData = {
     message.params !== undefined && (obj.params = message.params);
     message.body !== undefined && (obj.body = message.body);
     message.value !== undefined && (obj.value = message.value);
-    message.dataType !== undefined &&
-      (obj.dataType = message.dataType ? DataTypeData.toJSON(message.dataType) : undefined);
+    message.dataType !== undefined && (obj.dataType = message.dataType ? DataType.toJSON(message.dataType) : undefined);
     if (message.children) {
-      obj.children = message.children.map((e) => e ? ControllerResourceUpdateFieldData.toJSON(e) : undefined);
+      obj.children = message.children.map((e) => e ? ControllerResourceUpdateField.toJSON(e) : undefined);
     } else {
       obj.children = [];
     }
@@ -6857,9 +6831,9 @@ export const ControllerResourceUpdateFieldData = {
     message.body = object.body ?? undefined;
     message.value = object.value ?? undefined;
     message.dataType = (object.dataType !== undefined && object.dataType !== null)
-      ? DataTypeData.fromPartial(object.dataType)
+      ? DataType.fromPartial(object.dataType)
       : undefined;
-    message.children = object.children?.map((e) => ControllerResourceUpdateFieldData.fromPartial(e)) || [];
+    message.children = object.children?.map((e) => ControllerResourceUpdateField.fromPartial(e)) || [];
     return message;
   },
 };
@@ -6868,7 +6842,7 @@ function createBaseControllerAuthentication(): ControllerAuthentication {
   return { tableName: "" };
 }
 
-export const ControllerAuthenticationData = {
+export const ControllerAuthentication = {
   encode(message: ControllerAuthentication, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.tableName !== "") {
       writer.uint32(10).string(message.tableName);
@@ -6915,7 +6889,7 @@ function createBaseControllerAuthorization(): ControllerAuthorization {
   return { authorizationId: 0, tableName: "" };
 }
 
-export const ControllerAuthorizationData = {
+export const ControllerAuthorization = {
   encode(message: ControllerAuthorization, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.authorizationId !== 0) {
       writer.uint32(8).int32(message.authorizationId);
@@ -6973,13 +6947,13 @@ function createBaseControllerAuthorizationGroup(): ControllerAuthorizationGroup 
   return { tableName: "", authorizationConditions: [], authenticationModel: false };
 }
 
-export const ControllerAuthorizationGroupData = {
+export const ControllerAuthorizationGroup = {
   encode(message: ControllerAuthorizationGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.tableName !== "") {
       writer.uint32(10).string(message.tableName);
     }
     for (const v of message.authorizationConditions) {
-      ControllerAuthorizationConditionData.encode(v!, writer.uint32(18).fork()).ldelim();
+      ControllerAuthorizationCondition.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     if (message.authenticationModel === true) {
       writer.uint32(24).bool(message.authenticationModel);
@@ -6998,7 +6972,7 @@ export const ControllerAuthorizationGroupData = {
           message.tableName = reader.string();
           break;
         case 2:
-          message.authorizationConditions.push(ControllerAuthorizationConditionData.decode(reader, reader.uint32()));
+          message.authorizationConditions.push(ControllerAuthorizationCondition.decode(reader, reader.uint32()));
           break;
         case 3:
           message.authenticationModel = reader.bool();
@@ -7015,7 +6989,7 @@ export const ControllerAuthorizationGroupData = {
     return {
       tableName: isSet(object.tableName) ? String(object.tableName) : "",
       authorizationConditions: Array.isArray(object?.authorizationConditions)
-        ? object.authorizationConditions.map((e: any) => ControllerAuthorizationConditionData.fromJSON(e))
+        ? object.authorizationConditions.map((e: any) => ControllerAuthorizationCondition.fromJSON(e))
         : [],
       authenticationModel: isSet(object.authenticationModel) ? Boolean(object.authenticationModel) : false,
     };
@@ -7026,7 +7000,7 @@ export const ControllerAuthorizationGroupData = {
     message.tableName !== undefined && (obj.tableName = message.tableName);
     if (message.authorizationConditions) {
       obj.authorizationConditions = message.authorizationConditions.map((e) =>
-        e ? ControllerAuthorizationConditionData.toJSON(e) : undefined
+        e ? ControllerAuthorizationCondition.toJSON(e) : undefined
       );
     } else {
       obj.authorizationConditions = [];
@@ -7039,7 +7013,7 @@ export const ControllerAuthorizationGroupData = {
     const message = createBaseControllerAuthorizationGroup();
     message.tableName = object.tableName ?? "";
     message.authorizationConditions =
-      object.authorizationConditions?.map((e) => ControllerAuthorizationConditionData.fromPartial(e)) || [];
+      object.authorizationConditions?.map((e) => ControllerAuthorizationCondition.fromPartial(e)) || [];
     message.authenticationModel = object.authenticationModel ?? false;
     return message;
   },
@@ -7056,7 +7030,7 @@ function createBaseControllerAuthorizationCondition(): ControllerAuthorizationCo
   };
 }
 
-export const ControllerAuthorizationConditionData = {
+export const ControllerAuthorizationCondition = {
   encode(message: ControllerAuthorizationCondition, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.columnDefinitionName !== "") {
       writer.uint32(10).string(message.columnDefinitionName);
@@ -7156,19 +7130,19 @@ function createBaseTable(): Table {
   return { name: "", columns: [], relations: [], indexes: [], id: 0 };
 }
 
-export const TableData = {
+export const Table = {
   encode(message: Table, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
     for (const v of message.columns) {
-      TableColumnData.encode(v!, writer.uint32(18).fork()).ldelim();
+      TableColumn.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     for (const v of message.relations) {
-      TableRelationData.encode(v!, writer.uint32(26).fork()).ldelim();
+      TableRelation.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     for (const v of message.indexes) {
-      TableIndexData.encode(v!, writer.uint32(34).fork()).ldelim();
+      TableIndex.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     if (message.id !== 0) {
       writer.uint32(40).int32(message.id);
@@ -7187,13 +7161,13 @@ export const TableData = {
           message.name = reader.string();
           break;
         case 2:
-          message.columns.push(TableColumnData.decode(reader, reader.uint32()));
+          message.columns.push(TableColumn.decode(reader, reader.uint32()));
           break;
         case 3:
-          message.relations.push(TableRelationData.decode(reader, reader.uint32()));
+          message.relations.push(TableRelation.decode(reader, reader.uint32()));
           break;
         case 4:
-          message.indexes.push(TableIndexData.decode(reader, reader.uint32()));
+          message.indexes.push(TableIndex.decode(reader, reader.uint32()));
           break;
         case 5:
           message.id = reader.int32();
@@ -7209,11 +7183,9 @@ export const TableData = {
   fromJSON(object: any): Table {
     return {
       name: isSet(object.name) ? String(object.name) : "",
-      columns: Array.isArray(object?.columns) ? object.columns.map((e: any) => TableColumnData.fromJSON(e)) : [],
-      relations: Array.isArray(object?.relations)
-        ? object.relations.map((e: any) => TableRelationData.fromJSON(e))
-        : [],
-      indexes: Array.isArray(object?.indexes) ? object.indexes.map((e: any) => TableIndexData.fromJSON(e)) : [],
+      columns: Array.isArray(object?.columns) ? object.columns.map((e: any) => TableColumn.fromJSON(e)) : [],
+      relations: Array.isArray(object?.relations) ? object.relations.map((e: any) => TableRelation.fromJSON(e)) : [],
+      indexes: Array.isArray(object?.indexes) ? object.indexes.map((e: any) => TableIndex.fromJSON(e)) : [],
       id: isSet(object.id) ? Number(object.id) : 0,
     };
   },
@@ -7222,17 +7194,17 @@ export const TableData = {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
     if (message.columns) {
-      obj.columns = message.columns.map((e) => e ? TableColumnData.toJSON(e) : undefined);
+      obj.columns = message.columns.map((e) => e ? TableColumn.toJSON(e) : undefined);
     } else {
       obj.columns = [];
     }
     if (message.relations) {
-      obj.relations = message.relations.map((e) => e ? TableRelationData.toJSON(e) : undefined);
+      obj.relations = message.relations.map((e) => e ? TableRelation.toJSON(e) : undefined);
     } else {
       obj.relations = [];
     }
     if (message.indexes) {
-      obj.indexes = message.indexes.map((e) => e ? TableIndexData.toJSON(e) : undefined);
+      obj.indexes = message.indexes.map((e) => e ? TableIndex.toJSON(e) : undefined);
     } else {
       obj.indexes = [];
     }
@@ -7243,9 +7215,9 @@ export const TableData = {
   fromPartial(object: DeepPartial<Table>): Table {
     const message = createBaseTable();
     message.name = object.name ?? "";
-    message.columns = object.columns?.map((e) => TableColumnData.fromPartial(e)) || [];
-    message.relations = object.relations?.map((e) => TableRelationData.fromPartial(e)) || [];
-    message.indexes = object.indexes?.map((e) => TableIndexData.fromPartial(e)) || [];
+    message.columns = object.columns?.map((e) => TableColumn.fromPartial(e)) || [];
+    message.relations = object.relations?.map((e) => TableRelation.fromPartial(e)) || [];
+    message.indexes = object.indexes?.map((e) => TableIndex.fromPartial(e)) || [];
     message.id = object.id ?? 0;
     return message;
   },
@@ -7255,22 +7227,22 @@ function createBaseTableColumn(): TableColumn {
   return { name: "", constraints: [], id: 0 };
 }
 
-export const TableColumnData = {
+export const TableColumn = {
   encode(message: TableColumn, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
     if (message.type !== undefined) {
-      TableColumnColumnTypeData.encode(message.type, writer.uint32(18).fork()).ldelim();
+      TableColumnColumnType.encode(message.type, writer.uint32(18).fork()).ldelim();
     }
     for (const v of message.constraints) {
-      TableConstraintData.encode(v!, writer.uint32(26).fork()).ldelim();
+      TableConstraint.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     if (message.hidden !== undefined) {
       writer.uint32(32).bool(message.hidden);
     }
     if (message.columnValidation !== undefined) {
-      TableColumnValidationData.encode(message.columnValidation, writer.uint32(42).fork()).ldelim();
+      TableColumnValidation.encode(message.columnValidation, writer.uint32(42).fork()).ldelim();
     }
     if (message.id !== 0) {
       writer.uint32(48).int32(message.id);
@@ -7289,16 +7261,16 @@ export const TableColumnData = {
           message.name = reader.string();
           break;
         case 2:
-          message.type = TableColumnColumnTypeData.decode(reader, reader.uint32());
+          message.type = TableColumnColumnType.decode(reader, reader.uint32());
           break;
         case 3:
-          message.constraints.push(TableConstraintData.decode(reader, reader.uint32()));
+          message.constraints.push(TableConstraint.decode(reader, reader.uint32()));
           break;
         case 4:
           message.hidden = reader.bool();
           break;
         case 5:
-          message.columnValidation = TableColumnValidationData.decode(reader, reader.uint32());
+          message.columnValidation = TableColumnValidation.decode(reader, reader.uint32());
           break;
         case 6:
           message.id = reader.int32();
@@ -7314,13 +7286,13 @@ export const TableColumnData = {
   fromJSON(object: any): TableColumn {
     return {
       name: isSet(object.name) ? String(object.name) : "",
-      type: isSet(object.type) ? TableColumnColumnTypeData.fromJSON(object.type) : undefined,
+      type: isSet(object.type) ? TableColumnColumnType.fromJSON(object.type) : undefined,
       constraints: Array.isArray(object?.constraints)
-        ? object.constraints.map((e: any) => TableConstraintData.fromJSON(e))
+        ? object.constraints.map((e: any) => TableConstraint.fromJSON(e))
         : [],
       hidden: isSet(object.hidden) ? Boolean(object.hidden) : undefined,
       columnValidation: isSet(object.columnValidation)
-        ? TableColumnValidationData.fromJSON(object.columnValidation)
+        ? TableColumnValidation.fromJSON(object.columnValidation)
         : undefined,
       id: isSet(object.id) ? Number(object.id) : 0,
     };
@@ -7329,16 +7301,15 @@ export const TableColumnData = {
   toJSON(message: TableColumn): unknown {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
-    message.type !== undefined &&
-      (obj.type = message.type ? TableColumnColumnTypeData.toJSON(message.type) : undefined);
+    message.type !== undefined && (obj.type = message.type ? TableColumnColumnType.toJSON(message.type) : undefined);
     if (message.constraints) {
-      obj.constraints = message.constraints.map((e) => e ? TableConstraintData.toJSON(e) : undefined);
+      obj.constraints = message.constraints.map((e) => e ? TableConstraint.toJSON(e) : undefined);
     } else {
       obj.constraints = [];
     }
     message.hidden !== undefined && (obj.hidden = message.hidden);
     message.columnValidation !== undefined && (obj.columnValidation = message.columnValidation
-      ? TableColumnValidationData.toJSON(message.columnValidation)
+      ? TableColumnValidation.toJSON(message.columnValidation)
       : undefined);
     message.id !== undefined && (obj.id = Math.round(message.id));
     return obj;
@@ -7348,12 +7319,12 @@ export const TableColumnData = {
     const message = createBaseTableColumn();
     message.name = object.name ?? "";
     message.type = (object.type !== undefined && object.type !== null)
-      ? TableColumnColumnTypeData.fromPartial(object.type)
+      ? TableColumnColumnType.fromPartial(object.type)
       : undefined;
-    message.constraints = object.constraints?.map((e) => TableConstraintData.fromPartial(e)) || [];
+    message.constraints = object.constraints?.map((e) => TableConstraint.fromPartial(e)) || [];
     message.hidden = object.hidden ?? undefined;
     message.columnValidation = (object.columnValidation !== undefined && object.columnValidation !== null)
-      ? TableColumnValidationData.fromPartial(object.columnValidation)
+      ? TableColumnValidation.fromPartial(object.columnValidation)
       : undefined;
     message.id = object.id ?? 0;
     return message;
@@ -7364,34 +7335,34 @@ function createBaseTableColumnColumnType(): TableColumnColumnType {
   return {};
 }
 
-export const TableColumnColumnTypeData = {
+export const TableColumnColumnType = {
   encode(message: TableColumnColumnType, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.integerType !== undefined) {
-      TableColumnIntegerTypeData.encode(message.integerType, writer.uint32(10).fork()).ldelim();
+      TableColumnIntegerType.encode(message.integerType, writer.uint32(10).fork()).ldelim();
     }
     if (message.stringType !== undefined) {
-      TableColumnStringTypeData.encode(message.stringType, writer.uint32(18).fork()).ldelim();
+      TableColumnStringType.encode(message.stringType, writer.uint32(18).fork()).ldelim();
     }
     if (message.floatType !== undefined) {
-      TableColumnFloatTypeData.encode(message.floatType, writer.uint32(26).fork()).ldelim();
+      TableColumnFloatType.encode(message.floatType, writer.uint32(26).fork()).ldelim();
     }
     if (message.booleanType !== undefined) {
-      TableColumnBooleanTypeData.encode(message.booleanType, writer.uint32(34).fork()).ldelim();
+      TableColumnBooleanType.encode(message.booleanType, writer.uint32(34).fork()).ldelim();
     }
     if (message.dateType !== undefined) {
-      TableColumnDateTypeData.encode(message.dateType, writer.uint32(42).fork()).ldelim();
+      TableColumnDateType.encode(message.dateType, writer.uint32(42).fork()).ldelim();
     }
     if (message.fileType !== undefined) {
-      TableColumnFileTypeData.encode(message.fileType, writer.uint32(50).fork()).ldelim();
+      TableColumnFileType.encode(message.fileType, writer.uint32(50).fork()).ldelim();
     }
     if (message.enumType !== undefined) {
-      TableColumnEnumTypeData.encode(message.enumType, writer.uint32(58).fork()).ldelim();
+      TableColumnEnumType.encode(message.enumType, writer.uint32(58).fork()).ldelim();
     }
     if (message.counterCacheType !== undefined) {
-      TableColumnCounterCacheTypeData.encode(message.counterCacheType, writer.uint32(66).fork()).ldelim();
+      TableColumnCounterCacheType.encode(message.counterCacheType, writer.uint32(66).fork()).ldelim();
     }
     if (message.idType !== undefined) {
-      TableColumnIDTypeData.encode(message.idType, writer.uint32(74).fork()).ldelim();
+      TableColumnIDType.encode(message.idType, writer.uint32(74).fork()).ldelim();
     }
     return writer;
   },
@@ -7404,31 +7375,31 @@ export const TableColumnColumnTypeData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.integerType = TableColumnIntegerTypeData.decode(reader, reader.uint32());
+          message.integerType = TableColumnIntegerType.decode(reader, reader.uint32());
           break;
         case 2:
-          message.stringType = TableColumnStringTypeData.decode(reader, reader.uint32());
+          message.stringType = TableColumnStringType.decode(reader, reader.uint32());
           break;
         case 3:
-          message.floatType = TableColumnFloatTypeData.decode(reader, reader.uint32());
+          message.floatType = TableColumnFloatType.decode(reader, reader.uint32());
           break;
         case 4:
-          message.booleanType = TableColumnBooleanTypeData.decode(reader, reader.uint32());
+          message.booleanType = TableColumnBooleanType.decode(reader, reader.uint32());
           break;
         case 5:
-          message.dateType = TableColumnDateTypeData.decode(reader, reader.uint32());
+          message.dateType = TableColumnDateType.decode(reader, reader.uint32());
           break;
         case 6:
-          message.fileType = TableColumnFileTypeData.decode(reader, reader.uint32());
+          message.fileType = TableColumnFileType.decode(reader, reader.uint32());
           break;
         case 7:
-          message.enumType = TableColumnEnumTypeData.decode(reader, reader.uint32());
+          message.enumType = TableColumnEnumType.decode(reader, reader.uint32());
           break;
         case 8:
-          message.counterCacheType = TableColumnCounterCacheTypeData.decode(reader, reader.uint32());
+          message.counterCacheType = TableColumnCounterCacheType.decode(reader, reader.uint32());
           break;
         case 9:
-          message.idType = TableColumnIDTypeData.decode(reader, reader.uint32());
+          message.idType = TableColumnIDType.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -7440,72 +7411,72 @@ export const TableColumnColumnTypeData = {
 
   fromJSON(object: any): TableColumnColumnType {
     return {
-      integerType: isSet(object.integerType) ? TableColumnIntegerTypeData.fromJSON(object.integerType) : undefined,
-      stringType: isSet(object.stringType) ? TableColumnStringTypeData.fromJSON(object.stringType) : undefined,
-      floatType: isSet(object.floatType) ? TableColumnFloatTypeData.fromJSON(object.floatType) : undefined,
-      booleanType: isSet(object.booleanType) ? TableColumnBooleanTypeData.fromJSON(object.booleanType) : undefined,
-      dateType: isSet(object.dateType) ? TableColumnDateTypeData.fromJSON(object.dateType) : undefined,
-      fileType: isSet(object.fileType) ? TableColumnFileTypeData.fromJSON(object.fileType) : undefined,
-      enumType: isSet(object.enumType) ? TableColumnEnumTypeData.fromJSON(object.enumType) : undefined,
+      integerType: isSet(object.integerType) ? TableColumnIntegerType.fromJSON(object.integerType) : undefined,
+      stringType: isSet(object.stringType) ? TableColumnStringType.fromJSON(object.stringType) : undefined,
+      floatType: isSet(object.floatType) ? TableColumnFloatType.fromJSON(object.floatType) : undefined,
+      booleanType: isSet(object.booleanType) ? TableColumnBooleanType.fromJSON(object.booleanType) : undefined,
+      dateType: isSet(object.dateType) ? TableColumnDateType.fromJSON(object.dateType) : undefined,
+      fileType: isSet(object.fileType) ? TableColumnFileType.fromJSON(object.fileType) : undefined,
+      enumType: isSet(object.enumType) ? TableColumnEnumType.fromJSON(object.enumType) : undefined,
       counterCacheType: isSet(object.counterCacheType)
-        ? TableColumnCounterCacheTypeData.fromJSON(object.counterCacheType)
+        ? TableColumnCounterCacheType.fromJSON(object.counterCacheType)
         : undefined,
-      idType: isSet(object.idType) ? TableColumnIDTypeData.fromJSON(object.idType) : undefined,
+      idType: isSet(object.idType) ? TableColumnIDType.fromJSON(object.idType) : undefined,
     };
   },
 
   toJSON(message: TableColumnColumnType): unknown {
     const obj: any = {};
     message.integerType !== undefined &&
-      (obj.integerType = message.integerType ? TableColumnIntegerTypeData.toJSON(message.integerType) : undefined);
+      (obj.integerType = message.integerType ? TableColumnIntegerType.toJSON(message.integerType) : undefined);
     message.stringType !== undefined &&
-      (obj.stringType = message.stringType ? TableColumnStringTypeData.toJSON(message.stringType) : undefined);
+      (obj.stringType = message.stringType ? TableColumnStringType.toJSON(message.stringType) : undefined);
     message.floatType !== undefined &&
-      (obj.floatType = message.floatType ? TableColumnFloatTypeData.toJSON(message.floatType) : undefined);
+      (obj.floatType = message.floatType ? TableColumnFloatType.toJSON(message.floatType) : undefined);
     message.booleanType !== undefined &&
-      (obj.booleanType = message.booleanType ? TableColumnBooleanTypeData.toJSON(message.booleanType) : undefined);
+      (obj.booleanType = message.booleanType ? TableColumnBooleanType.toJSON(message.booleanType) : undefined);
     message.dateType !== undefined &&
-      (obj.dateType = message.dateType ? TableColumnDateTypeData.toJSON(message.dateType) : undefined);
+      (obj.dateType = message.dateType ? TableColumnDateType.toJSON(message.dateType) : undefined);
     message.fileType !== undefined &&
-      (obj.fileType = message.fileType ? TableColumnFileTypeData.toJSON(message.fileType) : undefined);
+      (obj.fileType = message.fileType ? TableColumnFileType.toJSON(message.fileType) : undefined);
     message.enumType !== undefined &&
-      (obj.enumType = message.enumType ? TableColumnEnumTypeData.toJSON(message.enumType) : undefined);
+      (obj.enumType = message.enumType ? TableColumnEnumType.toJSON(message.enumType) : undefined);
     message.counterCacheType !== undefined && (obj.counterCacheType = message.counterCacheType
-      ? TableColumnCounterCacheTypeData.toJSON(message.counterCacheType)
+      ? TableColumnCounterCacheType.toJSON(message.counterCacheType)
       : undefined);
     message.idType !== undefined &&
-      (obj.idType = message.idType ? TableColumnIDTypeData.toJSON(message.idType) : undefined);
+      (obj.idType = message.idType ? TableColumnIDType.toJSON(message.idType) : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<TableColumnColumnType>): TableColumnColumnType {
     const message = createBaseTableColumnColumnType();
     message.integerType = (object.integerType !== undefined && object.integerType !== null)
-      ? TableColumnIntegerTypeData.fromPartial(object.integerType)
+      ? TableColumnIntegerType.fromPartial(object.integerType)
       : undefined;
     message.stringType = (object.stringType !== undefined && object.stringType !== null)
-      ? TableColumnStringTypeData.fromPartial(object.stringType)
+      ? TableColumnStringType.fromPartial(object.stringType)
       : undefined;
     message.floatType = (object.floatType !== undefined && object.floatType !== null)
-      ? TableColumnFloatTypeData.fromPartial(object.floatType)
+      ? TableColumnFloatType.fromPartial(object.floatType)
       : undefined;
     message.booleanType = (object.booleanType !== undefined && object.booleanType !== null)
-      ? TableColumnBooleanTypeData.fromPartial(object.booleanType)
+      ? TableColumnBooleanType.fromPartial(object.booleanType)
       : undefined;
     message.dateType = (object.dateType !== undefined && object.dateType !== null)
-      ? TableColumnDateTypeData.fromPartial(object.dateType)
+      ? TableColumnDateType.fromPartial(object.dateType)
       : undefined;
     message.fileType = (object.fileType !== undefined && object.fileType !== null)
-      ? TableColumnFileTypeData.fromPartial(object.fileType)
+      ? TableColumnFileType.fromPartial(object.fileType)
       : undefined;
     message.enumType = (object.enumType !== undefined && object.enumType !== null)
-      ? TableColumnEnumTypeData.fromPartial(object.enumType)
+      ? TableColumnEnumType.fromPartial(object.enumType)
       : undefined;
     message.counterCacheType = (object.counterCacheType !== undefined && object.counterCacheType !== null)
-      ? TableColumnCounterCacheTypeData.fromPartial(object.counterCacheType)
+      ? TableColumnCounterCacheType.fromPartial(object.counterCacheType)
       : undefined;
     message.idType = (object.idType !== undefined && object.idType !== null)
-      ? TableColumnIDTypeData.fromPartial(object.idType)
+      ? TableColumnIDType.fromPartial(object.idType)
       : undefined;
     return message;
   },
@@ -7515,7 +7486,7 @@ function createBaseTableColumnIDType(): TableColumnIDType {
   return {};
 }
 
-export const TableColumnIDTypeData = {
+export const TableColumnIDType = {
   encode(_: TableColumnIDType, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
@@ -7554,7 +7525,7 @@ function createBaseTableColumnCounterCacheType(): TableColumnCounterCacheType {
   return { tableName: "" };
 }
 
-export const TableColumnCounterCacheTypeData = {
+export const TableColumnCounterCacheType = {
   encode(message: TableColumnCounterCacheType, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.tableName !== "") {
       writer.uint32(10).string(message.tableName);
@@ -7601,7 +7572,7 @@ function createBaseTableColumnStringType(): TableColumnStringType {
   return { isText: false, formats: [], conditions: [] };
 }
 
-export const TableColumnStringTypeData = {
+export const TableColumnStringType = {
   encode(message: TableColumnStringType, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.defaultValue !== undefined) {
       writer.uint32(10).string(message.defaultValue);
@@ -7615,7 +7586,7 @@ export const TableColumnStringTypeData = {
     }
     writer.ldelim();
     for (const v of message.conditions) {
-      TableColumnStringTypeConditionData.encode(v!, writer.uint32(34).fork()).ldelim();
+      TableColumnStringTypeCondition.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -7644,7 +7615,7 @@ export const TableColumnStringTypeData = {
           }
           break;
         case 4:
-          message.conditions.push(TableColumnStringTypeConditionData.decode(reader, reader.uint32()));
+          message.conditions.push(TableColumnStringTypeCondition.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -7662,7 +7633,7 @@ export const TableColumnStringTypeData = {
         ? object.formats.map((e: any) => tableColumnStringTypeFormatFromJSON(e))
         : [],
       conditions: Array.isArray(object?.conditions)
-        ? object.conditions.map((e: any) => TableColumnStringTypeConditionData.fromJSON(e))
+        ? object.conditions.map((e: any) => TableColumnStringTypeCondition.fromJSON(e))
         : [],
     };
   },
@@ -7677,7 +7648,7 @@ export const TableColumnStringTypeData = {
       obj.formats = [];
     }
     if (message.conditions) {
-      obj.conditions = message.conditions.map((e) => e ? TableColumnStringTypeConditionData.toJSON(e) : undefined);
+      obj.conditions = message.conditions.map((e) => e ? TableColumnStringTypeCondition.toJSON(e) : undefined);
     } else {
       obj.conditions = [];
     }
@@ -7689,7 +7660,7 @@ export const TableColumnStringTypeData = {
     message.defaultValue = object.defaultValue ?? undefined;
     message.isText = object.isText ?? false;
     message.formats = object.formats?.map((e) => e) || [];
-    message.conditions = object.conditions?.map((e) => TableColumnStringTypeConditionData.fromPartial(e)) || [];
+    message.conditions = object.conditions?.map((e) => TableColumnStringTypeCondition.fromPartial(e)) || [];
     return message;
   },
 };
@@ -7698,7 +7669,7 @@ function createBaseTableColumnStringTypeCondition(): TableColumnStringTypeCondit
   return { operator: 0 };
 }
 
-export const TableColumnStringTypeConditionData = {
+export const TableColumnStringTypeCondition = {
   encode(message: TableColumnStringTypeCondition, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.operator !== 0) {
       writer.uint32(8).int32(message.operator);
@@ -7765,13 +7736,13 @@ function createBaseTableColumnIntegerType(): TableColumnIntegerType {
   return { conditions: [] };
 }
 
-export const TableColumnIntegerTypeData = {
+export const TableColumnIntegerType = {
   encode(message: TableColumnIntegerType, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.defaultValue !== undefined) {
       writer.uint32(8).int32(message.defaultValue);
     }
     for (const v of message.conditions) {
-      TableColumnIntegerTypeConditionData.encode(v!, writer.uint32(18).fork()).ldelim();
+      TableColumnIntegerTypeCondition.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -7787,7 +7758,7 @@ export const TableColumnIntegerTypeData = {
           message.defaultValue = reader.int32();
           break;
         case 2:
-          message.conditions.push(TableColumnIntegerTypeConditionData.decode(reader, reader.uint32()));
+          message.conditions.push(TableColumnIntegerTypeCondition.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -7801,7 +7772,7 @@ export const TableColumnIntegerTypeData = {
     return {
       defaultValue: isSet(object.defaultValue) ? Number(object.defaultValue) : undefined,
       conditions: Array.isArray(object?.conditions)
-        ? object.conditions.map((e: any) => TableColumnIntegerTypeConditionData.fromJSON(e))
+        ? object.conditions.map((e: any) => TableColumnIntegerTypeCondition.fromJSON(e))
         : [],
     };
   },
@@ -7810,7 +7781,7 @@ export const TableColumnIntegerTypeData = {
     const obj: any = {};
     message.defaultValue !== undefined && (obj.defaultValue = Math.round(message.defaultValue));
     if (message.conditions) {
-      obj.conditions = message.conditions.map((e) => e ? TableColumnIntegerTypeConditionData.toJSON(e) : undefined);
+      obj.conditions = message.conditions.map((e) => e ? TableColumnIntegerTypeCondition.toJSON(e) : undefined);
     } else {
       obj.conditions = [];
     }
@@ -7820,7 +7791,7 @@ export const TableColumnIntegerTypeData = {
   fromPartial(object: DeepPartial<TableColumnIntegerType>): TableColumnIntegerType {
     const message = createBaseTableColumnIntegerType();
     message.defaultValue = object.defaultValue ?? undefined;
-    message.conditions = object.conditions?.map((e) => TableColumnIntegerTypeConditionData.fromPartial(e)) || [];
+    message.conditions = object.conditions?.map((e) => TableColumnIntegerTypeCondition.fromPartial(e)) || [];
     return message;
   },
 };
@@ -7829,7 +7800,7 @@ function createBaseTableColumnIntegerTypeCondition(): TableColumnIntegerTypeCond
   return { operator: 0 };
 }
 
-export const TableColumnIntegerTypeConditionData = {
+export const TableColumnIntegerTypeCondition = {
   encode(message: TableColumnIntegerTypeCondition, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.operator !== 0) {
       writer.uint32(8).int32(message.operator);
@@ -7896,13 +7867,13 @@ function createBaseTableColumnFloatType(): TableColumnFloatType {
   return { conditions: [] };
 }
 
-export const TableColumnFloatTypeData = {
+export const TableColumnFloatType = {
   encode(message: TableColumnFloatType, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.defaultValue !== undefined) {
       writer.uint32(13).float(message.defaultValue);
     }
     for (const v of message.conditions) {
-      TableColumnFloatTypeConditionData.encode(v!, writer.uint32(18).fork()).ldelim();
+      TableColumnFloatTypeCondition.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -7918,7 +7889,7 @@ export const TableColumnFloatTypeData = {
           message.defaultValue = reader.float();
           break;
         case 2:
-          message.conditions.push(TableColumnFloatTypeConditionData.decode(reader, reader.uint32()));
+          message.conditions.push(TableColumnFloatTypeCondition.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -7932,7 +7903,7 @@ export const TableColumnFloatTypeData = {
     return {
       defaultValue: isSet(object.defaultValue) ? Number(object.defaultValue) : undefined,
       conditions: Array.isArray(object?.conditions)
-        ? object.conditions.map((e: any) => TableColumnFloatTypeConditionData.fromJSON(e))
+        ? object.conditions.map((e: any) => TableColumnFloatTypeCondition.fromJSON(e))
         : [],
     };
   },
@@ -7941,7 +7912,7 @@ export const TableColumnFloatTypeData = {
     const obj: any = {};
     message.defaultValue !== undefined && (obj.defaultValue = message.defaultValue);
     if (message.conditions) {
-      obj.conditions = message.conditions.map((e) => e ? TableColumnFloatTypeConditionData.toJSON(e) : undefined);
+      obj.conditions = message.conditions.map((e) => e ? TableColumnFloatTypeCondition.toJSON(e) : undefined);
     } else {
       obj.conditions = [];
     }
@@ -7951,7 +7922,7 @@ export const TableColumnFloatTypeData = {
   fromPartial(object: DeepPartial<TableColumnFloatType>): TableColumnFloatType {
     const message = createBaseTableColumnFloatType();
     message.defaultValue = object.defaultValue ?? undefined;
-    message.conditions = object.conditions?.map((e) => TableColumnFloatTypeConditionData.fromPartial(e)) || [];
+    message.conditions = object.conditions?.map((e) => TableColumnFloatTypeCondition.fromPartial(e)) || [];
     return message;
   },
 };
@@ -7960,7 +7931,7 @@ function createBaseTableColumnFloatTypeCondition(): TableColumnFloatTypeConditio
   return { operator: 0 };
 }
 
-export const TableColumnFloatTypeConditionData = {
+export const TableColumnFloatTypeCondition = {
   encode(message: TableColumnFloatTypeCondition, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.operator !== 0) {
       writer.uint32(8).int32(message.operator);
@@ -8027,7 +7998,7 @@ function createBaseTableColumnBooleanType(): TableColumnBooleanType {
   return { defaultValue: false };
 }
 
-export const TableColumnBooleanTypeData = {
+export const TableColumnBooleanType = {
   encode(message: TableColumnBooleanType, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.defaultValue === true) {
       writer.uint32(8).bool(message.defaultValue);
@@ -8074,7 +8045,7 @@ function createBaseTableColumnDateType(): TableColumnDateType {
   return { withTime: false, conditions: [] };
 }
 
-export const TableColumnDateTypeData = {
+export const TableColumnDateType = {
   encode(message: TableColumnDateType, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.withTime === true) {
       writer.uint32(8).bool(message.withTime);
@@ -8147,13 +8118,13 @@ function createBaseTableColumnFileType(): TableColumnFileType {
   return { maximumSize: 0, contentTypes: [], multiple: false };
 }
 
-export const TableColumnFileTypeData = {
+export const TableColumnFileType = {
   encode(message: TableColumnFileType, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.maximumSize !== 0) {
       writer.uint32(8).int32(message.maximumSize);
     }
     if (message.numberOfFiles !== undefined) {
-      TableColumnFileTypeNumberOfFilesData.encode(message.numberOfFiles, writer.uint32(18).fork()).ldelim();
+      TableColumnFileTypeNumberOfFiles.encode(message.numberOfFiles, writer.uint32(18).fork()).ldelim();
     }
     writer.uint32(26).fork();
     for (const v of message.contentTypes) {
@@ -8177,7 +8148,7 @@ export const TableColumnFileTypeData = {
           message.maximumSize = reader.int32();
           break;
         case 2:
-          message.numberOfFiles = TableColumnFileTypeNumberOfFilesData.decode(reader, reader.uint32());
+          message.numberOfFiles = TableColumnFileTypeNumberOfFiles.decode(reader, reader.uint32());
           break;
         case 3:
           if ((tag & 7) === 2) {
@@ -8204,7 +8175,7 @@ export const TableColumnFileTypeData = {
     return {
       maximumSize: isSet(object.maximumSize) ? Number(object.maximumSize) : 0,
       numberOfFiles: isSet(object.numberOfFiles)
-        ? TableColumnFileTypeNumberOfFilesData.fromJSON(object.numberOfFiles)
+        ? TableColumnFileTypeNumberOfFiles.fromJSON(object.numberOfFiles)
         : undefined,
       contentTypes: Array.isArray(object?.contentTypes)
         ? object.contentTypes.map((e: any) => tableColumnFileTypeContentTypeFromJSON(e))
@@ -8217,7 +8188,7 @@ export const TableColumnFileTypeData = {
     const obj: any = {};
     message.maximumSize !== undefined && (obj.maximumSize = Math.round(message.maximumSize));
     message.numberOfFiles !== undefined && (obj.numberOfFiles = message.numberOfFiles
-      ? TableColumnFileTypeNumberOfFilesData.toJSON(message.numberOfFiles)
+      ? TableColumnFileTypeNumberOfFiles.toJSON(message.numberOfFiles)
       : undefined);
     if (message.contentTypes) {
       obj.contentTypes = message.contentTypes.map((e) => tableColumnFileTypeContentTypeToJSON(e));
@@ -8232,7 +8203,7 @@ export const TableColumnFileTypeData = {
     const message = createBaseTableColumnFileType();
     message.maximumSize = object.maximumSize ?? 0;
     message.numberOfFiles = (object.numberOfFiles !== undefined && object.numberOfFiles !== null)
-      ? TableColumnFileTypeNumberOfFilesData.fromPartial(object.numberOfFiles)
+      ? TableColumnFileTypeNumberOfFiles.fromPartial(object.numberOfFiles)
       : undefined;
     message.contentTypes = object.contentTypes?.map((e) => e) || [];
     message.multiple = object.multiple ?? false;
@@ -8244,7 +8215,7 @@ function createBaseTableColumnFileTypeNumberOfFiles(): TableColumnFileTypeNumber
   return { minimum: 0, maximum: 0 };
 }
 
-export const TableColumnFileTypeNumberOfFilesData = {
+export const TableColumnFileTypeNumberOfFiles = {
   encode(message: TableColumnFileTypeNumberOfFiles, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.minimum !== 0) {
       writer.uint32(8).int32(message.minimum);
@@ -8302,7 +8273,7 @@ function createBaseTableColumnEnumType(): TableColumnEnumType {
   return { defaultValue: "", values: [] };
 }
 
-export const TableColumnEnumTypeData = {
+export const TableColumnEnumType = {
   encode(message: TableColumnEnumType, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.defaultValue !== "") {
       writer.uint32(10).string(message.defaultValue);
@@ -8364,10 +8335,10 @@ function createBaseTableColumnValidation(): TableColumnValidation {
   return { columnValidationOptions: [], presence: false, uniqueness: false, allowNil: false };
 }
 
-export const TableColumnValidationData = {
+export const TableColumnValidation = {
   encode(message: TableColumnValidation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.columnValidationOptions) {
-      TableColumnValidationOptionData.encode(v!, writer.uint32(10).fork()).ldelim();
+      TableColumnValidationOption.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.presence === true) {
       writer.uint32(16).bool(message.presence);
@@ -8389,7 +8360,7 @@ export const TableColumnValidationData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.columnValidationOptions.push(TableColumnValidationOptionData.decode(reader, reader.uint32()));
+          message.columnValidationOptions.push(TableColumnValidationOption.decode(reader, reader.uint32()));
           break;
         case 2:
           message.presence = reader.bool();
@@ -8411,7 +8382,7 @@ export const TableColumnValidationData = {
   fromJSON(object: any): TableColumnValidation {
     return {
       columnValidationOptions: Array.isArray(object?.columnValidationOptions)
-        ? object.columnValidationOptions.map((e: any) => TableColumnValidationOptionData.fromJSON(e))
+        ? object.columnValidationOptions.map((e: any) => TableColumnValidationOption.fromJSON(e))
         : [],
       presence: isSet(object.presence) ? Boolean(object.presence) : false,
       uniqueness: isSet(object.uniqueness) ? Boolean(object.uniqueness) : false,
@@ -8423,7 +8394,7 @@ export const TableColumnValidationData = {
     const obj: any = {};
     if (message.columnValidationOptions) {
       obj.columnValidationOptions = message.columnValidationOptions.map((e) =>
-        e ? TableColumnValidationOptionData.toJSON(e) : undefined
+        e ? TableColumnValidationOption.toJSON(e) : undefined
       );
     } else {
       obj.columnValidationOptions = [];
@@ -8437,7 +8408,7 @@ export const TableColumnValidationData = {
   fromPartial(object: DeepPartial<TableColumnValidation>): TableColumnValidation {
     const message = createBaseTableColumnValidation();
     message.columnValidationOptions =
-      object.columnValidationOptions?.map((e) => TableColumnValidationOptionData.fromPartial(e)) || [];
+      object.columnValidationOptions?.map((e) => TableColumnValidationOption.fromPartial(e)) || [];
     message.presence = object.presence ?? false;
     message.uniqueness = object.uniqueness ?? false;
     message.allowNil = object.allowNil ?? false;
@@ -8449,30 +8420,26 @@ function createBaseTableColumnValidationOption(): TableColumnValidationOption {
   return {};
 }
 
-export const TableColumnValidationOptionData = {
+export const TableColumnValidationOption = {
   encode(message: TableColumnValidationOption, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.lengthValidation !== undefined) {
-      TableColumnValidationOptionLengthValidationData.encode(message.lengthValidation, writer.uint32(10).fork())
-        .ldelim();
+      TableColumnValidationOptionLengthValidation.encode(message.lengthValidation, writer.uint32(10).fork()).ldelim();
     }
     if (message.charValidation !== undefined) {
-      TableColumnValidationOptionCharValidationData.encode(message.charValidation, writer.uint32(18).fork()).ldelim();
+      TableColumnValidationOptionCharValidation.encode(message.charValidation, writer.uint32(18).fork()).ldelim();
     }
     if (message.dateValidation !== undefined) {
-      TableColumnValidationOptionDateValidationData.encode(message.dateValidation, writer.uint32(26).fork()).ldelim();
+      TableColumnValidationOptionDateValidation.encode(message.dateValidation, writer.uint32(26).fork()).ldelim();
     }
     if (message.dateTimeValidation !== undefined) {
-      TableColumnValidationOptionDateValidationData.encode(message.dateTimeValidation, writer.uint32(34).fork())
-        .ldelim();
+      TableColumnValidationOptionDateValidation.encode(message.dateTimeValidation, writer.uint32(34).fork()).ldelim();
     }
     if (message.numericalityValidation !== undefined) {
-      TableColumnValidationOptionNumericalityValidationData.encode(
-        message.numericalityValidation,
-        writer.uint32(42).fork(),
-      ).ldelim();
+      TableColumnValidationOptionNumericalityValidation.encode(message.numericalityValidation, writer.uint32(42).fork())
+        .ldelim();
     }
     if (message.fileValidation !== undefined) {
-      TableColumnValidationOptionFileValidationData.encode(message.fileValidation, writer.uint32(50).fork()).ldelim();
+      TableColumnValidationOptionFileValidation.encode(message.fileValidation, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -8485,25 +8452,25 @@ export const TableColumnValidationOptionData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.lengthValidation = TableColumnValidationOptionLengthValidationData.decode(reader, reader.uint32());
+          message.lengthValidation = TableColumnValidationOptionLengthValidation.decode(reader, reader.uint32());
           break;
         case 2:
-          message.charValidation = TableColumnValidationOptionCharValidationData.decode(reader, reader.uint32());
+          message.charValidation = TableColumnValidationOptionCharValidation.decode(reader, reader.uint32());
           break;
         case 3:
-          message.dateValidation = TableColumnValidationOptionDateValidationData.decode(reader, reader.uint32());
+          message.dateValidation = TableColumnValidationOptionDateValidation.decode(reader, reader.uint32());
           break;
         case 4:
-          message.dateTimeValidation = TableColumnValidationOptionDateValidationData.decode(reader, reader.uint32());
+          message.dateTimeValidation = TableColumnValidationOptionDateValidation.decode(reader, reader.uint32());
           break;
         case 5:
-          message.numericalityValidation = TableColumnValidationOptionNumericalityValidationData.decode(
+          message.numericalityValidation = TableColumnValidationOptionNumericalityValidation.decode(
             reader,
             reader.uint32(),
           );
           break;
         case 6:
-          message.fileValidation = TableColumnValidationOptionFileValidationData.decode(reader, reader.uint32());
+          message.fileValidation = TableColumnValidationOptionFileValidation.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -8516,22 +8483,22 @@ export const TableColumnValidationOptionData = {
   fromJSON(object: any): TableColumnValidationOption {
     return {
       lengthValidation: isSet(object.lengthValidation)
-        ? TableColumnValidationOptionLengthValidationData.fromJSON(object.lengthValidation)
+        ? TableColumnValidationOptionLengthValidation.fromJSON(object.lengthValidation)
         : undefined,
       charValidation: isSet(object.charValidation)
-        ? TableColumnValidationOptionCharValidationData.fromJSON(object.charValidation)
+        ? TableColumnValidationOptionCharValidation.fromJSON(object.charValidation)
         : undefined,
       dateValidation: isSet(object.dateValidation)
-        ? TableColumnValidationOptionDateValidationData.fromJSON(object.dateValidation)
+        ? TableColumnValidationOptionDateValidation.fromJSON(object.dateValidation)
         : undefined,
       dateTimeValidation: isSet(object.dateTimeValidation)
-        ? TableColumnValidationOptionDateValidationData.fromJSON(object.dateTimeValidation)
+        ? TableColumnValidationOptionDateValidation.fromJSON(object.dateTimeValidation)
         : undefined,
       numericalityValidation: isSet(object.numericalityValidation)
-        ? TableColumnValidationOptionNumericalityValidationData.fromJSON(object.numericalityValidation)
+        ? TableColumnValidationOptionNumericalityValidation.fromJSON(object.numericalityValidation)
         : undefined,
       fileValidation: isSet(object.fileValidation)
-        ? TableColumnValidationOptionFileValidationData.fromJSON(object.fileValidation)
+        ? TableColumnValidationOptionFileValidation.fromJSON(object.fileValidation)
         : undefined,
     };
   },
@@ -8539,22 +8506,22 @@ export const TableColumnValidationOptionData = {
   toJSON(message: TableColumnValidationOption): unknown {
     const obj: any = {};
     message.lengthValidation !== undefined && (obj.lengthValidation = message.lengthValidation
-      ? TableColumnValidationOptionLengthValidationData.toJSON(message.lengthValidation)
+      ? TableColumnValidationOptionLengthValidation.toJSON(message.lengthValidation)
       : undefined);
     message.charValidation !== undefined && (obj.charValidation = message.charValidation
-      ? TableColumnValidationOptionCharValidationData.toJSON(message.charValidation)
+      ? TableColumnValidationOptionCharValidation.toJSON(message.charValidation)
       : undefined);
     message.dateValidation !== undefined && (obj.dateValidation = message.dateValidation
-      ? TableColumnValidationOptionDateValidationData.toJSON(message.dateValidation)
+      ? TableColumnValidationOptionDateValidation.toJSON(message.dateValidation)
       : undefined);
     message.dateTimeValidation !== undefined && (obj.dateTimeValidation = message.dateTimeValidation
-      ? TableColumnValidationOptionDateValidationData.toJSON(message.dateTimeValidation)
+      ? TableColumnValidationOptionDateValidation.toJSON(message.dateTimeValidation)
       : undefined);
     message.numericalityValidation !== undefined && (obj.numericalityValidation = message.numericalityValidation
-      ? TableColumnValidationOptionNumericalityValidationData.toJSON(message.numericalityValidation)
+      ? TableColumnValidationOptionNumericalityValidation.toJSON(message.numericalityValidation)
       : undefined);
     message.fileValidation !== undefined && (obj.fileValidation = message.fileValidation
-      ? TableColumnValidationOptionFileValidationData.toJSON(message.fileValidation)
+      ? TableColumnValidationOptionFileValidation.toJSON(message.fileValidation)
       : undefined);
     return obj;
   },
@@ -8562,23 +8529,23 @@ export const TableColumnValidationOptionData = {
   fromPartial(object: DeepPartial<TableColumnValidationOption>): TableColumnValidationOption {
     const message = createBaseTableColumnValidationOption();
     message.lengthValidation = (object.lengthValidation !== undefined && object.lengthValidation !== null)
-      ? TableColumnValidationOptionLengthValidationData.fromPartial(object.lengthValidation)
+      ? TableColumnValidationOptionLengthValidation.fromPartial(object.lengthValidation)
       : undefined;
     message.charValidation = (object.charValidation !== undefined && object.charValidation !== null)
-      ? TableColumnValidationOptionCharValidationData.fromPartial(object.charValidation)
+      ? TableColumnValidationOptionCharValidation.fromPartial(object.charValidation)
       : undefined;
     message.dateValidation = (object.dateValidation !== undefined && object.dateValidation !== null)
-      ? TableColumnValidationOptionDateValidationData.fromPartial(object.dateValidation)
+      ? TableColumnValidationOptionDateValidation.fromPartial(object.dateValidation)
       : undefined;
     message.dateTimeValidation = (object.dateTimeValidation !== undefined && object.dateTimeValidation !== null)
-      ? TableColumnValidationOptionDateValidationData.fromPartial(object.dateTimeValidation)
+      ? TableColumnValidationOptionDateValidation.fromPartial(object.dateTimeValidation)
       : undefined;
     message.numericalityValidation =
       (object.numericalityValidation !== undefined && object.numericalityValidation !== null)
-        ? TableColumnValidationOptionNumericalityValidationData.fromPartial(object.numericalityValidation)
+        ? TableColumnValidationOptionNumericalityValidation.fromPartial(object.numericalityValidation)
         : undefined;
     message.fileValidation = (object.fileValidation !== undefined && object.fileValidation !== null)
-      ? TableColumnValidationOptionFileValidationData.fromPartial(object.fileValidation)
+      ? TableColumnValidationOptionFileValidation.fromPartial(object.fileValidation)
       : undefined;
     return message;
   },
@@ -8588,7 +8555,7 @@ function createBaseTableColumnValidationOptionLengthValidation(): TableColumnVal
   return { maximum: 0, minimum: 0, is: 0 };
 }
 
-export const TableColumnValidationOptionLengthValidationData = {
+export const TableColumnValidationOptionLengthValidation = {
   encode(message: TableColumnValidationOptionLengthValidation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.maximum !== 0) {
       writer.uint32(8).int32(message.maximum);
@@ -8657,7 +8624,7 @@ function createBaseTableColumnValidationOptionCharValidation(): TableColumnValid
   return { email: false, hiragana: false, katakana: false, phoneNumber: false, url: false };
 }
 
-export const TableColumnValidationOptionCharValidationData = {
+export const TableColumnValidationOptionCharValidation = {
   encode(message: TableColumnValidationOptionCharValidation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.email === true) {
       writer.uint32(8).bool(message.email);
@@ -8744,7 +8711,7 @@ function createBaseTableColumnValidationOptionDateValidation(): TableColumnValid
   return { past: false, future: false };
 }
 
-export const TableColumnValidationOptionDateValidationData = {
+export const TableColumnValidationOptionDateValidation = {
   encode(message: TableColumnValidationOptionDateValidation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.past === true) {
       writer.uint32(8).bool(message.past);
@@ -8804,7 +8771,7 @@ function createBaseTableColumnValidationOptionNumericalityValidation(): TableCol
   return { greaterThan: 0, greaterThanOrEqualTo: 0, lessThan: 0, lessThanOrEqualTo: 0 };
 }
 
-export const TableColumnValidationOptionNumericalityValidationData = {
+export const TableColumnValidationOptionNumericalityValidation = {
   encode(
     message: TableColumnValidationOptionNumericalityValidation,
     writer: _m0.Writer = _m0.Writer.create(),
@@ -8885,7 +8852,7 @@ function createBaseTableColumnValidationOptionFileValidation(): TableColumnValid
   return { single: false, contentTypes: [] };
 }
 
-export const TableColumnValidationOptionFileValidationData = {
+export const TableColumnValidationOptionFileValidation = {
   encode(message: TableColumnValidationOptionFileValidation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.single === true) {
       writer.uint32(8).bool(message.single);
@@ -8949,19 +8916,19 @@ function createBaseTableConstraint(): TableConstraint {
   return {};
 }
 
-export const TableConstraintData = {
+export const TableConstraint = {
   encode(message: TableConstraint, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.primaryKey !== undefined) {
-      TableConstraintPrimaryKeyData.encode(message.primaryKey, writer.uint32(10).fork()).ldelim();
+      TableConstraintPrimaryKey.encode(message.primaryKey, writer.uint32(10).fork()).ldelim();
     }
     if (message.foreignKey !== undefined) {
-      TableConstraintForeignKeyData.encode(message.foreignKey, writer.uint32(18).fork()).ldelim();
+      TableConstraintForeignKey.encode(message.foreignKey, writer.uint32(18).fork()).ldelim();
     }
     if (message.notNull !== undefined) {
-      TableConstraintNotNullData.encode(message.notNull, writer.uint32(26).fork()).ldelim();
+      TableConstraintNotNull.encode(message.notNull, writer.uint32(26).fork()).ldelim();
     }
     if (message.unique !== undefined) {
-      TableConstraintUniqueData.encode(message.unique, writer.uint32(34).fork()).ldelim();
+      TableConstraintUnique.encode(message.unique, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -8974,16 +8941,16 @@ export const TableConstraintData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.primaryKey = TableConstraintPrimaryKeyData.decode(reader, reader.uint32());
+          message.primaryKey = TableConstraintPrimaryKey.decode(reader, reader.uint32());
           break;
         case 2:
-          message.foreignKey = TableConstraintForeignKeyData.decode(reader, reader.uint32());
+          message.foreignKey = TableConstraintForeignKey.decode(reader, reader.uint32());
           break;
         case 3:
-          message.notNull = TableConstraintNotNullData.decode(reader, reader.uint32());
+          message.notNull = TableConstraintNotNull.decode(reader, reader.uint32());
           break;
         case 4:
-          message.unique = TableConstraintUniqueData.decode(reader, reader.uint32());
+          message.unique = TableConstraintUnique.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -8995,39 +8962,39 @@ export const TableConstraintData = {
 
   fromJSON(object: any): TableConstraint {
     return {
-      primaryKey: isSet(object.primaryKey) ? TableConstraintPrimaryKeyData.fromJSON(object.primaryKey) : undefined,
-      foreignKey: isSet(object.foreignKey) ? TableConstraintForeignKeyData.fromJSON(object.foreignKey) : undefined,
-      notNull: isSet(object.notNull) ? TableConstraintNotNullData.fromJSON(object.notNull) : undefined,
-      unique: isSet(object.unique) ? TableConstraintUniqueData.fromJSON(object.unique) : undefined,
+      primaryKey: isSet(object.primaryKey) ? TableConstraintPrimaryKey.fromJSON(object.primaryKey) : undefined,
+      foreignKey: isSet(object.foreignKey) ? TableConstraintForeignKey.fromJSON(object.foreignKey) : undefined,
+      notNull: isSet(object.notNull) ? TableConstraintNotNull.fromJSON(object.notNull) : undefined,
+      unique: isSet(object.unique) ? TableConstraintUnique.fromJSON(object.unique) : undefined,
     };
   },
 
   toJSON(message: TableConstraint): unknown {
     const obj: any = {};
     message.primaryKey !== undefined &&
-      (obj.primaryKey = message.primaryKey ? TableConstraintPrimaryKeyData.toJSON(message.primaryKey) : undefined);
+      (obj.primaryKey = message.primaryKey ? TableConstraintPrimaryKey.toJSON(message.primaryKey) : undefined);
     message.foreignKey !== undefined &&
-      (obj.foreignKey = message.foreignKey ? TableConstraintForeignKeyData.toJSON(message.foreignKey) : undefined);
+      (obj.foreignKey = message.foreignKey ? TableConstraintForeignKey.toJSON(message.foreignKey) : undefined);
     message.notNull !== undefined &&
-      (obj.notNull = message.notNull ? TableConstraintNotNullData.toJSON(message.notNull) : undefined);
+      (obj.notNull = message.notNull ? TableConstraintNotNull.toJSON(message.notNull) : undefined);
     message.unique !== undefined &&
-      (obj.unique = message.unique ? TableConstraintUniqueData.toJSON(message.unique) : undefined);
+      (obj.unique = message.unique ? TableConstraintUnique.toJSON(message.unique) : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<TableConstraint>): TableConstraint {
     const message = createBaseTableConstraint();
     message.primaryKey = (object.primaryKey !== undefined && object.primaryKey !== null)
-      ? TableConstraintPrimaryKeyData.fromPartial(object.primaryKey)
+      ? TableConstraintPrimaryKey.fromPartial(object.primaryKey)
       : undefined;
     message.foreignKey = (object.foreignKey !== undefined && object.foreignKey !== null)
-      ? TableConstraintForeignKeyData.fromPartial(object.foreignKey)
+      ? TableConstraintForeignKey.fromPartial(object.foreignKey)
       : undefined;
     message.notNull = (object.notNull !== undefined && object.notNull !== null)
-      ? TableConstraintNotNullData.fromPartial(object.notNull)
+      ? TableConstraintNotNull.fromPartial(object.notNull)
       : undefined;
     message.unique = (object.unique !== undefined && object.unique !== null)
-      ? TableConstraintUniqueData.fromPartial(object.unique)
+      ? TableConstraintUnique.fromPartial(object.unique)
       : undefined;
     return message;
   },
@@ -9037,7 +9004,7 @@ function createBaseTableConstraintPrimaryKey(): TableConstraintPrimaryKey {
   return {};
 }
 
-export const TableConstraintPrimaryKeyData = {
+export const TableConstraintPrimaryKey = {
   encode(_: TableConstraintPrimaryKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
@@ -9076,7 +9043,7 @@ function createBaseTableConstraintForeignKey(): TableConstraintForeignKey {
   return { tableName: "", primaryKey: "" };
 }
 
-export const TableConstraintForeignKeyData = {
+export const TableConstraintForeignKey = {
   encode(message: TableConstraintForeignKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.tableName !== "") {
       writer.uint32(10).string(message.tableName);
@@ -9134,7 +9101,7 @@ function createBaseTableConstraintNotNull(): TableConstraintNotNull {
   return {};
 }
 
-export const TableConstraintNotNullData = {
+export const TableConstraintNotNull = {
   encode(_: TableConstraintNotNull, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
@@ -9173,7 +9140,7 @@ function createBaseTableConstraintUnique(): TableConstraintUnique {
   return {};
 }
 
-export const TableConstraintUniqueData = {
+export const TableConstraintUnique = {
   encode(_: TableConstraintUnique, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
@@ -9212,7 +9179,7 @@ function createBaseTableIndex(): TableIndex {
   return { name: "", unique: false, columns: [] };
 }
 
-export const TableIndexData = {
+export const TableIndex = {
   encode(message: TableIndex, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
@@ -9283,22 +9250,22 @@ function createBaseTableRelation(): TableRelation {
   return {};
 }
 
-export const TableRelationData = {
+export const TableRelation = {
   encode(message: TableRelation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.hasOne !== undefined) {
-      TableRelationRelationHasOneData.encode(message.hasOne, writer.uint32(10).fork()).ldelim();
+      TableRelationRelationHasOne.encode(message.hasOne, writer.uint32(10).fork()).ldelim();
     }
     if (message.belongTo !== undefined) {
-      TableRelationRelationBelongToData.encode(message.belongTo, writer.uint32(18).fork()).ldelim();
+      TableRelationRelationBelongTo.encode(message.belongTo, writer.uint32(18).fork()).ldelim();
     }
     if (message.oneMany !== undefined) {
-      TableRelationRelationOneManyData.encode(message.oneMany, writer.uint32(26).fork()).ldelim();
+      TableRelationRelationOneMany.encode(message.oneMany, writer.uint32(26).fork()).ldelim();
     }
     if (message.manyOne !== undefined) {
-      TableRelationRelationManyOneData.encode(message.manyOne, writer.uint32(34).fork()).ldelim();
+      TableRelationRelationManyOne.encode(message.manyOne, writer.uint32(34).fork()).ldelim();
     }
     if (message.manyMany !== undefined) {
-      TableRelationRelationManyManyData.encode(message.manyMany, writer.uint32(42).fork()).ldelim();
+      TableRelationRelationManyMany.encode(message.manyMany, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -9311,19 +9278,19 @@ export const TableRelationData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.hasOne = TableRelationRelationHasOneData.decode(reader, reader.uint32());
+          message.hasOne = TableRelationRelationHasOne.decode(reader, reader.uint32());
           break;
         case 2:
-          message.belongTo = TableRelationRelationBelongToData.decode(reader, reader.uint32());
+          message.belongTo = TableRelationRelationBelongTo.decode(reader, reader.uint32());
           break;
         case 3:
-          message.oneMany = TableRelationRelationOneManyData.decode(reader, reader.uint32());
+          message.oneMany = TableRelationRelationOneMany.decode(reader, reader.uint32());
           break;
         case 4:
-          message.manyOne = TableRelationRelationManyOneData.decode(reader, reader.uint32());
+          message.manyOne = TableRelationRelationManyOne.decode(reader, reader.uint32());
           break;
         case 5:
-          message.manyMany = TableRelationRelationManyManyData.decode(reader, reader.uint32());
+          message.manyMany = TableRelationRelationManyMany.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -9335,45 +9302,45 @@ export const TableRelationData = {
 
   fromJSON(object: any): TableRelation {
     return {
-      hasOne: isSet(object.hasOne) ? TableRelationRelationHasOneData.fromJSON(object.hasOne) : undefined,
-      belongTo: isSet(object.belongTo) ? TableRelationRelationBelongToData.fromJSON(object.belongTo) : undefined,
-      oneMany: isSet(object.oneMany) ? TableRelationRelationOneManyData.fromJSON(object.oneMany) : undefined,
-      manyOne: isSet(object.manyOne) ? TableRelationRelationManyOneData.fromJSON(object.manyOne) : undefined,
-      manyMany: isSet(object.manyMany) ? TableRelationRelationManyManyData.fromJSON(object.manyMany) : undefined,
+      hasOne: isSet(object.hasOne) ? TableRelationRelationHasOne.fromJSON(object.hasOne) : undefined,
+      belongTo: isSet(object.belongTo) ? TableRelationRelationBelongTo.fromJSON(object.belongTo) : undefined,
+      oneMany: isSet(object.oneMany) ? TableRelationRelationOneMany.fromJSON(object.oneMany) : undefined,
+      manyOne: isSet(object.manyOne) ? TableRelationRelationManyOne.fromJSON(object.manyOne) : undefined,
+      manyMany: isSet(object.manyMany) ? TableRelationRelationManyMany.fromJSON(object.manyMany) : undefined,
     };
   },
 
   toJSON(message: TableRelation): unknown {
     const obj: any = {};
     message.hasOne !== undefined &&
-      (obj.hasOne = message.hasOne ? TableRelationRelationHasOneData.toJSON(message.hasOne) : undefined);
+      (obj.hasOne = message.hasOne ? TableRelationRelationHasOne.toJSON(message.hasOne) : undefined);
     message.belongTo !== undefined &&
-      (obj.belongTo = message.belongTo ? TableRelationRelationBelongToData.toJSON(message.belongTo) : undefined);
+      (obj.belongTo = message.belongTo ? TableRelationRelationBelongTo.toJSON(message.belongTo) : undefined);
     message.oneMany !== undefined &&
-      (obj.oneMany = message.oneMany ? TableRelationRelationOneManyData.toJSON(message.oneMany) : undefined);
+      (obj.oneMany = message.oneMany ? TableRelationRelationOneMany.toJSON(message.oneMany) : undefined);
     message.manyOne !== undefined &&
-      (obj.manyOne = message.manyOne ? TableRelationRelationManyOneData.toJSON(message.manyOne) : undefined);
+      (obj.manyOne = message.manyOne ? TableRelationRelationManyOne.toJSON(message.manyOne) : undefined);
     message.manyMany !== undefined &&
-      (obj.manyMany = message.manyMany ? TableRelationRelationManyManyData.toJSON(message.manyMany) : undefined);
+      (obj.manyMany = message.manyMany ? TableRelationRelationManyMany.toJSON(message.manyMany) : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<TableRelation>): TableRelation {
     const message = createBaseTableRelation();
     message.hasOne = (object.hasOne !== undefined && object.hasOne !== null)
-      ? TableRelationRelationHasOneData.fromPartial(object.hasOne)
+      ? TableRelationRelationHasOne.fromPartial(object.hasOne)
       : undefined;
     message.belongTo = (object.belongTo !== undefined && object.belongTo !== null)
-      ? TableRelationRelationBelongToData.fromPartial(object.belongTo)
+      ? TableRelationRelationBelongTo.fromPartial(object.belongTo)
       : undefined;
     message.oneMany = (object.oneMany !== undefined && object.oneMany !== null)
-      ? TableRelationRelationOneManyData.fromPartial(object.oneMany)
+      ? TableRelationRelationOneMany.fromPartial(object.oneMany)
       : undefined;
     message.manyOne = (object.manyOne !== undefined && object.manyOne !== null)
-      ? TableRelationRelationManyOneData.fromPartial(object.manyOne)
+      ? TableRelationRelationManyOne.fromPartial(object.manyOne)
       : undefined;
     message.manyMany = (object.manyMany !== undefined && object.manyMany !== null)
-      ? TableRelationRelationManyManyData.fromPartial(object.manyMany)
+      ? TableRelationRelationManyMany.fromPartial(object.manyMany)
       : undefined;
     return message;
   },
@@ -9383,7 +9350,7 @@ function createBaseTableRelationRelationHasOne(): TableRelationRelationHasOne {
   return { tableName: "", columnName: "", relationName: "" };
 }
 
-export const TableRelationRelationHasOneData = {
+export const TableRelationRelationHasOne = {
   encode(message: TableRelationRelationHasOne, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.tableName !== "") {
       writer.uint32(10).string(message.tableName);
@@ -9450,7 +9417,7 @@ function createBaseTableRelationRelationBelongTo(): TableRelationRelationBelongT
   return { tableName: "", columnName: "", relationName: "" };
 }
 
-export const TableRelationRelationBelongToData = {
+export const TableRelationRelationBelongTo = {
   encode(message: TableRelationRelationBelongTo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.tableName !== "") {
       writer.uint32(10).string(message.tableName);
@@ -9517,7 +9484,7 @@ function createBaseTableRelationRelationManyOne(): TableRelationRelationManyOne 
   return { tableName: "", columnName: "", relationName: "" };
 }
 
-export const TableRelationRelationManyOneData = {
+export const TableRelationRelationManyOne = {
   encode(message: TableRelationRelationManyOne, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.tableName !== "") {
       writer.uint32(10).string(message.tableName);
@@ -9584,7 +9551,7 @@ function createBaseTableRelationRelationOneMany(): TableRelationRelationOneMany 
   return { tableName: "", columnName: "", relationName: "" };
 }
 
-export const TableRelationRelationOneManyData = {
+export const TableRelationRelationOneMany = {
   encode(message: TableRelationRelationOneMany, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.tableName !== "") {
       writer.uint32(10).string(message.tableName);
@@ -9651,7 +9618,7 @@ function createBaseTableRelationRelationManyMany(): TableRelationRelationManyMan
   return { tableName: "", joinedName: "", relationName: "" };
 }
 
-export const TableRelationRelationManyManyData = {
+export const TableRelationRelationManyMany = {
   encode(message: TableRelationRelationManyMany, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.tableName !== "") {
       writer.uint32(10).string(message.tableName);
@@ -9718,13 +9685,13 @@ function createBaseMigration(): Migration {
   return { migrationId: "", changes: [] };
 }
 
-export const MigrationData = {
+export const Migration = {
   encode(message: Migration, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.migrationId !== "") {
       writer.uint32(10).string(message.migrationId);
     }
     for (const v of message.changes) {
-      MigrationChangeData.encode(v!, writer.uint32(18).fork()).ldelim();
+      MigrationChange.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -9740,7 +9707,7 @@ export const MigrationData = {
           message.migrationId = reader.string();
           break;
         case 2:
-          message.changes.push(MigrationChangeData.decode(reader, reader.uint32()));
+          message.changes.push(MigrationChange.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -9753,7 +9720,7 @@ export const MigrationData = {
   fromJSON(object: any): Migration {
     return {
       migrationId: isSet(object.migrationId) ? String(object.migrationId) : "",
-      changes: Array.isArray(object?.changes) ? object.changes.map((e: any) => MigrationChangeData.fromJSON(e)) : [],
+      changes: Array.isArray(object?.changes) ? object.changes.map((e: any) => MigrationChange.fromJSON(e)) : [],
     };
   },
 
@@ -9761,7 +9728,7 @@ export const MigrationData = {
     const obj: any = {};
     message.migrationId !== undefined && (obj.migrationId = message.migrationId);
     if (message.changes) {
-      obj.changes = message.changes.map((e) => e ? MigrationChangeData.toJSON(e) : undefined);
+      obj.changes = message.changes.map((e) => e ? MigrationChange.toJSON(e) : undefined);
     } else {
       obj.changes = [];
     }
@@ -9771,7 +9738,7 @@ export const MigrationData = {
   fromPartial(object: DeepPartial<Migration>): Migration {
     const message = createBaseMigration();
     message.migrationId = object.migrationId ?? "";
-    message.changes = object.changes?.map((e) => MigrationChangeData.fromPartial(e)) || [];
+    message.changes = object.changes?.map((e) => MigrationChange.fromPartial(e)) || [];
     return message;
   },
 };
@@ -9780,61 +9747,61 @@ function createBaseMigrationChange(): MigrationChange {
   return {};
 }
 
-export const MigrationChangeData = {
+export const MigrationChange = {
   encode(message: MigrationChange, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.createTable !== undefined) {
-      CreateTableData.encode(message.createTable, writer.uint32(10).fork()).ldelim();
+      CreateTable.encode(message.createTable, writer.uint32(10).fork()).ldelim();
     }
     if (message.changeTableName !== undefined) {
-      ChangeTableNameData.encode(message.changeTableName, writer.uint32(18).fork()).ldelim();
+      ChangeTableName.encode(message.changeTableName, writer.uint32(18).fork()).ldelim();
     }
     if (message.changeTableComment !== undefined) {
-      ChangeTableCommentData.encode(message.changeTableComment, writer.uint32(26).fork()).ldelim();
+      ChangeTableComment.encode(message.changeTableComment, writer.uint32(26).fork()).ldelim();
     }
     if (message.addColumn !== undefined) {
-      AddColumnData.encode(message.addColumn, writer.uint32(34).fork()).ldelim();
+      AddColumn.encode(message.addColumn, writer.uint32(34).fork()).ldelim();
     }
     if (message.renameColumn !== undefined) {
-      RenameColumnData.encode(message.renameColumn, writer.uint32(42).fork()).ldelim();
+      RenameColumn.encode(message.renameColumn, writer.uint32(42).fork()).ldelim();
     }
     if (message.changeColumnComment !== undefined) {
-      ChangeColumnCommentData.encode(message.changeColumnComment, writer.uint32(50).fork()).ldelim();
+      ChangeColumnComment.encode(message.changeColumnComment, writer.uint32(50).fork()).ldelim();
     }
     if (message.changeColumn !== undefined) {
-      ChangeColumnData.encode(message.changeColumn, writer.uint32(58).fork()).ldelim();
+      ChangeColumn.encode(message.changeColumn, writer.uint32(58).fork()).ldelim();
     }
     if (message.changeColumnDefault !== undefined) {
-      ChangeColumnDefaultData.encode(message.changeColumnDefault, writer.uint32(66).fork()).ldelim();
+      ChangeColumnDefault.encode(message.changeColumnDefault, writer.uint32(66).fork()).ldelim();
     }
     if (message.changeColumnNull !== undefined) {
-      ChangeColumnNullData.encode(message.changeColumnNull, writer.uint32(74).fork()).ldelim();
+      ChangeColumnNull.encode(message.changeColumnNull, writer.uint32(74).fork()).ldelim();
     }
     if (message.removeTableIndex !== undefined) {
-      RemoveTableIndexData.encode(message.removeTableIndex, writer.uint32(82).fork()).ldelim();
+      RemoveTableIndex.encode(message.removeTableIndex, writer.uint32(82).fork()).ldelim();
     }
     if (message.removeTableRelation !== undefined) {
-      RemoveTableRelationData.encode(message.removeTableRelation, writer.uint32(90).fork()).ldelim();
+      RemoveTableRelation.encode(message.removeTableRelation, writer.uint32(90).fork()).ldelim();
     }
     if (message.createTableRelation !== undefined) {
-      CreateTableRelationData.encode(message.createTableRelation, writer.uint32(98).fork()).ldelim();
+      CreateTableRelation.encode(message.createTableRelation, writer.uint32(98).fork()).ldelim();
     }
     if (message.removeColumn !== undefined) {
-      RemoveColumnData.encode(message.removeColumn, writer.uint32(106).fork()).ldelim();
+      RemoveColumn.encode(message.removeColumn, writer.uint32(106).fork()).ldelim();
     }
     if (message.dropTable !== undefined) {
-      DropTableData.encode(message.dropTable, writer.uint32(114).fork()).ldelim();
+      DropTable.encode(message.dropTable, writer.uint32(114).fork()).ldelim();
     }
     if (message.changeTableIndex !== undefined) {
-      ChangeTableIndexData.encode(message.changeTableIndex, writer.uint32(122).fork()).ldelim();
+      ChangeTableIndex.encode(message.changeTableIndex, writer.uint32(122).fork()).ldelim();
     }
     if (message.createTableIndex !== undefined) {
-      CreateTableIndexData.encode(message.createTableIndex, writer.uint32(130).fork()).ldelim();
+      CreateTableIndex.encode(message.createTableIndex, writer.uint32(130).fork()).ldelim();
     }
     if (message.addUniqColumn !== undefined) {
-      AddUniqColumnData.encode(message.addUniqColumn, writer.uint32(138).fork()).ldelim();
+      AddUniqColumn.encode(message.addUniqColumn, writer.uint32(138).fork()).ldelim();
     }
     if (message.changeColumnUnique !== undefined) {
-      ChangeColumnUniqueData.encode(message.changeColumnUnique, writer.uint32(146).fork()).ldelim();
+      ChangeColumnUnique.encode(message.changeColumnUnique, writer.uint32(146).fork()).ldelim();
     }
     return writer;
   },
@@ -9847,58 +9814,58 @@ export const MigrationChangeData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.createTable = CreateTableData.decode(reader, reader.uint32());
+          message.createTable = CreateTable.decode(reader, reader.uint32());
           break;
         case 2:
-          message.changeTableName = ChangeTableNameData.decode(reader, reader.uint32());
+          message.changeTableName = ChangeTableName.decode(reader, reader.uint32());
           break;
         case 3:
-          message.changeTableComment = ChangeTableCommentData.decode(reader, reader.uint32());
+          message.changeTableComment = ChangeTableComment.decode(reader, reader.uint32());
           break;
         case 4:
-          message.addColumn = AddColumnData.decode(reader, reader.uint32());
+          message.addColumn = AddColumn.decode(reader, reader.uint32());
           break;
         case 5:
-          message.renameColumn = RenameColumnData.decode(reader, reader.uint32());
+          message.renameColumn = RenameColumn.decode(reader, reader.uint32());
           break;
         case 6:
-          message.changeColumnComment = ChangeColumnCommentData.decode(reader, reader.uint32());
+          message.changeColumnComment = ChangeColumnComment.decode(reader, reader.uint32());
           break;
         case 7:
-          message.changeColumn = ChangeColumnData.decode(reader, reader.uint32());
+          message.changeColumn = ChangeColumn.decode(reader, reader.uint32());
           break;
         case 8:
-          message.changeColumnDefault = ChangeColumnDefaultData.decode(reader, reader.uint32());
+          message.changeColumnDefault = ChangeColumnDefault.decode(reader, reader.uint32());
           break;
         case 9:
-          message.changeColumnNull = ChangeColumnNullData.decode(reader, reader.uint32());
+          message.changeColumnNull = ChangeColumnNull.decode(reader, reader.uint32());
           break;
         case 10:
-          message.removeTableIndex = RemoveTableIndexData.decode(reader, reader.uint32());
+          message.removeTableIndex = RemoveTableIndex.decode(reader, reader.uint32());
           break;
         case 11:
-          message.removeTableRelation = RemoveTableRelationData.decode(reader, reader.uint32());
+          message.removeTableRelation = RemoveTableRelation.decode(reader, reader.uint32());
           break;
         case 12:
-          message.createTableRelation = CreateTableRelationData.decode(reader, reader.uint32());
+          message.createTableRelation = CreateTableRelation.decode(reader, reader.uint32());
           break;
         case 13:
-          message.removeColumn = RemoveColumnData.decode(reader, reader.uint32());
+          message.removeColumn = RemoveColumn.decode(reader, reader.uint32());
           break;
         case 14:
-          message.dropTable = DropTableData.decode(reader, reader.uint32());
+          message.dropTable = DropTable.decode(reader, reader.uint32());
           break;
         case 15:
-          message.changeTableIndex = ChangeTableIndexData.decode(reader, reader.uint32());
+          message.changeTableIndex = ChangeTableIndex.decode(reader, reader.uint32());
           break;
         case 16:
-          message.createTableIndex = CreateTableIndexData.decode(reader, reader.uint32());
+          message.createTableIndex = CreateTableIndex.decode(reader, reader.uint32());
           break;
         case 17:
-          message.addUniqColumn = AddUniqColumnData.decode(reader, reader.uint32());
+          message.addUniqColumn = AddUniqColumn.decode(reader, reader.uint32());
           break;
         case 18:
-          message.changeColumnUnique = ChangeColumnUniqueData.decode(reader, reader.uint32());
+          message.changeColumnUnique = ChangeColumnUnique.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -9910,43 +9877,35 @@ export const MigrationChangeData = {
 
   fromJSON(object: any): MigrationChange {
     return {
-      createTable: isSet(object.createTable) ? CreateTableData.fromJSON(object.createTable) : undefined,
-      changeTableName: isSet(object.changeTableName) ? ChangeTableNameData.fromJSON(object.changeTableName) : undefined,
+      createTable: isSet(object.createTable) ? CreateTable.fromJSON(object.createTable) : undefined,
+      changeTableName: isSet(object.changeTableName) ? ChangeTableName.fromJSON(object.changeTableName) : undefined,
       changeTableComment: isSet(object.changeTableComment)
-        ? ChangeTableCommentData.fromJSON(object.changeTableComment)
+        ? ChangeTableComment.fromJSON(object.changeTableComment)
         : undefined,
-      addColumn: isSet(object.addColumn) ? AddColumnData.fromJSON(object.addColumn) : undefined,
-      renameColumn: isSet(object.renameColumn) ? RenameColumnData.fromJSON(object.renameColumn) : undefined,
+      addColumn: isSet(object.addColumn) ? AddColumn.fromJSON(object.addColumn) : undefined,
+      renameColumn: isSet(object.renameColumn) ? RenameColumn.fromJSON(object.renameColumn) : undefined,
       changeColumnComment: isSet(object.changeColumnComment)
-        ? ChangeColumnCommentData.fromJSON(object.changeColumnComment)
+        ? ChangeColumnComment.fromJSON(object.changeColumnComment)
         : undefined,
-      changeColumn: isSet(object.changeColumn) ? ChangeColumnData.fromJSON(object.changeColumn) : undefined,
+      changeColumn: isSet(object.changeColumn) ? ChangeColumn.fromJSON(object.changeColumn) : undefined,
       changeColumnDefault: isSet(object.changeColumnDefault)
-        ? ChangeColumnDefaultData.fromJSON(object.changeColumnDefault)
+        ? ChangeColumnDefault.fromJSON(object.changeColumnDefault)
         : undefined,
-      changeColumnNull: isSet(object.changeColumnNull)
-        ? ChangeColumnNullData.fromJSON(object.changeColumnNull)
-        : undefined,
-      removeTableIndex: isSet(object.removeTableIndex)
-        ? RemoveTableIndexData.fromJSON(object.removeTableIndex)
-        : undefined,
+      changeColumnNull: isSet(object.changeColumnNull) ? ChangeColumnNull.fromJSON(object.changeColumnNull) : undefined,
+      removeTableIndex: isSet(object.removeTableIndex) ? RemoveTableIndex.fromJSON(object.removeTableIndex) : undefined,
       removeTableRelation: isSet(object.removeTableRelation)
-        ? RemoveTableRelationData.fromJSON(object.removeTableRelation)
+        ? RemoveTableRelation.fromJSON(object.removeTableRelation)
         : undefined,
       createTableRelation: isSet(object.createTableRelation)
-        ? CreateTableRelationData.fromJSON(object.createTableRelation)
+        ? CreateTableRelation.fromJSON(object.createTableRelation)
         : undefined,
-      removeColumn: isSet(object.removeColumn) ? RemoveColumnData.fromJSON(object.removeColumn) : undefined,
-      dropTable: isSet(object.dropTable) ? DropTableData.fromJSON(object.dropTable) : undefined,
-      changeTableIndex: isSet(object.changeTableIndex)
-        ? ChangeTableIndexData.fromJSON(object.changeTableIndex)
-        : undefined,
-      createTableIndex: isSet(object.createTableIndex)
-        ? CreateTableIndexData.fromJSON(object.createTableIndex)
-        : undefined,
-      addUniqColumn: isSet(object.addUniqColumn) ? AddUniqColumnData.fromJSON(object.addUniqColumn) : undefined,
+      removeColumn: isSet(object.removeColumn) ? RemoveColumn.fromJSON(object.removeColumn) : undefined,
+      dropTable: isSet(object.dropTable) ? DropTable.fromJSON(object.dropTable) : undefined,
+      changeTableIndex: isSet(object.changeTableIndex) ? ChangeTableIndex.fromJSON(object.changeTableIndex) : undefined,
+      createTableIndex: isSet(object.createTableIndex) ? CreateTableIndex.fromJSON(object.createTableIndex) : undefined,
+      addUniqColumn: isSet(object.addUniqColumn) ? AddUniqColumn.fromJSON(object.addUniqColumn) : undefined,
       changeColumnUnique: isSet(object.changeColumnUnique)
-        ? ChangeColumnUniqueData.fromJSON(object.changeColumnUnique)
+        ? ChangeColumnUnique.fromJSON(object.changeColumnUnique)
         : undefined,
     };
   },
@@ -9954,50 +9913,46 @@ export const MigrationChangeData = {
   toJSON(message: MigrationChange): unknown {
     const obj: any = {};
     message.createTable !== undefined &&
-      (obj.createTable = message.createTable ? CreateTableData.toJSON(message.createTable) : undefined);
+      (obj.createTable = message.createTable ? CreateTable.toJSON(message.createTable) : undefined);
     message.changeTableName !== undefined &&
-      (obj.changeTableName = message.changeTableName ? ChangeTableNameData.toJSON(message.changeTableName) : undefined);
+      (obj.changeTableName = message.changeTableName ? ChangeTableName.toJSON(message.changeTableName) : undefined);
     message.changeTableComment !== undefined && (obj.changeTableComment = message.changeTableComment
-      ? ChangeTableCommentData.toJSON(message.changeTableComment)
+      ? ChangeTableComment.toJSON(message.changeTableComment)
       : undefined);
     message.addColumn !== undefined &&
-      (obj.addColumn = message.addColumn ? AddColumnData.toJSON(message.addColumn) : undefined);
+      (obj.addColumn = message.addColumn ? AddColumn.toJSON(message.addColumn) : undefined);
     message.renameColumn !== undefined &&
-      (obj.renameColumn = message.renameColumn ? RenameColumnData.toJSON(message.renameColumn) : undefined);
+      (obj.renameColumn = message.renameColumn ? RenameColumn.toJSON(message.renameColumn) : undefined);
     message.changeColumnComment !== undefined && (obj.changeColumnComment = message.changeColumnComment
-      ? ChangeColumnCommentData.toJSON(message.changeColumnComment)
+      ? ChangeColumnComment.toJSON(message.changeColumnComment)
       : undefined);
     message.changeColumn !== undefined &&
-      (obj.changeColumn = message.changeColumn ? ChangeColumnData.toJSON(message.changeColumn) : undefined);
+      (obj.changeColumn = message.changeColumn ? ChangeColumn.toJSON(message.changeColumn) : undefined);
     message.changeColumnDefault !== undefined && (obj.changeColumnDefault = message.changeColumnDefault
-      ? ChangeColumnDefaultData.toJSON(message.changeColumnDefault)
+      ? ChangeColumnDefault.toJSON(message.changeColumnDefault)
       : undefined);
-    message.changeColumnNull !== undefined && (obj.changeColumnNull = message.changeColumnNull
-      ? ChangeColumnNullData.toJSON(message.changeColumnNull)
-      : undefined);
-    message.removeTableIndex !== undefined && (obj.removeTableIndex = message.removeTableIndex
-      ? RemoveTableIndexData.toJSON(message.removeTableIndex)
-      : undefined);
+    message.changeColumnNull !== undefined &&
+      (obj.changeColumnNull = message.changeColumnNull ? ChangeColumnNull.toJSON(message.changeColumnNull) : undefined);
+    message.removeTableIndex !== undefined &&
+      (obj.removeTableIndex = message.removeTableIndex ? RemoveTableIndex.toJSON(message.removeTableIndex) : undefined);
     message.removeTableRelation !== undefined && (obj.removeTableRelation = message.removeTableRelation
-      ? RemoveTableRelationData.toJSON(message.removeTableRelation)
+      ? RemoveTableRelation.toJSON(message.removeTableRelation)
       : undefined);
     message.createTableRelation !== undefined && (obj.createTableRelation = message.createTableRelation
-      ? CreateTableRelationData.toJSON(message.createTableRelation)
+      ? CreateTableRelation.toJSON(message.createTableRelation)
       : undefined);
     message.removeColumn !== undefined &&
-      (obj.removeColumn = message.removeColumn ? RemoveColumnData.toJSON(message.removeColumn) : undefined);
+      (obj.removeColumn = message.removeColumn ? RemoveColumn.toJSON(message.removeColumn) : undefined);
     message.dropTable !== undefined &&
-      (obj.dropTable = message.dropTable ? DropTableData.toJSON(message.dropTable) : undefined);
-    message.changeTableIndex !== undefined && (obj.changeTableIndex = message.changeTableIndex
-      ? ChangeTableIndexData.toJSON(message.changeTableIndex)
-      : undefined);
-    message.createTableIndex !== undefined && (obj.createTableIndex = message.createTableIndex
-      ? CreateTableIndexData.toJSON(message.createTableIndex)
-      : undefined);
+      (obj.dropTable = message.dropTable ? DropTable.toJSON(message.dropTable) : undefined);
+    message.changeTableIndex !== undefined &&
+      (obj.changeTableIndex = message.changeTableIndex ? ChangeTableIndex.toJSON(message.changeTableIndex) : undefined);
+    message.createTableIndex !== undefined &&
+      (obj.createTableIndex = message.createTableIndex ? CreateTableIndex.toJSON(message.createTableIndex) : undefined);
     message.addUniqColumn !== undefined &&
-      (obj.addUniqColumn = message.addUniqColumn ? AddUniqColumnData.toJSON(message.addUniqColumn) : undefined);
+      (obj.addUniqColumn = message.addUniqColumn ? AddUniqColumn.toJSON(message.addUniqColumn) : undefined);
     message.changeColumnUnique !== undefined && (obj.changeColumnUnique = message.changeColumnUnique
-      ? ChangeColumnUniqueData.toJSON(message.changeColumnUnique)
+      ? ChangeColumnUnique.toJSON(message.changeColumnUnique)
       : undefined);
     return obj;
   },
@@ -10005,58 +9960,58 @@ export const MigrationChangeData = {
   fromPartial(object: DeepPartial<MigrationChange>): MigrationChange {
     const message = createBaseMigrationChange();
     message.createTable = (object.createTable !== undefined && object.createTable !== null)
-      ? CreateTableData.fromPartial(object.createTable)
+      ? CreateTable.fromPartial(object.createTable)
       : undefined;
     message.changeTableName = (object.changeTableName !== undefined && object.changeTableName !== null)
-      ? ChangeTableNameData.fromPartial(object.changeTableName)
+      ? ChangeTableName.fromPartial(object.changeTableName)
       : undefined;
     message.changeTableComment = (object.changeTableComment !== undefined && object.changeTableComment !== null)
-      ? ChangeTableCommentData.fromPartial(object.changeTableComment)
+      ? ChangeTableComment.fromPartial(object.changeTableComment)
       : undefined;
     message.addColumn = (object.addColumn !== undefined && object.addColumn !== null)
-      ? AddColumnData.fromPartial(object.addColumn)
+      ? AddColumn.fromPartial(object.addColumn)
       : undefined;
     message.renameColumn = (object.renameColumn !== undefined && object.renameColumn !== null)
-      ? RenameColumnData.fromPartial(object.renameColumn)
+      ? RenameColumn.fromPartial(object.renameColumn)
       : undefined;
     message.changeColumnComment = (object.changeColumnComment !== undefined && object.changeColumnComment !== null)
-      ? ChangeColumnCommentData.fromPartial(object.changeColumnComment)
+      ? ChangeColumnComment.fromPartial(object.changeColumnComment)
       : undefined;
     message.changeColumn = (object.changeColumn !== undefined && object.changeColumn !== null)
-      ? ChangeColumnData.fromPartial(object.changeColumn)
+      ? ChangeColumn.fromPartial(object.changeColumn)
       : undefined;
     message.changeColumnDefault = (object.changeColumnDefault !== undefined && object.changeColumnDefault !== null)
-      ? ChangeColumnDefaultData.fromPartial(object.changeColumnDefault)
+      ? ChangeColumnDefault.fromPartial(object.changeColumnDefault)
       : undefined;
     message.changeColumnNull = (object.changeColumnNull !== undefined && object.changeColumnNull !== null)
-      ? ChangeColumnNullData.fromPartial(object.changeColumnNull)
+      ? ChangeColumnNull.fromPartial(object.changeColumnNull)
       : undefined;
     message.removeTableIndex = (object.removeTableIndex !== undefined && object.removeTableIndex !== null)
-      ? RemoveTableIndexData.fromPartial(object.removeTableIndex)
+      ? RemoveTableIndex.fromPartial(object.removeTableIndex)
       : undefined;
     message.removeTableRelation = (object.removeTableRelation !== undefined && object.removeTableRelation !== null)
-      ? RemoveTableRelationData.fromPartial(object.removeTableRelation)
+      ? RemoveTableRelation.fromPartial(object.removeTableRelation)
       : undefined;
     message.createTableRelation = (object.createTableRelation !== undefined && object.createTableRelation !== null)
-      ? CreateTableRelationData.fromPartial(object.createTableRelation)
+      ? CreateTableRelation.fromPartial(object.createTableRelation)
       : undefined;
     message.removeColumn = (object.removeColumn !== undefined && object.removeColumn !== null)
-      ? RemoveColumnData.fromPartial(object.removeColumn)
+      ? RemoveColumn.fromPartial(object.removeColumn)
       : undefined;
     message.dropTable = (object.dropTable !== undefined && object.dropTable !== null)
-      ? DropTableData.fromPartial(object.dropTable)
+      ? DropTable.fromPartial(object.dropTable)
       : undefined;
     message.changeTableIndex = (object.changeTableIndex !== undefined && object.changeTableIndex !== null)
-      ? ChangeTableIndexData.fromPartial(object.changeTableIndex)
+      ? ChangeTableIndex.fromPartial(object.changeTableIndex)
       : undefined;
     message.createTableIndex = (object.createTableIndex !== undefined && object.createTableIndex !== null)
-      ? CreateTableIndexData.fromPartial(object.createTableIndex)
+      ? CreateTableIndex.fromPartial(object.createTableIndex)
       : undefined;
     message.addUniqColumn = (object.addUniqColumn !== undefined && object.addUniqColumn !== null)
-      ? AddUniqColumnData.fromPartial(object.addUniqColumn)
+      ? AddUniqColumn.fromPartial(object.addUniqColumn)
       : undefined;
     message.changeColumnUnique = (object.changeColumnUnique !== undefined && object.changeColumnUnique !== null)
-      ? ChangeColumnUniqueData.fromPartial(object.changeColumnUnique)
+      ? ChangeColumnUnique.fromPartial(object.changeColumnUnique)
       : undefined;
     return message;
   },
@@ -10066,13 +10021,13 @@ function createBaseCreateTable(): CreateTable {
   return { key: "", prevUuid: "", nextUuid: "" };
 }
 
-export const CreateTableData = {
+export const CreateTable = {
   encode(message: CreateTable, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
     }
     if (message.changeTo !== undefined) {
-      CreateTableChangeData.encode(message.changeTo, writer.uint32(18).fork()).ldelim();
+      CreateTableChange.encode(message.changeTo, writer.uint32(18).fork()).ldelim();
     }
     if (message.prevUuid !== "") {
       writer.uint32(26).string(message.prevUuid);
@@ -10081,7 +10036,7 @@ export const CreateTableData = {
       writer.uint32(34).string(message.nextUuid);
     }
     if (message.nextRecord !== undefined) {
-      CreateTableNextRecordData.encode(message.nextRecord, writer.uint32(42).fork()).ldelim();
+      CreateTableNextRecord.encode(message.nextRecord, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -10097,7 +10052,7 @@ export const CreateTableData = {
           message.key = reader.string();
           break;
         case 2:
-          message.changeTo = CreateTableChangeData.decode(reader, reader.uint32());
+          message.changeTo = CreateTableChange.decode(reader, reader.uint32());
           break;
         case 3:
           message.prevUuid = reader.string();
@@ -10106,7 +10061,7 @@ export const CreateTableData = {
           message.nextUuid = reader.string();
           break;
         case 5:
-          message.nextRecord = CreateTableNextRecordData.decode(reader, reader.uint32());
+          message.nextRecord = CreateTableNextRecord.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -10119,10 +10074,10 @@ export const CreateTableData = {
   fromJSON(object: any): CreateTable {
     return {
       key: isSet(object.key) ? String(object.key) : "",
-      changeTo: isSet(object.changeTo) ? CreateTableChangeData.fromJSON(object.changeTo) : undefined,
+      changeTo: isSet(object.changeTo) ? CreateTableChange.fromJSON(object.changeTo) : undefined,
       prevUuid: isSet(object.prevUuid) ? String(object.prevUuid) : "",
       nextUuid: isSet(object.nextUuid) ? String(object.nextUuid) : "",
-      nextRecord: isSet(object.nextRecord) ? CreateTableNextRecordData.fromJSON(object.nextRecord) : undefined,
+      nextRecord: isSet(object.nextRecord) ? CreateTableNextRecord.fromJSON(object.nextRecord) : undefined,
     };
   },
 
@@ -10130,11 +10085,11 @@ export const CreateTableData = {
     const obj: any = {};
     message.key !== undefined && (obj.key = message.key);
     message.changeTo !== undefined &&
-      (obj.changeTo = message.changeTo ? CreateTableChangeData.toJSON(message.changeTo) : undefined);
+      (obj.changeTo = message.changeTo ? CreateTableChange.toJSON(message.changeTo) : undefined);
     message.prevUuid !== undefined && (obj.prevUuid = message.prevUuid);
     message.nextUuid !== undefined && (obj.nextUuid = message.nextUuid);
     message.nextRecord !== undefined &&
-      (obj.nextRecord = message.nextRecord ? CreateTableNextRecordData.toJSON(message.nextRecord) : undefined);
+      (obj.nextRecord = message.nextRecord ? CreateTableNextRecord.toJSON(message.nextRecord) : undefined);
     return obj;
   },
 
@@ -10142,12 +10097,12 @@ export const CreateTableData = {
     const message = createBaseCreateTable();
     message.key = object.key ?? "";
     message.changeTo = (object.changeTo !== undefined && object.changeTo !== null)
-      ? CreateTableChangeData.fromPartial(object.changeTo)
+      ? CreateTableChange.fromPartial(object.changeTo)
       : undefined;
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
     message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
-      ? CreateTableNextRecordData.fromPartial(object.nextRecord)
+      ? CreateTableNextRecord.fromPartial(object.nextRecord)
       : undefined;
     return message;
   },
@@ -10157,7 +10112,7 @@ function createBaseChangeTableName(): ChangeTableName {
   return { key: "", changeFrom: "", changeTo: "", prevUuid: "", nextUuid: "" };
 }
 
-export const ChangeTableNameData = {
+export const ChangeTableName = {
   encode(message: ChangeTableName, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
@@ -10175,10 +10130,10 @@ export const ChangeTableNameData = {
       writer.uint32(42).string(message.nextUuid);
     }
     if (message.prevRecord !== undefined) {
-      CreateTableNextRecordData.encode(message.prevRecord, writer.uint32(50).fork()).ldelim();
+      CreateTableNextRecord.encode(message.prevRecord, writer.uint32(50).fork()).ldelim();
     }
     if (message.nextRecord !== undefined) {
-      CreateTableNextRecordData.encode(message.nextRecord, writer.uint32(58).fork()).ldelim();
+      CreateTableNextRecord.encode(message.nextRecord, writer.uint32(58).fork()).ldelim();
     }
     return writer;
   },
@@ -10206,10 +10161,10 @@ export const ChangeTableNameData = {
           message.nextUuid = reader.string();
           break;
         case 6:
-          message.prevRecord = CreateTableNextRecordData.decode(reader, reader.uint32());
+          message.prevRecord = CreateTableNextRecord.decode(reader, reader.uint32());
           break;
         case 7:
-          message.nextRecord = CreateTableNextRecordData.decode(reader, reader.uint32());
+          message.nextRecord = CreateTableNextRecord.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -10226,8 +10181,8 @@ export const ChangeTableNameData = {
       changeTo: isSet(object.changeTo) ? String(object.changeTo) : "",
       prevUuid: isSet(object.prevUuid) ? String(object.prevUuid) : "",
       nextUuid: isSet(object.nextUuid) ? String(object.nextUuid) : "",
-      prevRecord: isSet(object.prevRecord) ? CreateTableNextRecordData.fromJSON(object.prevRecord) : undefined,
-      nextRecord: isSet(object.nextRecord) ? CreateTableNextRecordData.fromJSON(object.nextRecord) : undefined,
+      prevRecord: isSet(object.prevRecord) ? CreateTableNextRecord.fromJSON(object.prevRecord) : undefined,
+      nextRecord: isSet(object.nextRecord) ? CreateTableNextRecord.fromJSON(object.nextRecord) : undefined,
     };
   },
 
@@ -10239,9 +10194,9 @@ export const ChangeTableNameData = {
     message.prevUuid !== undefined && (obj.prevUuid = message.prevUuid);
     message.nextUuid !== undefined && (obj.nextUuid = message.nextUuid);
     message.prevRecord !== undefined &&
-      (obj.prevRecord = message.prevRecord ? CreateTableNextRecordData.toJSON(message.prevRecord) : undefined);
+      (obj.prevRecord = message.prevRecord ? CreateTableNextRecord.toJSON(message.prevRecord) : undefined);
     message.nextRecord !== undefined &&
-      (obj.nextRecord = message.nextRecord ? CreateTableNextRecordData.toJSON(message.nextRecord) : undefined);
+      (obj.nextRecord = message.nextRecord ? CreateTableNextRecord.toJSON(message.nextRecord) : undefined);
     return obj;
   },
 
@@ -10253,10 +10208,10 @@ export const ChangeTableNameData = {
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
     message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
-      ? CreateTableNextRecordData.fromPartial(object.prevRecord)
+      ? CreateTableNextRecord.fromPartial(object.prevRecord)
       : undefined;
     message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
-      ? CreateTableNextRecordData.fromPartial(object.nextRecord)
+      ? CreateTableNextRecord.fromPartial(object.nextRecord)
       : undefined;
     return message;
   },
@@ -10266,7 +10221,7 @@ function createBaseChangeTableComment(): ChangeTableComment {
   return { key: "", changeFrom: "", changeTo: "", prevUuid: "", nextUuid: "" };
 }
 
-export const ChangeTableCommentData = {
+export const ChangeTableComment = {
   encode(message: ChangeTableComment, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
@@ -10284,10 +10239,10 @@ export const ChangeTableCommentData = {
       writer.uint32(42).string(message.nextUuid);
     }
     if (message.prevRecord !== undefined) {
-      CreateTableNextRecordData.encode(message.prevRecord, writer.uint32(50).fork()).ldelim();
+      CreateTableNextRecord.encode(message.prevRecord, writer.uint32(50).fork()).ldelim();
     }
     if (message.nextRecord !== undefined) {
-      CreateTableNextRecordData.encode(message.nextRecord, writer.uint32(58).fork()).ldelim();
+      CreateTableNextRecord.encode(message.nextRecord, writer.uint32(58).fork()).ldelim();
     }
     return writer;
   },
@@ -10315,10 +10270,10 @@ export const ChangeTableCommentData = {
           message.nextUuid = reader.string();
           break;
         case 6:
-          message.prevRecord = CreateTableNextRecordData.decode(reader, reader.uint32());
+          message.prevRecord = CreateTableNextRecord.decode(reader, reader.uint32());
           break;
         case 7:
-          message.nextRecord = CreateTableNextRecordData.decode(reader, reader.uint32());
+          message.nextRecord = CreateTableNextRecord.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -10335,8 +10290,8 @@ export const ChangeTableCommentData = {
       changeTo: isSet(object.changeTo) ? String(object.changeTo) : "",
       prevUuid: isSet(object.prevUuid) ? String(object.prevUuid) : "",
       nextUuid: isSet(object.nextUuid) ? String(object.nextUuid) : "",
-      prevRecord: isSet(object.prevRecord) ? CreateTableNextRecordData.fromJSON(object.prevRecord) : undefined,
-      nextRecord: isSet(object.nextRecord) ? CreateTableNextRecordData.fromJSON(object.nextRecord) : undefined,
+      prevRecord: isSet(object.prevRecord) ? CreateTableNextRecord.fromJSON(object.prevRecord) : undefined,
+      nextRecord: isSet(object.nextRecord) ? CreateTableNextRecord.fromJSON(object.nextRecord) : undefined,
     };
   },
 
@@ -10348,9 +10303,9 @@ export const ChangeTableCommentData = {
     message.prevUuid !== undefined && (obj.prevUuid = message.prevUuid);
     message.nextUuid !== undefined && (obj.nextUuid = message.nextUuid);
     message.prevRecord !== undefined &&
-      (obj.prevRecord = message.prevRecord ? CreateTableNextRecordData.toJSON(message.prevRecord) : undefined);
+      (obj.prevRecord = message.prevRecord ? CreateTableNextRecord.toJSON(message.prevRecord) : undefined);
     message.nextRecord !== undefined &&
-      (obj.nextRecord = message.nextRecord ? CreateTableNextRecordData.toJSON(message.nextRecord) : undefined);
+      (obj.nextRecord = message.nextRecord ? CreateTableNextRecord.toJSON(message.nextRecord) : undefined);
     return obj;
   },
 
@@ -10362,10 +10317,10 @@ export const ChangeTableCommentData = {
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
     message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
-      ? CreateTableNextRecordData.fromPartial(object.prevRecord)
+      ? CreateTableNextRecord.fromPartial(object.prevRecord)
       : undefined;
     message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
-      ? CreateTableNextRecordData.fromPartial(object.nextRecord)
+      ? CreateTableNextRecord.fromPartial(object.nextRecord)
       : undefined;
     return message;
   },
@@ -10375,7 +10330,7 @@ function createBaseCreateTableChange(): CreateTableChange {
   return { name: "", uuid: "" };
 }
 
-export const CreateTableChangeData = {
+export const CreateTableChange = {
   encode(message: CreateTableChange, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
@@ -10442,13 +10397,13 @@ function createBaseAddColumn(): AddColumn {
   return { key: "", prevUuid: "", nextUuid: "" };
 }
 
-export const AddColumnData = {
+export const AddColumn = {
   encode(message: AddColumn, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
     }
     if (message.changeTo !== undefined) {
-      MigrationColumnDefinitionData.encode(message.changeTo, writer.uint32(18).fork()).ldelim();
+      MigrationColumnDefinition.encode(message.changeTo, writer.uint32(18).fork()).ldelim();
     }
     if (message.prevUuid !== "") {
       writer.uint32(26).string(message.prevUuid);
@@ -10457,7 +10412,7 @@ export const AddColumnData = {
       writer.uint32(34).string(message.nextUuid);
     }
     if (message.nextRecord !== undefined) {
-      MigrationColumnDefinitionData.encode(message.nextRecord, writer.uint32(42).fork()).ldelim();
+      MigrationColumnDefinition.encode(message.nextRecord, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -10473,7 +10428,7 @@ export const AddColumnData = {
           message.key = reader.string();
           break;
         case 2:
-          message.changeTo = MigrationColumnDefinitionData.decode(reader, reader.uint32());
+          message.changeTo = MigrationColumnDefinition.decode(reader, reader.uint32());
           break;
         case 3:
           message.prevUuid = reader.string();
@@ -10482,7 +10437,7 @@ export const AddColumnData = {
           message.nextUuid = reader.string();
           break;
         case 5:
-          message.nextRecord = MigrationColumnDefinitionData.decode(reader, reader.uint32());
+          message.nextRecord = MigrationColumnDefinition.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -10495,10 +10450,10 @@ export const AddColumnData = {
   fromJSON(object: any): AddColumn {
     return {
       key: isSet(object.key) ? String(object.key) : "",
-      changeTo: isSet(object.changeTo) ? MigrationColumnDefinitionData.fromJSON(object.changeTo) : undefined,
+      changeTo: isSet(object.changeTo) ? MigrationColumnDefinition.fromJSON(object.changeTo) : undefined,
       prevUuid: isSet(object.prevUuid) ? String(object.prevUuid) : "",
       nextUuid: isSet(object.nextUuid) ? String(object.nextUuid) : "",
-      nextRecord: isSet(object.nextRecord) ? MigrationColumnDefinitionData.fromJSON(object.nextRecord) : undefined,
+      nextRecord: isSet(object.nextRecord) ? MigrationColumnDefinition.fromJSON(object.nextRecord) : undefined,
     };
   },
 
@@ -10506,11 +10461,11 @@ export const AddColumnData = {
     const obj: any = {};
     message.key !== undefined && (obj.key = message.key);
     message.changeTo !== undefined &&
-      (obj.changeTo = message.changeTo ? MigrationColumnDefinitionData.toJSON(message.changeTo) : undefined);
+      (obj.changeTo = message.changeTo ? MigrationColumnDefinition.toJSON(message.changeTo) : undefined);
     message.prevUuid !== undefined && (obj.prevUuid = message.prevUuid);
     message.nextUuid !== undefined && (obj.nextUuid = message.nextUuid);
     message.nextRecord !== undefined &&
-      (obj.nextRecord = message.nextRecord ? MigrationColumnDefinitionData.toJSON(message.nextRecord) : undefined);
+      (obj.nextRecord = message.nextRecord ? MigrationColumnDefinition.toJSON(message.nextRecord) : undefined);
     return obj;
   },
 
@@ -10518,12 +10473,12 @@ export const AddColumnData = {
     const message = createBaseAddColumn();
     message.key = object.key ?? "";
     message.changeTo = (object.changeTo !== undefined && object.changeTo !== null)
-      ? MigrationColumnDefinitionData.fromPartial(object.changeTo)
+      ? MigrationColumnDefinition.fromPartial(object.changeTo)
       : undefined;
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
     message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
-      ? MigrationColumnDefinitionData.fromPartial(object.nextRecord)
+      ? MigrationColumnDefinition.fromPartial(object.nextRecord)
       : undefined;
     return message;
   },
@@ -10533,7 +10488,7 @@ function createBaseRenameColumn(): RenameColumn {
   return { key: "", changeFrom: "", changeTo: "", prevUuid: "", nextUuid: "" };
 }
 
-export const RenameColumnData = {
+export const RenameColumn = {
   encode(message: RenameColumn, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
@@ -10551,10 +10506,10 @@ export const RenameColumnData = {
       writer.uint32(42).string(message.nextUuid);
     }
     if (message.prevRecord !== undefined) {
-      MigrationColumnDefinitionData.encode(message.prevRecord, writer.uint32(50).fork()).ldelim();
+      MigrationColumnDefinition.encode(message.prevRecord, writer.uint32(50).fork()).ldelim();
     }
     if (message.nextRecord !== undefined) {
-      MigrationColumnDefinitionData.encode(message.nextRecord, writer.uint32(58).fork()).ldelim();
+      MigrationColumnDefinition.encode(message.nextRecord, writer.uint32(58).fork()).ldelim();
     }
     return writer;
   },
@@ -10582,10 +10537,10 @@ export const RenameColumnData = {
           message.nextUuid = reader.string();
           break;
         case 6:
-          message.prevRecord = MigrationColumnDefinitionData.decode(reader, reader.uint32());
+          message.prevRecord = MigrationColumnDefinition.decode(reader, reader.uint32());
           break;
         case 7:
-          message.nextRecord = MigrationColumnDefinitionData.decode(reader, reader.uint32());
+          message.nextRecord = MigrationColumnDefinition.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -10602,8 +10557,8 @@ export const RenameColumnData = {
       changeTo: isSet(object.changeTo) ? String(object.changeTo) : "",
       prevUuid: isSet(object.prevUuid) ? String(object.prevUuid) : "",
       nextUuid: isSet(object.nextUuid) ? String(object.nextUuid) : "",
-      prevRecord: isSet(object.prevRecord) ? MigrationColumnDefinitionData.fromJSON(object.prevRecord) : undefined,
-      nextRecord: isSet(object.nextRecord) ? MigrationColumnDefinitionData.fromJSON(object.nextRecord) : undefined,
+      prevRecord: isSet(object.prevRecord) ? MigrationColumnDefinition.fromJSON(object.prevRecord) : undefined,
+      nextRecord: isSet(object.nextRecord) ? MigrationColumnDefinition.fromJSON(object.nextRecord) : undefined,
     };
   },
 
@@ -10615,9 +10570,9 @@ export const RenameColumnData = {
     message.prevUuid !== undefined && (obj.prevUuid = message.prevUuid);
     message.nextUuid !== undefined && (obj.nextUuid = message.nextUuid);
     message.prevRecord !== undefined &&
-      (obj.prevRecord = message.prevRecord ? MigrationColumnDefinitionData.toJSON(message.prevRecord) : undefined);
+      (obj.prevRecord = message.prevRecord ? MigrationColumnDefinition.toJSON(message.prevRecord) : undefined);
     message.nextRecord !== undefined &&
-      (obj.nextRecord = message.nextRecord ? MigrationColumnDefinitionData.toJSON(message.nextRecord) : undefined);
+      (obj.nextRecord = message.nextRecord ? MigrationColumnDefinition.toJSON(message.nextRecord) : undefined);
     return obj;
   },
 
@@ -10629,10 +10584,10 @@ export const RenameColumnData = {
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
     message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
-      ? MigrationColumnDefinitionData.fromPartial(object.prevRecord)
+      ? MigrationColumnDefinition.fromPartial(object.prevRecord)
       : undefined;
     message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
-      ? MigrationColumnDefinitionData.fromPartial(object.nextRecord)
+      ? MigrationColumnDefinition.fromPartial(object.nextRecord)
       : undefined;
     return message;
   },
@@ -10642,7 +10597,7 @@ function createBaseChangeColumnComment(): ChangeColumnComment {
   return { key: "", changeFrom: "", changeTo: "", prevUuid: "", nextUuid: "" };
 }
 
-export const ChangeColumnCommentData = {
+export const ChangeColumnComment = {
   encode(message: ChangeColumnComment, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
@@ -10660,10 +10615,10 @@ export const ChangeColumnCommentData = {
       writer.uint32(42).string(message.nextUuid);
     }
     if (message.prevRecord !== undefined) {
-      MigrationColumnDefinitionData.encode(message.prevRecord, writer.uint32(50).fork()).ldelim();
+      MigrationColumnDefinition.encode(message.prevRecord, writer.uint32(50).fork()).ldelim();
     }
     if (message.nextRecord !== undefined) {
-      MigrationColumnDefinitionData.encode(message.nextRecord, writer.uint32(58).fork()).ldelim();
+      MigrationColumnDefinition.encode(message.nextRecord, writer.uint32(58).fork()).ldelim();
     }
     return writer;
   },
@@ -10691,10 +10646,10 @@ export const ChangeColumnCommentData = {
           message.nextUuid = reader.string();
           break;
         case 6:
-          message.prevRecord = MigrationColumnDefinitionData.decode(reader, reader.uint32());
+          message.prevRecord = MigrationColumnDefinition.decode(reader, reader.uint32());
           break;
         case 7:
-          message.nextRecord = MigrationColumnDefinitionData.decode(reader, reader.uint32());
+          message.nextRecord = MigrationColumnDefinition.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -10711,8 +10666,8 @@ export const ChangeColumnCommentData = {
       changeTo: isSet(object.changeTo) ? String(object.changeTo) : "",
       prevUuid: isSet(object.prevUuid) ? String(object.prevUuid) : "",
       nextUuid: isSet(object.nextUuid) ? String(object.nextUuid) : "",
-      prevRecord: isSet(object.prevRecord) ? MigrationColumnDefinitionData.fromJSON(object.prevRecord) : undefined,
-      nextRecord: isSet(object.nextRecord) ? MigrationColumnDefinitionData.fromJSON(object.nextRecord) : undefined,
+      prevRecord: isSet(object.prevRecord) ? MigrationColumnDefinition.fromJSON(object.prevRecord) : undefined,
+      nextRecord: isSet(object.nextRecord) ? MigrationColumnDefinition.fromJSON(object.nextRecord) : undefined,
     };
   },
 
@@ -10724,9 +10679,9 @@ export const ChangeColumnCommentData = {
     message.prevUuid !== undefined && (obj.prevUuid = message.prevUuid);
     message.nextUuid !== undefined && (obj.nextUuid = message.nextUuid);
     message.prevRecord !== undefined &&
-      (obj.prevRecord = message.prevRecord ? MigrationColumnDefinitionData.toJSON(message.prevRecord) : undefined);
+      (obj.prevRecord = message.prevRecord ? MigrationColumnDefinition.toJSON(message.prevRecord) : undefined);
     message.nextRecord !== undefined &&
-      (obj.nextRecord = message.nextRecord ? MigrationColumnDefinitionData.toJSON(message.nextRecord) : undefined);
+      (obj.nextRecord = message.nextRecord ? MigrationColumnDefinition.toJSON(message.nextRecord) : undefined);
     return obj;
   },
 
@@ -10738,10 +10693,10 @@ export const ChangeColumnCommentData = {
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
     message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
-      ? MigrationColumnDefinitionData.fromPartial(object.prevRecord)
+      ? MigrationColumnDefinition.fromPartial(object.prevRecord)
       : undefined;
     message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
-      ? MigrationColumnDefinitionData.fromPartial(object.nextRecord)
+      ? MigrationColumnDefinition.fromPartial(object.nextRecord)
       : undefined;
     return message;
   },
@@ -10751,7 +10706,7 @@ function createBaseChangeColumn(): ChangeColumn {
   return { key: "", changeFrom: "", changeTo: "", prevUuid: "", nextUuid: "" };
 }
 
-export const ChangeColumnData = {
+export const ChangeColumn = {
   encode(message: ChangeColumn, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
@@ -10769,10 +10724,10 @@ export const ChangeColumnData = {
       writer.uint32(42).string(message.nextUuid);
     }
     if (message.prevRecord !== undefined) {
-      MigrationColumnDefinitionData.encode(message.prevRecord, writer.uint32(50).fork()).ldelim();
+      MigrationColumnDefinition.encode(message.prevRecord, writer.uint32(50).fork()).ldelim();
     }
     if (message.nextRecord !== undefined) {
-      MigrationColumnDefinitionData.encode(message.nextRecord, writer.uint32(58).fork()).ldelim();
+      MigrationColumnDefinition.encode(message.nextRecord, writer.uint32(58).fork()).ldelim();
     }
     return writer;
   },
@@ -10800,10 +10755,10 @@ export const ChangeColumnData = {
           message.nextUuid = reader.string();
           break;
         case 6:
-          message.prevRecord = MigrationColumnDefinitionData.decode(reader, reader.uint32());
+          message.prevRecord = MigrationColumnDefinition.decode(reader, reader.uint32());
           break;
         case 7:
-          message.nextRecord = MigrationColumnDefinitionData.decode(reader, reader.uint32());
+          message.nextRecord = MigrationColumnDefinition.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -10820,8 +10775,8 @@ export const ChangeColumnData = {
       changeTo: isSet(object.changeTo) ? String(object.changeTo) : "",
       prevUuid: isSet(object.prevUuid) ? String(object.prevUuid) : "",
       nextUuid: isSet(object.nextUuid) ? String(object.nextUuid) : "",
-      prevRecord: isSet(object.prevRecord) ? MigrationColumnDefinitionData.fromJSON(object.prevRecord) : undefined,
-      nextRecord: isSet(object.nextRecord) ? MigrationColumnDefinitionData.fromJSON(object.nextRecord) : undefined,
+      prevRecord: isSet(object.prevRecord) ? MigrationColumnDefinition.fromJSON(object.prevRecord) : undefined,
+      nextRecord: isSet(object.nextRecord) ? MigrationColumnDefinition.fromJSON(object.nextRecord) : undefined,
     };
   },
 
@@ -10833,9 +10788,9 @@ export const ChangeColumnData = {
     message.prevUuid !== undefined && (obj.prevUuid = message.prevUuid);
     message.nextUuid !== undefined && (obj.nextUuid = message.nextUuid);
     message.prevRecord !== undefined &&
-      (obj.prevRecord = message.prevRecord ? MigrationColumnDefinitionData.toJSON(message.prevRecord) : undefined);
+      (obj.prevRecord = message.prevRecord ? MigrationColumnDefinition.toJSON(message.prevRecord) : undefined);
     message.nextRecord !== undefined &&
-      (obj.nextRecord = message.nextRecord ? MigrationColumnDefinitionData.toJSON(message.nextRecord) : undefined);
+      (obj.nextRecord = message.nextRecord ? MigrationColumnDefinition.toJSON(message.nextRecord) : undefined);
     return obj;
   },
 
@@ -10847,10 +10802,10 @@ export const ChangeColumnData = {
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
     message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
-      ? MigrationColumnDefinitionData.fromPartial(object.prevRecord)
+      ? MigrationColumnDefinition.fromPartial(object.prevRecord)
       : undefined;
     message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
-      ? MigrationColumnDefinitionData.fromPartial(object.nextRecord)
+      ? MigrationColumnDefinition.fromPartial(object.nextRecord)
       : undefined;
     return message;
   },
@@ -10860,7 +10815,7 @@ function createBaseChangeColumnDefault(): ChangeColumnDefault {
   return { key: "", changeFrom: "", changeTo: "", prevUuid: "", nextUuid: "" };
 }
 
-export const ChangeColumnDefaultData = {
+export const ChangeColumnDefault = {
   encode(message: ChangeColumnDefault, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
@@ -10878,10 +10833,10 @@ export const ChangeColumnDefaultData = {
       writer.uint32(42).string(message.nextUuid);
     }
     if (message.prevRecord !== undefined) {
-      MigrationColumnDefinitionData.encode(message.prevRecord, writer.uint32(50).fork()).ldelim();
+      MigrationColumnDefinition.encode(message.prevRecord, writer.uint32(50).fork()).ldelim();
     }
     if (message.nextRecord !== undefined) {
-      MigrationColumnDefinitionData.encode(message.nextRecord, writer.uint32(58).fork()).ldelim();
+      MigrationColumnDefinition.encode(message.nextRecord, writer.uint32(58).fork()).ldelim();
     }
     return writer;
   },
@@ -10909,10 +10864,10 @@ export const ChangeColumnDefaultData = {
           message.nextUuid = reader.string();
           break;
         case 6:
-          message.prevRecord = MigrationColumnDefinitionData.decode(reader, reader.uint32());
+          message.prevRecord = MigrationColumnDefinition.decode(reader, reader.uint32());
           break;
         case 7:
-          message.nextRecord = MigrationColumnDefinitionData.decode(reader, reader.uint32());
+          message.nextRecord = MigrationColumnDefinition.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -10929,8 +10884,8 @@ export const ChangeColumnDefaultData = {
       changeTo: isSet(object.changeTo) ? String(object.changeTo) : "",
       prevUuid: isSet(object.prevUuid) ? String(object.prevUuid) : "",
       nextUuid: isSet(object.nextUuid) ? String(object.nextUuid) : "",
-      prevRecord: isSet(object.prevRecord) ? MigrationColumnDefinitionData.fromJSON(object.prevRecord) : undefined,
-      nextRecord: isSet(object.nextRecord) ? MigrationColumnDefinitionData.fromJSON(object.nextRecord) : undefined,
+      prevRecord: isSet(object.prevRecord) ? MigrationColumnDefinition.fromJSON(object.prevRecord) : undefined,
+      nextRecord: isSet(object.nextRecord) ? MigrationColumnDefinition.fromJSON(object.nextRecord) : undefined,
     };
   },
 
@@ -10942,9 +10897,9 @@ export const ChangeColumnDefaultData = {
     message.prevUuid !== undefined && (obj.prevUuid = message.prevUuid);
     message.nextUuid !== undefined && (obj.nextUuid = message.nextUuid);
     message.prevRecord !== undefined &&
-      (obj.prevRecord = message.prevRecord ? MigrationColumnDefinitionData.toJSON(message.prevRecord) : undefined);
+      (obj.prevRecord = message.prevRecord ? MigrationColumnDefinition.toJSON(message.prevRecord) : undefined);
     message.nextRecord !== undefined &&
-      (obj.nextRecord = message.nextRecord ? MigrationColumnDefinitionData.toJSON(message.nextRecord) : undefined);
+      (obj.nextRecord = message.nextRecord ? MigrationColumnDefinition.toJSON(message.nextRecord) : undefined);
     return obj;
   },
 
@@ -10956,10 +10911,10 @@ export const ChangeColumnDefaultData = {
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
     message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
-      ? MigrationColumnDefinitionData.fromPartial(object.prevRecord)
+      ? MigrationColumnDefinition.fromPartial(object.prevRecord)
       : undefined;
     message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
-      ? MigrationColumnDefinitionData.fromPartial(object.nextRecord)
+      ? MigrationColumnDefinition.fromPartial(object.nextRecord)
       : undefined;
     return message;
   },
@@ -10969,7 +10924,7 @@ function createBaseChangeColumnNull(): ChangeColumnNull {
   return { key: "", changeFrom: "", changeTo: "", prevUuid: "", nextUuid: "" };
 }
 
-export const ChangeColumnNullData = {
+export const ChangeColumnNull = {
   encode(message: ChangeColumnNull, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
@@ -10987,10 +10942,10 @@ export const ChangeColumnNullData = {
       writer.uint32(42).string(message.nextUuid);
     }
     if (message.prevRecord !== undefined) {
-      MigrationColumnDefinitionData.encode(message.prevRecord, writer.uint32(50).fork()).ldelim();
+      MigrationColumnDefinition.encode(message.prevRecord, writer.uint32(50).fork()).ldelim();
     }
     if (message.nextRecord !== undefined) {
-      MigrationColumnDefinitionData.encode(message.nextRecord, writer.uint32(58).fork()).ldelim();
+      MigrationColumnDefinition.encode(message.nextRecord, writer.uint32(58).fork()).ldelim();
     }
     return writer;
   },
@@ -11018,10 +10973,10 @@ export const ChangeColumnNullData = {
           message.nextUuid = reader.string();
           break;
         case 6:
-          message.prevRecord = MigrationColumnDefinitionData.decode(reader, reader.uint32());
+          message.prevRecord = MigrationColumnDefinition.decode(reader, reader.uint32());
           break;
         case 7:
-          message.nextRecord = MigrationColumnDefinitionData.decode(reader, reader.uint32());
+          message.nextRecord = MigrationColumnDefinition.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -11038,8 +10993,8 @@ export const ChangeColumnNullData = {
       changeTo: isSet(object.changeTo) ? String(object.changeTo) : "",
       prevUuid: isSet(object.prevUuid) ? String(object.prevUuid) : "",
       nextUuid: isSet(object.nextUuid) ? String(object.nextUuid) : "",
-      prevRecord: isSet(object.prevRecord) ? MigrationColumnDefinitionData.fromJSON(object.prevRecord) : undefined,
-      nextRecord: isSet(object.nextRecord) ? MigrationColumnDefinitionData.fromJSON(object.nextRecord) : undefined,
+      prevRecord: isSet(object.prevRecord) ? MigrationColumnDefinition.fromJSON(object.prevRecord) : undefined,
+      nextRecord: isSet(object.nextRecord) ? MigrationColumnDefinition.fromJSON(object.nextRecord) : undefined,
     };
   },
 
@@ -11051,9 +11006,9 @@ export const ChangeColumnNullData = {
     message.prevUuid !== undefined && (obj.prevUuid = message.prevUuid);
     message.nextUuid !== undefined && (obj.nextUuid = message.nextUuid);
     message.prevRecord !== undefined &&
-      (obj.prevRecord = message.prevRecord ? MigrationColumnDefinitionData.toJSON(message.prevRecord) : undefined);
+      (obj.prevRecord = message.prevRecord ? MigrationColumnDefinition.toJSON(message.prevRecord) : undefined);
     message.nextRecord !== undefined &&
-      (obj.nextRecord = message.nextRecord ? MigrationColumnDefinitionData.toJSON(message.nextRecord) : undefined);
+      (obj.nextRecord = message.nextRecord ? MigrationColumnDefinition.toJSON(message.nextRecord) : undefined);
     return obj;
   },
 
@@ -11065,10 +11020,10 @@ export const ChangeColumnNullData = {
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
     message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
-      ? MigrationColumnDefinitionData.fromPartial(object.prevRecord)
+      ? MigrationColumnDefinition.fromPartial(object.prevRecord)
       : undefined;
     message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
-      ? MigrationColumnDefinitionData.fromPartial(object.nextRecord)
+      ? MigrationColumnDefinition.fromPartial(object.nextRecord)
       : undefined;
     return message;
   },
@@ -11078,13 +11033,13 @@ function createBaseRemoveTableIndex(): RemoveTableIndex {
   return { key: "", prevUuid: "", nextUuid: "" };
 }
 
-export const RemoveTableIndexData = {
+export const RemoveTableIndex = {
   encode(message: RemoveTableIndex, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
     }
     if (message.changeFrom !== undefined) {
-      TableIndexMigrationData.encode(message.changeFrom, writer.uint32(18).fork()).ldelim();
+      TableIndexMigration.encode(message.changeFrom, writer.uint32(18).fork()).ldelim();
     }
     if (message.prevUuid !== "") {
       writer.uint32(26).string(message.prevUuid);
@@ -11093,7 +11048,7 @@ export const RemoveTableIndexData = {
       writer.uint32(34).string(message.nextUuid);
     }
     if (message.prevRecord !== undefined) {
-      TableIndexMigrationData.encode(message.prevRecord, writer.uint32(42).fork()).ldelim();
+      TableIndexMigration.encode(message.prevRecord, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -11109,7 +11064,7 @@ export const RemoveTableIndexData = {
           message.key = reader.string();
           break;
         case 2:
-          message.changeFrom = TableIndexMigrationData.decode(reader, reader.uint32());
+          message.changeFrom = TableIndexMigration.decode(reader, reader.uint32());
           break;
         case 3:
           message.prevUuid = reader.string();
@@ -11118,7 +11073,7 @@ export const RemoveTableIndexData = {
           message.nextUuid = reader.string();
           break;
         case 5:
-          message.prevRecord = TableIndexMigrationData.decode(reader, reader.uint32());
+          message.prevRecord = TableIndexMigration.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -11131,10 +11086,10 @@ export const RemoveTableIndexData = {
   fromJSON(object: any): RemoveTableIndex {
     return {
       key: isSet(object.key) ? String(object.key) : "",
-      changeFrom: isSet(object.changeFrom) ? TableIndexMigrationData.fromJSON(object.changeFrom) : undefined,
+      changeFrom: isSet(object.changeFrom) ? TableIndexMigration.fromJSON(object.changeFrom) : undefined,
       prevUuid: isSet(object.prevUuid) ? String(object.prevUuid) : "",
       nextUuid: isSet(object.nextUuid) ? String(object.nextUuid) : "",
-      prevRecord: isSet(object.prevRecord) ? TableIndexMigrationData.fromJSON(object.prevRecord) : undefined,
+      prevRecord: isSet(object.prevRecord) ? TableIndexMigration.fromJSON(object.prevRecord) : undefined,
     };
   },
 
@@ -11142,11 +11097,11 @@ export const RemoveTableIndexData = {
     const obj: any = {};
     message.key !== undefined && (obj.key = message.key);
     message.changeFrom !== undefined &&
-      (obj.changeFrom = message.changeFrom ? TableIndexMigrationData.toJSON(message.changeFrom) : undefined);
+      (obj.changeFrom = message.changeFrom ? TableIndexMigration.toJSON(message.changeFrom) : undefined);
     message.prevUuid !== undefined && (obj.prevUuid = message.prevUuid);
     message.nextUuid !== undefined && (obj.nextUuid = message.nextUuid);
     message.prevRecord !== undefined &&
-      (obj.prevRecord = message.prevRecord ? TableIndexMigrationData.toJSON(message.prevRecord) : undefined);
+      (obj.prevRecord = message.prevRecord ? TableIndexMigration.toJSON(message.prevRecord) : undefined);
     return obj;
   },
 
@@ -11154,12 +11109,12 @@ export const RemoveTableIndexData = {
     const message = createBaseRemoveTableIndex();
     message.key = object.key ?? "";
     message.changeFrom = (object.changeFrom !== undefined && object.changeFrom !== null)
-      ? TableIndexMigrationData.fromPartial(object.changeFrom)
+      ? TableIndexMigration.fromPartial(object.changeFrom)
       : undefined;
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
     message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
-      ? TableIndexMigrationData.fromPartial(object.prevRecord)
+      ? TableIndexMigration.fromPartial(object.prevRecord)
       : undefined;
     return message;
   },
@@ -11169,7 +11124,7 @@ function createBaseRemoveTableRelation(): RemoveTableRelation {
   return { key: "", prevUuid: "", nextUuid: "" };
 }
 
-export const RemoveTableRelationData = {
+export const RemoveTableRelation = {
   encode(message: RemoveTableRelation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
@@ -11181,7 +11136,7 @@ export const RemoveTableRelationData = {
       writer.uint32(34).string(message.nextUuid);
     }
     if (message.prevRecord !== undefined) {
-      TableRelationMigrationData.encode(message.prevRecord, writer.uint32(42).fork()).ldelim();
+      TableRelationMigration.encode(message.prevRecord, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -11203,7 +11158,7 @@ export const RemoveTableRelationData = {
           message.nextUuid = reader.string();
           break;
         case 5:
-          message.prevRecord = TableRelationMigrationData.decode(reader, reader.uint32());
+          message.prevRecord = TableRelationMigration.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -11218,7 +11173,7 @@ export const RemoveTableRelationData = {
       key: isSet(object.key) ? String(object.key) : "",
       prevUuid: isSet(object.prevUuid) ? String(object.prevUuid) : "",
       nextUuid: isSet(object.nextUuid) ? String(object.nextUuid) : "",
-      prevRecord: isSet(object.prevRecord) ? TableRelationMigrationData.fromJSON(object.prevRecord) : undefined,
+      prevRecord: isSet(object.prevRecord) ? TableRelationMigration.fromJSON(object.prevRecord) : undefined,
     };
   },
 
@@ -11228,7 +11183,7 @@ export const RemoveTableRelationData = {
     message.prevUuid !== undefined && (obj.prevUuid = message.prevUuid);
     message.nextUuid !== undefined && (obj.nextUuid = message.nextUuid);
     message.prevRecord !== undefined &&
-      (obj.prevRecord = message.prevRecord ? TableRelationMigrationData.toJSON(message.prevRecord) : undefined);
+      (obj.prevRecord = message.prevRecord ? TableRelationMigration.toJSON(message.prevRecord) : undefined);
     return obj;
   },
 
@@ -11238,7 +11193,7 @@ export const RemoveTableRelationData = {
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
     message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
-      ? TableRelationMigrationData.fromPartial(object.prevRecord)
+      ? TableRelationMigration.fromPartial(object.prevRecord)
       : undefined;
     return message;
   },
@@ -11248,13 +11203,13 @@ function createBaseCreateTableRelation(): CreateTableRelation {
   return { key: "", prevUuid: "", nextUuid: "" };
 }
 
-export const CreateTableRelationData = {
+export const CreateTableRelation = {
   encode(message: CreateTableRelation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
     }
     if (message.changeTo !== undefined) {
-      TableRelationMigrationData.encode(message.changeTo, writer.uint32(18).fork()).ldelim();
+      TableRelationMigration.encode(message.changeTo, writer.uint32(18).fork()).ldelim();
     }
     if (message.prevUuid !== "") {
       writer.uint32(34).string(message.prevUuid);
@@ -11263,7 +11218,7 @@ export const CreateTableRelationData = {
       writer.uint32(42).string(message.nextUuid);
     }
     if (message.nextRecord !== undefined) {
-      TableRelationMigrationData.encode(message.nextRecord, writer.uint32(50).fork()).ldelim();
+      TableRelationMigration.encode(message.nextRecord, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -11279,7 +11234,7 @@ export const CreateTableRelationData = {
           message.key = reader.string();
           break;
         case 2:
-          message.changeTo = TableRelationMigrationData.decode(reader, reader.uint32());
+          message.changeTo = TableRelationMigration.decode(reader, reader.uint32());
           break;
         case 4:
           message.prevUuid = reader.string();
@@ -11288,7 +11243,7 @@ export const CreateTableRelationData = {
           message.nextUuid = reader.string();
           break;
         case 6:
-          message.nextRecord = TableRelationMigrationData.decode(reader, reader.uint32());
+          message.nextRecord = TableRelationMigration.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -11301,10 +11256,10 @@ export const CreateTableRelationData = {
   fromJSON(object: any): CreateTableRelation {
     return {
       key: isSet(object.key) ? String(object.key) : "",
-      changeTo: isSet(object.changeTo) ? TableRelationMigrationData.fromJSON(object.changeTo) : undefined,
+      changeTo: isSet(object.changeTo) ? TableRelationMigration.fromJSON(object.changeTo) : undefined,
       prevUuid: isSet(object.prevUuid) ? String(object.prevUuid) : "",
       nextUuid: isSet(object.nextUuid) ? String(object.nextUuid) : "",
-      nextRecord: isSet(object.nextRecord) ? TableRelationMigrationData.fromJSON(object.nextRecord) : undefined,
+      nextRecord: isSet(object.nextRecord) ? TableRelationMigration.fromJSON(object.nextRecord) : undefined,
     };
   },
 
@@ -11312,11 +11267,11 @@ export const CreateTableRelationData = {
     const obj: any = {};
     message.key !== undefined && (obj.key = message.key);
     message.changeTo !== undefined &&
-      (obj.changeTo = message.changeTo ? TableRelationMigrationData.toJSON(message.changeTo) : undefined);
+      (obj.changeTo = message.changeTo ? TableRelationMigration.toJSON(message.changeTo) : undefined);
     message.prevUuid !== undefined && (obj.prevUuid = message.prevUuid);
     message.nextUuid !== undefined && (obj.nextUuid = message.nextUuid);
     message.nextRecord !== undefined &&
-      (obj.nextRecord = message.nextRecord ? TableRelationMigrationData.toJSON(message.nextRecord) : undefined);
+      (obj.nextRecord = message.nextRecord ? TableRelationMigration.toJSON(message.nextRecord) : undefined);
     return obj;
   },
 
@@ -11324,12 +11279,12 @@ export const CreateTableRelationData = {
     const message = createBaseCreateTableRelation();
     message.key = object.key ?? "";
     message.changeTo = (object.changeTo !== undefined && object.changeTo !== null)
-      ? TableRelationMigrationData.fromPartial(object.changeTo)
+      ? TableRelationMigration.fromPartial(object.changeTo)
       : undefined;
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
     message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
-      ? TableRelationMigrationData.fromPartial(object.nextRecord)
+      ? TableRelationMigration.fromPartial(object.nextRecord)
       : undefined;
     return message;
   },
@@ -11339,13 +11294,13 @@ function createBaseRemoveColumn(): RemoveColumn {
   return { key: "", prevUuid: "", nextUuid: "" };
 }
 
-export const RemoveColumnData = {
+export const RemoveColumn = {
   encode(message: RemoveColumn, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
     }
     if (message.changeFrom !== undefined) {
-      MigrationColumnDefinitionData.encode(message.changeFrom, writer.uint32(18).fork()).ldelim();
+      MigrationColumnDefinition.encode(message.changeFrom, writer.uint32(18).fork()).ldelim();
     }
     if (message.prevUuid !== "") {
       writer.uint32(34).string(message.prevUuid);
@@ -11354,7 +11309,7 @@ export const RemoveColumnData = {
       writer.uint32(42).string(message.nextUuid);
     }
     if (message.prevRecord !== undefined) {
-      MigrationColumnDefinitionData.encode(message.prevRecord, writer.uint32(50).fork()).ldelim();
+      MigrationColumnDefinition.encode(message.prevRecord, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -11370,7 +11325,7 @@ export const RemoveColumnData = {
           message.key = reader.string();
           break;
         case 2:
-          message.changeFrom = MigrationColumnDefinitionData.decode(reader, reader.uint32());
+          message.changeFrom = MigrationColumnDefinition.decode(reader, reader.uint32());
           break;
         case 4:
           message.prevUuid = reader.string();
@@ -11379,7 +11334,7 @@ export const RemoveColumnData = {
           message.nextUuid = reader.string();
           break;
         case 6:
-          message.prevRecord = MigrationColumnDefinitionData.decode(reader, reader.uint32());
+          message.prevRecord = MigrationColumnDefinition.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -11392,10 +11347,10 @@ export const RemoveColumnData = {
   fromJSON(object: any): RemoveColumn {
     return {
       key: isSet(object.key) ? String(object.key) : "",
-      changeFrom: isSet(object.changeFrom) ? MigrationColumnDefinitionData.fromJSON(object.changeFrom) : undefined,
+      changeFrom: isSet(object.changeFrom) ? MigrationColumnDefinition.fromJSON(object.changeFrom) : undefined,
       prevUuid: isSet(object.prevUuid) ? String(object.prevUuid) : "",
       nextUuid: isSet(object.nextUuid) ? String(object.nextUuid) : "",
-      prevRecord: isSet(object.prevRecord) ? MigrationColumnDefinitionData.fromJSON(object.prevRecord) : undefined,
+      prevRecord: isSet(object.prevRecord) ? MigrationColumnDefinition.fromJSON(object.prevRecord) : undefined,
     };
   },
 
@@ -11403,11 +11358,11 @@ export const RemoveColumnData = {
     const obj: any = {};
     message.key !== undefined && (obj.key = message.key);
     message.changeFrom !== undefined &&
-      (obj.changeFrom = message.changeFrom ? MigrationColumnDefinitionData.toJSON(message.changeFrom) : undefined);
+      (obj.changeFrom = message.changeFrom ? MigrationColumnDefinition.toJSON(message.changeFrom) : undefined);
     message.prevUuid !== undefined && (obj.prevUuid = message.prevUuid);
     message.nextUuid !== undefined && (obj.nextUuid = message.nextUuid);
     message.prevRecord !== undefined &&
-      (obj.prevRecord = message.prevRecord ? MigrationColumnDefinitionData.toJSON(message.prevRecord) : undefined);
+      (obj.prevRecord = message.prevRecord ? MigrationColumnDefinition.toJSON(message.prevRecord) : undefined);
     return obj;
   },
 
@@ -11415,12 +11370,12 @@ export const RemoveColumnData = {
     const message = createBaseRemoveColumn();
     message.key = object.key ?? "";
     message.changeFrom = (object.changeFrom !== undefined && object.changeFrom !== null)
-      ? MigrationColumnDefinitionData.fromPartial(object.changeFrom)
+      ? MigrationColumnDefinition.fromPartial(object.changeFrom)
       : undefined;
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
     message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
-      ? MigrationColumnDefinitionData.fromPartial(object.prevRecord)
+      ? MigrationColumnDefinition.fromPartial(object.prevRecord)
       : undefined;
     return message;
   },
@@ -11430,13 +11385,13 @@ function createBaseDropTable(): DropTable {
   return { key: "", prevUuid: "", nextUuid: "" };
 }
 
-export const DropTableData = {
+export const DropTable = {
   encode(message: DropTable, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
     }
     if (message.changeFrom !== undefined) {
-      CreateTableNextRecordData.encode(message.changeFrom, writer.uint32(18).fork()).ldelim();
+      CreateTableNextRecord.encode(message.changeFrom, writer.uint32(18).fork()).ldelim();
     }
     if (message.prevUuid !== "") {
       writer.uint32(34).string(message.prevUuid);
@@ -11445,7 +11400,7 @@ export const DropTableData = {
       writer.uint32(42).string(message.nextUuid);
     }
     if (message.prevRecord !== undefined) {
-      CreateTableNextRecordData.encode(message.prevRecord, writer.uint32(50).fork()).ldelim();
+      CreateTableNextRecord.encode(message.prevRecord, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -11461,7 +11416,7 @@ export const DropTableData = {
           message.key = reader.string();
           break;
         case 2:
-          message.changeFrom = CreateTableNextRecordData.decode(reader, reader.uint32());
+          message.changeFrom = CreateTableNextRecord.decode(reader, reader.uint32());
           break;
         case 4:
           message.prevUuid = reader.string();
@@ -11470,7 +11425,7 @@ export const DropTableData = {
           message.nextUuid = reader.string();
           break;
         case 6:
-          message.prevRecord = CreateTableNextRecordData.decode(reader, reader.uint32());
+          message.prevRecord = CreateTableNextRecord.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -11483,10 +11438,10 @@ export const DropTableData = {
   fromJSON(object: any): DropTable {
     return {
       key: isSet(object.key) ? String(object.key) : "",
-      changeFrom: isSet(object.changeFrom) ? CreateTableNextRecordData.fromJSON(object.changeFrom) : undefined,
+      changeFrom: isSet(object.changeFrom) ? CreateTableNextRecord.fromJSON(object.changeFrom) : undefined,
       prevUuid: isSet(object.prevUuid) ? String(object.prevUuid) : "",
       nextUuid: isSet(object.nextUuid) ? String(object.nextUuid) : "",
-      prevRecord: isSet(object.prevRecord) ? CreateTableNextRecordData.fromJSON(object.prevRecord) : undefined,
+      prevRecord: isSet(object.prevRecord) ? CreateTableNextRecord.fromJSON(object.prevRecord) : undefined,
     };
   },
 
@@ -11494,11 +11449,11 @@ export const DropTableData = {
     const obj: any = {};
     message.key !== undefined && (obj.key = message.key);
     message.changeFrom !== undefined &&
-      (obj.changeFrom = message.changeFrom ? CreateTableNextRecordData.toJSON(message.changeFrom) : undefined);
+      (obj.changeFrom = message.changeFrom ? CreateTableNextRecord.toJSON(message.changeFrom) : undefined);
     message.prevUuid !== undefined && (obj.prevUuid = message.prevUuid);
     message.nextUuid !== undefined && (obj.nextUuid = message.nextUuid);
     message.prevRecord !== undefined &&
-      (obj.prevRecord = message.prevRecord ? CreateTableNextRecordData.toJSON(message.prevRecord) : undefined);
+      (obj.prevRecord = message.prevRecord ? CreateTableNextRecord.toJSON(message.prevRecord) : undefined);
     return obj;
   },
 
@@ -11506,12 +11461,12 @@ export const DropTableData = {
     const message = createBaseDropTable();
     message.key = object.key ?? "";
     message.changeFrom = (object.changeFrom !== undefined && object.changeFrom !== null)
-      ? CreateTableNextRecordData.fromPartial(object.changeFrom)
+      ? CreateTableNextRecord.fromPartial(object.changeFrom)
       : undefined;
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
     message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
-      ? CreateTableNextRecordData.fromPartial(object.prevRecord)
+      ? CreateTableNextRecord.fromPartial(object.prevRecord)
       : undefined;
     return message;
   },
@@ -11521,7 +11476,7 @@ function createBaseChangeTableIndex(): ChangeTableIndex {
   return { key: "", changeFrom: "", changeTo: "", prevUuid: "", nextUuid: "" };
 }
 
-export const ChangeTableIndexData = {
+export const ChangeTableIndex = {
   encode(message: ChangeTableIndex, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
@@ -11539,10 +11494,10 @@ export const ChangeTableIndexData = {
       writer.uint32(42).string(message.nextUuid);
     }
     if (message.prevRecord !== undefined) {
-      TableIndexMigrationData.encode(message.prevRecord, writer.uint32(50).fork()).ldelim();
+      TableIndexMigration.encode(message.prevRecord, writer.uint32(50).fork()).ldelim();
     }
     if (message.nextRecord !== undefined) {
-      TableIndexMigrationData.encode(message.nextRecord, writer.uint32(58).fork()).ldelim();
+      TableIndexMigration.encode(message.nextRecord, writer.uint32(58).fork()).ldelim();
     }
     return writer;
   },
@@ -11570,10 +11525,10 @@ export const ChangeTableIndexData = {
           message.nextUuid = reader.string();
           break;
         case 6:
-          message.prevRecord = TableIndexMigrationData.decode(reader, reader.uint32());
+          message.prevRecord = TableIndexMigration.decode(reader, reader.uint32());
           break;
         case 7:
-          message.nextRecord = TableIndexMigrationData.decode(reader, reader.uint32());
+          message.nextRecord = TableIndexMigration.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -11590,8 +11545,8 @@ export const ChangeTableIndexData = {
       changeTo: isSet(object.changeTo) ? String(object.changeTo) : "",
       prevUuid: isSet(object.prevUuid) ? String(object.prevUuid) : "",
       nextUuid: isSet(object.nextUuid) ? String(object.nextUuid) : "",
-      prevRecord: isSet(object.prevRecord) ? TableIndexMigrationData.fromJSON(object.prevRecord) : undefined,
-      nextRecord: isSet(object.nextRecord) ? TableIndexMigrationData.fromJSON(object.nextRecord) : undefined,
+      prevRecord: isSet(object.prevRecord) ? TableIndexMigration.fromJSON(object.prevRecord) : undefined,
+      nextRecord: isSet(object.nextRecord) ? TableIndexMigration.fromJSON(object.nextRecord) : undefined,
     };
   },
 
@@ -11603,9 +11558,9 @@ export const ChangeTableIndexData = {
     message.prevUuid !== undefined && (obj.prevUuid = message.prevUuid);
     message.nextUuid !== undefined && (obj.nextUuid = message.nextUuid);
     message.prevRecord !== undefined &&
-      (obj.prevRecord = message.prevRecord ? TableIndexMigrationData.toJSON(message.prevRecord) : undefined);
+      (obj.prevRecord = message.prevRecord ? TableIndexMigration.toJSON(message.prevRecord) : undefined);
     message.nextRecord !== undefined &&
-      (obj.nextRecord = message.nextRecord ? TableIndexMigrationData.toJSON(message.nextRecord) : undefined);
+      (obj.nextRecord = message.nextRecord ? TableIndexMigration.toJSON(message.nextRecord) : undefined);
     return obj;
   },
 
@@ -11617,10 +11572,10 @@ export const ChangeTableIndexData = {
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
     message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
-      ? TableIndexMigrationData.fromPartial(object.prevRecord)
+      ? TableIndexMigration.fromPartial(object.prevRecord)
       : undefined;
     message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
-      ? TableIndexMigrationData.fromPartial(object.nextRecord)
+      ? TableIndexMigration.fromPartial(object.nextRecord)
       : undefined;
     return message;
   },
@@ -11630,19 +11585,19 @@ function createBaseCreateTableIndex(): CreateTableIndex {
   return { key: "", nextUuid: "" };
 }
 
-export const CreateTableIndexData = {
+export const CreateTableIndex = {
   encode(message: CreateTableIndex, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
     }
     if (message.changeTo !== undefined) {
-      TableIndexMigrationData.encode(message.changeTo, writer.uint32(18).fork()).ldelim();
+      TableIndexMigration.encode(message.changeTo, writer.uint32(18).fork()).ldelim();
     }
     if (message.nextUuid !== "") {
       writer.uint32(42).string(message.nextUuid);
     }
     if (message.nextRecord !== undefined) {
-      TableIndexMigrationData.encode(message.nextRecord, writer.uint32(58).fork()).ldelim();
+      TableIndexMigration.encode(message.nextRecord, writer.uint32(58).fork()).ldelim();
     }
     return writer;
   },
@@ -11658,13 +11613,13 @@ export const CreateTableIndexData = {
           message.key = reader.string();
           break;
         case 2:
-          message.changeTo = TableIndexMigrationData.decode(reader, reader.uint32());
+          message.changeTo = TableIndexMigration.decode(reader, reader.uint32());
           break;
         case 5:
           message.nextUuid = reader.string();
           break;
         case 7:
-          message.nextRecord = TableIndexMigrationData.decode(reader, reader.uint32());
+          message.nextRecord = TableIndexMigration.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -11677,9 +11632,9 @@ export const CreateTableIndexData = {
   fromJSON(object: any): CreateTableIndex {
     return {
       key: isSet(object.key) ? String(object.key) : "",
-      changeTo: isSet(object.changeTo) ? TableIndexMigrationData.fromJSON(object.changeTo) : undefined,
+      changeTo: isSet(object.changeTo) ? TableIndexMigration.fromJSON(object.changeTo) : undefined,
       nextUuid: isSet(object.nextUuid) ? String(object.nextUuid) : "",
-      nextRecord: isSet(object.nextRecord) ? TableIndexMigrationData.fromJSON(object.nextRecord) : undefined,
+      nextRecord: isSet(object.nextRecord) ? TableIndexMigration.fromJSON(object.nextRecord) : undefined,
     };
   },
 
@@ -11687,10 +11642,10 @@ export const CreateTableIndexData = {
     const obj: any = {};
     message.key !== undefined && (obj.key = message.key);
     message.changeTo !== undefined &&
-      (obj.changeTo = message.changeTo ? TableIndexMigrationData.toJSON(message.changeTo) : undefined);
+      (obj.changeTo = message.changeTo ? TableIndexMigration.toJSON(message.changeTo) : undefined);
     message.nextUuid !== undefined && (obj.nextUuid = message.nextUuid);
     message.nextRecord !== undefined &&
-      (obj.nextRecord = message.nextRecord ? TableIndexMigrationData.toJSON(message.nextRecord) : undefined);
+      (obj.nextRecord = message.nextRecord ? TableIndexMigration.toJSON(message.nextRecord) : undefined);
     return obj;
   },
 
@@ -11698,11 +11653,11 @@ export const CreateTableIndexData = {
     const message = createBaseCreateTableIndex();
     message.key = object.key ?? "";
     message.changeTo = (object.changeTo !== undefined && object.changeTo !== null)
-      ? TableIndexMigrationData.fromPartial(object.changeTo)
+      ? TableIndexMigration.fromPartial(object.changeTo)
       : undefined;
     message.nextUuid = object.nextUuid ?? "";
     message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
-      ? TableIndexMigrationData.fromPartial(object.nextRecord)
+      ? TableIndexMigration.fromPartial(object.nextRecord)
       : undefined;
     return message;
   },
@@ -11712,10 +11667,10 @@ function createBaseAddUniqColumn(): AddUniqColumn {
   return {};
 }
 
-export const AddUniqColumnData = {
+export const AddUniqColumn = {
   encode(message: AddUniqColumn, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.nextRecord !== undefined) {
-      MigrationColumnDefinitionData.encode(message.nextRecord, writer.uint32(58).fork()).ldelim();
+      MigrationColumnDefinition.encode(message.nextRecord, writer.uint32(58).fork()).ldelim();
     }
     return writer;
   },
@@ -11728,7 +11683,7 @@ export const AddUniqColumnData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 7:
-          message.nextRecord = MigrationColumnDefinitionData.decode(reader, reader.uint32());
+          message.nextRecord = MigrationColumnDefinition.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -11739,22 +11694,20 @@ export const AddUniqColumnData = {
   },
 
   fromJSON(object: any): AddUniqColumn {
-    return {
-      nextRecord: isSet(object.nextRecord) ? MigrationColumnDefinitionData.fromJSON(object.nextRecord) : undefined,
-    };
+    return { nextRecord: isSet(object.nextRecord) ? MigrationColumnDefinition.fromJSON(object.nextRecord) : undefined };
   },
 
   toJSON(message: AddUniqColumn): unknown {
     const obj: any = {};
     message.nextRecord !== undefined &&
-      (obj.nextRecord = message.nextRecord ? MigrationColumnDefinitionData.toJSON(message.nextRecord) : undefined);
+      (obj.nextRecord = message.nextRecord ? MigrationColumnDefinition.toJSON(message.nextRecord) : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<AddUniqColumn>): AddUniqColumn {
     const message = createBaseAddUniqColumn();
     message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
-      ? MigrationColumnDefinitionData.fromPartial(object.nextRecord)
+      ? MigrationColumnDefinition.fromPartial(object.nextRecord)
       : undefined;
     return message;
   },
@@ -11764,7 +11717,7 @@ function createBaseChangeColumnUnique(): ChangeColumnUnique {
   return { key: "", changeFrom: false, changeTo: false, prevUuid: "", nextUuid: "" };
 }
 
-export const ChangeColumnUniqueData = {
+export const ChangeColumnUnique = {
   encode(message: ChangeColumnUnique, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
@@ -11782,10 +11735,10 @@ export const ChangeColumnUniqueData = {
       writer.uint32(42).string(message.nextUuid);
     }
     if (message.prevRecord !== undefined) {
-      MigrationColumnDefinitionData.encode(message.prevRecord, writer.uint32(50).fork()).ldelim();
+      MigrationColumnDefinition.encode(message.prevRecord, writer.uint32(50).fork()).ldelim();
     }
     if (message.nextRecord !== undefined) {
-      MigrationColumnDefinitionData.encode(message.nextRecord, writer.uint32(58).fork()).ldelim();
+      MigrationColumnDefinition.encode(message.nextRecord, writer.uint32(58).fork()).ldelim();
     }
     return writer;
   },
@@ -11813,10 +11766,10 @@ export const ChangeColumnUniqueData = {
           message.nextUuid = reader.string();
           break;
         case 6:
-          message.prevRecord = MigrationColumnDefinitionData.decode(reader, reader.uint32());
+          message.prevRecord = MigrationColumnDefinition.decode(reader, reader.uint32());
           break;
         case 7:
-          message.nextRecord = MigrationColumnDefinitionData.decode(reader, reader.uint32());
+          message.nextRecord = MigrationColumnDefinition.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -11833,8 +11786,8 @@ export const ChangeColumnUniqueData = {
       changeTo: isSet(object.changeTo) ? Boolean(object.changeTo) : false,
       prevUuid: isSet(object.prevUuid) ? String(object.prevUuid) : "",
       nextUuid: isSet(object.nextUuid) ? String(object.nextUuid) : "",
-      prevRecord: isSet(object.prevRecord) ? MigrationColumnDefinitionData.fromJSON(object.prevRecord) : undefined,
-      nextRecord: isSet(object.nextRecord) ? MigrationColumnDefinitionData.fromJSON(object.nextRecord) : undefined,
+      prevRecord: isSet(object.prevRecord) ? MigrationColumnDefinition.fromJSON(object.prevRecord) : undefined,
+      nextRecord: isSet(object.nextRecord) ? MigrationColumnDefinition.fromJSON(object.nextRecord) : undefined,
     };
   },
 
@@ -11846,9 +11799,9 @@ export const ChangeColumnUniqueData = {
     message.prevUuid !== undefined && (obj.prevUuid = message.prevUuid);
     message.nextUuid !== undefined && (obj.nextUuid = message.nextUuid);
     message.prevRecord !== undefined &&
-      (obj.prevRecord = message.prevRecord ? MigrationColumnDefinitionData.toJSON(message.prevRecord) : undefined);
+      (obj.prevRecord = message.prevRecord ? MigrationColumnDefinition.toJSON(message.prevRecord) : undefined);
     message.nextRecord !== undefined &&
-      (obj.nextRecord = message.nextRecord ? MigrationColumnDefinitionData.toJSON(message.nextRecord) : undefined);
+      (obj.nextRecord = message.nextRecord ? MigrationColumnDefinition.toJSON(message.nextRecord) : undefined);
     return obj;
   },
 
@@ -11860,10 +11813,10 @@ export const ChangeColumnUniqueData = {
     message.prevUuid = object.prevUuid ?? "";
     message.nextUuid = object.nextUuid ?? "";
     message.prevRecord = (object.prevRecord !== undefined && object.prevRecord !== null)
-      ? MigrationColumnDefinitionData.fromPartial(object.prevRecord)
+      ? MigrationColumnDefinition.fromPartial(object.prevRecord)
       : undefined;
     message.nextRecord = (object.nextRecord !== undefined && object.nextRecord !== null)
-      ? MigrationColumnDefinitionData.fromPartial(object.nextRecord)
+      ? MigrationColumnDefinition.fromPartial(object.nextRecord)
       : undefined;
     return message;
   },
@@ -11873,7 +11826,7 @@ function createBaseCreateTableNextRecord(): CreateTableNextRecord {
   return { name: "", uuid: "", comment: "", columnDefinitions: [] };
 }
 
-export const CreateTableNextRecordData = {
+export const CreateTableNextRecord = {
   encode(message: CreateTableNextRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
@@ -11885,7 +11838,7 @@ export const CreateTableNextRecordData = {
       writer.uint32(26).string(message.comment);
     }
     for (const v of message.columnDefinitions) {
-      MigrationColumnDefinitionData.encode(v!, writer.uint32(34).fork()).ldelim();
+      MigrationColumnDefinition.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -11907,7 +11860,7 @@ export const CreateTableNextRecordData = {
           message.comment = reader.string();
           break;
         case 4:
-          message.columnDefinitions.push(MigrationColumnDefinitionData.decode(reader, reader.uint32()));
+          message.columnDefinitions.push(MigrationColumnDefinition.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -11923,7 +11876,7 @@ export const CreateTableNextRecordData = {
       uuid: isSet(object.uuid) ? String(object.uuid) : "",
       comment: isSet(object.comment) ? String(object.comment) : "",
       columnDefinitions: Array.isArray(object?.columnDefinitions)
-        ? object.columnDefinitions.map((e: any) => MigrationColumnDefinitionData.fromJSON(e))
+        ? object.columnDefinitions.map((e: any) => MigrationColumnDefinition.fromJSON(e))
         : [],
     };
   },
@@ -11934,9 +11887,7 @@ export const CreateTableNextRecordData = {
     message.uuid !== undefined && (obj.uuid = message.uuid);
     message.comment !== undefined && (obj.comment = message.comment);
     if (message.columnDefinitions) {
-      obj.columnDefinitions = message.columnDefinitions.map((e) =>
-        e ? MigrationColumnDefinitionData.toJSON(e) : undefined
-      );
+      obj.columnDefinitions = message.columnDefinitions.map((e) => e ? MigrationColumnDefinition.toJSON(e) : undefined);
     } else {
       obj.columnDefinitions = [];
     }
@@ -11948,8 +11899,7 @@ export const CreateTableNextRecordData = {
     message.name = object.name ?? "";
     message.uuid = object.uuid ?? "";
     message.comment = object.comment ?? "";
-    message.columnDefinitions = object.columnDefinitions?.map((e) => MigrationColumnDefinitionData.fromPartial(e)) ||
-      [];
+    message.columnDefinitions = object.columnDefinitions?.map((e) => MigrationColumnDefinition.fromPartial(e)) || [];
     return message;
   },
 };
@@ -11968,7 +11918,7 @@ function createBaseMigrationColumnDefinition(): MigrationColumnDefinition {
   };
 }
 
-export const MigrationColumnDefinitionData = {
+export const MigrationColumnDefinition = {
   encode(message: MigrationColumnDefinition, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
@@ -11998,7 +11948,7 @@ export const MigrationColumnDefinitionData = {
       writer.uint32(72).bool(message.customForeignKey);
     }
     if (message.tableDefinition !== undefined) {
-      TableMetaDataMigrationData.encode(message.tableDefinition, writer.uint32(82).fork()).ldelim();
+      TableMetaDataMigration.encode(message.tableDefinition, writer.uint32(82).fork()).ldelim();
     }
     if (message.id !== 0) {
       writer.uint32(88).int32(message.id);
@@ -12041,7 +11991,7 @@ export const MigrationColumnDefinitionData = {
           message.customForeignKey = reader.bool();
           break;
         case 10:
-          message.tableDefinition = TableMetaDataMigrationData.decode(reader, reader.uint32());
+          message.tableDefinition = TableMetaDataMigration.decode(reader, reader.uint32());
           break;
         case 11:
           message.id = reader.int32();
@@ -12066,7 +12016,7 @@ export const MigrationColumnDefinitionData = {
       tableDefinitionUuid: isSet(object.tableDefinitionUuid) ? String(object.tableDefinitionUuid) : "",
       customForeignKey: isSet(object.customForeignKey) ? Boolean(object.customForeignKey) : undefined,
       tableDefinition: isSet(object.tableDefinition)
-        ? TableMetaDataMigrationData.fromJSON(object.tableDefinition)
+        ? TableMetaDataMigration.fromJSON(object.tableDefinition)
         : undefined,
       id: isSet(object.id) ? Number(object.id) : 0,
     };
@@ -12084,7 +12034,7 @@ export const MigrationColumnDefinitionData = {
     message.tableDefinitionUuid !== undefined && (obj.tableDefinitionUuid = message.tableDefinitionUuid);
     message.customForeignKey !== undefined && (obj.customForeignKey = message.customForeignKey);
     message.tableDefinition !== undefined && (obj.tableDefinition = message.tableDefinition
-      ? TableMetaDataMigrationData.toJSON(message.tableDefinition)
+      ? TableMetaDataMigration.toJSON(message.tableDefinition)
       : undefined);
     message.id !== undefined && (obj.id = Math.round(message.id));
     return obj;
@@ -12102,7 +12052,7 @@ export const MigrationColumnDefinitionData = {
     message.tableDefinitionUuid = object.tableDefinitionUuid ?? "";
     message.customForeignKey = object.customForeignKey ?? undefined;
     message.tableDefinition = (object.tableDefinition !== undefined && object.tableDefinition !== null)
-      ? TableMetaDataMigrationData.fromPartial(object.tableDefinition)
+      ? TableMetaDataMigration.fromPartial(object.tableDefinition)
       : undefined;
     message.id = object.id ?? 0;
     return message;
@@ -12113,7 +12063,7 @@ function createBaseTableMetaDataMigration(): TableMetaDataMigration {
   return { name: "", uuid: "" };
 }
 
-export const TableMetaDataMigrationData = {
+export const TableMetaDataMigration = {
   encode(message: TableMetaDataMigration, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
@@ -12176,7 +12126,7 @@ function createBaseTableIndexMigration(): TableIndexMigration {
   };
 }
 
-export const TableIndexMigrationData = {
+export const TableIndexMigration = {
   encode(message: TableIndexMigration, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
@@ -12191,13 +12141,13 @@ export const TableIndexMigrationData = {
       writer.uint32(34).string(message.tableDefinitionUuid);
     }
     for (const v of message.columnDefinitions) {
-      MigrationColumnDefinitionData.encode(v!, writer.uint32(42).fork()).ldelim();
+      MigrationColumnDefinition.encode(v!, writer.uint32(42).fork()).ldelim();
     }
     if (message.singleIndex === true) {
       writer.uint32(48).bool(message.singleIndex);
     }
     if (message.tableDefinition !== undefined) {
-      TableMetaDataMigrationData.encode(message.tableDefinition, writer.uint32(58).fork()).ldelim();
+      TableMetaDataMigration.encode(message.tableDefinition, writer.uint32(58).fork()).ldelim();
     }
     if (message.id !== 0) {
       writer.uint32(64).int32(message.id);
@@ -12225,13 +12175,13 @@ export const TableIndexMigrationData = {
           message.tableDefinitionUuid = reader.string();
           break;
         case 5:
-          message.columnDefinitions.push(MigrationColumnDefinitionData.decode(reader, reader.uint32()));
+          message.columnDefinitions.push(MigrationColumnDefinition.decode(reader, reader.uint32()));
           break;
         case 6:
           message.singleIndex = reader.bool();
           break;
         case 7:
-          message.tableDefinition = TableMetaDataMigrationData.decode(reader, reader.uint32());
+          message.tableDefinition = TableMetaDataMigration.decode(reader, reader.uint32());
           break;
         case 8:
           message.id = reader.int32();
@@ -12251,11 +12201,11 @@ export const TableIndexMigrationData = {
       uuid: isSet(object.uuid) ? String(object.uuid) : "",
       tableDefinitionUuid: isSet(object.tableDefinitionUuid) ? String(object.tableDefinitionUuid) : "",
       columnDefinitions: Array.isArray(object?.columnDefinitions)
-        ? object.columnDefinitions.map((e: any) => MigrationColumnDefinitionData.fromJSON(e))
+        ? object.columnDefinitions.map((e: any) => MigrationColumnDefinition.fromJSON(e))
         : [],
       singleIndex: isSet(object.singleIndex) ? Boolean(object.singleIndex) : false,
       tableDefinition: isSet(object.tableDefinition)
-        ? TableMetaDataMigrationData.fromJSON(object.tableDefinition)
+        ? TableMetaDataMigration.fromJSON(object.tableDefinition)
         : undefined,
       id: isSet(object.id) ? Number(object.id) : 0,
     };
@@ -12268,15 +12218,13 @@ export const TableIndexMigrationData = {
     message.uuid !== undefined && (obj.uuid = message.uuid);
     message.tableDefinitionUuid !== undefined && (obj.tableDefinitionUuid = message.tableDefinitionUuid);
     if (message.columnDefinitions) {
-      obj.columnDefinitions = message.columnDefinitions.map((e) =>
-        e ? MigrationColumnDefinitionData.toJSON(e) : undefined
-      );
+      obj.columnDefinitions = message.columnDefinitions.map((e) => e ? MigrationColumnDefinition.toJSON(e) : undefined);
     } else {
       obj.columnDefinitions = [];
     }
     message.singleIndex !== undefined && (obj.singleIndex = message.singleIndex);
     message.tableDefinition !== undefined && (obj.tableDefinition = message.tableDefinition
-      ? TableMetaDataMigrationData.toJSON(message.tableDefinition)
+      ? TableMetaDataMigration.toJSON(message.tableDefinition)
       : undefined);
     message.id !== undefined && (obj.id = Math.round(message.id));
     return obj;
@@ -12288,11 +12236,10 @@ export const TableIndexMigrationData = {
     message.unique = object.unique ?? false;
     message.uuid = object.uuid ?? "";
     message.tableDefinitionUuid = object.tableDefinitionUuid ?? "";
-    message.columnDefinitions = object.columnDefinitions?.map((e) => MigrationColumnDefinitionData.fromPartial(e)) ||
-      [];
+    message.columnDefinitions = object.columnDefinitions?.map((e) => MigrationColumnDefinition.fromPartial(e)) || [];
     message.singleIndex = object.singleIndex ?? false;
     message.tableDefinition = (object.tableDefinition !== undefined && object.tableDefinition !== null)
-      ? TableMetaDataMigrationData.fromPartial(object.tableDefinition)
+      ? TableMetaDataMigration.fromPartial(object.tableDefinition)
       : undefined;
     message.id = object.id ?? 0;
     return message;
@@ -12311,7 +12258,7 @@ function createBaseTableRelationMigration(): TableRelationMigration {
   };
 }
 
-export const TableRelationMigrationData = {
+export const TableRelationMigration = {
   encode(message: TableRelationMigration, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.foreignKey !== "") {
       writer.uint32(10).string(message.foreignKey);
@@ -12335,10 +12282,10 @@ export const TableRelationMigrationData = {
       writer.uint32(56).bool(message.customForeignKey);
     }
     if (message.tableDefinition !== undefined) {
-      CreateTableChangeData.encode(message.tableDefinition, writer.uint32(66).fork()).ldelim();
+      CreateTableChange.encode(message.tableDefinition, writer.uint32(66).fork()).ldelim();
     }
     if (message.relatedTable !== undefined) {
-      CreateTableChangeData.encode(message.relatedTable, writer.uint32(74).fork()).ldelim();
+      CreateTableChange.encode(message.relatedTable, writer.uint32(74).fork()).ldelim();
     }
     if (message.id !== 0) {
       writer.uint32(80).int32(message.id);
@@ -12375,10 +12322,10 @@ export const TableRelationMigrationData = {
           message.customForeignKey = reader.bool();
           break;
         case 8:
-          message.tableDefinition = CreateTableChangeData.decode(reader, reader.uint32());
+          message.tableDefinition = CreateTableChange.decode(reader, reader.uint32());
           break;
         case 9:
-          message.relatedTable = CreateTableChangeData.decode(reader, reader.uint32());
+          message.relatedTable = CreateTableChange.decode(reader, reader.uint32());
           break;
         case 10:
           message.id = reader.int32();
@@ -12400,10 +12347,8 @@ export const TableRelationMigrationData = {
       tableDefinitionUuid: isSet(object.tableDefinitionUuid) ? String(object.tableDefinitionUuid) : "",
       relatedTableUuid: isSet(object.relatedTableUuid) ? String(object.relatedTableUuid) : "",
       customForeignKey: isSet(object.customForeignKey) ? Boolean(object.customForeignKey) : undefined,
-      tableDefinition: isSet(object.tableDefinition)
-        ? CreateTableChangeData.fromJSON(object.tableDefinition)
-        : undefined,
-      relatedTable: isSet(object.relatedTable) ? CreateTableChangeData.fromJSON(object.relatedTable) : undefined,
+      tableDefinition: isSet(object.tableDefinition) ? CreateTableChange.fromJSON(object.tableDefinition) : undefined,
+      relatedTable: isSet(object.relatedTable) ? CreateTableChange.fromJSON(object.relatedTable) : undefined,
       id: isSet(object.id) ? Number(object.id) : 0,
     };
   },
@@ -12418,11 +12363,9 @@ export const TableRelationMigrationData = {
     message.relatedTableUuid !== undefined && (obj.relatedTableUuid = message.relatedTableUuid);
     message.customForeignKey !== undefined && (obj.customForeignKey = message.customForeignKey);
     message.tableDefinition !== undefined &&
-      (obj.tableDefinition = message.tableDefinition
-        ? CreateTableChangeData.toJSON(message.tableDefinition)
-        : undefined);
+      (obj.tableDefinition = message.tableDefinition ? CreateTableChange.toJSON(message.tableDefinition) : undefined);
     message.relatedTable !== undefined &&
-      (obj.relatedTable = message.relatedTable ? CreateTableChangeData.toJSON(message.relatedTable) : undefined);
+      (obj.relatedTable = message.relatedTable ? CreateTableChange.toJSON(message.relatedTable) : undefined);
     message.id !== undefined && (obj.id = Math.round(message.id));
     return obj;
   },
@@ -12437,10 +12380,10 @@ export const TableRelationMigrationData = {
     message.relatedTableUuid = object.relatedTableUuid ?? "";
     message.customForeignKey = object.customForeignKey ?? undefined;
     message.tableDefinition = (object.tableDefinition !== undefined && object.tableDefinition !== null)
-      ? CreateTableChangeData.fromPartial(object.tableDefinition)
+      ? CreateTableChange.fromPartial(object.tableDefinition)
       : undefined;
     message.relatedTable = (object.relatedTable !== undefined && object.relatedTable !== null)
-      ? CreateTableChangeData.fromPartial(object.relatedTable)
+      ? CreateTableChange.fromPartial(object.relatedTable)
       : undefined;
     message.id = object.id ?? 0;
     return message;
@@ -12451,22 +12394,22 @@ function createBaseWebApp(): WebApp {
   return { appPages: [], assets: [], variables: [], categories: [], localizations: [] };
 }
 
-export const WebAppData = {
+export const WebApp = {
   encode(message: WebApp, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.appPages) {
-      AppPageData.encode(v!, writer.uint32(10).fork()).ldelim();
+      AppPage.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     for (const v of message.assets) {
-      AssetData.encode(v!, writer.uint32(18).fork()).ldelim();
+      Asset.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     for (const v of message.variables) {
-      WebAppVariableData.encode(v!, writer.uint32(26).fork()).ldelim();
+      WebAppVariable.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     for (const v of message.categories) {
-      AppPageCategoryData.encode(v!, writer.uint32(34).fork()).ldelim();
+      AppPageCategory.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     for (const v of message.localizations) {
-      LocalizationData.encode(v!, writer.uint32(42).fork()).ldelim();
+      Localization.encode(v!, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -12479,19 +12422,19 @@ export const WebAppData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.appPages.push(AppPageData.decode(reader, reader.uint32()));
+          message.appPages.push(AppPage.decode(reader, reader.uint32()));
           break;
         case 2:
-          message.assets.push(AssetData.decode(reader, reader.uint32()));
+          message.assets.push(Asset.decode(reader, reader.uint32()));
           break;
         case 3:
-          message.variables.push(WebAppVariableData.decode(reader, reader.uint32()));
+          message.variables.push(WebAppVariable.decode(reader, reader.uint32()));
           break;
         case 4:
-          message.categories.push(AppPageCategoryData.decode(reader, reader.uint32()));
+          message.categories.push(AppPageCategory.decode(reader, reader.uint32()));
           break;
         case 5:
-          message.localizations.push(LocalizationData.decode(reader, reader.uint32()));
+          message.localizations.push(Localization.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -12503,16 +12446,14 @@ export const WebAppData = {
 
   fromJSON(object: any): WebApp {
     return {
-      appPages: Array.isArray(object?.appPages) ? object.appPages.map((e: any) => AppPageData.fromJSON(e)) : [],
-      assets: Array.isArray(object?.assets) ? object.assets.map((e: any) => AssetData.fromJSON(e)) : [],
-      variables: Array.isArray(object?.variables)
-        ? object.variables.map((e: any) => WebAppVariableData.fromJSON(e))
-        : [],
+      appPages: Array.isArray(object?.appPages) ? object.appPages.map((e: any) => AppPage.fromJSON(e)) : [],
+      assets: Array.isArray(object?.assets) ? object.assets.map((e: any) => Asset.fromJSON(e)) : [],
+      variables: Array.isArray(object?.variables) ? object.variables.map((e: any) => WebAppVariable.fromJSON(e)) : [],
       categories: Array.isArray(object?.categories)
-        ? object.categories.map((e: any) => AppPageCategoryData.fromJSON(e))
+        ? object.categories.map((e: any) => AppPageCategory.fromJSON(e))
         : [],
       localizations: Array.isArray(object?.localizations)
-        ? object.localizations.map((e: any) => LocalizationData.fromJSON(e))
+        ? object.localizations.map((e: any) => Localization.fromJSON(e))
         : [],
     };
   },
@@ -12520,27 +12461,27 @@ export const WebAppData = {
   toJSON(message: WebApp): unknown {
     const obj: any = {};
     if (message.appPages) {
-      obj.appPages = message.appPages.map((e) => e ? AppPageData.toJSON(e) : undefined);
+      obj.appPages = message.appPages.map((e) => e ? AppPage.toJSON(e) : undefined);
     } else {
       obj.appPages = [];
     }
     if (message.assets) {
-      obj.assets = message.assets.map((e) => e ? AssetData.toJSON(e) : undefined);
+      obj.assets = message.assets.map((e) => e ? Asset.toJSON(e) : undefined);
     } else {
       obj.assets = [];
     }
     if (message.variables) {
-      obj.variables = message.variables.map((e) => e ? WebAppVariableData.toJSON(e) : undefined);
+      obj.variables = message.variables.map((e) => e ? WebAppVariable.toJSON(e) : undefined);
     } else {
       obj.variables = [];
     }
     if (message.categories) {
-      obj.categories = message.categories.map((e) => e ? AppPageCategoryData.toJSON(e) : undefined);
+      obj.categories = message.categories.map((e) => e ? AppPageCategory.toJSON(e) : undefined);
     } else {
       obj.categories = [];
     }
     if (message.localizations) {
-      obj.localizations = message.localizations.map((e) => e ? LocalizationData.toJSON(e) : undefined);
+      obj.localizations = message.localizations.map((e) => e ? Localization.toJSON(e) : undefined);
     } else {
       obj.localizations = [];
     }
@@ -12549,11 +12490,11 @@ export const WebAppData = {
 
   fromPartial(object: DeepPartial<WebApp>): WebApp {
     const message = createBaseWebApp();
-    message.appPages = object.appPages?.map((e) => AppPageData.fromPartial(e)) || [];
-    message.assets = object.assets?.map((e) => AssetData.fromPartial(e)) || [];
-    message.variables = object.variables?.map((e) => WebAppVariableData.fromPartial(e)) || [];
-    message.categories = object.categories?.map((e) => AppPageCategoryData.fromPartial(e)) || [];
-    message.localizations = object.localizations?.map((e) => LocalizationData.fromPartial(e)) || [];
+    message.appPages = object.appPages?.map((e) => AppPage.fromPartial(e)) || [];
+    message.assets = object.assets?.map((e) => Asset.fromPartial(e)) || [];
+    message.variables = object.variables?.map((e) => WebAppVariable.fromPartial(e)) || [];
+    message.categories = object.categories?.map((e) => AppPageCategory.fromPartial(e)) || [];
+    message.localizations = object.localizations?.map((e) => Localization.fromPartial(e)) || [];
     return message;
   },
 };
@@ -12562,7 +12503,7 @@ function createBaseWebAppVariable(): WebAppVariable {
   return { id: "", type: 0, name: "", value: "" };
 }
 
-export const WebAppVariableData = {
+export const WebAppVariable = {
   encode(message: WebAppVariable, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
@@ -12638,7 +12579,7 @@ function createBaseAsset(): Asset {
   return { id: "", url: "", fileName: "", fileSize: 0, contentType: "" };
 }
 
-export const AssetData = {
+export const Asset = {
   encode(message: Asset, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
@@ -12723,7 +12664,7 @@ function createBaseAppPage(): AppPage {
   return { id: "", pageName: "", slug: "", pageType: 0, nodes: [], categoryId: "" };
 }
 
-export const AppPageData = {
+export const AppPage = {
   encode(message: AppPage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
@@ -12738,7 +12679,7 @@ export const AppPageData = {
       writer.uint32(32).int32(message.pageType);
     }
     for (const v of message.nodes) {
-      PageNodeData.encode(v!, writer.uint32(42).fork()).ldelim();
+      PageNode.encode(v!, writer.uint32(42).fork()).ldelim();
     }
     if (message.categoryId !== "") {
       writer.uint32(50).string(message.categoryId);
@@ -12766,7 +12707,7 @@ export const AppPageData = {
           message.pageType = reader.int32() as any;
           break;
         case 5:
-          message.nodes.push(PageNodeData.decode(reader, reader.uint32()));
+          message.nodes.push(PageNode.decode(reader, reader.uint32()));
           break;
         case 6:
           message.categoryId = reader.string();
@@ -12785,7 +12726,7 @@ export const AppPageData = {
       pageName: isSet(object.pageName) ? String(object.pageName) : "",
       slug: isSet(object.slug) ? String(object.slug) : "",
       pageType: isSet(object.pageType) ? appPagePageTypeFromJSON(object.pageType) : 0,
-      nodes: Array.isArray(object?.nodes) ? object.nodes.map((e: any) => PageNodeData.fromJSON(e)) : [],
+      nodes: Array.isArray(object?.nodes) ? object.nodes.map((e: any) => PageNode.fromJSON(e)) : [],
       categoryId: isSet(object.categoryId) ? String(object.categoryId) : "",
     };
   },
@@ -12797,7 +12738,7 @@ export const AppPageData = {
     message.slug !== undefined && (obj.slug = message.slug);
     message.pageType !== undefined && (obj.pageType = appPagePageTypeToJSON(message.pageType));
     if (message.nodes) {
-      obj.nodes = message.nodes.map((e) => e ? PageNodeData.toJSON(e) : undefined);
+      obj.nodes = message.nodes.map((e) => e ? PageNode.toJSON(e) : undefined);
     } else {
       obj.nodes = [];
     }
@@ -12811,7 +12752,7 @@ export const AppPageData = {
     message.pageName = object.pageName ?? "";
     message.slug = object.slug ?? "";
     message.pageType = object.pageType ?? 0;
-    message.nodes = object.nodes?.map((e) => PageNodeData.fromPartial(e)) || [];
+    message.nodes = object.nodes?.map((e) => PageNode.fromPartial(e)) || [];
     message.categoryId = object.categoryId ?? "";
     return message;
   },
@@ -12821,7 +12762,7 @@ function createBaseAppPageCategory(): AppPageCategory {
   return { id: "", name: "" };
 }
 
-export const AppPageCategoryData = {
+export const AppPageCategory = {
   encode(message: AppPageCategory, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
@@ -12876,7 +12817,7 @@ function createBasePageNode(): PageNode {
   return { id: "", displayName: "", name: "", parent: "", nodes: [], linkedNodes: {}, componentName: "" };
 }
 
-export const PageNodeData = {
+export const PageNode = {
   encode(message: PageNode, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
@@ -12894,19 +12835,19 @@ export const PageNodeData = {
       writer.uint32(42).string(v!);
     }
     Object.entries(message.linkedNodes).forEach(([key, value]) => {
-      PageNodeLinkedNodesEntryData.encode({ key: key as any, value }, writer.uint32(50).fork()).ldelim();
+      PageNodeLinkedNodesEntry.encode({ key: key as any, value }, writer.uint32(50).fork()).ldelim();
     });
     if (message.componentName !== "") {
       writer.uint32(58).string(message.componentName);
     }
     if (message.custom !== undefined) {
-      NodeCustomData.encode(message.custom, writer.uint32(66).fork()).ldelim();
+      NodeCustom.encode(message.custom, writer.uint32(66).fork()).ldelim();
     }
     if (message.webProps !== undefined) {
-      WebNodePropsData.encode(message.webProps, writer.uint32(74).fork()).ldelim();
+      WebNodeProps.encode(message.webProps, writer.uint32(74).fork()).ldelim();
     }
     if (message.mobileProps !== undefined) {
-      MobileNodePropsData.encode(message.mobileProps, writer.uint32(82).fork()).ldelim();
+      MobileNodeProps.encode(message.mobileProps, writer.uint32(82).fork()).ldelim();
     }
     return writer;
   },
@@ -12934,7 +12875,7 @@ export const PageNodeData = {
           message.nodes.push(reader.string());
           break;
         case 6:
-          const entry6 = PageNodeLinkedNodesEntryData.decode(reader, reader.uint32());
+          const entry6 = PageNodeLinkedNodesEntry.decode(reader, reader.uint32());
           if (entry6.value !== undefined) {
             message.linkedNodes[entry6.key] = entry6.value;
           }
@@ -12943,13 +12884,13 @@ export const PageNodeData = {
           message.componentName = reader.string();
           break;
         case 8:
-          message.custom = NodeCustomData.decode(reader, reader.uint32());
+          message.custom = NodeCustom.decode(reader, reader.uint32());
           break;
         case 9:
-          message.webProps = WebNodePropsData.decode(reader, reader.uint32());
+          message.webProps = WebNodeProps.decode(reader, reader.uint32());
           break;
         case 10:
-          message.mobileProps = MobileNodePropsData.decode(reader, reader.uint32());
+          message.mobileProps = MobileNodeProps.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -12973,9 +12914,9 @@ export const PageNodeData = {
         }, {})
         : {},
       componentName: isSet(object.componentName) ? String(object.componentName) : "",
-      custom: isSet(object.custom) ? NodeCustomData.fromJSON(object.custom) : undefined,
-      webProps: isSet(object.webProps) ? WebNodePropsData.fromJSON(object.webProps) : undefined,
-      mobileProps: isSet(object.mobileProps) ? MobileNodePropsData.fromJSON(object.mobileProps) : undefined,
+      custom: isSet(object.custom) ? NodeCustom.fromJSON(object.custom) : undefined,
+      webProps: isSet(object.webProps) ? WebNodeProps.fromJSON(object.webProps) : undefined,
+      mobileProps: isSet(object.mobileProps) ? MobileNodeProps.fromJSON(object.mobileProps) : undefined,
     };
   },
 
@@ -12997,11 +12938,11 @@ export const PageNodeData = {
       });
     }
     message.componentName !== undefined && (obj.componentName = message.componentName);
-    message.custom !== undefined && (obj.custom = message.custom ? NodeCustomData.toJSON(message.custom) : undefined);
+    message.custom !== undefined && (obj.custom = message.custom ? NodeCustom.toJSON(message.custom) : undefined);
     message.webProps !== undefined &&
-      (obj.webProps = message.webProps ? WebNodePropsData.toJSON(message.webProps) : undefined);
+      (obj.webProps = message.webProps ? WebNodeProps.toJSON(message.webProps) : undefined);
     message.mobileProps !== undefined &&
-      (obj.mobileProps = message.mobileProps ? MobileNodePropsData.toJSON(message.mobileProps) : undefined);
+      (obj.mobileProps = message.mobileProps ? MobileNodeProps.toJSON(message.mobileProps) : undefined);
     return obj;
   },
 
@@ -13023,13 +12964,13 @@ export const PageNodeData = {
     );
     message.componentName = object.componentName ?? "";
     message.custom = (object.custom !== undefined && object.custom !== null)
-      ? NodeCustomData.fromPartial(object.custom)
+      ? NodeCustom.fromPartial(object.custom)
       : undefined;
     message.webProps = (object.webProps !== undefined && object.webProps !== null)
-      ? WebNodePropsData.fromPartial(object.webProps)
+      ? WebNodeProps.fromPartial(object.webProps)
       : undefined;
     message.mobileProps = (object.mobileProps !== undefined && object.mobileProps !== null)
-      ? MobileNodePropsData.fromPartial(object.mobileProps)
+      ? MobileNodeProps.fromPartial(object.mobileProps)
       : undefined;
     return message;
   },
@@ -13039,7 +12980,7 @@ function createBasePageNodeLinkedNodesEntry(): PageNodeLinkedNodesEntry {
   return { key: "", value: "" };
 }
 
-export const PageNodeLinkedNodesEntryData = {
+export const PageNodeLinkedNodesEntry = {
   encode(message: PageNodeLinkedNodesEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
@@ -13120,7 +13061,7 @@ function createBaseWebNodeProps(): WebNodeProps {
   };
 }
 
-export const WebNodePropsData = {
+export const WebNodeProps = {
   encode(message: WebNodeProps, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.elementKey !== "") {
       writer.uint32(10).string(message.elementKey);
@@ -13254,16 +13195,16 @@ export const WebNodePropsData = {
       writer.uint32(344).int32(message.xxl);
     }
     if (message.grid !== undefined) {
-      StructData.encode(StructData.wrap(message.grid), writer.uint32(354).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.grid), writer.uint32(354).fork()).ldelim();
     }
     if (message.xlResponsive !== undefined) {
-      StructData.encode(StructData.wrap(message.xlResponsive), writer.uint32(362).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.xlResponsive), writer.uint32(362).fork()).ldelim();
     }
     if (message.mdResponsive !== undefined) {
-      StructData.encode(StructData.wrap(message.mdResponsive), writer.uint32(370).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.mdResponsive), writer.uint32(370).fork()).ldelim();
     }
     if (message.xsResponsive !== undefined) {
-      StructData.encode(StructData.wrap(message.xsResponsive), writer.uint32(378).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.xsResponsive), writer.uint32(378).fork()).ldelim();
     }
     if (message.picker !== undefined) {
       writer.uint32(386).string(message.picker);
@@ -13320,10 +13261,10 @@ export const WebNodePropsData = {
       writer.uint32(522).string(message.tabPosition);
     }
     if (message.tabs !== undefined) {
-      StructData.encode(StructData.wrap(message.tabs), writer.uint32(530).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.tabs), writer.uint32(530).fork()).ldelim();
     }
     if (message.tabLabelStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.tabLabelStyle), writer.uint32(538).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.tabLabelStyle), writer.uint32(538).fork()).ldelim();
     }
     if (message.defaultActiveKey !== undefined) {
       writer.uint32(546).string(message.defaultActiveKey);
@@ -13347,169 +13288,169 @@ export const WebNodePropsData = {
       writer.uint32(592).int32(message.pageSize);
     }
     if (message.bodyStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.bodyStyle), writer.uint32(602).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.bodyStyle), writer.uint32(602).fork()).ldelim();
     }
     if (message.placeholderStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.placeholderStyle), writer.uint32(610).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.placeholderStyle), writer.uint32(610).fork()).ldelim();
     }
     if (message.containerStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.containerStyle), writer.uint32(618).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.containerStyle), writer.uint32(618).fork()).ldelim();
     }
     if (message.dropdownStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.dropdownStyle), writer.uint32(626).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.dropdownStyle), writer.uint32(626).fork()).ldelim();
     }
     if (message.optionStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.optionStyle), writer.uint32(634).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.optionStyle), writer.uint32(634).fork()).ldelim();
     }
     if (message.cellStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.cellStyle), writer.uint32(642).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.cellStyle), writer.uint32(642).fork()).ldelim();
     }
     if (message.cellTextStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.cellTextStyle), writer.uint32(650).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.cellTextStyle), writer.uint32(650).fork()).ldelim();
     }
     if (message.style !== undefined) {
-      StructData.encode(StructData.wrap(message.style), writer.uint32(658).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.style), writer.uint32(658).fork()).ldelim();
     }
     if (message.buttonStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.buttonStyle), writer.uint32(666).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.buttonStyle), writer.uint32(666).fork()).ldelim();
     }
     if (message.headerStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.headerStyle), writer.uint32(674).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.headerStyle), writer.uint32(674).fork()).ldelim();
     }
     if (message.wrapperStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.wrapperStyle), writer.uint32(682).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.wrapperStyle), writer.uint32(682).fork()).ldelim();
     }
     if (message.tableStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.tableStyle), writer.uint32(690).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.tableStyle), writer.uint32(690).fork()).ldelim();
     }
     if (message.headerRowStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.headerRowStyle), writer.uint32(698).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.headerRowStyle), writer.uint32(698).fork()).ldelim();
     }
     if (message.headerColumnStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.headerColumnStyle), writer.uint32(706).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.headerColumnStyle), writer.uint32(706).fork()).ldelim();
     }
     if (message.bodyRowStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.bodyRowStyle), writer.uint32(714).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.bodyRowStyle), writer.uint32(714).fork()).ldelim();
     }
     if (message.bodyColumnStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.bodyColumnStyle), writer.uint32(722).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.bodyColumnStyle), writer.uint32(722).fork()).ldelim();
     }
     if (message.sortColumnStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.sortColumnStyle), writer.uint32(730).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.sortColumnStyle), writer.uint32(730).fork()).ldelim();
     }
     if (message.footerRowStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.footerRowStyle), writer.uint32(738).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.footerRowStyle), writer.uint32(738).fork()).ldelim();
     }
     if (message.footerColumnStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.footerColumnStyle), writer.uint32(746).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.footerColumnStyle), writer.uint32(746).fork()).ldelim();
     }
     if (message.paginationWrapperStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.paginationWrapperStyle), writer.uint32(754).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.paginationWrapperStyle), writer.uint32(754).fork()).ldelim();
     }
     if (message.labelStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.labelStyle), writer.uint32(762).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.labelStyle), writer.uint32(762).fork()).ldelim();
     }
     if (message.inputStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.inputStyle), writer.uint32(770).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.inputStyle), writer.uint32(770).fork()).ldelim();
     }
     if (message.ascendingIconProps !== undefined) {
-      WebNodePropsData.encode(message.ascendingIconProps, writer.uint32(778).fork()).ldelim();
+      WebNodeProps.encode(message.ascendingIconProps, writer.uint32(778).fork()).ldelim();
     }
     if (message.descendingIconProps !== undefined) {
-      WebNodePropsData.encode(message.descendingIconProps, writer.uint32(786).fork()).ldelim();
+      WebNodeProps.encode(message.descendingIconProps, writer.uint32(786).fork()).ldelim();
     }
     if (message.iconProps !== undefined) {
-      WebNodePropsData.encode(message.iconProps, writer.uint32(794).fork()).ldelim();
+      WebNodeProps.encode(message.iconProps, writer.uint32(794).fork()).ldelim();
     }
     if (message.drawerProps !== undefined) {
-      WebNodePropsData.encode(message.drawerProps, writer.uint32(802).fork()).ldelim();
+      WebNodeProps.encode(message.drawerProps, writer.uint32(802).fork()).ldelim();
     }
     if (message.buttonProps !== undefined) {
-      WebNodePropsData.encode(message.buttonProps, writer.uint32(810).fork()).ldelim();
+      WebNodeProps.encode(message.buttonProps, writer.uint32(810).fork()).ldelim();
     }
     if (message.prefixIconProps !== undefined) {
-      WebNodePropsData.encode(message.prefixIconProps, writer.uint32(818).fork()).ldelim();
+      WebNodeProps.encode(message.prefixIconProps, writer.uint32(818).fork()).ldelim();
     }
     if (message.suffixIconProps !== undefined) {
-      WebNodePropsData.encode(message.suffixIconProps, writer.uint32(826).fork()).ldelim();
+      WebNodeProps.encode(message.suffixIconProps, writer.uint32(826).fork()).ldelim();
     }
     if (message.renderItem !== undefined) {
-      RenderMoleculeData.encode(message.renderItem, writer.uint32(874).fork()).ldelim();
+      RenderMolecule.encode(message.renderItem, writer.uint32(874).fork()).ldelim();
     }
     if (message.header !== undefined) {
-      MoleculeComponentData.encode(message.header, writer.uint32(882).fork()).ldelim();
+      MoleculeComponent.encode(message.header, writer.uint32(882).fork()).ldelim();
     }
     if (message.footer !== undefined) {
-      MoleculeComponentData.encode(message.footer, writer.uint32(890).fork()).ldelim();
+      MoleculeComponent.encode(message.footer, writer.uint32(890).fork()).ldelim();
     }
     for (const v of message.drawerTitle) {
-      NodeVariableData.encode(v!, writer.uint32(898).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(898).fork()).ldelim();
     }
     for (const v of message.placeholder) {
-      NodeVariableData.encode(v!, writer.uint32(906).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(906).fork()).ldelim();
     }
     for (const v of message.inputLabel) {
-      NodeVariableData.encode(v!, writer.uint32(914).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(914).fork()).ldelim();
     }
     for (const v of message.href) {
-      NodeVariableData.encode(v!, writer.uint32(922).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(922).fork()).ldelim();
     }
     for (const v of message.action) {
-      NodeVariableData.encode(v!, writer.uint32(930).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(930).fork()).ldelim();
     }
     for (const v of message.data) {
-      NodeVariableData.encode(v!, writer.uint32(938).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(938).fork()).ldelim();
     }
     for (const v of message.totalPage) {
-      NodeVariableData.encode(v!, writer.uint32(946).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(946).fork()).ldelim();
     }
     for (const v of message.defaultValue) {
-      NodeVariableData.encode(v!, writer.uint32(954).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(954).fork()).ldelim();
     }
     for (const v of message.source) {
-      NodeVariableData.encode(v!, writer.uint32(962).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(962).fork()).ldelim();
     }
     for (const v of message.title) {
-      NodeVariableData.encode(v!, writer.uint32(970).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(970).fork()).ldelim();
     }
     for (const v of message.childrenData) {
-      NodeVariableData.encode(v!, writer.uint32(978).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(978).fork()).ldelim();
     }
     for (const v of message.responsiveVisibility) {
-      NodeVariableData.encode(v!, writer.uint32(986).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(986).fork()).ldelim();
     }
     for (const v of message.dataSource) {
-      NodeVariableData.encode(v!, writer.uint32(994).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(994).fork()).ldelim();
     }
     for (const v of message.tableColumns) {
-      WebNodePropsTableColumnData.encode(v!, writer.uint32(1002).fork()).ldelim();
+      WebNodePropsTableColumn.encode(v!, writer.uint32(1002).fork()).ldelim();
     }
     for (const v of message.tableActions) {
-      WebNodePropsTableColumnData.encode(v!, writer.uint32(1010).fork()).ldelim();
+      WebNodePropsTableColumn.encode(v!, writer.uint32(1010).fork()).ldelim();
     }
     for (const v of message.onPaginationChange) {
-      NodeActionData.encode(v!, writer.uint32(1018).fork()).ldelim();
+      NodeAction.encode(v!, writer.uint32(1018).fork()).ldelim();
     }
     for (const v of message.onDataSortingChange) {
-      NodeActionData.encode(v!, writer.uint32(1026).fork()).ldelim();
+      NodeAction.encode(v!, writer.uint32(1026).fork()).ldelim();
     }
     for (const v of message.valueData) {
-      NodeVariableData.encode(v!, writer.uint32(1034).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(1034).fork()).ldelim();
     }
     for (const v of message.onChange) {
-      NodeVariableData.encode(v!, writer.uint32(1042).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(1042).fork()).ldelim();
     }
     for (const v of message.onClick) {
-      NodeVariableData.encode(v!, writer.uint32(1050).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(1050).fork()).ldelim();
     }
     for (const v of message.orientation) {
-      NodeVariableData.encode(v!, writer.uint32(1066).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(1066).fork()).ldelim();
     }
     for (const v of message.dateTimeFormat) {
-      NodeVariableData.encode(v!, writer.uint32(1074).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(1074).fork()).ldelim();
     }
     for (const v of message.dateTimeMode) {
-      NodeVariableData.encode(v!, writer.uint32(1082).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(1082).fork()).ldelim();
     }
     return writer;
   },
@@ -13658,16 +13599,16 @@ export const WebNodePropsData = {
           message.xxl = reader.int32();
           break;
         case 44:
-          message.grid = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.grid = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 45:
-          message.xlResponsive = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.xlResponsive = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 46:
-          message.mdResponsive = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.mdResponsive = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 47:
-          message.xsResponsive = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.xsResponsive = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 48:
           message.picker = reader.string();
@@ -13724,10 +13665,10 @@ export const WebNodePropsData = {
           message.tabPosition = reader.string();
           break;
         case 66:
-          message.tabs = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.tabs = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 67:
-          message.tabLabelStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.tabLabelStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 68:
           message.defaultActiveKey = reader.string();
@@ -13751,169 +13692,169 @@ export const WebNodePropsData = {
           message.pageSize = reader.int32();
           break;
         case 75:
-          message.bodyStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.bodyStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 76:
-          message.placeholderStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.placeholderStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 77:
-          message.containerStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.containerStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 78:
-          message.dropdownStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.dropdownStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 79:
-          message.optionStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.optionStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 80:
-          message.cellStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.cellStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 81:
-          message.cellTextStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.cellTextStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 82:
-          message.style = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.style = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 83:
-          message.buttonStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.buttonStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 84:
-          message.headerStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.headerStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 85:
-          message.wrapperStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.wrapperStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 86:
-          message.tableStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.tableStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 87:
-          message.headerRowStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.headerRowStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 88:
-          message.headerColumnStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.headerColumnStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 89:
-          message.bodyRowStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.bodyRowStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 90:
-          message.bodyColumnStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.bodyColumnStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 91:
-          message.sortColumnStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.sortColumnStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 92:
-          message.footerRowStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.footerRowStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 93:
-          message.footerColumnStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.footerColumnStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 94:
-          message.paginationWrapperStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.paginationWrapperStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 95:
-          message.labelStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.labelStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 96:
-          message.inputStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.inputStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 97:
-          message.ascendingIconProps = WebNodePropsData.decode(reader, reader.uint32());
+          message.ascendingIconProps = WebNodeProps.decode(reader, reader.uint32());
           break;
         case 98:
-          message.descendingIconProps = WebNodePropsData.decode(reader, reader.uint32());
+          message.descendingIconProps = WebNodeProps.decode(reader, reader.uint32());
           break;
         case 99:
-          message.iconProps = WebNodePropsData.decode(reader, reader.uint32());
+          message.iconProps = WebNodeProps.decode(reader, reader.uint32());
           break;
         case 100:
-          message.drawerProps = WebNodePropsData.decode(reader, reader.uint32());
+          message.drawerProps = WebNodeProps.decode(reader, reader.uint32());
           break;
         case 101:
-          message.buttonProps = WebNodePropsData.decode(reader, reader.uint32());
+          message.buttonProps = WebNodeProps.decode(reader, reader.uint32());
           break;
         case 102:
-          message.prefixIconProps = WebNodePropsData.decode(reader, reader.uint32());
+          message.prefixIconProps = WebNodeProps.decode(reader, reader.uint32());
           break;
         case 103:
-          message.suffixIconProps = WebNodePropsData.decode(reader, reader.uint32());
+          message.suffixIconProps = WebNodeProps.decode(reader, reader.uint32());
           break;
         case 109:
-          message.renderItem = RenderMoleculeData.decode(reader, reader.uint32());
+          message.renderItem = RenderMolecule.decode(reader, reader.uint32());
           break;
         case 110:
-          message.header = MoleculeComponentData.decode(reader, reader.uint32());
+          message.header = MoleculeComponent.decode(reader, reader.uint32());
           break;
         case 111:
-          message.footer = MoleculeComponentData.decode(reader, reader.uint32());
+          message.footer = MoleculeComponent.decode(reader, reader.uint32());
           break;
         case 112:
-          message.drawerTitle.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.drawerTitle.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 113:
-          message.placeholder.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.placeholder.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 114:
-          message.inputLabel.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.inputLabel.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 115:
-          message.href.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.href.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 116:
-          message.action.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.action.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 117:
-          message.data.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.data.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 118:
-          message.totalPage.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.totalPage.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 119:
-          message.defaultValue.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.defaultValue.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 120:
-          message.source.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.source.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 121:
-          message.title.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.title.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 122:
-          message.childrenData.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.childrenData.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 123:
-          message.responsiveVisibility.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.responsiveVisibility.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 124:
-          message.dataSource.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.dataSource.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 125:
-          message.tableColumns.push(WebNodePropsTableColumnData.decode(reader, reader.uint32()));
+          message.tableColumns.push(WebNodePropsTableColumn.decode(reader, reader.uint32()));
           break;
         case 126:
-          message.tableActions.push(WebNodePropsTableColumnData.decode(reader, reader.uint32()));
+          message.tableActions.push(WebNodePropsTableColumn.decode(reader, reader.uint32()));
           break;
         case 127:
-          message.onPaginationChange.push(NodeActionData.decode(reader, reader.uint32()));
+          message.onPaginationChange.push(NodeAction.decode(reader, reader.uint32()));
           break;
         case 128:
-          message.onDataSortingChange.push(NodeActionData.decode(reader, reader.uint32()));
+          message.onDataSortingChange.push(NodeAction.decode(reader, reader.uint32()));
           break;
         case 129:
-          message.valueData.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.valueData.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 130:
-          message.onChange.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.onChange.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 131:
-          message.onClick.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.onClick.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 133:
-          message.orientation.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.orientation.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 134:
-          message.dateTimeFormat.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.dateTimeFormat.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 135:
-          message.dateTimeMode.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.dateTimeMode.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -14024,75 +13965,65 @@ export const WebNodePropsData = {
       labelStyle: isObject(object.labelStyle) ? object.labelStyle : undefined,
       inputStyle: isObject(object.inputStyle) ? object.inputStyle : undefined,
       ascendingIconProps: isSet(object.ascendingIconProps)
-        ? WebNodePropsData.fromJSON(object.ascendingIconProps)
+        ? WebNodeProps.fromJSON(object.ascendingIconProps)
         : undefined,
       descendingIconProps: isSet(object.descendingIconProps)
-        ? WebNodePropsData.fromJSON(object.descendingIconProps)
+        ? WebNodeProps.fromJSON(object.descendingIconProps)
         : undefined,
-      iconProps: isSet(object.iconProps) ? WebNodePropsData.fromJSON(object.iconProps) : undefined,
-      drawerProps: isSet(object.drawerProps) ? WebNodePropsData.fromJSON(object.drawerProps) : undefined,
-      buttonProps: isSet(object.buttonProps) ? WebNodePropsData.fromJSON(object.buttonProps) : undefined,
-      prefixIconProps: isSet(object.prefixIconProps) ? WebNodePropsData.fromJSON(object.prefixIconProps) : undefined,
-      suffixIconProps: isSet(object.suffixIconProps) ? WebNodePropsData.fromJSON(object.suffixIconProps) : undefined,
-      renderItem: isSet(object.renderItem) ? RenderMoleculeData.fromJSON(object.renderItem) : undefined,
-      header: isSet(object.header) ? MoleculeComponentData.fromJSON(object.header) : undefined,
-      footer: isSet(object.footer) ? MoleculeComponentData.fromJSON(object.footer) : undefined,
+      iconProps: isSet(object.iconProps) ? WebNodeProps.fromJSON(object.iconProps) : undefined,
+      drawerProps: isSet(object.drawerProps) ? WebNodeProps.fromJSON(object.drawerProps) : undefined,
+      buttonProps: isSet(object.buttonProps) ? WebNodeProps.fromJSON(object.buttonProps) : undefined,
+      prefixIconProps: isSet(object.prefixIconProps) ? WebNodeProps.fromJSON(object.prefixIconProps) : undefined,
+      suffixIconProps: isSet(object.suffixIconProps) ? WebNodeProps.fromJSON(object.suffixIconProps) : undefined,
+      renderItem: isSet(object.renderItem) ? RenderMolecule.fromJSON(object.renderItem) : undefined,
+      header: isSet(object.header) ? MoleculeComponent.fromJSON(object.header) : undefined,
+      footer: isSet(object.footer) ? MoleculeComponent.fromJSON(object.footer) : undefined,
       drawerTitle: Array.isArray(object?.drawerTitle)
-        ? object.drawerTitle.map((e: any) => NodeVariableData.fromJSON(e))
+        ? object.drawerTitle.map((e: any) => NodeVariable.fromJSON(e))
         : [],
       placeholder: Array.isArray(object?.placeholder)
-        ? object.placeholder.map((e: any) => NodeVariableData.fromJSON(e))
+        ? object.placeholder.map((e: any) => NodeVariable.fromJSON(e))
         : [],
-      inputLabel: Array.isArray(object?.inputLabel)
-        ? object.inputLabel.map((e: any) => NodeVariableData.fromJSON(e))
-        : [],
-      href: Array.isArray(object?.href)
-        ? object.href.map((e: any) => NodeVariableData.fromJSON(e))
-        : [],
-      action: Array.isArray(object?.action) ? object.action.map((e: any) => NodeVariableData.fromJSON(e)) : [],
-      data: Array.isArray(object?.data) ? object.data.map((e: any) => NodeVariableData.fromJSON(e)) : [],
-      totalPage: Array.isArray(object?.totalPage) ? object.totalPage.map((e: any) => NodeVariableData.fromJSON(e)) : [],
+      inputLabel: Array.isArray(object?.inputLabel) ? object.inputLabel.map((e: any) => NodeVariable.fromJSON(e)) : [],
+      href: Array.isArray(object?.href) ? object.href.map((e: any) => NodeVariable.fromJSON(e)) : [],
+      action: Array.isArray(object?.action) ? object.action.map((e: any) => NodeVariable.fromJSON(e)) : [],
+      data: Array.isArray(object?.data) ? object.data.map((e: any) => NodeVariable.fromJSON(e)) : [],
+      totalPage: Array.isArray(object?.totalPage) ? object.totalPage.map((e: any) => NodeVariable.fromJSON(e)) : [],
       defaultValue: Array.isArray(object?.defaultValue)
-        ? object.defaultValue.map((e: any) => NodeVariableData.fromJSON(e))
+        ? object.defaultValue.map((e: any) => NodeVariable.fromJSON(e))
         : [],
-      source: Array.isArray(object?.source)
-        ? object.source.map((e: any) => NodeVariableData.fromJSON(e))
-        : [],
-      title: Array.isArray(object?.title) ? object.title.map((e: any) => NodeVariableData.fromJSON(e)) : [],
+      source: Array.isArray(object?.source) ? object.source.map((e: any) => NodeVariable.fromJSON(e)) : [],
+      title: Array.isArray(object?.title) ? object.title.map((e: any) => NodeVariable.fromJSON(e)) : [],
       childrenData: Array.isArray(object?.childrenData)
-        ? object.childrenData.map((e: any) => NodeVariableData.fromJSON(e))
+        ? object.childrenData.map((e: any) => NodeVariable.fromJSON(e))
         : [],
       responsiveVisibility: Array.isArray(object?.responsiveVisibility)
-        ? object.responsiveVisibility.map((e: any) => NodeVariableData.fromJSON(e))
+        ? object.responsiveVisibility.map((e: any) => NodeVariable.fromJSON(e))
         : [],
-      dataSource: Array.isArray(object?.dataSource)
-        ? object.dataSource.map((e: any) => NodeVariableData.fromJSON(e))
-        : [],
+      dataSource: Array.isArray(object?.dataSource) ? object.dataSource.map((e: any) => NodeVariable.fromJSON(e)) : [],
       tableColumns: Array.isArray(object?.tableColumns)
-        ? object.tableColumns.map((e: any) => WebNodePropsTableColumnData.fromJSON(e))
+        ? object.tableColumns.map((e: any) => WebNodePropsTableColumn.fromJSON(e))
         : [],
       tableActions: Array.isArray(object?.tableActions)
-        ? object.tableActions.map((e: any) => WebNodePropsTableColumnData.fromJSON(e))
+        ? object.tableActions.map((e: any) => WebNodePropsTableColumn.fromJSON(e))
         : [],
       onPaginationChange: Array.isArray(object?.onPaginationChange)
-        ? object.onPaginationChange.map((e: any) => NodeActionData.fromJSON(e))
+        ? object.onPaginationChange.map((e: any) => NodeAction.fromJSON(e))
         : [],
       onDataSortingChange: Array.isArray(object?.onDataSortingChange)
-        ? object.onDataSortingChange.map((e: any) => NodeActionData.fromJSON(e))
+        ? object.onDataSortingChange.map((e: any) => NodeAction.fromJSON(e))
         : [],
-      valueData: Array.isArray(object?.valueData)
-        ? object.valueData.map((e: any) => NodeVariableData.fromJSON(e))
-        : [],
-      onChange: Array.isArray(object?.onChange) ? object.onChange.map((e: any) => NodeVariableData.fromJSON(e)) : [],
-      onClick: Array.isArray(object?.onClick) ? object.onClick.map((e: any) => NodeVariableData.fromJSON(e)) : [],
+      valueData: Array.isArray(object?.valueData) ? object.valueData.map((e: any) => NodeVariable.fromJSON(e)) : [],
+      onChange: Array.isArray(object?.onChange) ? object.onChange.map((e: any) => NodeVariable.fromJSON(e)) : [],
+      onClick: Array.isArray(object?.onClick) ? object.onClick.map((e: any) => NodeVariable.fromJSON(e)) : [],
       orientation: Array.isArray(object?.orientation)
-        ? object.orientation.map((e: any) => NodeVariableData.fromJSON(e))
+        ? object.orientation.map((e: any) => NodeVariable.fromJSON(e))
         : [],
       dateTimeFormat: Array.isArray(object?.dateTimeFormat)
-        ? object.dateTimeFormat.map((e: any) => NodeVariableData.fromJSON(e))
+        ? object.dateTimeFormat.map((e: any) => NodeVariable.fromJSON(e))
         : [],
       dateTimeMode: Array.isArray(object?.dateTimeMode)
-        ? object.dateTimeMode.map((e: any) => NodeVariableData.fromJSON(e))
+        ? object.dateTimeMode.map((e: any) => NodeVariable.fromJSON(e))
         : [],
     };
   },
@@ -14199,140 +14130,141 @@ export const WebNodePropsData = {
     message.paginationWrapperStyle !== undefined && (obj.paginationWrapperStyle = message.paginationWrapperStyle);
     message.labelStyle !== undefined && (obj.labelStyle = message.labelStyle);
     message.inputStyle !== undefined && (obj.inputStyle = message.inputStyle);
-    message.ascendingIconProps !== undefined && (obj.ascendingIconProps = message.ascendingIconProps
-      ? WebNodePropsData.toJSON(message.ascendingIconProps)
-      : undefined);
+    message.ascendingIconProps !== undefined &&
+      (obj.ascendingIconProps = message.ascendingIconProps
+        ? WebNodeProps.toJSON(message.ascendingIconProps)
+        : undefined);
     message.descendingIconProps !== undefined && (obj.descendingIconProps = message.descendingIconProps
-      ? WebNodePropsData.toJSON(message.descendingIconProps)
+      ? WebNodeProps.toJSON(message.descendingIconProps)
       : undefined);
     message.iconProps !== undefined &&
-      (obj.iconProps = message.iconProps ? WebNodePropsData.toJSON(message.iconProps) : undefined);
+      (obj.iconProps = message.iconProps ? WebNodeProps.toJSON(message.iconProps) : undefined);
     message.drawerProps !== undefined &&
-      (obj.drawerProps = message.drawerProps ? WebNodePropsData.toJSON(message.drawerProps) : undefined);
+      (obj.drawerProps = message.drawerProps ? WebNodeProps.toJSON(message.drawerProps) : undefined);
     message.buttonProps !== undefined &&
-      (obj.buttonProps = message.buttonProps ? WebNodePropsData.toJSON(message.buttonProps) : undefined);
+      (obj.buttonProps = message.buttonProps ? WebNodeProps.toJSON(message.buttonProps) : undefined);
     message.prefixIconProps !== undefined &&
-      (obj.prefixIconProps = message.prefixIconProps ? WebNodePropsData.toJSON(message.prefixIconProps) : undefined);
+      (obj.prefixIconProps = message.prefixIconProps ? WebNodeProps.toJSON(message.prefixIconProps) : undefined);
     message.suffixIconProps !== undefined &&
-      (obj.suffixIconProps = message.suffixIconProps ? WebNodePropsData.toJSON(message.suffixIconProps) : undefined);
+      (obj.suffixIconProps = message.suffixIconProps ? WebNodeProps.toJSON(message.suffixIconProps) : undefined);
     message.renderItem !== undefined &&
-      (obj.renderItem = message.renderItem ? RenderMoleculeData.toJSON(message.renderItem) : undefined);
+      (obj.renderItem = message.renderItem ? RenderMolecule.toJSON(message.renderItem) : undefined);
     message.header !== undefined &&
-      (obj.header = message.header ? MoleculeComponentData.toJSON(message.header) : undefined);
+      (obj.header = message.header ? MoleculeComponent.toJSON(message.header) : undefined);
     message.footer !== undefined &&
-      (obj.footer = message.footer ? MoleculeComponentData.toJSON(message.footer) : undefined);
+      (obj.footer = message.footer ? MoleculeComponent.toJSON(message.footer) : undefined);
     if (message.drawerTitle) {
-      obj.drawerTitle = message.drawerTitle.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.drawerTitle = message.drawerTitle.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.drawerTitle = [];
     }
     if (message.placeholder) {
-      obj.placeholder = message.placeholder.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.placeholder = message.placeholder.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.placeholder = [];
     }
     if (message.inputLabel) {
-      obj.inputLabel = message.inputLabel.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.inputLabel = message.inputLabel.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.inputLabel = [];
     }
     if (message.href) {
-      obj.href = message.href.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.href = message.href.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.href = [];
     }
     if (message.action) {
-      obj.action = message.action.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.action = message.action.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.action = [];
     }
     if (message.data) {
-      obj.data = message.data.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.data = message.data.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.data = [];
     }
     if (message.totalPage) {
-      obj.totalPage = message.totalPage.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.totalPage = message.totalPage.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.totalPage = [];
     }
     if (message.defaultValue) {
-      obj.defaultValue = message.defaultValue.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.defaultValue = message.defaultValue.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.defaultValue = [];
     }
     if (message.source) {
-      obj.source = message.source.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.source = message.source.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.source = [];
     }
     if (message.title) {
-      obj.title = message.title.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.title = message.title.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.title = [];
     }
     if (message.childrenData) {
-      obj.childrenData = message.childrenData.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.childrenData = message.childrenData.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.childrenData = [];
     }
     if (message.responsiveVisibility) {
-      obj.responsiveVisibility = message.responsiveVisibility.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.responsiveVisibility = message.responsiveVisibility.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.responsiveVisibility = [];
     }
     if (message.dataSource) {
-      obj.dataSource = message.dataSource.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.dataSource = message.dataSource.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.dataSource = [];
     }
     if (message.tableColumns) {
-      obj.tableColumns = message.tableColumns.map((e) => e ? WebNodePropsTableColumnData.toJSON(e) : undefined);
+      obj.tableColumns = message.tableColumns.map((e) => e ? WebNodePropsTableColumn.toJSON(e) : undefined);
     } else {
       obj.tableColumns = [];
     }
     if (message.tableActions) {
-      obj.tableActions = message.tableActions.map((e) => e ? WebNodePropsTableColumnData.toJSON(e) : undefined);
+      obj.tableActions = message.tableActions.map((e) => e ? WebNodePropsTableColumn.toJSON(e) : undefined);
     } else {
       obj.tableActions = [];
     }
     if (message.onPaginationChange) {
-      obj.onPaginationChange = message.onPaginationChange.map((e) => e ? NodeActionData.toJSON(e) : undefined);
+      obj.onPaginationChange = message.onPaginationChange.map((e) => e ? NodeAction.toJSON(e) : undefined);
     } else {
       obj.onPaginationChange = [];
     }
     if (message.onDataSortingChange) {
-      obj.onDataSortingChange = message.onDataSortingChange.map((e) => e ? NodeActionData.toJSON(e) : undefined);
+      obj.onDataSortingChange = message.onDataSortingChange.map((e) => e ? NodeAction.toJSON(e) : undefined);
     } else {
       obj.onDataSortingChange = [];
     }
     if (message.valueData) {
-      obj.valueData = message.valueData.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.valueData = message.valueData.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.valueData = [];
     }
     if (message.onChange) {
-      obj.onChange = message.onChange.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.onChange = message.onChange.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.onChange = [];
     }
     if (message.onClick) {
-      obj.onClick = message.onClick.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.onClick = message.onClick.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.onClick = [];
     }
     if (message.orientation) {
-      obj.orientation = message.orientation.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.orientation = message.orientation.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.orientation = [];
     }
     if (message.dateTimeFormat) {
-      obj.dateTimeFormat = message.dateTimeFormat.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.dateTimeFormat = message.dateTimeFormat.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.dateTimeFormat = [];
     }
     if (message.dateTimeMode) {
-      obj.dateTimeMode = message.dateTimeMode.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.dateTimeMode = message.dateTimeMode.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.dateTimeMode = [];
     }
@@ -14438,58 +14370,58 @@ export const WebNodePropsData = {
     message.labelStyle = object.labelStyle ?? undefined;
     message.inputStyle = object.inputStyle ?? undefined;
     message.ascendingIconProps = (object.ascendingIconProps !== undefined && object.ascendingIconProps !== null)
-      ? WebNodePropsData.fromPartial(object.ascendingIconProps)
+      ? WebNodeProps.fromPartial(object.ascendingIconProps)
       : undefined;
     message.descendingIconProps = (object.descendingIconProps !== undefined && object.descendingIconProps !== null)
-      ? WebNodePropsData.fromPartial(object.descendingIconProps)
+      ? WebNodeProps.fromPartial(object.descendingIconProps)
       : undefined;
     message.iconProps = (object.iconProps !== undefined && object.iconProps !== null)
-      ? WebNodePropsData.fromPartial(object.iconProps)
+      ? WebNodeProps.fromPartial(object.iconProps)
       : undefined;
     message.drawerProps = (object.drawerProps !== undefined && object.drawerProps !== null)
-      ? WebNodePropsData.fromPartial(object.drawerProps)
+      ? WebNodeProps.fromPartial(object.drawerProps)
       : undefined;
     message.buttonProps = (object.buttonProps !== undefined && object.buttonProps !== null)
-      ? WebNodePropsData.fromPartial(object.buttonProps)
+      ? WebNodeProps.fromPartial(object.buttonProps)
       : undefined;
     message.prefixIconProps = (object.prefixIconProps !== undefined && object.prefixIconProps !== null)
-      ? WebNodePropsData.fromPartial(object.prefixIconProps)
+      ? WebNodeProps.fromPartial(object.prefixIconProps)
       : undefined;
     message.suffixIconProps = (object.suffixIconProps !== undefined && object.suffixIconProps !== null)
-      ? WebNodePropsData.fromPartial(object.suffixIconProps)
+      ? WebNodeProps.fromPartial(object.suffixIconProps)
       : undefined;
     message.renderItem = (object.renderItem !== undefined && object.renderItem !== null)
-      ? RenderMoleculeData.fromPartial(object.renderItem)
+      ? RenderMolecule.fromPartial(object.renderItem)
       : undefined;
     message.header = (object.header !== undefined && object.header !== null)
-      ? MoleculeComponentData.fromPartial(object.header)
+      ? MoleculeComponent.fromPartial(object.header)
       : undefined;
     message.footer = (object.footer !== undefined && object.footer !== null)
-      ? MoleculeComponentData.fromPartial(object.footer)
+      ? MoleculeComponent.fromPartial(object.footer)
       : undefined;
-    message.drawerTitle = object.drawerTitle?.map((e) => NodeVariableData.fromPartial(e)) || [];
-    message.placeholder = object.placeholder?.map((e) => NodeVariableData.fromPartial(e)) || [];
-    message.inputLabel = object.inputLabel?.map((e) => NodeVariableData.fromPartial(e)) || [];
-    message.href = object.href?.map((e) => NodeVariableData.fromPartial(e)) || [];
-    message.action = object.action?.map((e) => NodeVariableData.fromPartial(e)) || [];
-    message.data = object.data?.map((e) => NodeVariableData.fromPartial(e)) || [];
-    message.totalPage = object.totalPage?.map((e) => NodeVariableData.fromPartial(e)) || [];
-    message.defaultValue = object.defaultValue?.map((e) => NodeVariableData.fromPartial(e)) || [];
-    message.source = object.source?.map((e) => NodeVariableData.fromPartial(e)) || [];
-    message.title = object.title?.map((e) => NodeVariableData.fromPartial(e)) || [];
-    message.childrenData = object.childrenData?.map((e) => NodeVariableData.fromPartial(e)) || [];
-    message.responsiveVisibility = object.responsiveVisibility?.map((e) => NodeVariableData.fromPartial(e)) || [];
-    message.dataSource = object.dataSource?.map((e) => NodeVariableData.fromPartial(e)) || [];
-    message.tableColumns = object.tableColumns?.map((e) => WebNodePropsTableColumnData.fromPartial(e)) || [];
-    message.tableActions = object.tableActions?.map((e) => WebNodePropsTableColumnData.fromPartial(e)) || [];
-    message.onPaginationChange = object.onPaginationChange?.map((e) => NodeActionData.fromPartial(e)) || [];
-    message.onDataSortingChange = object.onDataSortingChange?.map((e) => NodeActionData.fromPartial(e)) || [];
-    message.valueData = object.valueData?.map((e) => NodeVariableData.fromPartial(e)) || [];
-    message.onChange = object.onChange?.map((e) => NodeVariableData.fromPartial(e)) || [];
-    message.onClick = object.onClick?.map((e) => NodeVariableData.fromPartial(e)) || [];
-    message.orientation = object.orientation?.map((e) => NodeVariableData.fromPartial(e)) || [];
-    message.dateTimeFormat = object.dateTimeFormat?.map((e) => NodeVariableData.fromPartial(e)) || [];
-    message.dateTimeMode = object.dateTimeMode?.map((e) => NodeVariableData.fromPartial(e)) || [];
+    message.drawerTitle = object.drawerTitle?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.placeholder = object.placeholder?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.inputLabel = object.inputLabel?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.href = object.href?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.action = object.action?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.data = object.data?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.totalPage = object.totalPage?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.defaultValue = object.defaultValue?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.source = object.source?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.title = object.title?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.childrenData = object.childrenData?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.responsiveVisibility = object.responsiveVisibility?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.dataSource = object.dataSource?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.tableColumns = object.tableColumns?.map((e) => WebNodePropsTableColumn.fromPartial(e)) || [];
+    message.tableActions = object.tableActions?.map((e) => WebNodePropsTableColumn.fromPartial(e)) || [];
+    message.onPaginationChange = object.onPaginationChange?.map((e) => NodeAction.fromPartial(e)) || [];
+    message.onDataSortingChange = object.onDataSortingChange?.map((e) => NodeAction.fromPartial(e)) || [];
+    message.valueData = object.valueData?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.onChange = object.onChange?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.onClick = object.onClick?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.orientation = object.orientation?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.dateTimeFormat = object.dateTimeFormat?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.dateTimeMode = object.dateTimeMode?.map((e) => NodeVariable.fromPartial(e)) || [];
     return message;
   },
 };
@@ -14498,10 +14430,10 @@ function createBaseWebNodePropsTableColumn(): WebNodePropsTableColumn {
   return { sortable: false, filterable: false, columnIndex: 0, columnName: [], columnPath: [] };
 }
 
-export const WebNodePropsTableColumnData = {
+export const WebNodePropsTableColumn = {
   encode(message: WebNodePropsTableColumn, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.molecule !== undefined) {
-      RenderMoleculeData.encode(message.molecule, writer.uint32(10).fork()).ldelim();
+      RenderMolecule.encode(message.molecule, writer.uint32(10).fork()).ldelim();
     }
     if (message.sortable === true) {
       writer.uint32(16).bool(message.sortable);
@@ -14513,10 +14445,10 @@ export const WebNodePropsTableColumnData = {
       writer.uint32(32).int32(message.columnIndex);
     }
     for (const v of message.columnName) {
-      NodeVariableData.encode(v!, writer.uint32(42).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(42).fork()).ldelim();
     }
     for (const v of message.columnPath) {
-      NodeVariableData.encode(v!, writer.uint32(50).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -14529,7 +14461,7 @@ export const WebNodePropsTableColumnData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.molecule = RenderMoleculeData.decode(reader, reader.uint32());
+          message.molecule = RenderMolecule.decode(reader, reader.uint32());
           break;
         case 2:
           message.sortable = reader.bool();
@@ -14541,10 +14473,10 @@ export const WebNodePropsTableColumnData = {
           message.columnIndex = reader.int32();
           break;
         case 5:
-          message.columnName.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.columnName.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 6:
-          message.columnPath.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.columnPath.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -14556,33 +14488,29 @@ export const WebNodePropsTableColumnData = {
 
   fromJSON(object: any): WebNodePropsTableColumn {
     return {
-      molecule: isSet(object.molecule) ? RenderMoleculeData.fromJSON(object.molecule) : undefined,
+      molecule: isSet(object.molecule) ? RenderMolecule.fromJSON(object.molecule) : undefined,
       sortable: isSet(object.sortable) ? Boolean(object.sortable) : false,
       filterable: isSet(object.filterable) ? Boolean(object.filterable) : false,
       columnIndex: isSet(object.columnIndex) ? Number(object.columnIndex) : 0,
-      columnName: Array.isArray(object?.columnName)
-        ? object.columnName.map((e: any) => NodeVariableData.fromJSON(e))
-        : [],
-      columnPath: Array.isArray(object?.columnPath)
-        ? object.columnPath.map((e: any) => NodeVariableData.fromJSON(e))
-        : [],
+      columnName: Array.isArray(object?.columnName) ? object.columnName.map((e: any) => NodeVariable.fromJSON(e)) : [],
+      columnPath: Array.isArray(object?.columnPath) ? object.columnPath.map((e: any) => NodeVariable.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: WebNodePropsTableColumn): unknown {
     const obj: any = {};
     message.molecule !== undefined &&
-      (obj.molecule = message.molecule ? RenderMoleculeData.toJSON(message.molecule) : undefined);
+      (obj.molecule = message.molecule ? RenderMolecule.toJSON(message.molecule) : undefined);
     message.sortable !== undefined && (obj.sortable = message.sortable);
     message.filterable !== undefined && (obj.filterable = message.filterable);
     message.columnIndex !== undefined && (obj.columnIndex = Math.round(message.columnIndex));
     if (message.columnName) {
-      obj.columnName = message.columnName.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.columnName = message.columnName.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.columnName = [];
     }
     if (message.columnPath) {
-      obj.columnPath = message.columnPath.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.columnPath = message.columnPath.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.columnPath = [];
     }
@@ -14592,13 +14520,13 @@ export const WebNodePropsTableColumnData = {
   fromPartial(object: DeepPartial<WebNodePropsTableColumn>): WebNodePropsTableColumn {
     const message = createBaseWebNodePropsTableColumn();
     message.molecule = (object.molecule !== undefined && object.molecule !== null)
-      ? RenderMoleculeData.fromPartial(object.molecule)
+      ? RenderMolecule.fromPartial(object.molecule)
       : undefined;
     message.sortable = object.sortable ?? false;
     message.filterable = object.filterable ?? false;
     message.columnIndex = object.columnIndex ?? 0;
-    message.columnName = object.columnName?.map((e) => NodeVariableData.fromPartial(e)) || [];
-    message.columnPath = object.columnPath?.map((e) => NodeVariableData.fromPartial(e)) || [];
+    message.columnName = object.columnName?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.columnPath = object.columnPath?.map((e) => NodeVariable.fromPartial(e)) || [];
     return message;
   },
 };
@@ -14607,7 +14535,7 @@ function createBaseMobileNodeProps(): MobileNodeProps {
   return { elementKey: "", placeholder: [], data: [], source: [], title: [], childrenData: [] };
 }
 
-export const MobileNodePropsData = {
+export const MobileNodeProps = {
   encode(message: MobileNodeProps, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.elementKey !== "") {
       writer.uint32(10).string(message.elementKey);
@@ -14751,67 +14679,67 @@ export const MobileNodePropsData = {
       writer.uint32(378).string(message.borderBottomColor);
     }
     if (message.style !== undefined) {
-      StructData.encode(StructData.wrap(message.style), writer.uint32(386).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.style), writer.uint32(386).fork()).ldelim();
     }
     if (message.contentContainerStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.contentContainerStyle), writer.uint32(394).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.contentContainerStyle), writer.uint32(394).fork()).ldelim();
     }
     if (message.inputStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.inputStyle), writer.uint32(402).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.inputStyle), writer.uint32(402).fork()).ldelim();
     }
     if (message.labelStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.labelStyle), writer.uint32(410).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.labelStyle), writer.uint32(410).fork()).ldelim();
     }
     if (message.characterCounterStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.characterCounterStyle), writer.uint32(418).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.characterCounterStyle), writer.uint32(418).fork()).ldelim();
     }
     if (message.cellStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.cellStyle), writer.uint32(426).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.cellStyle), writer.uint32(426).fork()).ldelim();
     }
     if (message.cellTextStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.cellTextStyle), writer.uint32(434).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.cellTextStyle), writer.uint32(434).fork()).ldelim();
     }
     if (message.titleStyle !== undefined) {
-      StructData.encode(StructData.wrap(message.titleStyle), writer.uint32(442).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.titleStyle), writer.uint32(442).fork()).ldelim();
     }
     if (message.renderItem !== undefined) {
-      RenderMoleculeData.encode(message.renderItem, writer.uint32(450).fork()).ldelim();
+      RenderMolecule.encode(message.renderItem, writer.uint32(450).fork()).ldelim();
     }
     if (message.preview !== undefined) {
-      RenderMoleculeData.encode(message.preview, writer.uint32(458).fork()).ldelim();
+      RenderMolecule.encode(message.preview, writer.uint32(458).fork()).ldelim();
     }
     if (message.component !== undefined) {
-      RenderMoleculeData.encode(message.component, writer.uint32(466).fork()).ldelim();
+      RenderMolecule.encode(message.component, writer.uint32(466).fork()).ldelim();
     }
     if (message.listEmptyComponent !== undefined) {
-      MoleculeComponentData.encode(message.listEmptyComponent, writer.uint32(474).fork()).ldelim();
+      MoleculeComponent.encode(message.listEmptyComponent, writer.uint32(474).fork()).ldelim();
     }
     if (message.listHeaderComponent !== undefined) {
-      MoleculeComponentData.encode(message.listHeaderComponent, writer.uint32(482).fork()).ldelim();
+      MoleculeComponent.encode(message.listHeaderComponent, writer.uint32(482).fork()).ldelim();
     }
     if (message.listFooterComponent !== undefined) {
-      MoleculeComponentData.encode(message.listFooterComponent, writer.uint32(490).fork()).ldelim();
+      MoleculeComponent.encode(message.listFooterComponent, writer.uint32(490).fork()).ldelim();
     }
     if (message.itemSeparatorComponent !== undefined) {
-      MoleculeComponentData.encode(message.itemSeparatorComponent, writer.uint32(498).fork()).ldelim();
+      MoleculeComponent.encode(message.itemSeparatorComponent, writer.uint32(498).fork()).ldelim();
     }
     if (message.keyExtractor !== undefined) {
-      NodeReferenceData.encode(message.keyExtractor, writer.uint32(506).fork()).ldelim();
+      NodeReference.encode(message.keyExtractor, writer.uint32(506).fork()).ldelim();
     }
     for (const v of message.placeholder) {
-      NodeVariableData.encode(v!, writer.uint32(514).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(514).fork()).ldelim();
     }
     for (const v of message.data) {
-      NodeVariableData.encode(v!, writer.uint32(522).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(522).fork()).ldelim();
     }
     for (const v of message.source) {
-      NodeVariableData.encode(v!, writer.uint32(530).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(530).fork()).ldelim();
     }
     for (const v of message.title) {
-      NodeVariableData.encode(v!, writer.uint32(538).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(538).fork()).ldelim();
     }
     for (const v of message.childrenData) {
-      NodeVariableData.encode(v!, writer.uint32(546).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(546).fork()).ldelim();
     }
     return writer;
   },
@@ -14965,67 +14893,67 @@ export const MobileNodePropsData = {
           message.borderBottomColor = reader.string();
           break;
         case 48:
-          message.style = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.style = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 49:
-          message.contentContainerStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.contentContainerStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 50:
-          message.inputStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.inputStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 51:
-          message.labelStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.labelStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 52:
-          message.characterCounterStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.characterCounterStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 53:
-          message.cellStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.cellStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 54:
-          message.cellTextStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.cellTextStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 55:
-          message.titleStyle = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.titleStyle = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 56:
-          message.renderItem = RenderMoleculeData.decode(reader, reader.uint32());
+          message.renderItem = RenderMolecule.decode(reader, reader.uint32());
           break;
         case 57:
-          message.preview = RenderMoleculeData.decode(reader, reader.uint32());
+          message.preview = RenderMolecule.decode(reader, reader.uint32());
           break;
         case 58:
-          message.component = RenderMoleculeData.decode(reader, reader.uint32());
+          message.component = RenderMolecule.decode(reader, reader.uint32());
           break;
         case 59:
-          message.listEmptyComponent = MoleculeComponentData.decode(reader, reader.uint32());
+          message.listEmptyComponent = MoleculeComponent.decode(reader, reader.uint32());
           break;
         case 60:
-          message.listHeaderComponent = MoleculeComponentData.decode(reader, reader.uint32());
+          message.listHeaderComponent = MoleculeComponent.decode(reader, reader.uint32());
           break;
         case 61:
-          message.listFooterComponent = MoleculeComponentData.decode(reader, reader.uint32());
+          message.listFooterComponent = MoleculeComponent.decode(reader, reader.uint32());
           break;
         case 62:
-          message.itemSeparatorComponent = MoleculeComponentData.decode(reader, reader.uint32());
+          message.itemSeparatorComponent = MoleculeComponent.decode(reader, reader.uint32());
           break;
         case 63:
-          message.keyExtractor = NodeReferenceData.decode(reader, reader.uint32());
+          message.keyExtractor = NodeReference.decode(reader, reader.uint32());
           break;
         case 64:
-          message.placeholder.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.placeholder.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 65:
-          message.data.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.data.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 66:
-          message.source.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.source.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 67:
-          message.title.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.title.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 68:
-          message.childrenData.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.childrenData.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -15092,32 +15020,30 @@ export const MobileNodePropsData = {
       cellStyle: isObject(object.cellStyle) ? object.cellStyle : undefined,
       cellTextStyle: isObject(object.cellTextStyle) ? object.cellTextStyle : undefined,
       titleStyle: isObject(object.titleStyle) ? object.titleStyle : undefined,
-      renderItem: isSet(object.renderItem) ? RenderMoleculeData.fromJSON(object.renderItem) : undefined,
-      preview: isSet(object.preview) ? RenderMoleculeData.fromJSON(object.preview) : undefined,
-      component: isSet(object.component) ? RenderMoleculeData.fromJSON(object.component) : undefined,
+      renderItem: isSet(object.renderItem) ? RenderMolecule.fromJSON(object.renderItem) : undefined,
+      preview: isSet(object.preview) ? RenderMolecule.fromJSON(object.preview) : undefined,
+      component: isSet(object.component) ? RenderMolecule.fromJSON(object.component) : undefined,
       listEmptyComponent: isSet(object.listEmptyComponent)
-        ? MoleculeComponentData.fromJSON(object.listEmptyComponent)
+        ? MoleculeComponent.fromJSON(object.listEmptyComponent)
         : undefined,
       listHeaderComponent: isSet(object.listHeaderComponent)
-        ? MoleculeComponentData.fromJSON(object.listHeaderComponent)
+        ? MoleculeComponent.fromJSON(object.listHeaderComponent)
         : undefined,
       listFooterComponent: isSet(object.listFooterComponent)
-        ? MoleculeComponentData.fromJSON(object.listFooterComponent)
+        ? MoleculeComponent.fromJSON(object.listFooterComponent)
         : undefined,
       itemSeparatorComponent: isSet(object.itemSeparatorComponent)
-        ? MoleculeComponentData.fromJSON(object.itemSeparatorComponent)
+        ? MoleculeComponent.fromJSON(object.itemSeparatorComponent)
         : undefined,
-      keyExtractor: isSet(object.keyExtractor) ? NodeReferenceData.fromJSON(object.keyExtractor) : undefined,
+      keyExtractor: isSet(object.keyExtractor) ? NodeReference.fromJSON(object.keyExtractor) : undefined,
       placeholder: Array.isArray(object?.placeholder)
-        ? object.placeholder.map((e: any) => NodeVariableData.fromJSON(e))
+        ? object.placeholder.map((e: any) => NodeVariable.fromJSON(e))
         : [],
-      data: Array.isArray(object?.data)
-        ? object.data.map((e: any) => NodeVariableData.fromJSON(e))
-        : [],
-      source: Array.isArray(object?.source) ? object.source.map((e: any) => NodeVariableData.fromJSON(e)) : [],
-      title: Array.isArray(object?.title) ? object.title.map((e: any) => NodeVariableData.fromJSON(e)) : [],
+      data: Array.isArray(object?.data) ? object.data.map((e: any) => NodeVariable.fromJSON(e)) : [],
+      source: Array.isArray(object?.source) ? object.source.map((e: any) => NodeVariable.fromJSON(e)) : [],
+      title: Array.isArray(object?.title) ? object.title.map((e: any) => NodeVariable.fromJSON(e)) : [],
       childrenData: Array.isArray(object?.childrenData)
-        ? object.childrenData.map((e: any) => NodeVariableData.fromJSON(e))
+        ? object.childrenData.map((e: any) => NodeVariable.fromJSON(e))
         : [],
     };
   },
@@ -15180,47 +15106,47 @@ export const MobileNodePropsData = {
     message.cellTextStyle !== undefined && (obj.cellTextStyle = message.cellTextStyle);
     message.titleStyle !== undefined && (obj.titleStyle = message.titleStyle);
     message.renderItem !== undefined &&
-      (obj.renderItem = message.renderItem ? RenderMoleculeData.toJSON(message.renderItem) : undefined);
+      (obj.renderItem = message.renderItem ? RenderMolecule.toJSON(message.renderItem) : undefined);
     message.preview !== undefined &&
-      (obj.preview = message.preview ? RenderMoleculeData.toJSON(message.preview) : undefined);
+      (obj.preview = message.preview ? RenderMolecule.toJSON(message.preview) : undefined);
     message.component !== undefined &&
-      (obj.component = message.component ? RenderMoleculeData.toJSON(message.component) : undefined);
+      (obj.component = message.component ? RenderMolecule.toJSON(message.component) : undefined);
     message.listEmptyComponent !== undefined && (obj.listEmptyComponent = message.listEmptyComponent
-      ? MoleculeComponentData.toJSON(message.listEmptyComponent)
+      ? MoleculeComponent.toJSON(message.listEmptyComponent)
       : undefined);
     message.listHeaderComponent !== undefined && (obj.listHeaderComponent = message.listHeaderComponent
-      ? MoleculeComponentData.toJSON(message.listHeaderComponent)
+      ? MoleculeComponent.toJSON(message.listHeaderComponent)
       : undefined);
     message.listFooterComponent !== undefined && (obj.listFooterComponent = message.listFooterComponent
-      ? MoleculeComponentData.toJSON(message.listFooterComponent)
+      ? MoleculeComponent.toJSON(message.listFooterComponent)
       : undefined);
     message.itemSeparatorComponent !== undefined && (obj.itemSeparatorComponent = message.itemSeparatorComponent
-      ? MoleculeComponentData.toJSON(message.itemSeparatorComponent)
+      ? MoleculeComponent.toJSON(message.itemSeparatorComponent)
       : undefined);
     message.keyExtractor !== undefined &&
-      (obj.keyExtractor = message.keyExtractor ? NodeReferenceData.toJSON(message.keyExtractor) : undefined);
+      (obj.keyExtractor = message.keyExtractor ? NodeReference.toJSON(message.keyExtractor) : undefined);
     if (message.placeholder) {
-      obj.placeholder = message.placeholder.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.placeholder = message.placeholder.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.placeholder = [];
     }
     if (message.data) {
-      obj.data = message.data.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.data = message.data.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.data = [];
     }
     if (message.source) {
-      obj.source = message.source.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.source = message.source.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.source = [];
     }
     if (message.title) {
-      obj.title = message.title.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.title = message.title.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.title = [];
     }
     if (message.childrenData) {
-      obj.childrenData = message.childrenData.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.childrenData = message.childrenData.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.childrenData = [];
     }
@@ -15285,35 +15211,35 @@ export const MobileNodePropsData = {
     message.cellTextStyle = object.cellTextStyle ?? undefined;
     message.titleStyle = object.titleStyle ?? undefined;
     message.renderItem = (object.renderItem !== undefined && object.renderItem !== null)
-      ? RenderMoleculeData.fromPartial(object.renderItem)
+      ? RenderMolecule.fromPartial(object.renderItem)
       : undefined;
     message.preview = (object.preview !== undefined && object.preview !== null)
-      ? RenderMoleculeData.fromPartial(object.preview)
+      ? RenderMolecule.fromPartial(object.preview)
       : undefined;
     message.component = (object.component !== undefined && object.component !== null)
-      ? RenderMoleculeData.fromPartial(object.component)
+      ? RenderMolecule.fromPartial(object.component)
       : undefined;
     message.listEmptyComponent = (object.listEmptyComponent !== undefined && object.listEmptyComponent !== null)
-      ? MoleculeComponentData.fromPartial(object.listEmptyComponent)
+      ? MoleculeComponent.fromPartial(object.listEmptyComponent)
       : undefined;
     message.listHeaderComponent = (object.listHeaderComponent !== undefined && object.listHeaderComponent !== null)
-      ? MoleculeComponentData.fromPartial(object.listHeaderComponent)
+      ? MoleculeComponent.fromPartial(object.listHeaderComponent)
       : undefined;
     message.listFooterComponent = (object.listFooterComponent !== undefined && object.listFooterComponent !== null)
-      ? MoleculeComponentData.fromPartial(object.listFooterComponent)
+      ? MoleculeComponent.fromPartial(object.listFooterComponent)
       : undefined;
     message.itemSeparatorComponent =
       (object.itemSeparatorComponent !== undefined && object.itemSeparatorComponent !== null)
-        ? MoleculeComponentData.fromPartial(object.itemSeparatorComponent)
+        ? MoleculeComponent.fromPartial(object.itemSeparatorComponent)
         : undefined;
     message.keyExtractor = (object.keyExtractor !== undefined && object.keyExtractor !== null)
-      ? NodeReferenceData.fromPartial(object.keyExtractor)
+      ? NodeReference.fromPartial(object.keyExtractor)
       : undefined;
-    message.placeholder = object.placeholder?.map((e) => NodeVariableData.fromPartial(e)) || [];
-    message.data = object.data?.map((e) => NodeVariableData.fromPartial(e)) || [];
-    message.source = object.source?.map((e) => NodeVariableData.fromPartial(e)) || [];
-    message.title = object.title?.map((e) => NodeVariableData.fromPartial(e)) || [];
-    message.childrenData = object.childrenData?.map((e) => NodeVariableData.fromPartial(e)) || [];
+    message.placeholder = object.placeholder?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.data = object.data?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.source = object.source?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.title = object.title?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.childrenData = object.childrenData?.map((e) => NodeVariable.fromPartial(e)) || [];
     return message;
   },
 };
@@ -15322,16 +15248,16 @@ function createBaseRenderMolecule(): RenderMolecule {
   return { arguments: [], props: [] };
 }
 
-export const RenderMoleculeData = {
+export const RenderMolecule = {
   encode(message: RenderMolecule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.reference !== undefined) {
-      NodeReferenceData.encode(message.reference, writer.uint32(10).fork()).ldelim();
+      NodeReference.encode(message.reference, writer.uint32(10).fork()).ldelim();
     }
     for (const v of message.arguments) {
-      FunctionArgumentData.encode(v!, writer.uint32(18).fork()).ldelim();
+      FunctionArgument.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     for (const v of message.props) {
-      NodeParamData.encode(v!, writer.uint32(26).fork()).ldelim();
+      NodeParam.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -15344,13 +15270,13 @@ export const RenderMoleculeData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.reference = NodeReferenceData.decode(reader, reader.uint32());
+          message.reference = NodeReference.decode(reader, reader.uint32());
           break;
         case 2:
-          message.arguments.push(FunctionArgumentData.decode(reader, reader.uint32()));
+          message.arguments.push(FunctionArgument.decode(reader, reader.uint32()));
           break;
         case 3:
-          message.props.push(NodeParamData.decode(reader, reader.uint32()));
+          message.props.push(NodeParam.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -15362,25 +15288,23 @@ export const RenderMoleculeData = {
 
   fromJSON(object: any): RenderMolecule {
     return {
-      reference: isSet(object.reference) ? NodeReferenceData.fromJSON(object.reference) : undefined,
-      arguments: Array.isArray(object?.arguments)
-        ? object.arguments.map((e: any) => FunctionArgumentData.fromJSON(e))
-        : [],
-      props: Array.isArray(object?.props) ? object.props.map((e: any) => NodeParamData.fromJSON(e)) : [],
+      reference: isSet(object.reference) ? NodeReference.fromJSON(object.reference) : undefined,
+      arguments: Array.isArray(object?.arguments) ? object.arguments.map((e: any) => FunctionArgument.fromJSON(e)) : [],
+      props: Array.isArray(object?.props) ? object.props.map((e: any) => NodeParam.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: RenderMolecule): unknown {
     const obj: any = {};
     message.reference !== undefined &&
-      (obj.reference = message.reference ? NodeReferenceData.toJSON(message.reference) : undefined);
+      (obj.reference = message.reference ? NodeReference.toJSON(message.reference) : undefined);
     if (message.arguments) {
-      obj.arguments = message.arguments.map((e) => e ? FunctionArgumentData.toJSON(e) : undefined);
+      obj.arguments = message.arguments.map((e) => e ? FunctionArgument.toJSON(e) : undefined);
     } else {
       obj.arguments = [];
     }
     if (message.props) {
-      obj.props = message.props.map((e) => e ? NodeParamData.toJSON(e) : undefined);
+      obj.props = message.props.map((e) => e ? NodeParam.toJSON(e) : undefined);
     } else {
       obj.props = [];
     }
@@ -15390,10 +15314,10 @@ export const RenderMoleculeData = {
   fromPartial(object: DeepPartial<RenderMolecule>): RenderMolecule {
     const message = createBaseRenderMolecule();
     message.reference = (object.reference !== undefined && object.reference !== null)
-      ? NodeReferenceData.fromPartial(object.reference)
+      ? NodeReference.fromPartial(object.reference)
       : undefined;
-    message.arguments = object.arguments?.map((e) => FunctionArgumentData.fromPartial(e)) || [];
-    message.props = object.props?.map((e) => NodeParamData.fromPartial(e)) || [];
+    message.arguments = object.arguments?.map((e) => FunctionArgument.fromPartial(e)) || [];
+    message.props = object.props?.map((e) => NodeParam.fromPartial(e)) || [];
     return message;
   },
 };
@@ -15402,7 +15326,7 @@ function createBaseNodeReference(): NodeReference {
   return { name: "", refId: "", value: "", refType: 0 };
 }
 
-export const NodeReferenceData = {
+export const NodeReference = {
   encode(message: NodeReference, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
@@ -15411,7 +15335,7 @@ export const NodeReferenceData = {
       writer.uint32(18).string(message.refId);
     }
     if (message.refData !== undefined) {
-      StructData.encode(StructData.wrap(message.refData), writer.uint32(26).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.refData), writer.uint32(26).fork()).ldelim();
     }
     if (message.value !== "") {
       writer.uint32(34).string(message.value);
@@ -15436,7 +15360,7 @@ export const NodeReferenceData = {
           message.refId = reader.string();
           break;
         case 3:
-          message.refData = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.refData = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 4:
           message.value = reader.string();
@@ -15487,7 +15411,7 @@ function createBaseFunctionArgument(): FunctionArgument {
   return { name: "", argumentType: "", plural: false };
 }
 
-export const FunctionArgumentData = {
+export const FunctionArgument = {
   encode(message: FunctionArgument, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
@@ -15499,7 +15423,7 @@ export const FunctionArgumentData = {
       writer.uint32(24).bool(message.plural);
     }
     if (message.reference !== undefined) {
-      NodeReferenceData.encode(message.reference, writer.uint32(34).fork()).ldelim();
+      NodeReference.encode(message.reference, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -15521,7 +15445,7 @@ export const FunctionArgumentData = {
           message.plural = reader.bool();
           break;
         case 4:
-          message.reference = NodeReferenceData.decode(reader, reader.uint32());
+          message.reference = NodeReference.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -15536,7 +15460,7 @@ export const FunctionArgumentData = {
       name: isSet(object.name) ? String(object.name) : "",
       argumentType: isSet(object.argumentType) ? String(object.argumentType) : "",
       plural: isSet(object.plural) ? Boolean(object.plural) : false,
-      reference: isSet(object.reference) ? NodeReferenceData.fromJSON(object.reference) : undefined,
+      reference: isSet(object.reference) ? NodeReference.fromJSON(object.reference) : undefined,
     };
   },
 
@@ -15546,7 +15470,7 @@ export const FunctionArgumentData = {
     message.argumentType !== undefined && (obj.argumentType = message.argumentType);
     message.plural !== undefined && (obj.plural = message.plural);
     message.reference !== undefined &&
-      (obj.reference = message.reference ? NodeReferenceData.toJSON(message.reference) : undefined);
+      (obj.reference = message.reference ? NodeReference.toJSON(message.reference) : undefined);
     return obj;
   },
 
@@ -15556,7 +15480,7 @@ export const FunctionArgumentData = {
     message.argumentType = object.argumentType ?? "";
     message.plural = object.plural ?? false;
     message.reference = (object.reference !== undefined && object.reference !== null)
-      ? NodeReferenceData.fromPartial(object.reference)
+      ? NodeReference.fromPartial(object.reference)
       : undefined;
     return message;
   },
@@ -15575,7 +15499,7 @@ function createBaseNodeParam(): NodeParam {
   };
 }
 
-export const NodeParamData = {
+export const NodeParam = {
   encode(message: NodeParam, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
@@ -15596,16 +15520,16 @@ export const NodeParamData = {
       writer.uint32(48).bool(message.automated);
     }
     if (message.reference !== undefined) {
-      NodeReferenceData.encode(message.reference, writer.uint32(58).fork()).ldelim();
+      NodeReference.encode(message.reference, writer.uint32(58).fork()).ldelim();
     }
     if (message.value !== undefined) {
-      NodeVariableData.encode(message.value, writer.uint32(66).fork()).ldelim();
+      NodeVariable.encode(message.value, writer.uint32(66).fork()).ldelim();
     }
     for (const v of message.actions) {
-      NodeActionData.encode(v!, writer.uint32(74).fork()).ldelim();
+      NodeAction.encode(v!, writer.uint32(74).fork()).ldelim();
     }
     for (const v of message.functionArguments) {
-      FunctionArgumentData.encode(v!, writer.uint32(82).fork()).ldelim();
+      FunctionArgument.encode(v!, writer.uint32(82).fork()).ldelim();
     }
     return writer;
   },
@@ -15636,16 +15560,16 @@ export const NodeParamData = {
           message.automated = reader.bool();
           break;
         case 7:
-          message.reference = NodeReferenceData.decode(reader, reader.uint32());
+          message.reference = NodeReference.decode(reader, reader.uint32());
           break;
         case 8:
-          message.value = NodeVariableData.decode(reader, reader.uint32());
+          message.value = NodeVariable.decode(reader, reader.uint32());
           break;
         case 9:
-          message.actions.push(NodeActionData.decode(reader, reader.uint32()));
+          message.actions.push(NodeAction.decode(reader, reader.uint32()));
           break;
         case 10:
-          message.functionArguments.push(FunctionArgumentData.decode(reader, reader.uint32()));
+          message.functionArguments.push(FunctionArgument.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -15663,11 +15587,11 @@ export const NodeParamData = {
       defaultValue: isSet(object.defaultValue) ? String(object.defaultValue) : "",
       plural: isSet(object.plural) ? Boolean(object.plural) : false,
       automated: isSet(object.automated) ? Boolean(object.automated) : false,
-      reference: isSet(object.reference) ? NodeReferenceData.fromJSON(object.reference) : undefined,
-      value: isSet(object.value) ? NodeVariableData.fromJSON(object.value) : undefined,
-      actions: Array.isArray(object?.actions) ? object.actions.map((e: any) => NodeActionData.fromJSON(e)) : [],
+      reference: isSet(object.reference) ? NodeReference.fromJSON(object.reference) : undefined,
+      value: isSet(object.value) ? NodeVariable.fromJSON(object.value) : undefined,
+      actions: Array.isArray(object?.actions) ? object.actions.map((e: any) => NodeAction.fromJSON(e)) : [],
       functionArguments: Array.isArray(object?.functionArguments)
-        ? object.functionArguments.map((e: any) => FunctionArgumentData.fromJSON(e))
+        ? object.functionArguments.map((e: any) => FunctionArgument.fromJSON(e))
         : [],
     };
   },
@@ -15685,15 +15609,15 @@ export const NodeParamData = {
     message.plural !== undefined && (obj.plural = message.plural);
     message.automated !== undefined && (obj.automated = message.automated);
     message.reference !== undefined &&
-      (obj.reference = message.reference ? NodeReferenceData.toJSON(message.reference) : undefined);
-    message.value !== undefined && (obj.value = message.value ? NodeVariableData.toJSON(message.value) : undefined);
+      (obj.reference = message.reference ? NodeReference.toJSON(message.reference) : undefined);
+    message.value !== undefined && (obj.value = message.value ? NodeVariable.toJSON(message.value) : undefined);
     if (message.actions) {
-      obj.actions = message.actions.map((e) => e ? NodeActionData.toJSON(e) : undefined);
+      obj.actions = message.actions.map((e) => e ? NodeAction.toJSON(e) : undefined);
     } else {
       obj.actions = [];
     }
     if (message.functionArguments) {
-      obj.functionArguments = message.functionArguments.map((e) => e ? FunctionArgumentData.toJSON(e) : undefined);
+      obj.functionArguments = message.functionArguments.map((e) => e ? FunctionArgument.toJSON(e) : undefined);
     } else {
       obj.functionArguments = [];
     }
@@ -15709,13 +15633,13 @@ export const NodeParamData = {
     message.plural = object.plural ?? false;
     message.automated = object.automated ?? false;
     message.reference = (object.reference !== undefined && object.reference !== null)
-      ? NodeReferenceData.fromPartial(object.reference)
+      ? NodeReference.fromPartial(object.reference)
       : undefined;
     message.value = (object.value !== undefined && object.value !== null)
-      ? NodeVariableData.fromPartial(object.value)
+      ? NodeVariable.fromPartial(object.value)
       : undefined;
-    message.actions = object.actions?.map((e) => NodeActionData.fromPartial(e)) || [];
-    message.functionArguments = object.functionArguments?.map((e) => FunctionArgumentData.fromPartial(e)) || [];
+    message.actions = object.actions?.map((e) => NodeAction.fromPartial(e)) || [];
+    message.functionArguments = object.functionArguments?.map((e) => FunctionArgument.fromPartial(e)) || [];
     return message;
   },
 };
@@ -15735,7 +15659,7 @@ function createBaseNodeVariable(): NodeVariable {
   };
 }
 
-export const NodeVariableData = {
+export const NodeVariable = {
   encode(message: NodeVariable, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.localId !== "") {
       writer.uint32(10).string(message.localId);
@@ -15765,7 +15689,7 @@ export const NodeVariableData = {
       writer.uint32(72).int32(message.variableType);
     }
     for (const v of message.values) {
-      NodeReferenceData.encode(v!, writer.uint32(82).fork()).ldelim();
+      NodeReference.encode(v!, writer.uint32(82).fork()).ldelim();
     }
     return writer;
   },
@@ -15805,7 +15729,7 @@ export const NodeVariableData = {
           message.variableType = reader.int32() as any;
           break;
         case 10:
-          message.values.push(NodeReferenceData.decode(reader, reader.uint32()));
+          message.values.push(NodeReference.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -15826,7 +15750,7 @@ export const NodeVariableData = {
       defaultType: isSet(object.defaultType) ? nodeVariableVariableDefaultTypeFromJSON(object.defaultType) : 0,
       source: isSet(object.source) ? nodeVariableVariableSourceFromJSON(object.source) : 0,
       variableType: isSet(object.variableType) ? nodeVariableVariableTypeFromJSON(object.variableType) : 0,
-      values: Array.isArray(object?.values) ? object.values.map((e: any) => NodeReferenceData.fromJSON(e)) : [],
+      values: Array.isArray(object?.values) ? object.values.map((e: any) => NodeReference.fromJSON(e)) : [],
     };
   },
 
@@ -15842,7 +15766,7 @@ export const NodeVariableData = {
     message.source !== undefined && (obj.source = nodeVariableVariableSourceToJSON(message.source));
     message.variableType !== undefined && (obj.variableType = nodeVariableVariableTypeToJSON(message.variableType));
     if (message.values) {
-      obj.values = message.values.map((e) => e ? NodeReferenceData.toJSON(e) : undefined);
+      obj.values = message.values.map((e) => e ? NodeReference.toJSON(e) : undefined);
     } else {
       obj.values = [];
     }
@@ -15860,7 +15784,7 @@ export const NodeVariableData = {
     message.defaultType = object.defaultType ?? 0;
     message.source = object.source ?? 0;
     message.variableType = object.variableType ?? 0;
-    message.values = object.values?.map((e) => NodeReferenceData.fromPartial(e)) || [];
+    message.values = object.values?.map((e) => NodeReference.fromPartial(e)) || [];
     return message;
   },
 };
@@ -15879,7 +15803,7 @@ function createBaseNodeAction(): NodeAction {
   };
 }
 
-export const NodeActionData = {
+export const NodeAction = {
   encode(message: NodeAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.action !== "") {
       writer.uint32(10).string(message.action);
@@ -15894,19 +15818,19 @@ export const NodeActionData = {
       writer.uint32(32).int32(message.source);
     }
     for (const v of message.payload) {
-      NodePayloadData.encode(v!, writer.uint32(42).fork()).ldelim();
+      NodePayload.encode(v!, writer.uint32(42).fork()).ldelim();
     }
     for (const v of message.response) {
-      NodePayloadData.encode(v!, writer.uint32(50).fork()).ldelim();
+      NodePayload.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     for (const v of message.values) {
-      NodeReferenceData.encode(v!, writer.uint32(58).fork()).ldelim();
+      NodeReference.encode(v!, writer.uint32(58).fork()).ldelim();
     }
     for (const v of message.successActions) {
-      NodeActionData.encode(v!, writer.uint32(66).fork()).ldelim();
+      NodeAction.encode(v!, writer.uint32(66).fork()).ldelim();
     }
     for (const v of message.errorActions) {
-      NodeActionData.encode(v!, writer.uint32(74).fork()).ldelim();
+      NodeAction.encode(v!, writer.uint32(74).fork()).ldelim();
     }
     return writer;
   },
@@ -15931,19 +15855,19 @@ export const NodeActionData = {
           message.source = reader.int32() as any;
           break;
         case 5:
-          message.payload.push(NodePayloadData.decode(reader, reader.uint32()));
+          message.payload.push(NodePayload.decode(reader, reader.uint32()));
           break;
         case 6:
-          message.response.push(NodePayloadData.decode(reader, reader.uint32()));
+          message.response.push(NodePayload.decode(reader, reader.uint32()));
           break;
         case 7:
-          message.values.push(NodeReferenceData.decode(reader, reader.uint32()));
+          message.values.push(NodeReference.decode(reader, reader.uint32()));
           break;
         case 8:
-          message.successActions.push(NodeActionData.decode(reader, reader.uint32()));
+          message.successActions.push(NodeAction.decode(reader, reader.uint32()));
           break;
         case 9:
-          message.errorActions.push(NodeActionData.decode(reader, reader.uint32()));
+          message.errorActions.push(NodeAction.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -15959,14 +15883,14 @@ export const NodeActionData = {
       value: isSet(object.value) ? String(object.value) : "",
       actionType: isSet(object.actionType) ? nodeActionActionTypeFromJSON(object.actionType) : 0,
       source: isSet(object.source) ? nodeActionActionSourceFromJSON(object.source) : 0,
-      payload: Array.isArray(object?.payload) ? object.payload.map((e: any) => NodePayloadData.fromJSON(e)) : [],
-      response: Array.isArray(object?.response) ? object.response.map((e: any) => NodePayloadData.fromJSON(e)) : [],
-      values: Array.isArray(object?.values) ? object.values.map((e: any) => NodeReferenceData.fromJSON(e)) : [],
+      payload: Array.isArray(object?.payload) ? object.payload.map((e: any) => NodePayload.fromJSON(e)) : [],
+      response: Array.isArray(object?.response) ? object.response.map((e: any) => NodePayload.fromJSON(e)) : [],
+      values: Array.isArray(object?.values) ? object.values.map((e: any) => NodeReference.fromJSON(e)) : [],
       successActions: Array.isArray(object?.successActions)
-        ? object.successActions.map((e: any) => NodeActionData.fromJSON(e))
+        ? object.successActions.map((e: any) => NodeAction.fromJSON(e))
         : [],
       errorActions: Array.isArray(object?.errorActions)
-        ? object.errorActions.map((e: any) => NodeActionData.fromJSON(e))
+        ? object.errorActions.map((e: any) => NodeAction.fromJSON(e))
         : [],
     };
   },
@@ -15978,27 +15902,27 @@ export const NodeActionData = {
     message.actionType !== undefined && (obj.actionType = nodeActionActionTypeToJSON(message.actionType));
     message.source !== undefined && (obj.source = nodeActionActionSourceToJSON(message.source));
     if (message.payload) {
-      obj.payload = message.payload.map((e) => e ? NodePayloadData.toJSON(e) : undefined);
+      obj.payload = message.payload.map((e) => e ? NodePayload.toJSON(e) : undefined);
     } else {
       obj.payload = [];
     }
     if (message.response) {
-      obj.response = message.response.map((e) => e ? NodePayloadData.toJSON(e) : undefined);
+      obj.response = message.response.map((e) => e ? NodePayload.toJSON(e) : undefined);
     } else {
       obj.response = [];
     }
     if (message.values) {
-      obj.values = message.values.map((e) => e ? NodeReferenceData.toJSON(e) : undefined);
+      obj.values = message.values.map((e) => e ? NodeReference.toJSON(e) : undefined);
     } else {
       obj.values = [];
     }
     if (message.successActions) {
-      obj.successActions = message.successActions.map((e) => e ? NodeActionData.toJSON(e) : undefined);
+      obj.successActions = message.successActions.map((e) => e ? NodeAction.toJSON(e) : undefined);
     } else {
       obj.successActions = [];
     }
     if (message.errorActions) {
-      obj.errorActions = message.errorActions.map((e) => e ? NodeActionData.toJSON(e) : undefined);
+      obj.errorActions = message.errorActions.map((e) => e ? NodeAction.toJSON(e) : undefined);
     } else {
       obj.errorActions = [];
     }
@@ -16011,11 +15935,11 @@ export const NodeActionData = {
     message.value = object.value ?? "";
     message.actionType = object.actionType ?? 0;
     message.source = object.source ?? 0;
-    message.payload = object.payload?.map((e) => NodePayloadData.fromPartial(e)) || [];
-    message.response = object.response?.map((e) => NodePayloadData.fromPartial(e)) || [];
-    message.values = object.values?.map((e) => NodeReferenceData.fromPartial(e)) || [];
-    message.successActions = object.successActions?.map((e) => NodeActionData.fromPartial(e)) || [];
-    message.errorActions = object.errorActions?.map((e) => NodeActionData.fromPartial(e)) || [];
+    message.payload = object.payload?.map((e) => NodePayload.fromPartial(e)) || [];
+    message.response = object.response?.map((e) => NodePayload.fromPartial(e)) || [];
+    message.values = object.values?.map((e) => NodeReference.fromPartial(e)) || [];
+    message.successActions = object.successActions?.map((e) => NodeAction.fromPartial(e)) || [];
+    message.errorActions = object.errorActions?.map((e) => NodeAction.fromPartial(e)) || [];
     return message;
   },
 };
@@ -16024,16 +15948,16 @@ function createBaseNodePayload(): NodePayload {
   return { actions: [] };
 }
 
-export const NodePayloadData = {
+export const NodePayload = {
   encode(message: NodePayload, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.value !== undefined) {
-      NodeVariableData.encode(message.value, writer.uint32(10).fork()).ldelim();
+      NodeVariable.encode(message.value, writer.uint32(10).fork()).ldelim();
     }
     if (message.reference !== undefined) {
-      NodeReferenceData.encode(message.reference, writer.uint32(18).fork()).ldelim();
+      NodeReference.encode(message.reference, writer.uint32(18).fork()).ldelim();
     }
     for (const v of message.actions) {
-      NodeActionData.encode(v!, writer.uint32(26).fork()).ldelim();
+      NodeAction.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -16046,13 +15970,13 @@ export const NodePayloadData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.value = NodeVariableData.decode(reader, reader.uint32());
+          message.value = NodeVariable.decode(reader, reader.uint32());
           break;
         case 2:
-          message.reference = NodeReferenceData.decode(reader, reader.uint32());
+          message.reference = NodeReference.decode(reader, reader.uint32());
           break;
         case 3:
-          message.actions.push(NodeActionData.decode(reader, reader.uint32()));
+          message.actions.push(NodeAction.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -16064,19 +15988,19 @@ export const NodePayloadData = {
 
   fromJSON(object: any): NodePayload {
     return {
-      value: isSet(object.value) ? NodeVariableData.fromJSON(object.value) : undefined,
-      reference: isSet(object.reference) ? NodeReferenceData.fromJSON(object.reference) : undefined,
-      actions: Array.isArray(object?.actions) ? object.actions.map((e: any) => NodeActionData.fromJSON(e)) : [],
+      value: isSet(object.value) ? NodeVariable.fromJSON(object.value) : undefined,
+      reference: isSet(object.reference) ? NodeReference.fromJSON(object.reference) : undefined,
+      actions: Array.isArray(object?.actions) ? object.actions.map((e: any) => NodeAction.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: NodePayload): unknown {
     const obj: any = {};
-    message.value !== undefined && (obj.value = message.value ? NodeVariableData.toJSON(message.value) : undefined);
+    message.value !== undefined && (obj.value = message.value ? NodeVariable.toJSON(message.value) : undefined);
     message.reference !== undefined &&
-      (obj.reference = message.reference ? NodeReferenceData.toJSON(message.reference) : undefined);
+      (obj.reference = message.reference ? NodeReference.toJSON(message.reference) : undefined);
     if (message.actions) {
-      obj.actions = message.actions.map((e) => e ? NodeActionData.toJSON(e) : undefined);
+      obj.actions = message.actions.map((e) => e ? NodeAction.toJSON(e) : undefined);
     } else {
       obj.actions = [];
     }
@@ -16086,12 +16010,12 @@ export const NodePayloadData = {
   fromPartial(object: DeepPartial<NodePayload>): NodePayload {
     const message = createBaseNodePayload();
     message.value = (object.value !== undefined && object.value !== null)
-      ? NodeVariableData.fromPartial(object.value)
+      ? NodeVariable.fromPartial(object.value)
       : undefined;
     message.reference = (object.reference !== undefined && object.reference !== null)
-      ? NodeReferenceData.fromPartial(object.reference)
+      ? NodeReference.fromPartial(object.reference)
       : undefined;
-    message.actions = object.actions?.map((e) => NodeActionData.fromPartial(e)) || [];
+    message.actions = object.actions?.map((e) => NodeAction.fromPartial(e)) || [];
     return message;
   },
 };
@@ -16100,13 +16024,13 @@ function createBaseMoleculeComponent(): MoleculeComponent {
   return { props: [] };
 }
 
-export const MoleculeComponentData = {
+export const MoleculeComponent = {
   encode(message: MoleculeComponent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.reference !== undefined) {
-      NodeReferenceData.encode(message.reference, writer.uint32(10).fork()).ldelim();
+      NodeReference.encode(message.reference, writer.uint32(10).fork()).ldelim();
     }
     for (const v of message.props) {
-      NodeParamData.encode(v!, writer.uint32(18).fork()).ldelim();
+      NodeParam.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -16119,10 +16043,10 @@ export const MoleculeComponentData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.reference = NodeReferenceData.decode(reader, reader.uint32());
+          message.reference = NodeReference.decode(reader, reader.uint32());
           break;
         case 2:
-          message.props.push(NodeParamData.decode(reader, reader.uint32()));
+          message.props.push(NodeParam.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -16134,17 +16058,17 @@ export const MoleculeComponentData = {
 
   fromJSON(object: any): MoleculeComponent {
     return {
-      reference: isSet(object.reference) ? NodeReferenceData.fromJSON(object.reference) : undefined,
-      props: Array.isArray(object?.props) ? object.props.map((e: any) => NodeParamData.fromJSON(e)) : [],
+      reference: isSet(object.reference) ? NodeReference.fromJSON(object.reference) : undefined,
+      props: Array.isArray(object?.props) ? object.props.map((e: any) => NodeParam.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: MoleculeComponent): unknown {
     const obj: any = {};
     message.reference !== undefined &&
-      (obj.reference = message.reference ? NodeReferenceData.toJSON(message.reference) : undefined);
+      (obj.reference = message.reference ? NodeReference.toJSON(message.reference) : undefined);
     if (message.props) {
-      obj.props = message.props.map((e) => e ? NodeParamData.toJSON(e) : undefined);
+      obj.props = message.props.map((e) => e ? NodeParam.toJSON(e) : undefined);
     } else {
       obj.props = [];
     }
@@ -16154,9 +16078,9 @@ export const MoleculeComponentData = {
   fromPartial(object: DeepPartial<MoleculeComponent>): MoleculeComponent {
     const message = createBaseMoleculeComponent();
     message.reference = (object.reference !== undefined && object.reference !== null)
-      ? NodeReferenceData.fromPartial(object.reference)
+      ? NodeReference.fromPartial(object.reference)
       : undefined;
-    message.props = object.props?.map((e) => NodeParamData.fromPartial(e)) || [];
+    message.props = object.props?.map((e) => NodeParam.fromPartial(e)) || [];
     return message;
   },
 };
@@ -16175,7 +16099,7 @@ function createBaseNodeCustom(): NodeCustom {
   };
 }
 
-export const NodeCustomData = {
+export const NodeCustom = {
   encode(message: NodeCustom, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.usePropStyle !== undefined) {
       writer.uint32(8).bool(message.usePropStyle);
@@ -16184,43 +16108,43 @@ export const NodeCustomData = {
       writer.uint32(16).bool(message.ignorePropStyle);
     }
     if (message.form !== undefined) {
-      NodeReferenceData.encode(message.form, writer.uint32(26).fork()).ldelim();
+      NodeReference.encode(message.form, writer.uint32(26).fork()).ldelim();
     }
     if (message.molecule !== undefined) {
-      NodeReferenceData.encode(message.molecule, writer.uint32(34).fork()).ldelim();
+      NodeReference.encode(message.molecule, writer.uint32(34).fork()).ldelim();
     }
     for (const v of message.mediaQueries) {
-      NodeMediaQueryData.encode(v!, writer.uint32(42).fork()).ldelim();
+      NodeMediaQuery.encode(v!, writer.uint32(42).fork()).ldelim();
     }
     if (message.authentication !== undefined) {
-      NodeReferenceData.encode(message.authentication, writer.uint32(50).fork()).ldelim();
+      NodeReference.encode(message.authentication, writer.uint32(50).fork()).ldelim();
     }
     if (message.renderCondition !== undefined) {
-      RenderConditionData.encode(message.renderCondition, writer.uint32(58).fork()).ldelim();
+      RenderCondition.encode(message.renderCondition, writer.uint32(58).fork()).ldelim();
     }
     for (const v of message.seoTitle) {
-      NodeVariableData.encode(v!, writer.uint32(66).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(66).fork()).ldelim();
     }
     for (const v of message.seoDescription) {
-      NodeVariableData.encode(v!, writer.uint32(74).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(74).fork()).ldelim();
     }
     for (const v of message.actions) {
-      NodeActionData.encode(v!, writer.uint32(82).fork()).ldelim();
+      NodeAction.encode(v!, writer.uint32(82).fork()).ldelim();
     }
     for (const v of message.params) {
-      NodeParamData.encode(v!, writer.uint32(90).fork()).ldelim();
+      NodeParam.encode(v!, writer.uint32(90).fork()).ldelim();
     }
     for (const v of message.props) {
-      NodeParamData.encode(v!, writer.uint32(98).fork()).ldelim();
+      NodeParam.encode(v!, writer.uint32(98).fork()).ldelim();
     }
     for (const v of message.childrenData) {
-      NodeVariableData.encode(v!, writer.uint32(106).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(106).fork()).ldelim();
     }
     for (const v of message.formValidations) {
-      FormValidationData.encode(v!, writer.uint32(114).fork()).ldelim();
+      FormValidation.encode(v!, writer.uint32(114).fork()).ldelim();
     }
     for (const v of message.formDefaultValues) {
-      FormDefaultValueData.encode(v!, writer.uint32(122).fork()).ldelim();
+      FormDefaultValue.encode(v!, writer.uint32(122).fork()).ldelim();
     }
     return writer;
   },
@@ -16239,43 +16163,43 @@ export const NodeCustomData = {
           message.ignorePropStyle = reader.bool();
           break;
         case 3:
-          message.form = NodeReferenceData.decode(reader, reader.uint32());
+          message.form = NodeReference.decode(reader, reader.uint32());
           break;
         case 4:
-          message.molecule = NodeReferenceData.decode(reader, reader.uint32());
+          message.molecule = NodeReference.decode(reader, reader.uint32());
           break;
         case 5:
-          message.mediaQueries.push(NodeMediaQueryData.decode(reader, reader.uint32()));
+          message.mediaQueries.push(NodeMediaQuery.decode(reader, reader.uint32()));
           break;
         case 6:
-          message.authentication = NodeReferenceData.decode(reader, reader.uint32());
+          message.authentication = NodeReference.decode(reader, reader.uint32());
           break;
         case 7:
-          message.renderCondition = RenderConditionData.decode(reader, reader.uint32());
+          message.renderCondition = RenderCondition.decode(reader, reader.uint32());
           break;
         case 8:
-          message.seoTitle.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.seoTitle.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 9:
-          message.seoDescription.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.seoDescription.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 10:
-          message.actions.push(NodeActionData.decode(reader, reader.uint32()));
+          message.actions.push(NodeAction.decode(reader, reader.uint32()));
           break;
         case 11:
-          message.params.push(NodeParamData.decode(reader, reader.uint32()));
+          message.params.push(NodeParam.decode(reader, reader.uint32()));
           break;
         case 12:
-          message.props.push(NodeParamData.decode(reader, reader.uint32()));
+          message.props.push(NodeParam.decode(reader, reader.uint32()));
           break;
         case 13:
-          message.childrenData.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.childrenData.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 14:
-          message.formValidations.push(FormValidationData.decode(reader, reader.uint32()));
+          message.formValidations.push(FormValidation.decode(reader, reader.uint32()));
           break;
         case 15:
-          message.formDefaultValues.push(FormDefaultValueData.decode(reader, reader.uint32()));
+          message.formDefaultValues.push(FormDefaultValue.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -16289,28 +16213,28 @@ export const NodeCustomData = {
     return {
       usePropStyle: isSet(object.usePropStyle) ? Boolean(object.usePropStyle) : undefined,
       ignorePropStyle: isSet(object.ignorePropStyle) ? Boolean(object.ignorePropStyle) : undefined,
-      form: isSet(object.form) ? NodeReferenceData.fromJSON(object.form) : undefined,
-      molecule: isSet(object.molecule) ? NodeReferenceData.fromJSON(object.molecule) : undefined,
+      form: isSet(object.form) ? NodeReference.fromJSON(object.form) : undefined,
+      molecule: isSet(object.molecule) ? NodeReference.fromJSON(object.molecule) : undefined,
       mediaQueries: Array.isArray(object?.mediaQueries)
-        ? object.mediaQueries.map((e: any) => NodeMediaQueryData.fromJSON(e))
+        ? object.mediaQueries.map((e: any) => NodeMediaQuery.fromJSON(e))
         : [],
-      authentication: isSet(object.authentication) ? NodeReferenceData.fromJSON(object.authentication) : undefined,
-      renderCondition: isSet(object.renderCondition) ? RenderConditionData.fromJSON(object.renderCondition) : undefined,
-      seoTitle: Array.isArray(object?.seoTitle) ? object.seoTitle.map((e: any) => NodeVariableData.fromJSON(e)) : [],
+      authentication: isSet(object.authentication) ? NodeReference.fromJSON(object.authentication) : undefined,
+      renderCondition: isSet(object.renderCondition) ? RenderCondition.fromJSON(object.renderCondition) : undefined,
+      seoTitle: Array.isArray(object?.seoTitle) ? object.seoTitle.map((e: any) => NodeVariable.fromJSON(e)) : [],
       seoDescription: Array.isArray(object?.seoDescription)
-        ? object.seoDescription.map((e: any) => NodeVariableData.fromJSON(e))
+        ? object.seoDescription.map((e: any) => NodeVariable.fromJSON(e))
         : [],
-      actions: Array.isArray(object?.actions) ? object.actions.map((e: any) => NodeActionData.fromJSON(e)) : [],
-      params: Array.isArray(object?.params) ? object.params.map((e: any) => NodeParamData.fromJSON(e)) : [],
-      props: Array.isArray(object?.props) ? object.props.map((e: any) => NodeParamData.fromJSON(e)) : [],
+      actions: Array.isArray(object?.actions) ? object.actions.map((e: any) => NodeAction.fromJSON(e)) : [],
+      params: Array.isArray(object?.params) ? object.params.map((e: any) => NodeParam.fromJSON(e)) : [],
+      props: Array.isArray(object?.props) ? object.props.map((e: any) => NodeParam.fromJSON(e)) : [],
       childrenData: Array.isArray(object?.childrenData)
-        ? object.childrenData.map((e: any) => NodeVariableData.fromJSON(e))
+        ? object.childrenData.map((e: any) => NodeVariable.fromJSON(e))
         : [],
       formValidations: Array.isArray(object?.formValidations)
-        ? object.formValidations.map((e: any) => FormValidationData.fromJSON(e))
+        ? object.formValidations.map((e: any) => FormValidation.fromJSON(e))
         : [],
       formDefaultValues: Array.isArray(object?.formDefaultValues)
-        ? object.formDefaultValues.map((e: any) => FormDefaultValueData.fromJSON(e))
+        ? object.formDefaultValues.map((e: any) => FormDefaultValue.fromJSON(e))
         : [],
     };
   },
@@ -16319,55 +16243,55 @@ export const NodeCustomData = {
     const obj: any = {};
     message.usePropStyle !== undefined && (obj.usePropStyle = message.usePropStyle);
     message.ignorePropStyle !== undefined && (obj.ignorePropStyle = message.ignorePropStyle);
-    message.form !== undefined && (obj.form = message.form ? NodeReferenceData.toJSON(message.form) : undefined);
+    message.form !== undefined && (obj.form = message.form ? NodeReference.toJSON(message.form) : undefined);
     message.molecule !== undefined &&
-      (obj.molecule = message.molecule ? NodeReferenceData.toJSON(message.molecule) : undefined);
+      (obj.molecule = message.molecule ? NodeReference.toJSON(message.molecule) : undefined);
     if (message.mediaQueries) {
-      obj.mediaQueries = message.mediaQueries.map((e) => e ? NodeMediaQueryData.toJSON(e) : undefined);
+      obj.mediaQueries = message.mediaQueries.map((e) => e ? NodeMediaQuery.toJSON(e) : undefined);
     } else {
       obj.mediaQueries = [];
     }
     message.authentication !== undefined &&
-      (obj.authentication = message.authentication ? NodeReferenceData.toJSON(message.authentication) : undefined);
+      (obj.authentication = message.authentication ? NodeReference.toJSON(message.authentication) : undefined);
     message.renderCondition !== undefined &&
-      (obj.renderCondition = message.renderCondition ? RenderConditionData.toJSON(message.renderCondition) : undefined);
+      (obj.renderCondition = message.renderCondition ? RenderCondition.toJSON(message.renderCondition) : undefined);
     if (message.seoTitle) {
-      obj.seoTitle = message.seoTitle.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.seoTitle = message.seoTitle.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.seoTitle = [];
     }
     if (message.seoDescription) {
-      obj.seoDescription = message.seoDescription.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.seoDescription = message.seoDescription.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.seoDescription = [];
     }
     if (message.actions) {
-      obj.actions = message.actions.map((e) => e ? NodeActionData.toJSON(e) : undefined);
+      obj.actions = message.actions.map((e) => e ? NodeAction.toJSON(e) : undefined);
     } else {
       obj.actions = [];
     }
     if (message.params) {
-      obj.params = message.params.map((e) => e ? NodeParamData.toJSON(e) : undefined);
+      obj.params = message.params.map((e) => e ? NodeParam.toJSON(e) : undefined);
     } else {
       obj.params = [];
     }
     if (message.props) {
-      obj.props = message.props.map((e) => e ? NodeParamData.toJSON(e) : undefined);
+      obj.props = message.props.map((e) => e ? NodeParam.toJSON(e) : undefined);
     } else {
       obj.props = [];
     }
     if (message.childrenData) {
-      obj.childrenData = message.childrenData.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.childrenData = message.childrenData.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.childrenData = [];
     }
     if (message.formValidations) {
-      obj.formValidations = message.formValidations.map((e) => e ? FormValidationData.toJSON(e) : undefined);
+      obj.formValidations = message.formValidations.map((e) => e ? FormValidation.toJSON(e) : undefined);
     } else {
       obj.formValidations = [];
     }
     if (message.formDefaultValues) {
-      obj.formDefaultValues = message.formDefaultValues.map((e) => e ? FormDefaultValueData.toJSON(e) : undefined);
+      obj.formDefaultValues = message.formDefaultValues.map((e) => e ? FormDefaultValue.toJSON(e) : undefined);
     } else {
       obj.formDefaultValues = [];
     }
@@ -16379,26 +16303,26 @@ export const NodeCustomData = {
     message.usePropStyle = object.usePropStyle ?? undefined;
     message.ignorePropStyle = object.ignorePropStyle ?? undefined;
     message.form = (object.form !== undefined && object.form !== null)
-      ? NodeReferenceData.fromPartial(object.form)
+      ? NodeReference.fromPartial(object.form)
       : undefined;
     message.molecule = (object.molecule !== undefined && object.molecule !== null)
-      ? NodeReferenceData.fromPartial(object.molecule)
+      ? NodeReference.fromPartial(object.molecule)
       : undefined;
-    message.mediaQueries = object.mediaQueries?.map((e) => NodeMediaQueryData.fromPartial(e)) || [];
+    message.mediaQueries = object.mediaQueries?.map((e) => NodeMediaQuery.fromPartial(e)) || [];
     message.authentication = (object.authentication !== undefined && object.authentication !== null)
-      ? NodeReferenceData.fromPartial(object.authentication)
+      ? NodeReference.fromPartial(object.authentication)
       : undefined;
     message.renderCondition = (object.renderCondition !== undefined && object.renderCondition !== null)
-      ? RenderConditionData.fromPartial(object.renderCondition)
+      ? RenderCondition.fromPartial(object.renderCondition)
       : undefined;
-    message.seoTitle = object.seoTitle?.map((e) => NodeVariableData.fromPartial(e)) || [];
-    message.seoDescription = object.seoDescription?.map((e) => NodeVariableData.fromPartial(e)) || [];
-    message.actions = object.actions?.map((e) => NodeActionData.fromPartial(e)) || [];
-    message.params = object.params?.map((e) => NodeParamData.fromPartial(e)) || [];
-    message.props = object.props?.map((e) => NodeParamData.fromPartial(e)) || [];
-    message.childrenData = object.childrenData?.map((e) => NodeVariableData.fromPartial(e)) || [];
-    message.formValidations = object.formValidations?.map((e) => FormValidationData.fromPartial(e)) || [];
-    message.formDefaultValues = object.formDefaultValues?.map((e) => FormDefaultValueData.fromPartial(e)) || [];
+    message.seoTitle = object.seoTitle?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.seoDescription = object.seoDescription?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.actions = object.actions?.map((e) => NodeAction.fromPartial(e)) || [];
+    message.params = object.params?.map((e) => NodeParam.fromPartial(e)) || [];
+    message.props = object.props?.map((e) => NodeParam.fromPartial(e)) || [];
+    message.childrenData = object.childrenData?.map((e) => NodeVariable.fromPartial(e)) || [];
+    message.formValidations = object.formValidations?.map((e) => FormValidation.fromPartial(e)) || [];
+    message.formDefaultValues = object.formDefaultValues?.map((e) => FormDefaultValue.fromPartial(e)) || [];
     return message;
   },
 };
@@ -16407,13 +16331,13 @@ function createBaseFormDefaultValue(): FormDefaultValue {
   return {};
 }
 
-export const FormDefaultValueData = {
+export const FormDefaultValue = {
   encode(message: FormDefaultValue, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.reference !== undefined) {
-      NodeReferenceData.encode(message.reference, writer.uint32(10).fork()).ldelim();
+      NodeReference.encode(message.reference, writer.uint32(10).fork()).ldelim();
     }
     if (message.value !== undefined) {
-      NodeVariableData.encode(message.value, writer.uint32(18).fork()).ldelim();
+      NodeVariable.encode(message.value, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -16426,10 +16350,10 @@ export const FormDefaultValueData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.reference = NodeReferenceData.decode(reader, reader.uint32());
+          message.reference = NodeReference.decode(reader, reader.uint32());
           break;
         case 2:
-          message.value = NodeVariableData.decode(reader, reader.uint32());
+          message.value = NodeVariable.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -16441,26 +16365,26 @@ export const FormDefaultValueData = {
 
   fromJSON(object: any): FormDefaultValue {
     return {
-      reference: isSet(object.reference) ? NodeReferenceData.fromJSON(object.reference) : undefined,
-      value: isSet(object.value) ? NodeVariableData.fromJSON(object.value) : undefined,
+      reference: isSet(object.reference) ? NodeReference.fromJSON(object.reference) : undefined,
+      value: isSet(object.value) ? NodeVariable.fromJSON(object.value) : undefined,
     };
   },
 
   toJSON(message: FormDefaultValue): unknown {
     const obj: any = {};
     message.reference !== undefined &&
-      (obj.reference = message.reference ? NodeReferenceData.toJSON(message.reference) : undefined);
-    message.value !== undefined && (obj.value = message.value ? NodeVariableData.toJSON(message.value) : undefined);
+      (obj.reference = message.reference ? NodeReference.toJSON(message.reference) : undefined);
+    message.value !== undefined && (obj.value = message.value ? NodeVariable.toJSON(message.value) : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<FormDefaultValue>): FormDefaultValue {
     const message = createBaseFormDefaultValue();
     message.reference = (object.reference !== undefined && object.reference !== null)
-      ? NodeReferenceData.fromPartial(object.reference)
+      ? NodeReference.fromPartial(object.reference)
       : undefined;
     message.value = (object.value !== undefined && object.value !== null)
-      ? NodeVariableData.fromPartial(object.value)
+      ? NodeVariable.fromPartial(object.value)
       : undefined;
     return message;
   },
@@ -16470,7 +16394,7 @@ function createBaseNodeMediaQuery(): NodeMediaQuery {
   return { lower: 0, upper: 0 };
 }
 
-export const NodeMediaQueryData = {
+export const NodeMediaQuery = {
   encode(message: NodeMediaQuery, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.lower !== 0) {
       writer.uint32(8).int32(message.lower);
@@ -16479,7 +16403,7 @@ export const NodeMediaQueryData = {
       writer.uint32(16).int32(message.upper);
     }
     if (message.style !== undefined) {
-      StructData.encode(StructData.wrap(message.style), writer.uint32(26).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.style), writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -16498,7 +16422,7 @@ export const NodeMediaQueryData = {
           message.upper = reader.int32();
           break;
         case 3:
-          message.style = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.style = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -16537,13 +16461,13 @@ function createBaseRenderCondition(): RenderCondition {
   return { enabled: false, conditions: [] };
 }
 
-export const RenderConditionData = {
+export const RenderCondition = {
   encode(message: RenderCondition, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.enabled === true) {
       writer.uint32(8).bool(message.enabled);
     }
     for (const v of message.conditions) {
-      RenderConditionConditionData.encode(v!, writer.uint32(18).fork()).ldelim();
+      RenderConditionCondition.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -16559,7 +16483,7 @@ export const RenderConditionData = {
           message.enabled = reader.bool();
           break;
         case 2:
-          message.conditions.push(RenderConditionConditionData.decode(reader, reader.uint32()));
+          message.conditions.push(RenderConditionCondition.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -16573,7 +16497,7 @@ export const RenderConditionData = {
     return {
       enabled: isSet(object.enabled) ? Boolean(object.enabled) : false,
       conditions: Array.isArray(object?.conditions)
-        ? object.conditions.map((e: any) => RenderConditionConditionData.fromJSON(e))
+        ? object.conditions.map((e: any) => RenderConditionCondition.fromJSON(e))
         : [],
     };
   },
@@ -16582,7 +16506,7 @@ export const RenderConditionData = {
     const obj: any = {};
     message.enabled !== undefined && (obj.enabled = message.enabled);
     if (message.conditions) {
-      obj.conditions = message.conditions.map((e) => e ? RenderConditionConditionData.toJSON(e) : undefined);
+      obj.conditions = message.conditions.map((e) => e ? RenderConditionCondition.toJSON(e) : undefined);
     } else {
       obj.conditions = [];
     }
@@ -16592,7 +16516,7 @@ export const RenderConditionData = {
   fromPartial(object: DeepPartial<RenderCondition>): RenderCondition {
     const message = createBaseRenderCondition();
     message.enabled = object.enabled ?? false;
-    message.conditions = object.conditions?.map((e) => RenderConditionConditionData.fromPartial(e)) || [];
+    message.conditions = object.conditions?.map((e) => RenderConditionCondition.fromPartial(e)) || [];
     return message;
   },
 };
@@ -16601,7 +16525,7 @@ function createBaseRenderConditionCondition(): RenderConditionCondition {
   return { source: 0, operator: 0 };
 }
 
-export const RenderConditionConditionData = {
+export const RenderConditionCondition = {
   encode(message: RenderConditionCondition, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.source !== 0) {
       writer.uint32(8).int32(message.source);
@@ -16610,10 +16534,10 @@ export const RenderConditionConditionData = {
       writer.uint32(16).int32(message.operator);
     }
     if (message.left !== undefined) {
-      NodeVariableData.encode(message.left, writer.uint32(26).fork()).ldelim();
+      NodeVariable.encode(message.left, writer.uint32(26).fork()).ldelim();
     }
     if (message.right !== undefined) {
-      NodeVariableData.encode(message.right, writer.uint32(34).fork()).ldelim();
+      NodeVariable.encode(message.right, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -16632,10 +16556,10 @@ export const RenderConditionConditionData = {
           message.operator = reader.int32() as any;
           break;
         case 3:
-          message.left = NodeVariableData.decode(reader, reader.uint32());
+          message.left = NodeVariable.decode(reader, reader.uint32());
           break;
         case 4:
-          message.right = NodeVariableData.decode(reader, reader.uint32());
+          message.right = NodeVariable.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -16649,8 +16573,8 @@ export const RenderConditionConditionData = {
     return {
       source: isSet(object.source) ? renderConditionSourceFromJSON(object.source) : 0,
       operator: isSet(object.operator) ? renderConditionOperatorFromJSON(object.operator) : 0,
-      left: isSet(object.left) ? NodeVariableData.fromJSON(object.left) : undefined,
-      right: isSet(object.right) ? NodeVariableData.fromJSON(object.right) : undefined,
+      left: isSet(object.left) ? NodeVariable.fromJSON(object.left) : undefined,
+      right: isSet(object.right) ? NodeVariable.fromJSON(object.right) : undefined,
     };
   },
 
@@ -16658,8 +16582,8 @@ export const RenderConditionConditionData = {
     const obj: any = {};
     message.source !== undefined && (obj.source = renderConditionSourceToJSON(message.source));
     message.operator !== undefined && (obj.operator = renderConditionOperatorToJSON(message.operator));
-    message.left !== undefined && (obj.left = message.left ? NodeVariableData.toJSON(message.left) : undefined);
-    message.right !== undefined && (obj.right = message.right ? NodeVariableData.toJSON(message.right) : undefined);
+    message.left !== undefined && (obj.left = message.left ? NodeVariable.toJSON(message.left) : undefined);
+    message.right !== undefined && (obj.right = message.right ? NodeVariable.toJSON(message.right) : undefined);
     return obj;
   },
 
@@ -16668,10 +16592,10 @@ export const RenderConditionConditionData = {
     message.source = object.source ?? 0;
     message.operator = object.operator ?? 0;
     message.left = (object.left !== undefined && object.left !== null)
-      ? NodeVariableData.fromPartial(object.left)
+      ? NodeVariable.fromPartial(object.left)
       : undefined;
     message.right = (object.right !== undefined && object.right !== null)
-      ? NodeVariableData.fromPartial(object.right)
+      ? NodeVariable.fromPartial(object.right)
       : undefined;
     return message;
   },
@@ -16681,13 +16605,13 @@ function createBaseFormValidation(): FormValidation {
   return { validationType: 0, validationRules: [] };
 }
 
-export const FormValidationData = {
+export const FormValidation = {
   encode(message: FormValidation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.validationType !== 0) {
       writer.uint32(8).int32(message.validationType);
     }
     for (const v of message.validationRules) {
-      FormValidationFormValidationsRuleData.encode(v!, writer.uint32(18).fork()).ldelim();
+      FormValidationFormValidationsRule.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -16703,7 +16627,7 @@ export const FormValidationData = {
           message.validationType = reader.int32() as any;
           break;
         case 2:
-          message.validationRules.push(FormValidationFormValidationsRuleData.decode(reader, reader.uint32()));
+          message.validationRules.push(FormValidationFormValidationsRule.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -16717,7 +16641,7 @@ export const FormValidationData = {
     return {
       validationType: isSet(object.validationType) ? formValidationValidationTypeFromJSON(object.validationType) : 0,
       validationRules: Array.isArray(object?.validationRules)
-        ? object.validationRules.map((e: any) => FormValidationFormValidationsRuleData.fromJSON(e))
+        ? object.validationRules.map((e: any) => FormValidationFormValidationsRule.fromJSON(e))
         : [],
     };
   },
@@ -16728,7 +16652,7 @@ export const FormValidationData = {
       (obj.validationType = formValidationValidationTypeToJSON(message.validationType));
     if (message.validationRules) {
       obj.validationRules = message.validationRules.map((e) =>
-        e ? FormValidationFormValidationsRuleData.toJSON(e) : undefined
+        e ? FormValidationFormValidationsRule.toJSON(e) : undefined
       );
     } else {
       obj.validationRules = [];
@@ -16739,8 +16663,8 @@ export const FormValidationData = {
   fromPartial(object: DeepPartial<FormValidation>): FormValidation {
     const message = createBaseFormValidation();
     message.validationType = object.validationType ?? 0;
-    message.validationRules =
-      object.validationRules?.map((e) => FormValidationFormValidationsRuleData.fromPartial(e)) || [];
+    message.validationRules = object.validationRules?.map((e) => FormValidationFormValidationsRule.fromPartial(e)) ||
+      [];
     return message;
   },
 };
@@ -16749,7 +16673,7 @@ function createBaseFormValidationFormValidationsRule(): FormValidationFormValida
   return { value: "", valueType: "", errorMessages: [], ruleType: 0 };
 }
 
-export const FormValidationFormValidationsRuleData = {
+export const FormValidationFormValidationsRule = {
   encode(message: FormValidationFormValidationsRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.value !== "") {
       writer.uint32(10).string(message.value);
@@ -16758,7 +16682,7 @@ export const FormValidationFormValidationsRuleData = {
       writer.uint32(18).string(message.valueType);
     }
     for (const v of message.errorMessages) {
-      NodeVariableData.encode(v!, writer.uint32(26).fork()).ldelim();
+      NodeVariable.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     if (message.ruleType !== 0) {
       writer.uint32(32).int32(message.ruleType);
@@ -16780,7 +16704,7 @@ export const FormValidationFormValidationsRuleData = {
           message.valueType = reader.string();
           break;
         case 3:
-          message.errorMessages.push(NodeVariableData.decode(reader, reader.uint32()));
+          message.errorMessages.push(NodeVariable.decode(reader, reader.uint32()));
           break;
         case 4:
           message.ruleType = reader.int32() as any;
@@ -16798,7 +16722,7 @@ export const FormValidationFormValidationsRuleData = {
       value: isSet(object.value) ? String(object.value) : "",
       valueType: isSet(object.valueType) ? String(object.valueType) : "",
       errorMessages: Array.isArray(object?.errorMessages)
-        ? object.errorMessages.map((e: any) => NodeVariableData.fromJSON(e))
+        ? object.errorMessages.map((e: any) => NodeVariable.fromJSON(e))
         : [],
       ruleType: isSet(object.ruleType) ? formValidationRuleTypeFromJSON(object.ruleType) : 0,
     };
@@ -16809,7 +16733,7 @@ export const FormValidationFormValidationsRuleData = {
     message.value !== undefined && (obj.value = message.value);
     message.valueType !== undefined && (obj.valueType = message.valueType);
     if (message.errorMessages) {
-      obj.errorMessages = message.errorMessages.map((e) => e ? NodeVariableData.toJSON(e) : undefined);
+      obj.errorMessages = message.errorMessages.map((e) => e ? NodeVariable.toJSON(e) : undefined);
     } else {
       obj.errorMessages = [];
     }
@@ -16821,7 +16745,7 @@ export const FormValidationFormValidationsRuleData = {
     const message = createBaseFormValidationFormValidationsRule();
     message.value = object.value ?? "";
     message.valueType = object.valueType ?? "";
-    message.errorMessages = object.errorMessages?.map((e) => NodeVariableData.fromPartial(e)) || [];
+    message.errorMessages = object.errorMessages?.map((e) => NodeVariable.fromPartial(e)) || [];
     message.ruleType = object.ruleType ?? 0;
     return message;
   },
@@ -16831,7 +16755,7 @@ function createBaseGetGitAccessTokenRequest(): GetGitAccessTokenRequest {
   return { projectId: 0, userId: 0 };
 }
 
-export const GetGitAccessTokenRequestData = {
+export const GetGitAccessTokenRequest = {
   encode(message: GetGitAccessTokenRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectId !== 0) {
       writer.uint32(8).int32(message.projectId);
@@ -16889,7 +16813,7 @@ function createBaseGetGitAccessTokenResponse(): GetGitAccessTokenResponse {
   return { accessToken: "" };
 }
 
-export const GetGitAccessTokenResponseData = {
+export const GetGitAccessTokenResponse = {
   encode(message: GetGitAccessTokenResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.accessToken !== "") {
       writer.uint32(10).string(message.accessToken);
@@ -16936,7 +16860,7 @@ function createBaseGetWebAppRequest(): GetWebAppRequest {
   return { projectId: 0 };
 }
 
-export const GetWebAppRequestData = {
+export const GetWebAppRequest = {
   encode(message: GetWebAppRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectId !== 0) {
       writer.uint32(8).int32(message.projectId);
@@ -16983,10 +16907,10 @@ function createBaseGetWebAppResponse(): GetWebAppResponse {
   return {};
 }
 
-export const GetWebAppResponseData = {
+export const GetWebAppResponse = {
   encode(message: GetWebAppResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.webApp !== undefined) {
-      WebAppData.encode(message.webApp, writer.uint32(10).fork()).ldelim();
+      WebApp.encode(message.webApp, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -16999,7 +16923,7 @@ export const GetWebAppResponseData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.webApp = WebAppData.decode(reader, reader.uint32());
+          message.webApp = WebApp.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -17010,19 +16934,19 @@ export const GetWebAppResponseData = {
   },
 
   fromJSON(object: any): GetWebAppResponse {
-    return { webApp: isSet(object.webApp) ? WebAppData.fromJSON(object.webApp) : undefined };
+    return { webApp: isSet(object.webApp) ? WebApp.fromJSON(object.webApp) : undefined };
   },
 
   toJSON(message: GetWebAppResponse): unknown {
     const obj: any = {};
-    message.webApp !== undefined && (obj.webApp = message.webApp ? WebAppData.toJSON(message.webApp) : undefined);
+    message.webApp !== undefined && (obj.webApp = message.webApp ? WebApp.toJSON(message.webApp) : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<GetWebAppResponse>): GetWebAppResponse {
     const message = createBaseGetWebAppResponse();
     message.webApp = (object.webApp !== undefined && object.webApp !== null)
-      ? WebAppData.fromPartial(object.webApp)
+      ? WebApp.fromPartial(object.webApp)
       : undefined;
     return message;
   },
@@ -17032,7 +16956,7 @@ function createBaseGetBackendRequest(): GetBackendRequest {
   return { projectId: 0 };
 }
 
-export const GetBackendRequestData = {
+export const GetBackendRequest = {
   encode(message: GetBackendRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectId !== 0) {
       writer.uint32(8).int32(message.projectId);
@@ -17079,10 +17003,10 @@ function createBaseGetBackendResponse(): GetBackendResponse {
   return {};
 }
 
-export const GetBackendResponseData = {
+export const GetBackendResponse = {
   encode(message: GetBackendResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.backend !== undefined) {
-      BackendData.encode(message.backend, writer.uint32(10).fork()).ldelim();
+      Backend.encode(message.backend, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -17095,7 +17019,7 @@ export const GetBackendResponseData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.backend = BackendData.decode(reader, reader.uint32());
+          message.backend = Backend.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -17106,19 +17030,19 @@ export const GetBackendResponseData = {
   },
 
   fromJSON(object: any): GetBackendResponse {
-    return { backend: isSet(object.backend) ? BackendData.fromJSON(object.backend) : undefined };
+    return { backend: isSet(object.backend) ? Backend.fromJSON(object.backend) : undefined };
   },
 
   toJSON(message: GetBackendResponse): unknown {
     const obj: any = {};
-    message.backend !== undefined && (obj.backend = message.backend ? BackendData.toJSON(message.backend) : undefined);
+    message.backend !== undefined && (obj.backend = message.backend ? Backend.toJSON(message.backend) : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<GetBackendResponse>): GetBackendResponse {
     const message = createBaseGetBackendResponse();
     message.backend = (object.backend !== undefined && object.backend !== null)
-      ? BackendData.fromPartial(object.backend)
+      ? Backend.fromPartial(object.backend)
       : undefined;
     return message;
   },
@@ -17128,7 +17052,7 @@ function createBaseListTablesRequest(): ListTablesRequest {
   return { projectId: 0 };
 }
 
-export const ListTablesRequestData = {
+export const ListTablesRequest = {
   encode(message: ListTablesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectId !== 0) {
       writer.uint32(8).int32(message.projectId);
@@ -17175,10 +17099,10 @@ function createBaseListTablesResponse(): ListTablesResponse {
   return { tables: [] };
 }
 
-export const ListTablesResponseData = {
+export const ListTablesResponse = {
   encode(message: ListTablesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.tables) {
-      TableData.encode(v!, writer.uint32(10).fork()).ldelim();
+      Table.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -17191,7 +17115,7 @@ export const ListTablesResponseData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.tables.push(TableData.decode(reader, reader.uint32()));
+          message.tables.push(Table.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -17202,13 +17126,13 @@ export const ListTablesResponseData = {
   },
 
   fromJSON(object: any): ListTablesResponse {
-    return { tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => TableData.fromJSON(e)) : [] };
+    return { tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => Table.fromJSON(e)) : [] };
   },
 
   toJSON(message: ListTablesResponse): unknown {
     const obj: any = {};
     if (message.tables) {
-      obj.tables = message.tables.map((e) => e ? TableData.toJSON(e) : undefined);
+      obj.tables = message.tables.map((e) => e ? Table.toJSON(e) : undefined);
     } else {
       obj.tables = [];
     }
@@ -17217,7 +17141,7 @@ export const ListTablesResponseData = {
 
   fromPartial(object: DeepPartial<ListTablesResponse>): ListTablesResponse {
     const message = createBaseListTablesResponse();
-    message.tables = object.tables?.map((e) => TableData.fromPartial(e)) || [];
+    message.tables = object.tables?.map((e) => Table.fromPartial(e)) || [];
     return message;
   },
 };
@@ -17226,7 +17150,7 @@ function createBaseListMigrationsRequest(): ListMigrationsRequest {
   return { projectId: 0 };
 }
 
-export const ListMigrationsRequestData = {
+export const ListMigrationsRequest = {
   encode(message: ListMigrationsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectId !== 0) {
       writer.uint32(8).int32(message.projectId);
@@ -17273,7 +17197,7 @@ function createBaseListControllersRequest(): ListControllersRequest {
   return { projectId: 0 };
 }
 
-export const ListControllersRequestData = {
+export const ListControllersRequest = {
   encode(message: ListControllersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectId !== 0) {
       writer.uint32(8).int32(message.projectId);
@@ -17320,10 +17244,10 @@ function createBaseListControllersResponse(): ListControllersResponse {
   return { controllers: [] };
 }
 
-export const ListControllersResponseData = {
+export const ListControllersResponse = {
   encode(message: ListControllersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.controllers) {
-      ControllerData.encode(v!, writer.uint32(10).fork()).ldelim();
+      Controller.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -17336,7 +17260,7 @@ export const ListControllersResponseData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.controllers.push(ControllerData.decode(reader, reader.uint32()));
+          message.controllers.push(Controller.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -17348,16 +17272,14 @@ export const ListControllersResponseData = {
 
   fromJSON(object: any): ListControllersResponse {
     return {
-      controllers: Array.isArray(object?.controllers)
-        ? object.controllers.map((e: any) => ControllerData.fromJSON(e))
-        : [],
+      controllers: Array.isArray(object?.controllers) ? object.controllers.map((e: any) => Controller.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: ListControllersResponse): unknown {
     const obj: any = {};
     if (message.controllers) {
-      obj.controllers = message.controllers.map((e) => e ? ControllerData.toJSON(e) : undefined);
+      obj.controllers = message.controllers.map((e) => e ? Controller.toJSON(e) : undefined);
     } else {
       obj.controllers = [];
     }
@@ -17366,7 +17288,7 @@ export const ListControllersResponseData = {
 
   fromPartial(object: DeepPartial<ListControllersResponse>): ListControllersResponse {
     const message = createBaseListControllersResponse();
-    message.controllers = object.controllers?.map((e) => ControllerData.fromPartial(e)) || [];
+    message.controllers = object.controllers?.map((e) => Controller.fromPartial(e)) || [];
     return message;
   },
 };
@@ -17375,7 +17297,7 @@ function createBaseListFeaturesRequest(): ListFeaturesRequest {
   return { projectId: 0 };
 }
 
-export const ListFeaturesRequestData = {
+export const ListFeaturesRequest = {
   encode(message: ListFeaturesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectId !== 0) {
       writer.uint32(8).int32(message.projectId);
@@ -17422,10 +17344,10 @@ function createBaseListFeaturesResponse(): ListFeaturesResponse {
   return { features: [] };
 }
 
-export const ListFeaturesResponseData = {
+export const ListFeaturesResponse = {
   encode(message: ListFeaturesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.features) {
-      FeatureData.encode(v!, writer.uint32(10).fork()).ldelim();
+      Feature.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -17438,7 +17360,7 @@ export const ListFeaturesResponseData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.features.push(FeatureData.decode(reader, reader.uint32()));
+          message.features.push(Feature.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -17449,15 +17371,13 @@ export const ListFeaturesResponseData = {
   },
 
   fromJSON(object: any): ListFeaturesResponse {
-    return {
-      features: Array.isArray(object?.features) ? object.features.map((e: any) => FeatureData.fromJSON(e)) : [],
-    };
+    return { features: Array.isArray(object?.features) ? object.features.map((e: any) => Feature.fromJSON(e)) : [] };
   },
 
   toJSON(message: ListFeaturesResponse): unknown {
     const obj: any = {};
     if (message.features) {
-      obj.features = message.features.map((e) => e ? FeatureData.toJSON(e) : undefined);
+      obj.features = message.features.map((e) => e ? Feature.toJSON(e) : undefined);
     } else {
       obj.features = [];
     }
@@ -17466,7 +17386,7 @@ export const ListFeaturesResponseData = {
 
   fromPartial(object: DeepPartial<ListFeaturesResponse>): ListFeaturesResponse {
     const message = createBaseListFeaturesResponse();
-    message.features = object.features?.map((e) => FeatureData.fromPartial(e)) || [];
+    message.features = object.features?.map((e) => Feature.fromPartial(e)) || [];
     return message;
   },
 };
@@ -17475,7 +17395,7 @@ function createBaseListAuthorizationsRequest(): ListAuthorizationsRequest {
   return { projectId: 0 };
 }
 
-export const ListAuthorizationsRequestData = {
+export const ListAuthorizationsRequest = {
   encode(message: ListAuthorizationsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectId !== 0) {
       writer.uint32(8).int32(message.projectId);
@@ -17522,10 +17442,10 @@ function createBaseListAuthorizationsResponse(): ListAuthorizationsResponse {
   return { authorizations: [] };
 }
 
-export const ListAuthorizationsResponseData = {
+export const ListAuthorizationsResponse = {
   encode(message: ListAuthorizationsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.authorizations) {
-      AuthorizationData.encode(v!, writer.uint32(10).fork()).ldelim();
+      Authorization.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -17538,7 +17458,7 @@ export const ListAuthorizationsResponseData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.authorizations.push(AuthorizationData.decode(reader, reader.uint32()));
+          message.authorizations.push(Authorization.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -17551,7 +17471,7 @@ export const ListAuthorizationsResponseData = {
   fromJSON(object: any): ListAuthorizationsResponse {
     return {
       authorizations: Array.isArray(object?.authorizations)
-        ? object.authorizations.map((e: any) => AuthorizationData.fromJSON(e))
+        ? object.authorizations.map((e: any) => Authorization.fromJSON(e))
         : [],
     };
   },
@@ -17559,7 +17479,7 @@ export const ListAuthorizationsResponseData = {
   toJSON(message: ListAuthorizationsResponse): unknown {
     const obj: any = {};
     if (message.authorizations) {
-      obj.authorizations = message.authorizations.map((e) => e ? AuthorizationData.toJSON(e) : undefined);
+      obj.authorizations = message.authorizations.map((e) => e ? Authorization.toJSON(e) : undefined);
     } else {
       obj.authorizations = [];
     }
@@ -17568,7 +17488,7 @@ export const ListAuthorizationsResponseData = {
 
   fromPartial(object: DeepPartial<ListAuthorizationsResponse>): ListAuthorizationsResponse {
     const message = createBaseListAuthorizationsResponse();
-    message.authorizations = object.authorizations?.map((e) => AuthorizationData.fromPartial(e)) || [];
+    message.authorizations = object.authorizations?.map((e) => Authorization.fromPartial(e)) || [];
     return message;
   },
 };
@@ -17577,7 +17497,7 @@ function createBaseListLocalizationsRequest(): ListLocalizationsRequest {
   return { projectId: 0 };
 }
 
-export const ListLocalizationsRequestData = {
+export const ListLocalizationsRequest = {
   encode(message: ListLocalizationsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectId !== 0) {
       writer.uint32(8).int32(message.projectId);
@@ -17624,10 +17544,10 @@ function createBaseListLocalizationsResponse(): ListLocalizationsResponse {
   return { localizations: [] };
 }
 
-export const ListLocalizationsResponseData = {
+export const ListLocalizationsResponse = {
   encode(message: ListLocalizationsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.localizations) {
-      LocalizationData.encode(v!, writer.uint32(10).fork()).ldelim();
+      Localization.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -17640,7 +17560,7 @@ export const ListLocalizationsResponseData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.localizations.push(LocalizationData.decode(reader, reader.uint32()));
+          message.localizations.push(Localization.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -17653,7 +17573,7 @@ export const ListLocalizationsResponseData = {
   fromJSON(object: any): ListLocalizationsResponse {
     return {
       localizations: Array.isArray(object?.localizations)
-        ? object.localizations.map((e: any) => LocalizationData.fromJSON(e))
+        ? object.localizations.map((e: any) => Localization.fromJSON(e))
         : [],
     };
   },
@@ -17661,7 +17581,7 @@ export const ListLocalizationsResponseData = {
   toJSON(message: ListLocalizationsResponse): unknown {
     const obj: any = {};
     if (message.localizations) {
-      obj.localizations = message.localizations.map((e) => e ? LocalizationData.toJSON(e) : undefined);
+      obj.localizations = message.localizations.map((e) => e ? Localization.toJSON(e) : undefined);
     } else {
       obj.localizations = [];
     }
@@ -17670,7 +17590,7 @@ export const ListLocalizationsResponseData = {
 
   fromPartial(object: DeepPartial<ListLocalizationsResponse>): ListLocalizationsResponse {
     const message = createBaseListLocalizationsResponse();
-    message.localizations = object.localizations?.map((e) => LocalizationData.fromPartial(e)) || [];
+    message.localizations = object.localizations?.map((e) => Localization.fromPartial(e)) || [];
     return message;
   },
 };
@@ -17679,10 +17599,10 @@ function createBaseListMigrationsResponse(): ListMigrationsResponse {
   return { migrations: [] };
 }
 
-export const ListMigrationsResponseData = {
+export const ListMigrationsResponse = {
   encode(message: ListMigrationsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.migrations) {
-      MigrationData.encode(v!, writer.uint32(10).fork()).ldelim();
+      Migration.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -17695,7 +17615,7 @@ export const ListMigrationsResponseData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.migrations.push(MigrationData.decode(reader, reader.uint32()));
+          message.migrations.push(Migration.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -17707,14 +17627,14 @@ export const ListMigrationsResponseData = {
 
   fromJSON(object: any): ListMigrationsResponse {
     return {
-      migrations: Array.isArray(object?.migrations) ? object.migrations.map((e: any) => MigrationData.fromJSON(e)) : [],
+      migrations: Array.isArray(object?.migrations) ? object.migrations.map((e: any) => Migration.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: ListMigrationsResponse): unknown {
     const obj: any = {};
     if (message.migrations) {
-      obj.migrations = message.migrations.map((e) => e ? MigrationData.toJSON(e) : undefined);
+      obj.migrations = message.migrations.map((e) => e ? Migration.toJSON(e) : undefined);
     } else {
       obj.migrations = [];
     }
@@ -17723,7 +17643,7 @@ export const ListMigrationsResponseData = {
 
   fromPartial(object: DeepPartial<ListMigrationsResponse>): ListMigrationsResponse {
     const message = createBaseListMigrationsResponse();
-    message.migrations = object.migrations?.map((e) => MigrationData.fromPartial(e)) || [];
+    message.migrations = object.migrations?.map((e) => Migration.fromPartial(e)) || [];
     return message;
   },
 };
@@ -17735,81 +17655,81 @@ export const CoreServiceDefinition = {
   methods: {
     listTables: {
       name: "ListTables",
-      requestType: ListTablesRequestData,
+      requestType: ListTablesRequest,
       requestStream: false,
-      responseType: ListTablesResponseData,
+      responseType: ListTablesResponse,
       responseStream: false,
       options: {},
     },
     listControllers: {
       name: "ListControllers",
-      requestType: ListControllersRequestData,
+      requestType: ListControllersRequest,
       requestStream: false,
-      responseType: ListControllersResponseData,
+      responseType: ListControllersResponse,
       responseStream: false,
       options: {},
     },
     listFeatures: {
       name: "ListFeatures",
-      requestType: ListFeaturesRequestData,
+      requestType: ListFeaturesRequest,
       requestStream: false,
-      responseType: ListFeaturesResponseData,
+      responseType: ListFeaturesResponse,
       responseStream: false,
       options: {},
     },
     listAuthorizations: {
       name: "ListAuthorizations",
-      requestType: ListAuthorizationsRequestData,
+      requestType: ListAuthorizationsRequest,
       requestStream: false,
-      responseType: ListAuthorizationsResponseData,
+      responseType: ListAuthorizationsResponse,
       responseStream: false,
       options: {},
     },
     listBeLocalizations: {
       name: "ListBeLocalizations",
-      requestType: ListLocalizationsRequestData,
+      requestType: ListLocalizationsRequest,
       requestStream: false,
-      responseType: ListLocalizationsResponseData,
+      responseType: ListLocalizationsResponse,
       responseStream: false,
       options: {},
     },
     listFeLocalizations: {
       name: "ListFeLocalizations",
-      requestType: ListLocalizationsRequestData,
+      requestType: ListLocalizationsRequest,
       requestStream: false,
-      responseType: ListLocalizationsResponseData,
+      responseType: ListLocalizationsResponse,
       responseStream: false,
       options: {},
     },
     listMigrations: {
       name: "ListMigrations",
-      requestType: ListMigrationsRequestData,
+      requestType: ListMigrationsRequest,
       requestStream: false,
-      responseType: ListMigrationsResponseData,
+      responseType: ListMigrationsResponse,
       responseStream: false,
       options: {},
     },
     getBackend: {
       name: "GetBackend",
-      requestType: GetBackendRequestData,
+      requestType: GetBackendRequest,
       requestStream: false,
-      responseType: GetBackendResponseData,
+      responseType: GetBackendResponse,
       responseStream: false,
       options: {},
     },
     getWebApp: {
       name: "GetWebApp",
-      requestType: GetWebAppRequestData,
+      requestType: GetWebAppRequest,
       requestStream: false,
-      responseType: GetWebAppResponseData,
+      responseType: GetWebAppResponse,
       responseStream: false,
       options: {},
     },
     getGitAccessToken: {
       name: "GetGitAccessToken",
-      requestType: GetGitAccessTokenRequestData,
+      requestType: GetGitAccessTokenRequest,
       requestStream: false,
-      responseType: GetGitAccessTokenResponseData,
+      responseType: GetGitAccessTokenResponse,
       responseStream: false,
       options: {},
     },

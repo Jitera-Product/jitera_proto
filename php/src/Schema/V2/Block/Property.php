@@ -61,6 +61,22 @@ class Property extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>optional bool ai_generated = 12;</code>
      */
     protected $ai_generated = null;
+    /**
+     * Generated from protobuf field <code>optional string figma_node_ids = 13;</code>
+     */
+    protected $figma_node_ids = null;
+    /**
+     * Generated from protobuf field <code>optional string caption = 14;</code>
+     */
+    protected $caption = null;
+    /**
+     * Generated from protobuf field <code>optional .schema.v2.Block.ExternalUrl external = 15;</code>
+     */
+    protected $external = null;
+    /**
+     * Generated from protobuf field <code>optional .schema.v2.Block.InternalUrl internal = 16;</code>
+     */
+    protected $internal = null;
 
     /**
      * Constructor.
@@ -80,6 +96,10 @@ class Property extends \Google\Protobuf\Internal\Message
      *     @type bool $unsupported
      *     @type bool $is_toggleable
      *     @type bool $ai_generated
+     *     @type string $figma_node_ids
+     *     @type string $caption
+     *     @type \Schema\V2\Block\ExternalUrl $external
+     *     @type \Schema\V2\Block\InternalUrl $internal
      * }
      */
     public function __construct($data = NULL) {
@@ -467,6 +487,134 @@ class Property extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkBool($var);
         $this->ai_generated = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>optional string figma_node_ids = 13;</code>
+     * @return string
+     */
+    public function getFigmaNodeIds()
+    {
+        return isset($this->figma_node_ids) ? $this->figma_node_ids : '';
+    }
+
+    public function hasFigmaNodeIds()
+    {
+        return isset($this->figma_node_ids);
+    }
+
+    public function clearFigmaNodeIds()
+    {
+        unset($this->figma_node_ids);
+    }
+
+    /**
+     * Generated from protobuf field <code>optional string figma_node_ids = 13;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setFigmaNodeIds($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->figma_node_ids = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>optional string caption = 14;</code>
+     * @return string
+     */
+    public function getCaption()
+    {
+        return isset($this->caption) ? $this->caption : '';
+    }
+
+    public function hasCaption()
+    {
+        return isset($this->caption);
+    }
+
+    public function clearCaption()
+    {
+        unset($this->caption);
+    }
+
+    /**
+     * Generated from protobuf field <code>optional string caption = 14;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setCaption($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->caption = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>optional .schema.v2.Block.ExternalUrl external = 15;</code>
+     * @return \Schema\V2\Block\ExternalUrl|null
+     */
+    public function getExternal()
+    {
+        return $this->external;
+    }
+
+    public function hasExternal()
+    {
+        return isset($this->external);
+    }
+
+    public function clearExternal()
+    {
+        unset($this->external);
+    }
+
+    /**
+     * Generated from protobuf field <code>optional .schema.v2.Block.ExternalUrl external = 15;</code>
+     * @param \Schema\V2\Block\ExternalUrl $var
+     * @return $this
+     */
+    public function setExternal($var)
+    {
+        GPBUtil::checkMessage($var, \Schema\V2\Block\ExternalUrl::class);
+        $this->external = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>optional .schema.v2.Block.InternalUrl internal = 16;</code>
+     * @return \Schema\V2\Block\InternalUrl|null
+     */
+    public function getInternal()
+    {
+        return $this->internal;
+    }
+
+    public function hasInternal()
+    {
+        return isset($this->internal);
+    }
+
+    public function clearInternal()
+    {
+        unset($this->internal);
+    }
+
+    /**
+     * Generated from protobuf field <code>optional .schema.v2.Block.InternalUrl internal = 16;</code>
+     * @param \Schema\V2\Block\InternalUrl $var
+     * @return $this
+     */
+    public function setInternal($var)
+    {
+        GPBUtil::checkMessage($var, \Schema\V2\Block\InternalUrl::class);
+        $this->internal = $var;
 
         return $this;
     }

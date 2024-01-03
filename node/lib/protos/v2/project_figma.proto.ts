@@ -1,8 +1,8 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-import { Block, BlockData } from "./block.proto";
+import { Block } from "./block.proto";
 
-export class ProjectFigmaImportRequest {
+export interface ProjectFigmaImportRequest {
   projectGenerateQueueId: number;
   projectId: number;
   accessToken: string;
@@ -10,7 +10,7 @@ export class ProjectFigmaImportRequest {
   fileKey: string;
 }
 
-export class ProjectFigmaImportResponse {
+export interface ProjectFigmaImportResponse {
   projectGenerateQueueId: number;
   projectId: number;
   module: ProjectFigmaImportResponseModule;
@@ -90,7 +90,7 @@ function createBaseProjectFigmaImportRequest(): ProjectFigmaImportRequest {
   return { projectGenerateQueueId: 0, projectId: 0, accessToken: "", nodeIds: "", fileKey: "" };
 }
 
-export const ProjectFigmaImportRequestData = {
+export const ProjectFigmaImportRequest = {
   encode(message: ProjectFigmaImportRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
@@ -184,7 +184,7 @@ function createBaseProjectFigmaImportResponse(): ProjectFigmaImportResponse {
   };
 }
 
-export const ProjectFigmaImportResponseData = {
+export const ProjectFigmaImportResponse = {
   encode(message: ProjectFigmaImportResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
@@ -202,7 +202,7 @@ export const ProjectFigmaImportResponseData = {
       writer.uint32(40).int32(message.tokenUsage);
     }
     for (const v of message.useCaseBlocks) {
-      BlockData.encode(v!, writer.uint32(50).fork()).ldelim();
+      Block.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     if (message.errorMessage !== "") {
       writer.uint32(58).string(message.errorMessage);
@@ -233,7 +233,7 @@ export const ProjectFigmaImportResponseData = {
           message.tokenUsage = reader.int32();
           break;
         case 6:
-          message.useCaseBlocks.push(BlockData.decode(reader, reader.uint32()));
+          message.useCaseBlocks.push(Block.decode(reader, reader.uint32()));
           break;
         case 7:
           message.errorMessage = reader.string();
@@ -254,7 +254,7 @@ export const ProjectFigmaImportResponseData = {
       status: isSet(object.status) ? projectFigmaImportResponseStatusFromJSON(object.status) : 0,
       tokenUsage: isSet(object.tokenUsage) ? Number(object.tokenUsage) : 0,
       useCaseBlocks: Array.isArray(object?.useCaseBlocks)
-        ? object.useCaseBlocks.map((e: any) => BlockData.fromJSON(e))
+        ? object.useCaseBlocks.map((e: any) => Block.fromJSON(e))
         : [],
       errorMessage: isSet(object.errorMessage) ? String(object.errorMessage) : "",
     };
@@ -269,7 +269,7 @@ export const ProjectFigmaImportResponseData = {
     message.status !== undefined && (obj.status = projectFigmaImportResponseStatusToJSON(message.status));
     message.tokenUsage !== undefined && (obj.tokenUsage = Math.round(message.tokenUsage));
     if (message.useCaseBlocks) {
-      obj.useCaseBlocks = message.useCaseBlocks.map((e) => e ? BlockData.toJSON(e) : undefined);
+      obj.useCaseBlocks = message.useCaseBlocks.map((e) => e ? Block.toJSON(e) : undefined);
     } else {
       obj.useCaseBlocks = [];
     }
@@ -284,7 +284,7 @@ export const ProjectFigmaImportResponseData = {
     message.module = object.module ?? 0;
     message.status = object.status ?? 0;
     message.tokenUsage = object.tokenUsage ?? 0;
-    message.useCaseBlocks = object.useCaseBlocks?.map((e) => BlockData.fromPartial(e)) || [];
+    message.useCaseBlocks = object.useCaseBlocks?.map((e) => Block.fromPartial(e)) || [];
     message.errorMessage = object.errorMessage ?? "";
     return message;
   },

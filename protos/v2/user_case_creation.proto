@@ -47,7 +47,18 @@ message UserCase {
 
 	message Property {
 		string category = 1;
+		optional ExternalUrl external = 15;
+    optional InternalUrl internal = 16;
 	}
+
+	message ExternalUrl {
+    string url = 1;
+  }
+
+  message InternalUrl {
+    int32 id = 1;
+    string url = 2;
+  }
 }
 
 message UserCaseCreationResponse {

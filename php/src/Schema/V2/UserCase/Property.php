@@ -17,6 +17,14 @@ class Property extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>string category = 1;</code>
      */
     protected $category = '';
+    /**
+     * Generated from protobuf field <code>optional .schema.v2.UserCase.ExternalUrl external = 15;</code>
+     */
+    protected $external = null;
+    /**
+     * Generated from protobuf field <code>optional .schema.v2.UserCase.InternalUrl internal = 16;</code>
+     */
+    protected $internal = null;
 
     /**
      * Constructor.
@@ -25,6 +33,8 @@ class Property extends \Google\Protobuf\Internal\Message
      *     Optional. Data for populating the Message object.
      *
      *     @type string $category
+     *     @type \Schema\V2\UserCase\ExternalUrl $external
+     *     @type \Schema\V2\UserCase\InternalUrl $internal
      * }
      */
     public function __construct($data = NULL) {
@@ -50,6 +60,70 @@ class Property extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkString($var, True);
         $this->category = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>optional .schema.v2.UserCase.ExternalUrl external = 15;</code>
+     * @return \Schema\V2\UserCase\ExternalUrl|null
+     */
+    public function getExternal()
+    {
+        return $this->external;
+    }
+
+    public function hasExternal()
+    {
+        return isset($this->external);
+    }
+
+    public function clearExternal()
+    {
+        unset($this->external);
+    }
+
+    /**
+     * Generated from protobuf field <code>optional .schema.v2.UserCase.ExternalUrl external = 15;</code>
+     * @param \Schema\V2\UserCase\ExternalUrl $var
+     * @return $this
+     */
+    public function setExternal($var)
+    {
+        GPBUtil::checkMessage($var, \Schema\V2\UserCase\ExternalUrl::class);
+        $this->external = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>optional .schema.v2.UserCase.InternalUrl internal = 16;</code>
+     * @return \Schema\V2\UserCase\InternalUrl|null
+     */
+    public function getInternal()
+    {
+        return $this->internal;
+    }
+
+    public function hasInternal()
+    {
+        return isset($this->internal);
+    }
+
+    public function clearInternal()
+    {
+        unset($this->internal);
+    }
+
+    /**
+     * Generated from protobuf field <code>optional .schema.v2.UserCase.InternalUrl internal = 16;</code>
+     * @param \Schema\V2\UserCase\InternalUrl $var
+     * @return $this
+     */
+    public function setInternal($var)
+    {
+        GPBUtil::checkMessage($var, \Schema\V2\UserCase\InternalUrl::class);
+        $this->internal = $var;
 
         return $this;
     }

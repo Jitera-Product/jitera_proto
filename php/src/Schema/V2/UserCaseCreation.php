@@ -25,6 +25,10 @@ class UserCaseCreation extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>repeated .schema.v2.UserCase user_cases = 3;</code>
      */
     private $user_cases;
+    /**
+     * Generated from protobuf field <code>optional .schema.v2.UserCaseCreation.ProjectTable project_tables = 6;</code>
+     */
+    protected $project_tables = null;
     protected $state;
 
     /**
@@ -38,6 +42,7 @@ class UserCaseCreation extends \Google\Protobuf\Internal\Message
      *     @type array<\Schema\V2\UserCase>|\Google\Protobuf\Internal\RepeatedField $user_cases
      *     @type \Schema\V2\UserCaseCreation\Progress $progress
      *     @type \Schema\V2\UserCaseCreation\Error $error
+     *     @type \Schema\V2\UserCaseCreation\ProjectTable $project_tables
      * }
      */
     public function __construct($data = NULL) {
@@ -161,6 +166,38 @@ class UserCaseCreation extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkMessage($var, \Schema\V2\UserCaseCreation\Error::class);
         $this->writeOneof(5, $var);
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>optional .schema.v2.UserCaseCreation.ProjectTable project_tables = 6;</code>
+     * @return \Schema\V2\UserCaseCreation\ProjectTable|null
+     */
+    public function getProjectTables()
+    {
+        return $this->project_tables;
+    }
+
+    public function hasProjectTables()
+    {
+        return isset($this->project_tables);
+    }
+
+    public function clearProjectTables()
+    {
+        unset($this->project_tables);
+    }
+
+    /**
+     * Generated from protobuf field <code>optional .schema.v2.UserCaseCreation.ProjectTable project_tables = 6;</code>
+     * @param \Schema\V2\UserCaseCreation\ProjectTable $var
+     * @return $this
+     */
+    public function setProjectTables($var)
+    {
+        GPBUtil::checkMessage($var, \Schema\V2\UserCaseCreation\ProjectTable::class);
+        $this->project_tables = $var;
 
         return $this;
     }
