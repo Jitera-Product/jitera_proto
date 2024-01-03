@@ -1,18 +1,18 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 
-export class ProjectGenerateReport {
+export interface ProjectGenerateReport {
   projectGenerateQueueId: number;
   projectId: number;
   progress?: ProjectGenerateReportProgress | undefined;
   error?: ProjectGenerateReportError | undefined;
 }
 
-export class ProjectGenerateReportProgress {
+export interface ProjectGenerateReportProgress {
   message: string;
 }
 
-export class ProjectGenerateReportError {
+export interface ProjectGenerateReportError {
   message: string;
 }
 
@@ -20,7 +20,7 @@ function createBaseProjectGenerateReport(): ProjectGenerateReport {
   return { projectGenerateQueueId: 0, projectId: 0 };
 }
 
-export const ProjectGenerateReportData = {
+export const ProjectGenerateReport = {
   encode(message: ProjectGenerateReport, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
@@ -29,10 +29,10 @@ export const ProjectGenerateReportData = {
       writer.uint32(16).int32(message.projectId);
     }
     if (message.progress !== undefined) {
-      ProjectGenerateReportProgressData.encode(message.progress, writer.uint32(26).fork()).ldelim();
+      ProjectGenerateReportProgress.encode(message.progress, writer.uint32(26).fork()).ldelim();
     }
     if (message.error !== undefined) {
-      ProjectGenerateReportErrorData.encode(message.error, writer.uint32(34).fork()).ldelim();
+      ProjectGenerateReportError.encode(message.error, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -51,10 +51,10 @@ export const ProjectGenerateReportData = {
           message.projectId = reader.int32();
           break;
         case 3:
-          message.progress = ProjectGenerateReportProgressData.decode(reader, reader.uint32());
+          message.progress = ProjectGenerateReportProgress.decode(reader, reader.uint32());
           break;
         case 4:
-          message.error = ProjectGenerateReportErrorData.decode(reader, reader.uint32());
+          message.error = ProjectGenerateReportError.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -68,8 +68,8 @@ export const ProjectGenerateReportData = {
     return {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      progress: isSet(object.progress) ? ProjectGenerateReportProgressData.fromJSON(object.progress) : undefined,
-      error: isSet(object.error) ? ProjectGenerateReportErrorData.fromJSON(object.error) : undefined,
+      progress: isSet(object.progress) ? ProjectGenerateReportProgress.fromJSON(object.progress) : undefined,
+      error: isSet(object.error) ? ProjectGenerateReportError.fromJSON(object.error) : undefined,
     };
   },
 
@@ -79,9 +79,9 @@ export const ProjectGenerateReportData = {
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     message.progress !== undefined &&
-      (obj.progress = message.progress ? ProjectGenerateReportProgressData.toJSON(message.progress) : undefined);
+      (obj.progress = message.progress ? ProjectGenerateReportProgress.toJSON(message.progress) : undefined);
     message.error !== undefined &&
-      (obj.error = message.error ? ProjectGenerateReportErrorData.toJSON(message.error) : undefined);
+      (obj.error = message.error ? ProjectGenerateReportError.toJSON(message.error) : undefined);
     return obj;
   },
 
@@ -90,10 +90,10 @@ export const ProjectGenerateReportData = {
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectId = object.projectId ?? 0;
     message.progress = (object.progress !== undefined && object.progress !== null)
-      ? ProjectGenerateReportProgressData.fromPartial(object.progress)
+      ? ProjectGenerateReportProgress.fromPartial(object.progress)
       : undefined;
     message.error = (object.error !== undefined && object.error !== null)
-      ? ProjectGenerateReportErrorData.fromPartial(object.error)
+      ? ProjectGenerateReportError.fromPartial(object.error)
       : undefined;
     return message;
   },
@@ -103,7 +103,7 @@ function createBaseProjectGenerateReportProgress(): ProjectGenerateReportProgres
   return { message: "" };
 }
 
-export const ProjectGenerateReportProgressData = {
+export const ProjectGenerateReportProgress = {
   encode(message: ProjectGenerateReportProgress, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.message !== "") {
       writer.uint32(10).string(message.message);
@@ -150,7 +150,7 @@ function createBaseProjectGenerateReportError(): ProjectGenerateReportError {
   return { message: "" };
 }
 
-export const ProjectGenerateReportErrorData = {
+export const ProjectGenerateReportError = {
   encode(message: ProjectGenerateReportError, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.message !== "") {
       writer.uint32(10).string(message.message);

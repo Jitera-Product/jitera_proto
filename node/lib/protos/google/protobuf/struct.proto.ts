@@ -45,12 +45,12 @@ export function nullValueToJSON(object: NullValue): string {
  *
  * The JSON representation for `Struct` is JSON object.
  */
-export class Struct {
+export interface Struct {
   /** Unordered map of dynamically typed values. */
   fields: { [key: string]: any };
 }
 
-export class StructFieldsEntry {
+export interface StructFieldsEntry {
   key: string;
   value?: any;
 }
@@ -63,15 +63,23 @@ export class StructFieldsEntry {
  *
  * The JSON representation for `Value` is JSON value.
  */
-export class Value {
+export interface Value {
   /** Represents a null value. */
-  nullValue?: NullValue | undefined;
+  nullValue?:
+    | NullValue
+    | undefined;
   /** Represents a double value. */
-  numberValue?: number | undefined;
+  numberValue?:
+    | number
+    | undefined;
   /** Represents a string value. */
-  stringValue?: string | undefined;
+  stringValue?:
+    | string
+    | undefined;
   /** Represents a boolean value. */
-  boolValue?: boolean | undefined;
+  boolValue?:
+    | boolean
+    | undefined;
   /** Represents a structured value. */
   structValue?: { [key: string]: any };
   /** Represents a repeated `Value`. */
@@ -83,7 +91,7 @@ export class Value {
  *
  * The JSON representation for `ListValue` is JSON array.
  */
-export class ListValue {
+export interface ListValue {
   /** Repeated field of dynamically typed values. */
   values: any[];
 }
@@ -92,11 +100,11 @@ function createBaseStruct(): Struct {
   return { fields: {} };
 }
 
-export const StructData = {
+export const Struct = {
   encode(message: Struct, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     Object.entries(message.fields).forEach(([key, value]) => {
       if (value !== undefined) {
-        StructFieldsEntryData.encode({ key: key as any, value }, writer.uint32(10).fork()).ldelim();
+        StructFieldsEntry.encode({ key: key as any, value }, writer.uint32(10).fork()).ldelim();
       }
     });
     return writer;
@@ -110,7 +118,7 @@ export const StructData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          const entry1 = StructFieldsEntryData.decode(reader, reader.uint32());
+          const entry1 = StructFieldsEntry.decode(reader, reader.uint32());
           if (entry1.value !== undefined) {
             message.fields[entry1.key] = entry1.value;
           }
@@ -179,13 +187,13 @@ function createBaseStructFieldsEntry(): StructFieldsEntry {
   return { key: "" };
 }
 
-export const StructFieldsEntryData = {
+export const StructFieldsEntry = {
   encode(message: StructFieldsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
     }
     if (message.value !== undefined) {
-      ValueData.encode(ValueData.wrap(message.value), writer.uint32(18).fork()).ldelim();
+      Value.encode(Value.wrap(message.value), writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -201,7 +209,7 @@ export const StructFieldsEntryData = {
           message.key = reader.string();
           break;
         case 2:
-          message.value = ValueData.unwrap(ValueData.decode(reader, reader.uint32()));
+          message.value = Value.unwrap(Value.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -234,7 +242,7 @@ function createBaseValue(): Value {
   return {};
 }
 
-export const ValueData = {
+export const Value = {
   encode(message: Value, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.nullValue !== undefined) {
       writer.uint32(8).int32(message.nullValue);
@@ -249,10 +257,10 @@ export const ValueData = {
       writer.uint32(32).bool(message.boolValue);
     }
     if (message.structValue !== undefined) {
-      StructData.encode(StructData.wrap(message.structValue), writer.uint32(42).fork()).ldelim();
+      Struct.encode(Struct.wrap(message.structValue), writer.uint32(42).fork()).ldelim();
     }
     if (message.listValue !== undefined) {
-      ListValueData.encode(ListValueData.wrap(message.listValue), writer.uint32(50).fork()).ldelim();
+      ListValue.encode(ListValue.wrap(message.listValue), writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -277,10 +285,10 @@ export const ValueData = {
           message.boolValue = reader.bool();
           break;
         case 5:
-          message.structValue = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.structValue = Struct.unwrap(Struct.decode(reader, reader.uint32()));
           break;
         case 6:
-          message.listValue = ListValueData.unwrap(ListValueData.decode(reader, reader.uint32()));
+          message.listValue = ListValue.unwrap(ListValue.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -368,10 +376,10 @@ function createBaseListValue(): ListValue {
   return { values: [] };
 }
 
-export const ListValueData = {
+export const ListValue = {
   encode(message: ListValue, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.values) {
-      ValueData.encode(ValueData.wrap(v!), writer.uint32(10).fork()).ldelim();
+      Value.encode(Value.wrap(v!), writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -384,7 +392,7 @@ export const ListValueData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.values.push(ValueData.unwrap(ValueData.decode(reader, reader.uint32())));
+          message.values.push(Value.unwrap(Value.decode(reader, reader.uint32())));
           break;
         default:
           reader.skipType(tag & 7);

@@ -1,7 +1,7 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 
-export class ProjectAnalysis {
+export interface ProjectAnalysis {
   projectImportId: number;
   repo: string;
   owner: string;
@@ -9,23 +9,23 @@ export class ProjectAnalysis {
   token: string;
 }
 
-export class ProjectAnalysisReport {
+export interface ProjectAnalysisReport {
   projectImportId: number;
   progress?: ProjectAnalysisReportProgress | undefined;
   error?: ProjectAnalysisReportError | undefined;
 }
 
-export class ProjectAnalysisReportProgress {
+export interface ProjectAnalysisReportProgress {
   percentage: number;
   message: string;
   payload?: ProjectAnalysisReportPayload;
 }
 
-export class ProjectAnalysisReportError {
+export interface ProjectAnalysisReportError {
   message: string;
 }
 
-export class ProjectAnalysisReportPayload {
+export interface ProjectAnalysisReportPayload {
   data: string;
   module: string;
 }
@@ -34,7 +34,7 @@ function createBaseProjectAnalysis(): ProjectAnalysis {
   return { projectImportId: 0, repo: "", owner: "", branch: "", token: "" };
 }
 
-export const ProjectAnalysisData = {
+export const ProjectAnalysis = {
   encode(message: ProjectAnalysis, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectImportId !== 0) {
       writer.uint32(8).int32(message.projectImportId);
@@ -119,16 +119,16 @@ function createBaseProjectAnalysisReport(): ProjectAnalysisReport {
   return { projectImportId: 0 };
 }
 
-export const ProjectAnalysisReportData = {
+export const ProjectAnalysisReport = {
   encode(message: ProjectAnalysisReport, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectImportId !== 0) {
       writer.uint32(8).int32(message.projectImportId);
     }
     if (message.progress !== undefined) {
-      ProjectAnalysisReportProgressData.encode(message.progress, writer.uint32(18).fork()).ldelim();
+      ProjectAnalysisReportProgress.encode(message.progress, writer.uint32(18).fork()).ldelim();
     }
     if (message.error !== undefined) {
-      ProjectAnalysisReportErrorData.encode(message.error, writer.uint32(26).fork()).ldelim();
+      ProjectAnalysisReportError.encode(message.error, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -144,10 +144,10 @@ export const ProjectAnalysisReportData = {
           message.projectImportId = reader.int32();
           break;
         case 2:
-          message.progress = ProjectAnalysisReportProgressData.decode(reader, reader.uint32());
+          message.progress = ProjectAnalysisReportProgress.decode(reader, reader.uint32());
           break;
         case 3:
-          message.error = ProjectAnalysisReportErrorData.decode(reader, reader.uint32());
+          message.error = ProjectAnalysisReportError.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -160,8 +160,8 @@ export const ProjectAnalysisReportData = {
   fromJSON(object: any): ProjectAnalysisReport {
     return {
       projectImportId: isSet(object.projectImportId) ? Number(object.projectImportId) : 0,
-      progress: isSet(object.progress) ? ProjectAnalysisReportProgressData.fromJSON(object.progress) : undefined,
-      error: isSet(object.error) ? ProjectAnalysisReportErrorData.fromJSON(object.error) : undefined,
+      progress: isSet(object.progress) ? ProjectAnalysisReportProgress.fromJSON(object.progress) : undefined,
+      error: isSet(object.error) ? ProjectAnalysisReportError.fromJSON(object.error) : undefined,
     };
   },
 
@@ -169,9 +169,9 @@ export const ProjectAnalysisReportData = {
     const obj: any = {};
     message.projectImportId !== undefined && (obj.projectImportId = Math.round(message.projectImportId));
     message.progress !== undefined &&
-      (obj.progress = message.progress ? ProjectAnalysisReportProgressData.toJSON(message.progress) : undefined);
+      (obj.progress = message.progress ? ProjectAnalysisReportProgress.toJSON(message.progress) : undefined);
     message.error !== undefined &&
-      (obj.error = message.error ? ProjectAnalysisReportErrorData.toJSON(message.error) : undefined);
+      (obj.error = message.error ? ProjectAnalysisReportError.toJSON(message.error) : undefined);
     return obj;
   },
 
@@ -179,10 +179,10 @@ export const ProjectAnalysisReportData = {
     const message = createBaseProjectAnalysisReport();
     message.projectImportId = object.projectImportId ?? 0;
     message.progress = (object.progress !== undefined && object.progress !== null)
-      ? ProjectAnalysisReportProgressData.fromPartial(object.progress)
+      ? ProjectAnalysisReportProgress.fromPartial(object.progress)
       : undefined;
     message.error = (object.error !== undefined && object.error !== null)
-      ? ProjectAnalysisReportErrorData.fromPartial(object.error)
+      ? ProjectAnalysisReportError.fromPartial(object.error)
       : undefined;
     return message;
   },
@@ -192,7 +192,7 @@ function createBaseProjectAnalysisReportProgress(): ProjectAnalysisReportProgres
   return { percentage: 0, message: "" };
 }
 
-export const ProjectAnalysisReportProgressData = {
+export const ProjectAnalysisReportProgress = {
   encode(message: ProjectAnalysisReportProgress, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.percentage !== 0) {
       writer.uint32(13).float(message.percentage);
@@ -201,7 +201,7 @@ export const ProjectAnalysisReportProgressData = {
       writer.uint32(18).string(message.message);
     }
     if (message.payload !== undefined) {
-      ProjectAnalysisReportPayloadData.encode(message.payload, writer.uint32(26).fork()).ldelim();
+      ProjectAnalysisReportPayload.encode(message.payload, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -220,7 +220,7 @@ export const ProjectAnalysisReportProgressData = {
           message.message = reader.string();
           break;
         case 3:
-          message.payload = ProjectAnalysisReportPayloadData.decode(reader, reader.uint32());
+          message.payload = ProjectAnalysisReportPayload.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -234,7 +234,7 @@ export const ProjectAnalysisReportProgressData = {
     return {
       percentage: isSet(object.percentage) ? Number(object.percentage) : 0,
       message: isSet(object.message) ? String(object.message) : "",
-      payload: isSet(object.payload) ? ProjectAnalysisReportPayloadData.fromJSON(object.payload) : undefined,
+      payload: isSet(object.payload) ? ProjectAnalysisReportPayload.fromJSON(object.payload) : undefined,
     };
   },
 
@@ -243,7 +243,7 @@ export const ProjectAnalysisReportProgressData = {
     message.percentage !== undefined && (obj.percentage = message.percentage);
     message.message !== undefined && (obj.message = message.message);
     message.payload !== undefined &&
-      (obj.payload = message.payload ? ProjectAnalysisReportPayloadData.toJSON(message.payload) : undefined);
+      (obj.payload = message.payload ? ProjectAnalysisReportPayload.toJSON(message.payload) : undefined);
     return obj;
   },
 
@@ -252,7 +252,7 @@ export const ProjectAnalysisReportProgressData = {
     message.percentage = object.percentage ?? 0;
     message.message = object.message ?? "";
     message.payload = (object.payload !== undefined && object.payload !== null)
-      ? ProjectAnalysisReportPayloadData.fromPartial(object.payload)
+      ? ProjectAnalysisReportPayload.fromPartial(object.payload)
       : undefined;
     return message;
   },
@@ -262,7 +262,7 @@ function createBaseProjectAnalysisReportError(): ProjectAnalysisReportError {
   return { message: "" };
 }
 
-export const ProjectAnalysisReportErrorData = {
+export const ProjectAnalysisReportError = {
   encode(message: ProjectAnalysisReportError, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.message !== "") {
       writer.uint32(10).string(message.message);
@@ -309,7 +309,7 @@ function createBaseProjectAnalysisReportPayload(): ProjectAnalysisReportPayload 
   return { data: "", module: "" };
 }
 
-export const ProjectAnalysisReportPayloadData = {
+export const ProjectAnalysisReportPayload = {
   encode(message: ProjectAnalysisReportPayload, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.data !== "") {
       writer.uint32(10).string(message.data);
