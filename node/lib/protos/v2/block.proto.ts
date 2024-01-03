@@ -1,14 +1,14 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 
-export interface BusinessLogicSync {
+export class BusinessLogicSync {
   projectGenerateQueueId: number;
   projectId: number;
   useCase?: Block;
   businessLogics: Block[];
 }
 
-export interface BusinessLogicSyncResponse {
+export class BusinessLogicSyncResponse {
   projectGenerateQueueId: number;
   message: string;
   status: BusinessLogicSyncResponseStatus;
@@ -60,7 +60,7 @@ export function businessLogicSyncResponseStatusToJSON(object: BusinessLogicSyncR
   }
 }
 
-export interface Block {
+export class Block {
   id: number;
   nodeId: string;
   parentNodeId: string;
@@ -73,14 +73,14 @@ export interface Block {
   children: Block[];
 }
 
-export interface BlockContent {
+export class BlockContent {
   type: string;
   value: string;
   href?: string | undefined;
   styles?: BlockStyle;
 }
 
-export interface BlockStyle {
+export class BlockStyle {
   bold?: boolean | undefined;
   italic?: boolean | undefined;
   underline?: boolean | undefined;
@@ -90,7 +90,7 @@ export interface BlockStyle {
   backgroundColor?: string | undefined;
 }
 
-export interface BlockProperty {
+export class BlockProperty {
   useCaseId?: string | undefined;
   category?: string | undefined;
   level?: number | undefined;
@@ -109,11 +109,11 @@ export interface BlockProperty {
   internal?: BlockInternalUrl | undefined;
 }
 
-export interface BlockExternalUrl {
+export class BlockExternalUrl {
   url: string;
 }
 
-export interface BlockInternalUrl {
+export class BlockInternalUrl {
   id: number;
   url: string;
 }
@@ -122,7 +122,7 @@ function createBaseBusinessLogicSync(): BusinessLogicSync {
   return { projectGenerateQueueId: 0, projectId: 0, businessLogics: [] };
 }
 
-export const BusinessLogicSync = {
+export const BusinessLogicSyncData = {
   encode(message: BusinessLogicSync, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
@@ -131,10 +131,10 @@ export const BusinessLogicSync = {
       writer.uint32(16).int32(message.projectId);
     }
     if (message.useCase !== undefined) {
-      Block.encode(message.useCase, writer.uint32(26).fork()).ldelim();
+      BlockData.encode(message.useCase, writer.uint32(26).fork()).ldelim();
     }
     for (const v of message.businessLogics) {
-      Block.encode(v!, writer.uint32(34).fork()).ldelim();
+      BlockData.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -153,10 +153,10 @@ export const BusinessLogicSync = {
           message.projectId = reader.int32();
           break;
         case 3:
-          message.useCase = Block.decode(reader, reader.uint32());
+          message.useCase = BlockData.decode(reader, reader.uint32());
           break;
         case 4:
-          message.businessLogics.push(Block.decode(reader, reader.uint32()));
+          message.businessLogics.push(BlockData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -170,9 +170,9 @@ export const BusinessLogicSync = {
     return {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      useCase: isSet(object.useCase) ? Block.fromJSON(object.useCase) : undefined,
+      useCase: isSet(object.useCase) ? BlockData.fromJSON(object.useCase) : undefined,
       businessLogics: Array.isArray(object?.businessLogics)
-        ? object.businessLogics.map((e: any) => Block.fromJSON(e))
+        ? object.businessLogics.map((e: any) => BlockData.fromJSON(e))
         : [],
     };
   },
@@ -182,9 +182,9 @@ export const BusinessLogicSync = {
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
-    message.useCase !== undefined && (obj.useCase = message.useCase ? Block.toJSON(message.useCase) : undefined);
+    message.useCase !== undefined && (obj.useCase = message.useCase ? BlockData.toJSON(message.useCase) : undefined);
     if (message.businessLogics) {
-      obj.businessLogics = message.businessLogics.map((e) => e ? Block.toJSON(e) : undefined);
+      obj.businessLogics = message.businessLogics.map((e) => e ? BlockData.toJSON(e) : undefined);
     } else {
       obj.businessLogics = [];
     }
@@ -196,9 +196,9 @@ export const BusinessLogicSync = {
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectId = object.projectId ?? 0;
     message.useCase = (object.useCase !== undefined && object.useCase !== null)
-      ? Block.fromPartial(object.useCase)
+      ? BlockData.fromPartial(object.useCase)
       : undefined;
-    message.businessLogics = object.businessLogics?.map((e) => Block.fromPartial(e)) || [];
+    message.businessLogics = object.businessLogics?.map((e) => BlockData.fromPartial(e)) || [];
     return message;
   },
 };
@@ -207,7 +207,7 @@ function createBaseBusinessLogicSyncResponse(): BusinessLogicSyncResponse {
   return { projectGenerateQueueId: 0, message: "", status: 0, tokenUsage: 0 };
 }
 
-export const BusinessLogicSyncResponse = {
+export const BusinessLogicSyncResponseData = {
   encode(message: BusinessLogicSyncResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
@@ -294,7 +294,7 @@ function createBaseBlock(): Block {
   };
 }
 
-export const Block = {
+export const BlockData = {
   encode(message: Block, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== 0) {
       writer.uint32(8).int32(message.id);
@@ -318,13 +318,13 @@ export const Block = {
       writer.uint32(56).int32(message.projectId);
     }
     if (message.properties !== undefined) {
-      BlockProperty.encode(message.properties, writer.uint32(66).fork()).ldelim();
+      BlockPropertyData.encode(message.properties, writer.uint32(66).fork()).ldelim();
     }
     for (const v of message.content) {
-      BlockContent.encode(v!, writer.uint32(74).fork()).ldelim();
+      BlockContentData.encode(v!, writer.uint32(74).fork()).ldelim();
     }
     for (const v of message.children) {
-      Block.encode(v!, writer.uint32(82).fork()).ldelim();
+      BlockData.encode(v!, writer.uint32(82).fork()).ldelim();
     }
     return writer;
   },
@@ -358,13 +358,13 @@ export const Block = {
           message.projectId = reader.int32();
           break;
         case 8:
-          message.properties = BlockProperty.decode(reader, reader.uint32());
+          message.properties = BlockPropertyData.decode(reader, reader.uint32());
           break;
         case 9:
-          message.content.push(BlockContent.decode(reader, reader.uint32()));
+          message.content.push(BlockContentData.decode(reader, reader.uint32()));
           break;
         case 10:
-          message.children.push(Block.decode(reader, reader.uint32()));
+          message.children.push(BlockData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -383,9 +383,9 @@ export const Block = {
       blockType: isSet(object.blockType) ? String(object.blockType) : "",
       name: isSet(object.name) ? String(object.name) : "",
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      properties: isSet(object.properties) ? BlockProperty.fromJSON(object.properties) : undefined,
-      content: Array.isArray(object?.content) ? object.content.map((e: any) => BlockContent.fromJSON(e)) : [],
-      children: Array.isArray(object?.children) ? object.children.map((e: any) => Block.fromJSON(e)) : [],
+      properties: isSet(object.properties) ? BlockPropertyData.fromJSON(object.properties) : undefined,
+      content: Array.isArray(object?.content) ? object.content.map((e: any) => BlockContentData.fromJSON(e)) : [],
+      children: Array.isArray(object?.children) ? object.children.map((e: any) => BlockData.fromJSON(e)) : [],
     };
   },
 
@@ -399,14 +399,14 @@ export const Block = {
     message.name !== undefined && (obj.name = message.name);
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     message.properties !== undefined &&
-      (obj.properties = message.properties ? BlockProperty.toJSON(message.properties) : undefined);
+      (obj.properties = message.properties ? BlockPropertyData.toJSON(message.properties) : undefined);
     if (message.content) {
-      obj.content = message.content.map((e) => e ? BlockContent.toJSON(e) : undefined);
+      obj.content = message.content.map((e) => e ? BlockContentData.toJSON(e) : undefined);
     } else {
       obj.content = [];
     }
     if (message.children) {
-      obj.children = message.children.map((e) => e ? Block.toJSON(e) : undefined);
+      obj.children = message.children.map((e) => e ? BlockData.toJSON(e) : undefined);
     } else {
       obj.children = [];
     }
@@ -423,10 +423,10 @@ export const Block = {
     message.name = object.name ?? "";
     message.projectId = object.projectId ?? 0;
     message.properties = (object.properties !== undefined && object.properties !== null)
-      ? BlockProperty.fromPartial(object.properties)
+      ? BlockPropertyData.fromPartial(object.properties)
       : undefined;
-    message.content = object.content?.map((e) => BlockContent.fromPartial(e)) || [];
-    message.children = object.children?.map((e) => Block.fromPartial(e)) || [];
+    message.content = object.content?.map((e) => BlockContentData.fromPartial(e)) || [];
+    message.children = object.children?.map((e) => BlockData.fromPartial(e)) || [];
     return message;
   },
 };
@@ -435,7 +435,7 @@ function createBaseBlockContent(): BlockContent {
   return { type: "", value: "" };
 }
 
-export const BlockContent = {
+export const BlockContentData = {
   encode(message: BlockContent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.type !== "") {
       writer.uint32(10).string(message.type);
@@ -447,7 +447,7 @@ export const BlockContent = {
       writer.uint32(26).string(message.href);
     }
     if (message.styles !== undefined) {
-      BlockStyle.encode(message.styles, writer.uint32(34).fork()).ldelim();
+      BlockStyleData.encode(message.styles, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -469,7 +469,7 @@ export const BlockContent = {
           message.href = reader.string();
           break;
         case 4:
-          message.styles = BlockStyle.decode(reader, reader.uint32());
+          message.styles = BlockStyleData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -484,7 +484,7 @@ export const BlockContent = {
       type: isSet(object.type) ? String(object.type) : "",
       value: isSet(object.value) ? String(object.value) : "",
       href: isSet(object.href) ? String(object.href) : undefined,
-      styles: isSet(object.styles) ? BlockStyle.fromJSON(object.styles) : undefined,
+      styles: isSet(object.styles) ? BlockStyleData.fromJSON(object.styles) : undefined,
     };
   },
 
@@ -493,7 +493,7 @@ export const BlockContent = {
     message.type !== undefined && (obj.type = message.type);
     message.value !== undefined && (obj.value = message.value);
     message.href !== undefined && (obj.href = message.href);
-    message.styles !== undefined && (obj.styles = message.styles ? BlockStyle.toJSON(message.styles) : undefined);
+    message.styles !== undefined && (obj.styles = message.styles ? BlockStyleData.toJSON(message.styles) : undefined);
     return obj;
   },
 
@@ -503,7 +503,7 @@ export const BlockContent = {
     message.value = object.value ?? "";
     message.href = object.href ?? undefined;
     message.styles = (object.styles !== undefined && object.styles !== null)
-      ? BlockStyle.fromPartial(object.styles)
+      ? BlockStyleData.fromPartial(object.styles)
       : undefined;
     return message;
   },
@@ -513,7 +513,7 @@ function createBaseBlockStyle(): BlockStyle {
   return {};
 }
 
-export const BlockStyle = {
+export const BlockStyleData = {
   encode(message: BlockStyle, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.bold !== undefined) {
       writer.uint32(8).bool(message.bold);
@@ -616,7 +616,7 @@ function createBaseBlockProperty(): BlockProperty {
   return {};
 }
 
-export const BlockProperty = {
+export const BlockPropertyData = {
   encode(message: BlockProperty, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.useCaseId !== undefined) {
       writer.uint32(10).string(message.useCaseId);
@@ -661,10 +661,10 @@ export const BlockProperty = {
       writer.uint32(114).string(message.caption);
     }
     if (message.external !== undefined) {
-      BlockExternalUrl.encode(message.external, writer.uint32(122).fork()).ldelim();
+      BlockExternalUrlData.encode(message.external, writer.uint32(122).fork()).ldelim();
     }
     if (message.internal !== undefined) {
-      BlockInternalUrl.encode(message.internal, writer.uint32(130).fork()).ldelim();
+      BlockInternalUrlData.encode(message.internal, writer.uint32(130).fork()).ldelim();
     }
     return writer;
   },
@@ -719,10 +719,10 @@ export const BlockProperty = {
           message.caption = reader.string();
           break;
         case 15:
-          message.external = BlockExternalUrl.decode(reader, reader.uint32());
+          message.external = BlockExternalUrlData.decode(reader, reader.uint32());
           break;
         case 16:
-          message.internal = BlockInternalUrl.decode(reader, reader.uint32());
+          message.internal = BlockInternalUrlData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -748,8 +748,8 @@ export const BlockProperty = {
       aiGenerated: isSet(object.aiGenerated) ? Boolean(object.aiGenerated) : undefined,
       figmaNodeIds: isSet(object.figmaNodeIds) ? String(object.figmaNodeIds) : undefined,
       caption: isSet(object.caption) ? String(object.caption) : undefined,
-      external: isSet(object.external) ? BlockExternalUrl.fromJSON(object.external) : undefined,
-      internal: isSet(object.internal) ? BlockInternalUrl.fromJSON(object.internal) : undefined,
+      external: isSet(object.external) ? BlockExternalUrlData.fromJSON(object.external) : undefined,
+      internal: isSet(object.internal) ? BlockInternalUrlData.fromJSON(object.internal) : undefined,
     };
   },
 
@@ -770,9 +770,9 @@ export const BlockProperty = {
     message.figmaNodeIds !== undefined && (obj.figmaNodeIds = message.figmaNodeIds);
     message.caption !== undefined && (obj.caption = message.caption);
     message.external !== undefined &&
-      (obj.external = message.external ? BlockExternalUrl.toJSON(message.external) : undefined);
+      (obj.external = message.external ? BlockExternalUrlData.toJSON(message.external) : undefined);
     message.internal !== undefined &&
-      (obj.internal = message.internal ? BlockInternalUrl.toJSON(message.internal) : undefined);
+      (obj.internal = message.internal ? BlockInternalUrlData.toJSON(message.internal) : undefined);
     return obj;
   },
 
@@ -793,10 +793,10 @@ export const BlockProperty = {
     message.figmaNodeIds = object.figmaNodeIds ?? undefined;
     message.caption = object.caption ?? undefined;
     message.external = (object.external !== undefined && object.external !== null)
-      ? BlockExternalUrl.fromPartial(object.external)
+      ? BlockExternalUrlData.fromPartial(object.external)
       : undefined;
     message.internal = (object.internal !== undefined && object.internal !== null)
-      ? BlockInternalUrl.fromPartial(object.internal)
+      ? BlockInternalUrlData.fromPartial(object.internal)
       : undefined;
     return message;
   },
@@ -806,7 +806,7 @@ function createBaseBlockExternalUrl(): BlockExternalUrl {
   return { url: "" };
 }
 
-export const BlockExternalUrl = {
+export const BlockExternalUrlData = {
   encode(message: BlockExternalUrl, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.url !== "") {
       writer.uint32(10).string(message.url);
@@ -853,7 +853,7 @@ function createBaseBlockInternalUrl(): BlockInternalUrl {
   return { id: 0, url: "" };
 }
 
-export const BlockInternalUrl = {
+export const BlockInternalUrlData = {
   encode(message: BlockInternalUrl, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== 0) {
       writer.uint32(8).int32(message.id);

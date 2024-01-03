@@ -1,7 +1,7 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-import { Struct } from "../google/protobuf/struct.proto";
-import { Table } from "../v1/payloads.proto";
+import { StructData } from "../google/protobuf/struct.proto";
+import { Table, TableData } from "../v1/payloads.proto";
 
 export enum ImportBy {
   github = 0,
@@ -48,7 +48,7 @@ export function importByToJSON(object: ImportBy): string {
   }
 }
 
-export interface ProjectSource {
+export class ProjectSource {
   id: number;
   projectId: number;
   framework: ProjectSourceFramework;
@@ -164,19 +164,19 @@ export function projectSourceLayerToJSON(object: ProjectSourceLayer): string {
   }
 }
 
-export interface ProjectSourceTable {
+export class ProjectSourceTable {
   id: number;
   name: string;
   columns: ProjectSourceTableColumn[];
 }
 
-export interface ProjectSourceTableColumn {
+export class ProjectSourceTableColumn {
   id: number;
   name: string;
   type: string;
 }
 
-export interface ProjectSourceRelation {
+export class ProjectSourceRelation {
   id: number;
   column: string;
   table: string;
@@ -184,7 +184,7 @@ export interface ProjectSourceRelation {
   type: string;
 }
 
-export interface Git {
+export class Git {
   repo: string;
   owner: string;
   branch: string;
@@ -192,7 +192,7 @@ export interface Git {
   jiteraBranch: string;
 }
 
-export interface ProjectSourceCreation {
+export class ProjectSourceCreation {
   projectGenerateQueueId: number;
   projectSource?: ProjectSource;
   importBy?: ImportBy | undefined;
@@ -240,7 +240,7 @@ export function projectSourceCreationActionToJSON(object: ProjectSourceCreationA
   }
 }
 
-export interface ERDConfig {
+export class ERDConfig {
   projectGenerateQueueId: number;
   projectSource?: ProjectSource;
   git?: Git;
@@ -294,21 +294,21 @@ export function eRDConfigTableChangedTypeToJSON(object: ERDConfigTableChangedTyp
   }
 }
 
-export interface ERDConfigLocal {
+export class ERDConfigLocal {
   sourcePath: string;
   tables: Table[];
 }
 
-export interface ERDConfigImport {
+export class ERDConfigImport {
   tables: ERDConfigTableChanged[];
 }
 
-export interface ERDConfigTableChanged {
+export class ERDConfigTableChanged {
   type: ERDConfigTableChangedType;
   table?: Table;
 }
 
-export interface BusinessLogicChanges {
+export class BusinessLogicChanges {
   projectGenerateQueueId: number;
   tables: ProjectSourceTable[];
   relations: ProjectSourceRelation[];
@@ -318,7 +318,7 @@ export interface BusinessLogicChanges {
   importBy?: ImportBy | undefined;
 }
 
-export interface BlockDiff {
+export class BlockDiff {
   projectId: number;
   id: number;
   nodeId: string;
@@ -326,7 +326,7 @@ export interface BlockDiff {
   blocks: BlockDiffBlock[];
 }
 
-export interface BlockDiffBlock {
+export class BlockDiffBlock {
   id: number;
   nodeId: string;
   addition?: BlockDiffBlockAddition | undefined;
@@ -334,20 +334,20 @@ export interface BlockDiffBlock {
   deletion?: BlockDiffBlockDeletion | undefined;
 }
 
-export interface BlockDiffBlockAddition {
+export class BlockDiffBlockAddition {
   content?: BlockDiffBlockBody;
 }
 
-export interface BlockDiffBlockModification {
+export class BlockDiffBlockModification {
   deletion?: BlockDiffBlockBody;
   addition?: BlockDiffBlockBody;
 }
 
-export interface BlockDiffBlockDeletion {
+export class BlockDiffBlockDeletion {
   content?: BlockDiffBlockBody;
 }
 
-export interface BlockDiffBlockBody {
+export class BlockDiffBlockBody {
   name: string;
   blockType: string;
   parentNodeId: string;
@@ -356,7 +356,7 @@ export interface BlockDiffBlockBody {
   children: string[];
 }
 
-export interface ApiChanges {
+export class ApiChanges {
   projectSource?: ProjectSource;
   blockDiff?: BlockDiff;
   tables: ProjectSourceTable[];
@@ -366,7 +366,7 @@ export interface ApiChanges {
   importBy?: ImportBy | undefined;
 }
 
-export interface ProjectSourceReport {
+export class ProjectSourceReport {
   projectGenerateQueueId: number;
   projectId: number;
   projectSourceId: number;
@@ -376,21 +376,21 @@ export interface ProjectSourceReport {
   error?: ProjectSourceReportError | undefined;
 }
 
-export interface ProjectSourceReportProgress {
+export class ProjectSourceReportProgress {
   percentage: number;
   message: string;
   payload: string;
 }
 
-export interface ProjectSourceReportError {
+export class ProjectSourceReportError {
   message: string;
 }
 
-export interface ProjectSourceReportComplete {
+export class ProjectSourceReportComplete {
   files: string;
 }
 
-export interface UseCaseRemoval {
+export class UseCaseRemoval {
   projectSource?: ProjectSource;
   projectGenerateQueueId: number;
   git?: Git;
@@ -400,7 +400,7 @@ export interface UseCaseRemoval {
   apiBlocks: UseCaseRemovalBlock[];
 }
 
-export interface UseCaseRemovalBlock {
+export class UseCaseRemovalBlock {
   id: number;
   nodeId: string;
   name: string;
@@ -414,7 +414,7 @@ function createBaseProjectSource(): ProjectSource {
   return { id: 0, projectId: 0, framework: 0, layer: 0, files: "" };
 }
 
-export const ProjectSource = {
+export const ProjectSourceData = {
   encode(message: ProjectSource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== 0) {
       writer.uint32(8).int32(message.id);
@@ -499,7 +499,7 @@ function createBaseProjectSourceTable(): ProjectSourceTable {
   return { id: 0, name: "", columns: [] };
 }
 
-export const ProjectSourceTable = {
+export const ProjectSourceTableData = {
   encode(message: ProjectSourceTable, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== 0) {
       writer.uint32(8).int32(message.id);
@@ -508,7 +508,7 @@ export const ProjectSourceTable = {
       writer.uint32(18).string(message.name);
     }
     for (const v of message.columns) {
-      ProjectSourceTableColumn.encode(v!, writer.uint32(26).fork()).ldelim();
+      ProjectSourceTableColumnData.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -527,7 +527,7 @@ export const ProjectSourceTable = {
           message.name = reader.string();
           break;
         case 3:
-          message.columns.push(ProjectSourceTableColumn.decode(reader, reader.uint32()));
+          message.columns.push(ProjectSourceTableColumnData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -542,7 +542,7 @@ export const ProjectSourceTable = {
       id: isSet(object.id) ? Number(object.id) : 0,
       name: isSet(object.name) ? String(object.name) : "",
       columns: Array.isArray(object?.columns)
-        ? object.columns.map((e: any) => ProjectSourceTableColumn.fromJSON(e))
+        ? object.columns.map((e: any) => ProjectSourceTableColumnData.fromJSON(e))
         : [],
     };
   },
@@ -552,7 +552,7 @@ export const ProjectSourceTable = {
     message.id !== undefined && (obj.id = Math.round(message.id));
     message.name !== undefined && (obj.name = message.name);
     if (message.columns) {
-      obj.columns = message.columns.map((e) => e ? ProjectSourceTableColumn.toJSON(e) : undefined);
+      obj.columns = message.columns.map((e) => e ? ProjectSourceTableColumnData.toJSON(e) : undefined);
     } else {
       obj.columns = [];
     }
@@ -563,7 +563,7 @@ export const ProjectSourceTable = {
     const message = createBaseProjectSourceTable();
     message.id = object.id ?? 0;
     message.name = object.name ?? "";
-    message.columns = object.columns?.map((e) => ProjectSourceTableColumn.fromPartial(e)) || [];
+    message.columns = object.columns?.map((e) => ProjectSourceTableColumnData.fromPartial(e)) || [];
     return message;
   },
 };
@@ -572,7 +572,7 @@ function createBaseProjectSourceTableColumn(): ProjectSourceTableColumn {
   return { id: 0, name: "", type: "" };
 }
 
-export const ProjectSourceTableColumn = {
+export const ProjectSourceTableColumnData = {
   encode(message: ProjectSourceTableColumn, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== 0) {
       writer.uint32(8).int32(message.id);
@@ -639,7 +639,7 @@ function createBaseProjectSourceRelation(): ProjectSourceRelation {
   return { id: 0, column: "", table: "", relatedTable: "", type: "" };
 }
 
-export const ProjectSourceRelation = {
+export const ProjectSourceRelationData = {
   encode(message: ProjectSourceRelation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== 0) {
       writer.uint32(8).int32(message.id);
@@ -724,7 +724,7 @@ function createBaseGit(): Git {
   return { repo: "", owner: "", branch: "", token: "", jiteraBranch: "" };
 }
 
-export const Git = {
+export const GitData = {
   encode(message: Git, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.repo !== "") {
       writer.uint32(26).string(message.repo);
@@ -809,13 +809,13 @@ function createBaseProjectSourceCreation(): ProjectSourceCreation {
   return { projectGenerateQueueId: 0 };
 }
 
-export const ProjectSourceCreation = {
+export const ProjectSourceCreationData = {
   encode(message: ProjectSourceCreation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
     }
     if (message.projectSource !== undefined) {
-      ProjectSource.encode(message.projectSource, writer.uint32(18).fork()).ldelim();
+      ProjectSourceData.encode(message.projectSource, writer.uint32(18).fork()).ldelim();
     }
     if (message.importBy !== undefined) {
       writer.uint32(40).int32(message.importBy);
@@ -827,7 +827,7 @@ export const ProjectSourceCreation = {
       writer.uint32(26).string(message.sourcePath);
     }
     if (message.git !== undefined) {
-      Git.encode(message.git, writer.uint32(34).fork()).ldelim();
+      GitData.encode(message.git, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -843,7 +843,7 @@ export const ProjectSourceCreation = {
           message.projectGenerateQueueId = reader.int32();
           break;
         case 2:
-          message.projectSource = ProjectSource.decode(reader, reader.uint32());
+          message.projectSource = ProjectSourceData.decode(reader, reader.uint32());
           break;
         case 5:
           message.importBy = reader.int32() as any;
@@ -855,7 +855,7 @@ export const ProjectSourceCreation = {
           message.sourcePath = reader.string();
           break;
         case 4:
-          message.git = Git.decode(reader, reader.uint32());
+          message.git = GitData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -868,11 +868,11 @@ export const ProjectSourceCreation = {
   fromJSON(object: any): ProjectSourceCreation {
     return {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
-      projectSource: isSet(object.projectSource) ? ProjectSource.fromJSON(object.projectSource) : undefined,
+      projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
       importBy: isSet(object.importBy) ? importByFromJSON(object.importBy) : undefined,
       action: isSet(object.action) ? projectSourceCreationActionFromJSON(object.action) : undefined,
       sourcePath: isSet(object.sourcePath) ? String(object.sourcePath) : undefined,
-      git: isSet(object.git) ? Git.fromJSON(object.git) : undefined,
+      git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
     };
   },
 
@@ -881,13 +881,13 @@ export const ProjectSourceCreation = {
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.projectSource !== undefined &&
-      (obj.projectSource = message.projectSource ? ProjectSource.toJSON(message.projectSource) : undefined);
+      (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
     message.importBy !== undefined &&
       (obj.importBy = message.importBy !== undefined ? importByToJSON(message.importBy) : undefined);
     message.action !== undefined &&
       (obj.action = message.action !== undefined ? projectSourceCreationActionToJSON(message.action) : undefined);
     message.sourcePath !== undefined && (obj.sourcePath = message.sourcePath);
-    message.git !== undefined && (obj.git = message.git ? Git.toJSON(message.git) : undefined);
+    message.git !== undefined && (obj.git = message.git ? GitData.toJSON(message.git) : undefined);
     return obj;
   },
 
@@ -895,12 +895,12 @@ export const ProjectSourceCreation = {
     const message = createBaseProjectSourceCreation();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectSource = (object.projectSource !== undefined && object.projectSource !== null)
-      ? ProjectSource.fromPartial(object.projectSource)
+      ? ProjectSourceData.fromPartial(object.projectSource)
       : undefined;
     message.importBy = object.importBy ?? undefined;
     message.action = object.action ?? undefined;
     message.sourcePath = object.sourcePath ?? undefined;
-    message.git = (object.git !== undefined && object.git !== null) ? Git.fromPartial(object.git) : undefined;
+    message.git = (object.git !== undefined && object.git !== null) ? GitData.fromPartial(object.git) : undefined;
     return message;
   },
 };
@@ -909,25 +909,25 @@ function createBaseERDConfig(): ERDConfig {
   return { projectGenerateQueueId: 0 };
 }
 
-export const ERDConfig = {
+export const ERDConfigData = {
   encode(message: ERDConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
     }
     if (message.projectSource !== undefined) {
-      ProjectSource.encode(message.projectSource, writer.uint32(18).fork()).ldelim();
+      ProjectSourceData.encode(message.projectSource, writer.uint32(18).fork()).ldelim();
     }
     if (message.git !== undefined) {
-      Git.encode(message.git, writer.uint32(26).fork()).ldelim();
+      GitData.encode(message.git, writer.uint32(26).fork()).ldelim();
     }
     if (message.importBy !== undefined) {
       writer.uint32(48).int32(message.importBy);
     }
     if (message.import !== undefined) {
-      ERDConfigImport.encode(message.import, writer.uint32(34).fork()).ldelim();
+      ERDConfigImportData.encode(message.import, writer.uint32(34).fork()).ldelim();
     }
     if (message.local !== undefined) {
-      ERDConfigLocal.encode(message.local, writer.uint32(42).fork()).ldelim();
+      ERDConfigLocalData.encode(message.local, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -943,19 +943,19 @@ export const ERDConfig = {
           message.projectGenerateQueueId = reader.int32();
           break;
         case 2:
-          message.projectSource = ProjectSource.decode(reader, reader.uint32());
+          message.projectSource = ProjectSourceData.decode(reader, reader.uint32());
           break;
         case 3:
-          message.git = Git.decode(reader, reader.uint32());
+          message.git = GitData.decode(reader, reader.uint32());
           break;
         case 6:
           message.importBy = reader.int32() as any;
           break;
         case 4:
-          message.import = ERDConfigImport.decode(reader, reader.uint32());
+          message.import = ERDConfigImportData.decode(reader, reader.uint32());
           break;
         case 5:
-          message.local = ERDConfigLocal.decode(reader, reader.uint32());
+          message.local = ERDConfigLocalData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -968,11 +968,11 @@ export const ERDConfig = {
   fromJSON(object: any): ERDConfig {
     return {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
-      projectSource: isSet(object.projectSource) ? ProjectSource.fromJSON(object.projectSource) : undefined,
-      git: isSet(object.git) ? Git.fromJSON(object.git) : undefined,
+      projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
+      git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
       importBy: isSet(object.importBy) ? importByFromJSON(object.importBy) : undefined,
-      import: isSet(object.import) ? ERDConfigImport.fromJSON(object.import) : undefined,
-      local: isSet(object.local) ? ERDConfigLocal.fromJSON(object.local) : undefined,
+      import: isSet(object.import) ? ERDConfigImportData.fromJSON(object.import) : undefined,
+      local: isSet(object.local) ? ERDConfigLocalData.fromJSON(object.local) : undefined,
     };
   },
 
@@ -981,12 +981,13 @@ export const ERDConfig = {
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.projectSource !== undefined &&
-      (obj.projectSource = message.projectSource ? ProjectSource.toJSON(message.projectSource) : undefined);
-    message.git !== undefined && (obj.git = message.git ? Git.toJSON(message.git) : undefined);
+      (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
+    message.git !== undefined && (obj.git = message.git ? GitData.toJSON(message.git) : undefined);
     message.importBy !== undefined &&
       (obj.importBy = message.importBy !== undefined ? importByToJSON(message.importBy) : undefined);
-    message.import !== undefined && (obj.import = message.import ? ERDConfigImport.toJSON(message.import) : undefined);
-    message.local !== undefined && (obj.local = message.local ? ERDConfigLocal.toJSON(message.local) : undefined);
+    message.import !== undefined &&
+      (obj.import = message.import ? ERDConfigImportData.toJSON(message.import) : undefined);
+    message.local !== undefined && (obj.local = message.local ? ERDConfigLocalData.toJSON(message.local) : undefined);
     return obj;
   },
 
@@ -994,15 +995,15 @@ export const ERDConfig = {
     const message = createBaseERDConfig();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectSource = (object.projectSource !== undefined && object.projectSource !== null)
-      ? ProjectSource.fromPartial(object.projectSource)
+      ? ProjectSourceData.fromPartial(object.projectSource)
       : undefined;
-    message.git = (object.git !== undefined && object.git !== null) ? Git.fromPartial(object.git) : undefined;
+    message.git = (object.git !== undefined && object.git !== null) ? GitData.fromPartial(object.git) : undefined;
     message.importBy = object.importBy ?? undefined;
     message.import = (object.import !== undefined && object.import !== null)
-      ? ERDConfigImport.fromPartial(object.import)
+      ? ERDConfigImportData.fromPartial(object.import)
       : undefined;
     message.local = (object.local !== undefined && object.local !== null)
-      ? ERDConfigLocal.fromPartial(object.local)
+      ? ERDConfigLocalData.fromPartial(object.local)
       : undefined;
     return message;
   },
@@ -1012,13 +1013,13 @@ function createBaseERDConfigLocal(): ERDConfigLocal {
   return { sourcePath: "", tables: [] };
 }
 
-export const ERDConfigLocal = {
+export const ERDConfigLocalData = {
   encode(message: ERDConfigLocal, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.sourcePath !== "") {
       writer.uint32(10).string(message.sourcePath);
     }
     for (const v of message.tables) {
-      Table.encode(v!, writer.uint32(18).fork()).ldelim();
+      TableData.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -1034,7 +1035,7 @@ export const ERDConfigLocal = {
           message.sourcePath = reader.string();
           break;
         case 2:
-          message.tables.push(Table.decode(reader, reader.uint32()));
+          message.tables.push(TableData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -1047,7 +1048,7 @@ export const ERDConfigLocal = {
   fromJSON(object: any): ERDConfigLocal {
     return {
       sourcePath: isSet(object.sourcePath) ? String(object.sourcePath) : "",
-      tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => Table.fromJSON(e)) : [],
+      tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => TableData.fromJSON(e)) : [],
     };
   },
 
@@ -1055,7 +1056,7 @@ export const ERDConfigLocal = {
     const obj: any = {};
     message.sourcePath !== undefined && (obj.sourcePath = message.sourcePath);
     if (message.tables) {
-      obj.tables = message.tables.map((e) => e ? Table.toJSON(e) : undefined);
+      obj.tables = message.tables.map((e) => e ? TableData.toJSON(e) : undefined);
     } else {
       obj.tables = [];
     }
@@ -1065,7 +1066,7 @@ export const ERDConfigLocal = {
   fromPartial(object: DeepPartial<ERDConfigLocal>): ERDConfigLocal {
     const message = createBaseERDConfigLocal();
     message.sourcePath = object.sourcePath ?? "";
-    message.tables = object.tables?.map((e) => Table.fromPartial(e)) || [];
+    message.tables = object.tables?.map((e) => TableData.fromPartial(e)) || [];
     return message;
   },
 };
@@ -1074,10 +1075,10 @@ function createBaseERDConfigImport(): ERDConfigImport {
   return { tables: [] };
 }
 
-export const ERDConfigImport = {
+export const ERDConfigImportData = {
   encode(message: ERDConfigImport, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.tables) {
-      ERDConfigTableChanged.encode(v!, writer.uint32(18).fork()).ldelim();
+      ERDConfigTableChangedData.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -1090,7 +1091,7 @@ export const ERDConfigImport = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 2:
-          message.tables.push(ERDConfigTableChanged.decode(reader, reader.uint32()));
+          message.tables.push(ERDConfigTableChangedData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -1102,14 +1103,14 @@ export const ERDConfigImport = {
 
   fromJSON(object: any): ERDConfigImport {
     return {
-      tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => ERDConfigTableChanged.fromJSON(e)) : [],
+      tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => ERDConfigTableChangedData.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: ERDConfigImport): unknown {
     const obj: any = {};
     if (message.tables) {
-      obj.tables = message.tables.map((e) => e ? ERDConfigTableChanged.toJSON(e) : undefined);
+      obj.tables = message.tables.map((e) => e ? ERDConfigTableChangedData.toJSON(e) : undefined);
     } else {
       obj.tables = [];
     }
@@ -1118,7 +1119,7 @@ export const ERDConfigImport = {
 
   fromPartial(object: DeepPartial<ERDConfigImport>): ERDConfigImport {
     const message = createBaseERDConfigImport();
-    message.tables = object.tables?.map((e) => ERDConfigTableChanged.fromPartial(e)) || [];
+    message.tables = object.tables?.map((e) => ERDConfigTableChangedData.fromPartial(e)) || [];
     return message;
   },
 };
@@ -1127,13 +1128,13 @@ function createBaseERDConfigTableChanged(): ERDConfigTableChanged {
   return { type: 0 };
 }
 
-export const ERDConfigTableChanged = {
+export const ERDConfigTableChangedData = {
   encode(message: ERDConfigTableChanged, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.type !== 0) {
       writer.uint32(8).int32(message.type);
     }
     if (message.table !== undefined) {
-      Table.encode(message.table, writer.uint32(18).fork()).ldelim();
+      TableData.encode(message.table, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -1149,7 +1150,7 @@ export const ERDConfigTableChanged = {
           message.type = reader.int32() as any;
           break;
         case 2:
-          message.table = Table.decode(reader, reader.uint32());
+          message.table = TableData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1162,21 +1163,23 @@ export const ERDConfigTableChanged = {
   fromJSON(object: any): ERDConfigTableChanged {
     return {
       type: isSet(object.type) ? eRDConfigTableChangedTypeFromJSON(object.type) : 0,
-      table: isSet(object.table) ? Table.fromJSON(object.table) : undefined,
+      table: isSet(object.table) ? TableData.fromJSON(object.table) : undefined,
     };
   },
 
   toJSON(message: ERDConfigTableChanged): unknown {
     const obj: any = {};
     message.type !== undefined && (obj.type = eRDConfigTableChangedTypeToJSON(message.type));
-    message.table !== undefined && (obj.table = message.table ? Table.toJSON(message.table) : undefined);
+    message.table !== undefined && (obj.table = message.table ? TableData.toJSON(message.table) : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<ERDConfigTableChanged>): ERDConfigTableChanged {
     const message = createBaseERDConfigTableChanged();
     message.type = object.type ?? 0;
-    message.table = (object.table !== undefined && object.table !== null) ? Table.fromPartial(object.table) : undefined;
+    message.table = (object.table !== undefined && object.table !== null)
+      ? TableData.fromPartial(object.table)
+      : undefined;
     return message;
   },
 };
@@ -1185,25 +1188,25 @@ function createBaseBusinessLogicChanges(): BusinessLogicChanges {
   return { projectGenerateQueueId: 0, tables: [], relations: [] };
 }
 
-export const BusinessLogicChanges = {
+export const BusinessLogicChangesData = {
   encode(message: BusinessLogicChanges, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
     }
     for (const v of message.tables) {
-      ProjectSourceTable.encode(v!, writer.uint32(18).fork()).ldelim();
+      ProjectSourceTableData.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     for (const v of message.relations) {
-      ProjectSourceRelation.encode(v!, writer.uint32(26).fork()).ldelim();
+      ProjectSourceRelationData.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     if (message.projectSource !== undefined) {
-      ProjectSource.encode(message.projectSource, writer.uint32(34).fork()).ldelim();
+      ProjectSourceData.encode(message.projectSource, writer.uint32(34).fork()).ldelim();
     }
     if (message.blockDiff !== undefined) {
-      BlockDiff.encode(message.blockDiff, writer.uint32(42).fork()).ldelim();
+      BlockDiffData.encode(message.blockDiff, writer.uint32(42).fork()).ldelim();
     }
     if (message.git !== undefined) {
-      Git.encode(message.git, writer.uint32(50).fork()).ldelim();
+      GitData.encode(message.git, writer.uint32(50).fork()).ldelim();
     }
     if (message.importBy !== undefined) {
       writer.uint32(56).int32(message.importBy);
@@ -1222,19 +1225,19 @@ export const BusinessLogicChanges = {
           message.projectGenerateQueueId = reader.int32();
           break;
         case 2:
-          message.tables.push(ProjectSourceTable.decode(reader, reader.uint32()));
+          message.tables.push(ProjectSourceTableData.decode(reader, reader.uint32()));
           break;
         case 3:
-          message.relations.push(ProjectSourceRelation.decode(reader, reader.uint32()));
+          message.relations.push(ProjectSourceRelationData.decode(reader, reader.uint32()));
           break;
         case 4:
-          message.projectSource = ProjectSource.decode(reader, reader.uint32());
+          message.projectSource = ProjectSourceData.decode(reader, reader.uint32());
           break;
         case 5:
-          message.blockDiff = BlockDiff.decode(reader, reader.uint32());
+          message.blockDiff = BlockDiffData.decode(reader, reader.uint32());
           break;
         case 6:
-          message.git = Git.decode(reader, reader.uint32());
+          message.git = GitData.decode(reader, reader.uint32());
           break;
         case 7:
           message.importBy = reader.int32() as any;
@@ -1250,13 +1253,13 @@ export const BusinessLogicChanges = {
   fromJSON(object: any): BusinessLogicChanges {
     return {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
-      tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => ProjectSourceTable.fromJSON(e)) : [],
+      tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => ProjectSourceTableData.fromJSON(e)) : [],
       relations: Array.isArray(object?.relations)
-        ? object.relations.map((e: any) => ProjectSourceRelation.fromJSON(e))
+        ? object.relations.map((e: any) => ProjectSourceRelationData.fromJSON(e))
         : [],
-      projectSource: isSet(object.projectSource) ? ProjectSource.fromJSON(object.projectSource) : undefined,
-      blockDiff: isSet(object.blockDiff) ? BlockDiff.fromJSON(object.blockDiff) : undefined,
-      git: isSet(object.git) ? Git.fromJSON(object.git) : undefined,
+      projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
+      blockDiff: isSet(object.blockDiff) ? BlockDiffData.fromJSON(object.blockDiff) : undefined,
+      git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
       importBy: isSet(object.importBy) ? importByFromJSON(object.importBy) : undefined,
     };
   },
@@ -1266,20 +1269,20 @@ export const BusinessLogicChanges = {
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     if (message.tables) {
-      obj.tables = message.tables.map((e) => e ? ProjectSourceTable.toJSON(e) : undefined);
+      obj.tables = message.tables.map((e) => e ? ProjectSourceTableData.toJSON(e) : undefined);
     } else {
       obj.tables = [];
     }
     if (message.relations) {
-      obj.relations = message.relations.map((e) => e ? ProjectSourceRelation.toJSON(e) : undefined);
+      obj.relations = message.relations.map((e) => e ? ProjectSourceRelationData.toJSON(e) : undefined);
     } else {
       obj.relations = [];
     }
     message.projectSource !== undefined &&
-      (obj.projectSource = message.projectSource ? ProjectSource.toJSON(message.projectSource) : undefined);
+      (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
     message.blockDiff !== undefined &&
-      (obj.blockDiff = message.blockDiff ? BlockDiff.toJSON(message.blockDiff) : undefined);
-    message.git !== undefined && (obj.git = message.git ? Git.toJSON(message.git) : undefined);
+      (obj.blockDiff = message.blockDiff ? BlockDiffData.toJSON(message.blockDiff) : undefined);
+    message.git !== undefined && (obj.git = message.git ? GitData.toJSON(message.git) : undefined);
     message.importBy !== undefined &&
       (obj.importBy = message.importBy !== undefined ? importByToJSON(message.importBy) : undefined);
     return obj;
@@ -1288,15 +1291,15 @@ export const BusinessLogicChanges = {
   fromPartial(object: DeepPartial<BusinessLogicChanges>): BusinessLogicChanges {
     const message = createBaseBusinessLogicChanges();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
-    message.tables = object.tables?.map((e) => ProjectSourceTable.fromPartial(e)) || [];
-    message.relations = object.relations?.map((e) => ProjectSourceRelation.fromPartial(e)) || [];
+    message.tables = object.tables?.map((e) => ProjectSourceTableData.fromPartial(e)) || [];
+    message.relations = object.relations?.map((e) => ProjectSourceRelationData.fromPartial(e)) || [];
     message.projectSource = (object.projectSource !== undefined && object.projectSource !== null)
-      ? ProjectSource.fromPartial(object.projectSource)
+      ? ProjectSourceData.fromPartial(object.projectSource)
       : undefined;
     message.blockDiff = (object.blockDiff !== undefined && object.blockDiff !== null)
-      ? BlockDiff.fromPartial(object.blockDiff)
+      ? BlockDiffData.fromPartial(object.blockDiff)
       : undefined;
-    message.git = (object.git !== undefined && object.git !== null) ? Git.fromPartial(object.git) : undefined;
+    message.git = (object.git !== undefined && object.git !== null) ? GitData.fromPartial(object.git) : undefined;
     message.importBy = object.importBy ?? undefined;
     return message;
   },
@@ -1306,7 +1309,7 @@ function createBaseBlockDiff(): BlockDiff {
   return { projectId: 0, id: 0, nodeId: "", blocks: [] };
 }
 
-export const BlockDiff = {
+export const BlockDiffData = {
   encode(message: BlockDiff, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectId !== 0) {
       writer.uint32(8).int32(message.projectId);
@@ -1318,10 +1321,10 @@ export const BlockDiff = {
       writer.uint32(34).string(message.nodeId);
     }
     if (message.content !== undefined) {
-      BlockDiffBlockBody.encode(message.content, writer.uint32(42).fork()).ldelim();
+      BlockDiffBlockBodyData.encode(message.content, writer.uint32(42).fork()).ldelim();
     }
     for (const v of message.blocks) {
-      BlockDiffBlock.encode(v!, writer.uint32(50).fork()).ldelim();
+      BlockDiffBlockData.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -1343,10 +1346,10 @@ export const BlockDiff = {
           message.nodeId = reader.string();
           break;
         case 5:
-          message.content = BlockDiffBlockBody.decode(reader, reader.uint32());
+          message.content = BlockDiffBlockBodyData.decode(reader, reader.uint32());
           break;
         case 6:
-          message.blocks.push(BlockDiffBlock.decode(reader, reader.uint32()));
+          message.blocks.push(BlockDiffBlockData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -1361,8 +1364,8 @@ export const BlockDiff = {
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       id: isSet(object.id) ? Number(object.id) : 0,
       nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
-      content: isSet(object.content) ? BlockDiffBlockBody.fromJSON(object.content) : undefined,
-      blocks: Array.isArray(object?.blocks) ? object.blocks.map((e: any) => BlockDiffBlock.fromJSON(e)) : [],
+      content: isSet(object.content) ? BlockDiffBlockBodyData.fromJSON(object.content) : undefined,
+      blocks: Array.isArray(object?.blocks) ? object.blocks.map((e: any) => BlockDiffBlockData.fromJSON(e)) : [],
     };
   },
 
@@ -1372,9 +1375,9 @@ export const BlockDiff = {
     message.id !== undefined && (obj.id = Math.round(message.id));
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
     message.content !== undefined &&
-      (obj.content = message.content ? BlockDiffBlockBody.toJSON(message.content) : undefined);
+      (obj.content = message.content ? BlockDiffBlockBodyData.toJSON(message.content) : undefined);
     if (message.blocks) {
-      obj.blocks = message.blocks.map((e) => e ? BlockDiffBlock.toJSON(e) : undefined);
+      obj.blocks = message.blocks.map((e) => e ? BlockDiffBlockData.toJSON(e) : undefined);
     } else {
       obj.blocks = [];
     }
@@ -1387,9 +1390,9 @@ export const BlockDiff = {
     message.id = object.id ?? 0;
     message.nodeId = object.nodeId ?? "";
     message.content = (object.content !== undefined && object.content !== null)
-      ? BlockDiffBlockBody.fromPartial(object.content)
+      ? BlockDiffBlockBodyData.fromPartial(object.content)
       : undefined;
-    message.blocks = object.blocks?.map((e) => BlockDiffBlock.fromPartial(e)) || [];
+    message.blocks = object.blocks?.map((e) => BlockDiffBlockData.fromPartial(e)) || [];
     return message;
   },
 };
@@ -1398,7 +1401,7 @@ function createBaseBlockDiffBlock(): BlockDiffBlock {
   return { id: 0, nodeId: "" };
 }
 
-export const BlockDiffBlock = {
+export const BlockDiffBlockData = {
   encode(message: BlockDiffBlock, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== 0) {
       writer.uint32(8).int32(message.id);
@@ -1407,13 +1410,13 @@ export const BlockDiffBlock = {
       writer.uint32(18).string(message.nodeId);
     }
     if (message.addition !== undefined) {
-      BlockDiffBlockAddition.encode(message.addition, writer.uint32(26).fork()).ldelim();
+      BlockDiffBlockAdditionData.encode(message.addition, writer.uint32(26).fork()).ldelim();
     }
     if (message.modification !== undefined) {
-      BlockDiffBlockModification.encode(message.modification, writer.uint32(34).fork()).ldelim();
+      BlockDiffBlockModificationData.encode(message.modification, writer.uint32(34).fork()).ldelim();
     }
     if (message.deletion !== undefined) {
-      BlockDiffBlockDeletion.encode(message.deletion, writer.uint32(42).fork()).ldelim();
+      BlockDiffBlockDeletionData.encode(message.deletion, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -1432,13 +1435,13 @@ export const BlockDiffBlock = {
           message.nodeId = reader.string();
           break;
         case 3:
-          message.addition = BlockDiffBlockAddition.decode(reader, reader.uint32());
+          message.addition = BlockDiffBlockAdditionData.decode(reader, reader.uint32());
           break;
         case 4:
-          message.modification = BlockDiffBlockModification.decode(reader, reader.uint32());
+          message.modification = BlockDiffBlockModificationData.decode(reader, reader.uint32());
           break;
         case 5:
-          message.deletion = BlockDiffBlockDeletion.decode(reader, reader.uint32());
+          message.deletion = BlockDiffBlockDeletionData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1452,9 +1455,11 @@ export const BlockDiffBlock = {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
       nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
-      addition: isSet(object.addition) ? BlockDiffBlockAddition.fromJSON(object.addition) : undefined,
-      modification: isSet(object.modification) ? BlockDiffBlockModification.fromJSON(object.modification) : undefined,
-      deletion: isSet(object.deletion) ? BlockDiffBlockDeletion.fromJSON(object.deletion) : undefined,
+      addition: isSet(object.addition) ? BlockDiffBlockAdditionData.fromJSON(object.addition) : undefined,
+      modification: isSet(object.modification)
+        ? BlockDiffBlockModificationData.fromJSON(object.modification)
+        : undefined,
+      deletion: isSet(object.deletion) ? BlockDiffBlockDeletionData.fromJSON(object.deletion) : undefined,
     };
   },
 
@@ -1463,11 +1468,13 @@ export const BlockDiffBlock = {
     message.id !== undefined && (obj.id = Math.round(message.id));
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
     message.addition !== undefined &&
-      (obj.addition = message.addition ? BlockDiffBlockAddition.toJSON(message.addition) : undefined);
+      (obj.addition = message.addition ? BlockDiffBlockAdditionData.toJSON(message.addition) : undefined);
     message.modification !== undefined &&
-      (obj.modification = message.modification ? BlockDiffBlockModification.toJSON(message.modification) : undefined);
+      (obj.modification = message.modification
+        ? BlockDiffBlockModificationData.toJSON(message.modification)
+        : undefined);
     message.deletion !== undefined &&
-      (obj.deletion = message.deletion ? BlockDiffBlockDeletion.toJSON(message.deletion) : undefined);
+      (obj.deletion = message.deletion ? BlockDiffBlockDeletionData.toJSON(message.deletion) : undefined);
     return obj;
   },
 
@@ -1476,13 +1483,13 @@ export const BlockDiffBlock = {
     message.id = object.id ?? 0;
     message.nodeId = object.nodeId ?? "";
     message.addition = (object.addition !== undefined && object.addition !== null)
-      ? BlockDiffBlockAddition.fromPartial(object.addition)
+      ? BlockDiffBlockAdditionData.fromPartial(object.addition)
       : undefined;
     message.modification = (object.modification !== undefined && object.modification !== null)
-      ? BlockDiffBlockModification.fromPartial(object.modification)
+      ? BlockDiffBlockModificationData.fromPartial(object.modification)
       : undefined;
     message.deletion = (object.deletion !== undefined && object.deletion !== null)
-      ? BlockDiffBlockDeletion.fromPartial(object.deletion)
+      ? BlockDiffBlockDeletionData.fromPartial(object.deletion)
       : undefined;
     return message;
   },
@@ -1492,10 +1499,10 @@ function createBaseBlockDiffBlockAddition(): BlockDiffBlockAddition {
   return {};
 }
 
-export const BlockDiffBlockAddition = {
+export const BlockDiffBlockAdditionData = {
   encode(message: BlockDiffBlockAddition, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.content !== undefined) {
-      BlockDiffBlockBody.encode(message.content, writer.uint32(10).fork()).ldelim();
+      BlockDiffBlockBodyData.encode(message.content, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -1508,7 +1515,7 @@ export const BlockDiffBlockAddition = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.content = BlockDiffBlockBody.decode(reader, reader.uint32());
+          message.content = BlockDiffBlockBodyData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1519,20 +1526,20 @@ export const BlockDiffBlockAddition = {
   },
 
   fromJSON(object: any): BlockDiffBlockAddition {
-    return { content: isSet(object.content) ? BlockDiffBlockBody.fromJSON(object.content) : undefined };
+    return { content: isSet(object.content) ? BlockDiffBlockBodyData.fromJSON(object.content) : undefined };
   },
 
   toJSON(message: BlockDiffBlockAddition): unknown {
     const obj: any = {};
     message.content !== undefined &&
-      (obj.content = message.content ? BlockDiffBlockBody.toJSON(message.content) : undefined);
+      (obj.content = message.content ? BlockDiffBlockBodyData.toJSON(message.content) : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<BlockDiffBlockAddition>): BlockDiffBlockAddition {
     const message = createBaseBlockDiffBlockAddition();
     message.content = (object.content !== undefined && object.content !== null)
-      ? BlockDiffBlockBody.fromPartial(object.content)
+      ? BlockDiffBlockBodyData.fromPartial(object.content)
       : undefined;
     return message;
   },
@@ -1542,13 +1549,13 @@ function createBaseBlockDiffBlockModification(): BlockDiffBlockModification {
   return {};
 }
 
-export const BlockDiffBlockModification = {
+export const BlockDiffBlockModificationData = {
   encode(message: BlockDiffBlockModification, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.deletion !== undefined) {
-      BlockDiffBlockBody.encode(message.deletion, writer.uint32(10).fork()).ldelim();
+      BlockDiffBlockBodyData.encode(message.deletion, writer.uint32(10).fork()).ldelim();
     }
     if (message.addition !== undefined) {
-      BlockDiffBlockBody.encode(message.addition, writer.uint32(18).fork()).ldelim();
+      BlockDiffBlockBodyData.encode(message.addition, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -1561,10 +1568,10 @@ export const BlockDiffBlockModification = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.deletion = BlockDiffBlockBody.decode(reader, reader.uint32());
+          message.deletion = BlockDiffBlockBodyData.decode(reader, reader.uint32());
           break;
         case 2:
-          message.addition = BlockDiffBlockBody.decode(reader, reader.uint32());
+          message.addition = BlockDiffBlockBodyData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1576,27 +1583,27 @@ export const BlockDiffBlockModification = {
 
   fromJSON(object: any): BlockDiffBlockModification {
     return {
-      deletion: isSet(object.deletion) ? BlockDiffBlockBody.fromJSON(object.deletion) : undefined,
-      addition: isSet(object.addition) ? BlockDiffBlockBody.fromJSON(object.addition) : undefined,
+      deletion: isSet(object.deletion) ? BlockDiffBlockBodyData.fromJSON(object.deletion) : undefined,
+      addition: isSet(object.addition) ? BlockDiffBlockBodyData.fromJSON(object.addition) : undefined,
     };
   },
 
   toJSON(message: BlockDiffBlockModification): unknown {
     const obj: any = {};
     message.deletion !== undefined &&
-      (obj.deletion = message.deletion ? BlockDiffBlockBody.toJSON(message.deletion) : undefined);
+      (obj.deletion = message.deletion ? BlockDiffBlockBodyData.toJSON(message.deletion) : undefined);
     message.addition !== undefined &&
-      (obj.addition = message.addition ? BlockDiffBlockBody.toJSON(message.addition) : undefined);
+      (obj.addition = message.addition ? BlockDiffBlockBodyData.toJSON(message.addition) : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<BlockDiffBlockModification>): BlockDiffBlockModification {
     const message = createBaseBlockDiffBlockModification();
     message.deletion = (object.deletion !== undefined && object.deletion !== null)
-      ? BlockDiffBlockBody.fromPartial(object.deletion)
+      ? BlockDiffBlockBodyData.fromPartial(object.deletion)
       : undefined;
     message.addition = (object.addition !== undefined && object.addition !== null)
-      ? BlockDiffBlockBody.fromPartial(object.addition)
+      ? BlockDiffBlockBodyData.fromPartial(object.addition)
       : undefined;
     return message;
   },
@@ -1606,10 +1613,10 @@ function createBaseBlockDiffBlockDeletion(): BlockDiffBlockDeletion {
   return {};
 }
 
-export const BlockDiffBlockDeletion = {
+export const BlockDiffBlockDeletionData = {
   encode(message: BlockDiffBlockDeletion, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.content !== undefined) {
-      BlockDiffBlockBody.encode(message.content, writer.uint32(10).fork()).ldelim();
+      BlockDiffBlockBodyData.encode(message.content, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -1622,7 +1629,7 @@ export const BlockDiffBlockDeletion = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.content = BlockDiffBlockBody.decode(reader, reader.uint32());
+          message.content = BlockDiffBlockBodyData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1633,20 +1640,20 @@ export const BlockDiffBlockDeletion = {
   },
 
   fromJSON(object: any): BlockDiffBlockDeletion {
-    return { content: isSet(object.content) ? BlockDiffBlockBody.fromJSON(object.content) : undefined };
+    return { content: isSet(object.content) ? BlockDiffBlockBodyData.fromJSON(object.content) : undefined };
   },
 
   toJSON(message: BlockDiffBlockDeletion): unknown {
     const obj: any = {};
     message.content !== undefined &&
-      (obj.content = message.content ? BlockDiffBlockBody.toJSON(message.content) : undefined);
+      (obj.content = message.content ? BlockDiffBlockBodyData.toJSON(message.content) : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<BlockDiffBlockDeletion>): BlockDiffBlockDeletion {
     const message = createBaseBlockDiffBlockDeletion();
     message.content = (object.content !== undefined && object.content !== null)
-      ? BlockDiffBlockBody.fromPartial(object.content)
+      ? BlockDiffBlockBodyData.fromPartial(object.content)
       : undefined;
     return message;
   },
@@ -1656,7 +1663,7 @@ function createBaseBlockDiffBlockBody(): BlockDiffBlockBody {
   return { name: "", blockType: "", parentNodeId: "", content: [], children: [] };
 }
 
-export const BlockDiffBlockBody = {
+export const BlockDiffBlockBodyData = {
   encode(message: BlockDiffBlockBody, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
@@ -1668,10 +1675,10 @@ export const BlockDiffBlockBody = {
       writer.uint32(26).string(message.parentNodeId);
     }
     for (const v of message.content) {
-      Struct.encode(Struct.wrap(v!), writer.uint32(34).fork()).ldelim();
+      StructData.encode(StructData.wrap(v!), writer.uint32(34).fork()).ldelim();
     }
     if (message.properties !== undefined) {
-      Struct.encode(Struct.wrap(message.properties), writer.uint32(42).fork()).ldelim();
+      StructData.encode(StructData.wrap(message.properties), writer.uint32(42).fork()).ldelim();
     }
     for (const v of message.children) {
       writer.uint32(50).string(v!);
@@ -1696,10 +1703,10 @@ export const BlockDiffBlockBody = {
           message.parentNodeId = reader.string();
           break;
         case 4:
-          message.content.push(Struct.unwrap(Struct.decode(reader, reader.uint32())));
+          message.content.push(StructData.unwrap(StructData.decode(reader, reader.uint32())));
           break;
         case 5:
-          message.properties = Struct.unwrap(Struct.decode(reader, reader.uint32()));
+          message.properties = StructData.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 6:
           message.children.push(reader.string());
@@ -1758,25 +1765,25 @@ function createBaseApiChanges(): ApiChanges {
   return { tables: [], relations: [], projectGenerateQueueId: 0 };
 }
 
-export const ApiChanges = {
+export const ApiChangesData = {
   encode(message: ApiChanges, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectSource !== undefined) {
-      ProjectSource.encode(message.projectSource, writer.uint32(10).fork()).ldelim();
+      ProjectSourceData.encode(message.projectSource, writer.uint32(10).fork()).ldelim();
     }
     if (message.blockDiff !== undefined) {
-      BlockDiff.encode(message.blockDiff, writer.uint32(18).fork()).ldelim();
+      BlockDiffData.encode(message.blockDiff, writer.uint32(18).fork()).ldelim();
     }
     for (const v of message.tables) {
-      ProjectSourceTable.encode(v!, writer.uint32(26).fork()).ldelim();
+      ProjectSourceTableData.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     for (const v of message.relations) {
-      ProjectSourceRelation.encode(v!, writer.uint32(34).fork()).ldelim();
+      ProjectSourceRelationData.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(40).int32(message.projectGenerateQueueId);
     }
     if (message.git !== undefined) {
-      Git.encode(message.git, writer.uint32(50).fork()).ldelim();
+      GitData.encode(message.git, writer.uint32(50).fork()).ldelim();
     }
     if (message.importBy !== undefined) {
       writer.uint32(56).int32(message.importBy);
@@ -1792,22 +1799,22 @@ export const ApiChanges = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.projectSource = ProjectSource.decode(reader, reader.uint32());
+          message.projectSource = ProjectSourceData.decode(reader, reader.uint32());
           break;
         case 2:
-          message.blockDiff = BlockDiff.decode(reader, reader.uint32());
+          message.blockDiff = BlockDiffData.decode(reader, reader.uint32());
           break;
         case 3:
-          message.tables.push(ProjectSourceTable.decode(reader, reader.uint32()));
+          message.tables.push(ProjectSourceTableData.decode(reader, reader.uint32()));
           break;
         case 4:
-          message.relations.push(ProjectSourceRelation.decode(reader, reader.uint32()));
+          message.relations.push(ProjectSourceRelationData.decode(reader, reader.uint32()));
           break;
         case 5:
           message.projectGenerateQueueId = reader.int32();
           break;
         case 6:
-          message.git = Git.decode(reader, reader.uint32());
+          message.git = GitData.decode(reader, reader.uint32());
           break;
         case 7:
           message.importBy = reader.int32() as any;
@@ -1822,14 +1829,14 @@ export const ApiChanges = {
 
   fromJSON(object: any): ApiChanges {
     return {
-      projectSource: isSet(object.projectSource) ? ProjectSource.fromJSON(object.projectSource) : undefined,
-      blockDiff: isSet(object.blockDiff) ? BlockDiff.fromJSON(object.blockDiff) : undefined,
-      tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => ProjectSourceTable.fromJSON(e)) : [],
+      projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
+      blockDiff: isSet(object.blockDiff) ? BlockDiffData.fromJSON(object.blockDiff) : undefined,
+      tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => ProjectSourceTableData.fromJSON(e)) : [],
       relations: Array.isArray(object?.relations)
-        ? object.relations.map((e: any) => ProjectSourceRelation.fromJSON(e))
+        ? object.relations.map((e: any) => ProjectSourceRelationData.fromJSON(e))
         : [],
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
-      git: isSet(object.git) ? Git.fromJSON(object.git) : undefined,
+      git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
       importBy: isSet(object.importBy) ? importByFromJSON(object.importBy) : undefined,
     };
   },
@@ -1837,22 +1844,22 @@ export const ApiChanges = {
   toJSON(message: ApiChanges): unknown {
     const obj: any = {};
     message.projectSource !== undefined &&
-      (obj.projectSource = message.projectSource ? ProjectSource.toJSON(message.projectSource) : undefined);
+      (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
     message.blockDiff !== undefined &&
-      (obj.blockDiff = message.blockDiff ? BlockDiff.toJSON(message.blockDiff) : undefined);
+      (obj.blockDiff = message.blockDiff ? BlockDiffData.toJSON(message.blockDiff) : undefined);
     if (message.tables) {
-      obj.tables = message.tables.map((e) => e ? ProjectSourceTable.toJSON(e) : undefined);
+      obj.tables = message.tables.map((e) => e ? ProjectSourceTableData.toJSON(e) : undefined);
     } else {
       obj.tables = [];
     }
     if (message.relations) {
-      obj.relations = message.relations.map((e) => e ? ProjectSourceRelation.toJSON(e) : undefined);
+      obj.relations = message.relations.map((e) => e ? ProjectSourceRelationData.toJSON(e) : undefined);
     } else {
       obj.relations = [];
     }
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
-    message.git !== undefined && (obj.git = message.git ? Git.toJSON(message.git) : undefined);
+    message.git !== undefined && (obj.git = message.git ? GitData.toJSON(message.git) : undefined);
     message.importBy !== undefined &&
       (obj.importBy = message.importBy !== undefined ? importByToJSON(message.importBy) : undefined);
     return obj;
@@ -1861,15 +1868,15 @@ export const ApiChanges = {
   fromPartial(object: DeepPartial<ApiChanges>): ApiChanges {
     const message = createBaseApiChanges();
     message.projectSource = (object.projectSource !== undefined && object.projectSource !== null)
-      ? ProjectSource.fromPartial(object.projectSource)
+      ? ProjectSourceData.fromPartial(object.projectSource)
       : undefined;
     message.blockDiff = (object.blockDiff !== undefined && object.blockDiff !== null)
-      ? BlockDiff.fromPartial(object.blockDiff)
+      ? BlockDiffData.fromPartial(object.blockDiff)
       : undefined;
-    message.tables = object.tables?.map((e) => ProjectSourceTable.fromPartial(e)) || [];
-    message.relations = object.relations?.map((e) => ProjectSourceRelation.fromPartial(e)) || [];
+    message.tables = object.tables?.map((e) => ProjectSourceTableData.fromPartial(e)) || [];
+    message.relations = object.relations?.map((e) => ProjectSourceRelationData.fromPartial(e)) || [];
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
-    message.git = (object.git !== undefined && object.git !== null) ? Git.fromPartial(object.git) : undefined;
+    message.git = (object.git !== undefined && object.git !== null) ? GitData.fromPartial(object.git) : undefined;
     message.importBy = object.importBy ?? undefined;
     return message;
   },
@@ -1879,7 +1886,7 @@ function createBaseProjectSourceReport(): ProjectSourceReport {
   return { projectGenerateQueueId: 0, projectId: 0, projectSourceId: 0, tokenUsage: 0 };
 }
 
-export const ProjectSourceReport = {
+export const ProjectSourceReportData = {
   encode(message: ProjectSourceReport, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
@@ -1894,13 +1901,13 @@ export const ProjectSourceReport = {
       writer.uint32(32).int32(message.tokenUsage);
     }
     if (message.progress !== undefined) {
-      ProjectSourceReportProgress.encode(message.progress, writer.uint32(42).fork()).ldelim();
+      ProjectSourceReportProgressData.encode(message.progress, writer.uint32(42).fork()).ldelim();
     }
     if (message.complete !== undefined) {
-      ProjectSourceReportComplete.encode(message.complete, writer.uint32(50).fork()).ldelim();
+      ProjectSourceReportCompleteData.encode(message.complete, writer.uint32(50).fork()).ldelim();
     }
     if (message.error !== undefined) {
-      ProjectSourceReportError.encode(message.error, writer.uint32(58).fork()).ldelim();
+      ProjectSourceReportErrorData.encode(message.error, writer.uint32(58).fork()).ldelim();
     }
     return writer;
   },
@@ -1925,13 +1932,13 @@ export const ProjectSourceReport = {
           message.tokenUsage = reader.int32();
           break;
         case 5:
-          message.progress = ProjectSourceReportProgress.decode(reader, reader.uint32());
+          message.progress = ProjectSourceReportProgressData.decode(reader, reader.uint32());
           break;
         case 6:
-          message.complete = ProjectSourceReportComplete.decode(reader, reader.uint32());
+          message.complete = ProjectSourceReportCompleteData.decode(reader, reader.uint32());
           break;
         case 7:
-          message.error = ProjectSourceReportError.decode(reader, reader.uint32());
+          message.error = ProjectSourceReportErrorData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1947,9 +1954,9 @@ export const ProjectSourceReport = {
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       projectSourceId: isSet(object.projectSourceId) ? Number(object.projectSourceId) : 0,
       tokenUsage: isSet(object.tokenUsage) ? Number(object.tokenUsage) : 0,
-      progress: isSet(object.progress) ? ProjectSourceReportProgress.fromJSON(object.progress) : undefined,
-      complete: isSet(object.complete) ? ProjectSourceReportComplete.fromJSON(object.complete) : undefined,
-      error: isSet(object.error) ? ProjectSourceReportError.fromJSON(object.error) : undefined,
+      progress: isSet(object.progress) ? ProjectSourceReportProgressData.fromJSON(object.progress) : undefined,
+      complete: isSet(object.complete) ? ProjectSourceReportCompleteData.fromJSON(object.complete) : undefined,
+      error: isSet(object.error) ? ProjectSourceReportErrorData.fromJSON(object.error) : undefined,
     };
   },
 
@@ -1961,11 +1968,11 @@ export const ProjectSourceReport = {
     message.projectSourceId !== undefined && (obj.projectSourceId = Math.round(message.projectSourceId));
     message.tokenUsage !== undefined && (obj.tokenUsage = Math.round(message.tokenUsage));
     message.progress !== undefined &&
-      (obj.progress = message.progress ? ProjectSourceReportProgress.toJSON(message.progress) : undefined);
+      (obj.progress = message.progress ? ProjectSourceReportProgressData.toJSON(message.progress) : undefined);
     message.complete !== undefined &&
-      (obj.complete = message.complete ? ProjectSourceReportComplete.toJSON(message.complete) : undefined);
+      (obj.complete = message.complete ? ProjectSourceReportCompleteData.toJSON(message.complete) : undefined);
     message.error !== undefined &&
-      (obj.error = message.error ? ProjectSourceReportError.toJSON(message.error) : undefined);
+      (obj.error = message.error ? ProjectSourceReportErrorData.toJSON(message.error) : undefined);
     return obj;
   },
 
@@ -1976,13 +1983,13 @@ export const ProjectSourceReport = {
     message.projectSourceId = object.projectSourceId ?? 0;
     message.tokenUsage = object.tokenUsage ?? 0;
     message.progress = (object.progress !== undefined && object.progress !== null)
-      ? ProjectSourceReportProgress.fromPartial(object.progress)
+      ? ProjectSourceReportProgressData.fromPartial(object.progress)
       : undefined;
     message.complete = (object.complete !== undefined && object.complete !== null)
-      ? ProjectSourceReportComplete.fromPartial(object.complete)
+      ? ProjectSourceReportCompleteData.fromPartial(object.complete)
       : undefined;
     message.error = (object.error !== undefined && object.error !== null)
-      ? ProjectSourceReportError.fromPartial(object.error)
+      ? ProjectSourceReportErrorData.fromPartial(object.error)
       : undefined;
     return message;
   },
@@ -1992,7 +1999,7 @@ function createBaseProjectSourceReportProgress(): ProjectSourceReportProgress {
   return { percentage: 0, message: "", payload: "" };
 }
 
-export const ProjectSourceReportProgress = {
+export const ProjectSourceReportProgressData = {
   encode(message: ProjectSourceReportProgress, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.percentage !== 0) {
       writer.uint32(8).int32(message.percentage);
@@ -2059,7 +2066,7 @@ function createBaseProjectSourceReportError(): ProjectSourceReportError {
   return { message: "" };
 }
 
-export const ProjectSourceReportError = {
+export const ProjectSourceReportErrorData = {
   encode(message: ProjectSourceReportError, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.message !== "") {
       writer.uint32(10).string(message.message);
@@ -2106,7 +2113,7 @@ function createBaseProjectSourceReportComplete(): ProjectSourceReportComplete {
   return { files: "" };
 }
 
-export const ProjectSourceReportComplete = {
+export const ProjectSourceReportCompleteData = {
   encode(message: ProjectSourceReportComplete, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.files !== "") {
       writer.uint32(34).string(message.files);
@@ -2153,28 +2160,28 @@ function createBaseUseCaseRemoval(): UseCaseRemoval {
   return { projectGenerateQueueId: 0, useCaseBlocks: [], businessLogicBlocks: [], apiBlocks: [] };
 }
 
-export const UseCaseRemoval = {
+export const UseCaseRemovalData = {
   encode(message: UseCaseRemoval, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectSource !== undefined) {
-      ProjectSource.encode(message.projectSource, writer.uint32(10).fork()).ldelim();
+      ProjectSourceData.encode(message.projectSource, writer.uint32(10).fork()).ldelim();
     }
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(16).int32(message.projectGenerateQueueId);
     }
     if (message.git !== undefined) {
-      Git.encode(message.git, writer.uint32(26).fork()).ldelim();
+      GitData.encode(message.git, writer.uint32(26).fork()).ldelim();
     }
     if (message.importBy !== undefined) {
       writer.uint32(32).int32(message.importBy);
     }
     for (const v of message.useCaseBlocks) {
-      UseCaseRemovalBlock.encode(v!, writer.uint32(42).fork()).ldelim();
+      UseCaseRemovalBlockData.encode(v!, writer.uint32(42).fork()).ldelim();
     }
     for (const v of message.businessLogicBlocks) {
-      UseCaseRemovalBlock.encode(v!, writer.uint32(50).fork()).ldelim();
+      UseCaseRemovalBlockData.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     for (const v of message.apiBlocks) {
-      UseCaseRemovalBlock.encode(v!, writer.uint32(58).fork()).ldelim();
+      UseCaseRemovalBlockData.encode(v!, writer.uint32(58).fork()).ldelim();
     }
     return writer;
   },
@@ -2187,25 +2194,25 @@ export const UseCaseRemoval = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.projectSource = ProjectSource.decode(reader, reader.uint32());
+          message.projectSource = ProjectSourceData.decode(reader, reader.uint32());
           break;
         case 2:
           message.projectGenerateQueueId = reader.int32();
           break;
         case 3:
-          message.git = Git.decode(reader, reader.uint32());
+          message.git = GitData.decode(reader, reader.uint32());
           break;
         case 4:
           message.importBy = reader.int32() as any;
           break;
         case 5:
-          message.useCaseBlocks.push(UseCaseRemovalBlock.decode(reader, reader.uint32()));
+          message.useCaseBlocks.push(UseCaseRemovalBlockData.decode(reader, reader.uint32()));
           break;
         case 6:
-          message.businessLogicBlocks.push(UseCaseRemovalBlock.decode(reader, reader.uint32()));
+          message.businessLogicBlocks.push(UseCaseRemovalBlockData.decode(reader, reader.uint32()));
           break;
         case 7:
-          message.apiBlocks.push(UseCaseRemovalBlock.decode(reader, reader.uint32()));
+          message.apiBlocks.push(UseCaseRemovalBlockData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -2217,18 +2224,18 @@ export const UseCaseRemoval = {
 
   fromJSON(object: any): UseCaseRemoval {
     return {
-      projectSource: isSet(object.projectSource) ? ProjectSource.fromJSON(object.projectSource) : undefined,
+      projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
-      git: isSet(object.git) ? Git.fromJSON(object.git) : undefined,
+      git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
       importBy: isSet(object.importBy) ? importByFromJSON(object.importBy) : undefined,
       useCaseBlocks: Array.isArray(object?.useCaseBlocks)
-        ? object.useCaseBlocks.map((e: any) => UseCaseRemovalBlock.fromJSON(e))
+        ? object.useCaseBlocks.map((e: any) => UseCaseRemovalBlockData.fromJSON(e))
         : [],
       businessLogicBlocks: Array.isArray(object?.businessLogicBlocks)
-        ? object.businessLogicBlocks.map((e: any) => UseCaseRemovalBlock.fromJSON(e))
+        ? object.businessLogicBlocks.map((e: any) => UseCaseRemovalBlockData.fromJSON(e))
         : [],
       apiBlocks: Array.isArray(object?.apiBlocks)
-        ? object.apiBlocks.map((e: any) => UseCaseRemovalBlock.fromJSON(e))
+        ? object.apiBlocks.map((e: any) => UseCaseRemovalBlockData.fromJSON(e))
         : [],
     };
   },
@@ -2236,24 +2243,26 @@ export const UseCaseRemoval = {
   toJSON(message: UseCaseRemoval): unknown {
     const obj: any = {};
     message.projectSource !== undefined &&
-      (obj.projectSource = message.projectSource ? ProjectSource.toJSON(message.projectSource) : undefined);
+      (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
-    message.git !== undefined && (obj.git = message.git ? Git.toJSON(message.git) : undefined);
+    message.git !== undefined && (obj.git = message.git ? GitData.toJSON(message.git) : undefined);
     message.importBy !== undefined &&
       (obj.importBy = message.importBy !== undefined ? importByToJSON(message.importBy) : undefined);
     if (message.useCaseBlocks) {
-      obj.useCaseBlocks = message.useCaseBlocks.map((e) => e ? UseCaseRemovalBlock.toJSON(e) : undefined);
+      obj.useCaseBlocks = message.useCaseBlocks.map((e) => e ? UseCaseRemovalBlockData.toJSON(e) : undefined);
     } else {
       obj.useCaseBlocks = [];
     }
     if (message.businessLogicBlocks) {
-      obj.businessLogicBlocks = message.businessLogicBlocks.map((e) => e ? UseCaseRemovalBlock.toJSON(e) : undefined);
+      obj.businessLogicBlocks = message.businessLogicBlocks.map((e) =>
+        e ? UseCaseRemovalBlockData.toJSON(e) : undefined
+      );
     } else {
       obj.businessLogicBlocks = [];
     }
     if (message.apiBlocks) {
-      obj.apiBlocks = message.apiBlocks.map((e) => e ? UseCaseRemovalBlock.toJSON(e) : undefined);
+      obj.apiBlocks = message.apiBlocks.map((e) => e ? UseCaseRemovalBlockData.toJSON(e) : undefined);
     } else {
       obj.apiBlocks = [];
     }
@@ -2263,14 +2272,14 @@ export const UseCaseRemoval = {
   fromPartial(object: DeepPartial<UseCaseRemoval>): UseCaseRemoval {
     const message = createBaseUseCaseRemoval();
     message.projectSource = (object.projectSource !== undefined && object.projectSource !== null)
-      ? ProjectSource.fromPartial(object.projectSource)
+      ? ProjectSourceData.fromPartial(object.projectSource)
       : undefined;
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
-    message.git = (object.git !== undefined && object.git !== null) ? Git.fromPartial(object.git) : undefined;
+    message.git = (object.git !== undefined && object.git !== null) ? GitData.fromPartial(object.git) : undefined;
     message.importBy = object.importBy ?? undefined;
-    message.useCaseBlocks = object.useCaseBlocks?.map((e) => UseCaseRemovalBlock.fromPartial(e)) || [];
-    message.businessLogicBlocks = object.businessLogicBlocks?.map((e) => UseCaseRemovalBlock.fromPartial(e)) || [];
-    message.apiBlocks = object.apiBlocks?.map((e) => UseCaseRemovalBlock.fromPartial(e)) || [];
+    message.useCaseBlocks = object.useCaseBlocks?.map((e) => UseCaseRemovalBlockData.fromPartial(e)) || [];
+    message.businessLogicBlocks = object.businessLogicBlocks?.map((e) => UseCaseRemovalBlockData.fromPartial(e)) || [];
+    message.apiBlocks = object.apiBlocks?.map((e) => UseCaseRemovalBlockData.fromPartial(e)) || [];
     return message;
   },
 };
@@ -2279,7 +2288,7 @@ function createBaseUseCaseRemovalBlock(): UseCaseRemovalBlock {
   return { id: 0, nodeId: "", name: "", blockType: "", parentNodeId: "", children: [] };
 }
 
-export const UseCaseRemovalBlock = {
+export const UseCaseRemovalBlockData = {
   encode(message: UseCaseRemovalBlock, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== 0) {
       writer.uint32(8).int32(message.id);
@@ -2297,7 +2306,7 @@ export const UseCaseRemovalBlock = {
       writer.uint32(42).string(message.parentNodeId);
     }
     if (message.properties !== undefined) {
-      Struct.encode(Struct.wrap(message.properties), writer.uint32(50).fork()).ldelim();
+      StructData.encode(StructData.wrap(message.properties), writer.uint32(50).fork()).ldelim();
     }
     for (const v of message.children) {
       writer.uint32(58).string(v!);
@@ -2328,7 +2337,7 @@ export const UseCaseRemovalBlock = {
           message.parentNodeId = reader.string();
           break;
         case 6:
-          message.properties = Struct.unwrap(Struct.decode(reader, reader.uint32()));
+          message.properties = StructData.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 7:
           message.children.push(reader.string());

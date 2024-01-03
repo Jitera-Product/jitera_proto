@@ -1,8 +1,8 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-import { ProjectSourceRelation, ProjectSourceTable } from "./project_source.proto";
+import { ProjectSourceRelation, ProjectSourceRelationData, ProjectSourceTable, ProjectSourceTableData } from "./project_source.proto";
 
-export interface UserCaseCreation {
+export class UserCaseCreation {
   projectGenerateQueueId: number;
   projectId: number;
   userCases: UserCase[];
@@ -11,20 +11,20 @@ export interface UserCaseCreation {
   projectTables?: UserCaseCreationProjectTable | undefined;
 }
 
-export interface UserCaseCreationProgress {
+export class UserCaseCreationProgress {
   message: string;
 }
 
-export interface UserCaseCreationError {
+export class UserCaseCreationError {
   message: string;
 }
 
-export interface UserCaseCreationProjectTable {
+export class UserCaseCreationProjectTable {
   tables: ProjectSourceTable[];
   relations: ProjectSourceRelation[];
 }
 
-export interface UserCase {
+export class UserCase {
   id: number;
   name: string;
   nodeId: string;
@@ -36,16 +36,16 @@ export interface UserCase {
   children: UserCase[];
 }
 
-export interface UserCaseContent {
+export class UserCaseContent {
   type: string;
   value: string;
 }
 
-export interface UserCaseProperty {
+export class UserCaseProperty {
   category: string;
 }
 
-export interface UserCaseCreationResponse {
+export class UserCaseCreationResponse {
   projectGenerateQueueId: number;
   message: string;
   module: UserCaseCreationResponseModule;
@@ -147,7 +147,7 @@ function createBaseUserCaseCreation(): UserCaseCreation {
   return { projectGenerateQueueId: 0, projectId: 0, userCases: [] };
 }
 
-export const UserCaseCreation = {
+export const UserCaseCreationData = {
   encode(message: UserCaseCreation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
@@ -156,16 +156,16 @@ export const UserCaseCreation = {
       writer.uint32(16).int32(message.projectId);
     }
     for (const v of message.userCases) {
-      UserCase.encode(v!, writer.uint32(26).fork()).ldelim();
+      UserCaseData.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     if (message.progress !== undefined) {
-      UserCaseCreationProgress.encode(message.progress, writer.uint32(34).fork()).ldelim();
+      UserCaseCreationProgressData.encode(message.progress, writer.uint32(34).fork()).ldelim();
     }
     if (message.error !== undefined) {
-      UserCaseCreationError.encode(message.error, writer.uint32(42).fork()).ldelim();
+      UserCaseCreationErrorData.encode(message.error, writer.uint32(42).fork()).ldelim();
     }
     if (message.projectTables !== undefined) {
-      UserCaseCreationProjectTable.encode(message.projectTables, writer.uint32(50).fork()).ldelim();
+      UserCaseCreationProjectTableData.encode(message.projectTables, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -184,16 +184,16 @@ export const UserCaseCreation = {
           message.projectId = reader.int32();
           break;
         case 3:
-          message.userCases.push(UserCase.decode(reader, reader.uint32()));
+          message.userCases.push(UserCaseData.decode(reader, reader.uint32()));
           break;
         case 4:
-          message.progress = UserCaseCreationProgress.decode(reader, reader.uint32());
+          message.progress = UserCaseCreationProgressData.decode(reader, reader.uint32());
           break;
         case 5:
-          message.error = UserCaseCreationError.decode(reader, reader.uint32());
+          message.error = UserCaseCreationErrorData.decode(reader, reader.uint32());
           break;
         case 6:
-          message.projectTables = UserCaseCreationProjectTable.decode(reader, reader.uint32());
+          message.projectTables = UserCaseCreationProjectTableData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -207,11 +207,11 @@ export const UserCaseCreation = {
     return {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      userCases: Array.isArray(object?.userCases) ? object.userCases.map((e: any) => UserCase.fromJSON(e)) : [],
-      progress: isSet(object.progress) ? UserCaseCreationProgress.fromJSON(object.progress) : undefined,
-      error: isSet(object.error) ? UserCaseCreationError.fromJSON(object.error) : undefined,
+      userCases: Array.isArray(object?.userCases) ? object.userCases.map((e: any) => UserCaseData.fromJSON(e)) : [],
+      progress: isSet(object.progress) ? UserCaseCreationProgressData.fromJSON(object.progress) : undefined,
+      error: isSet(object.error) ? UserCaseCreationErrorData.fromJSON(object.error) : undefined,
       projectTables: isSet(object.projectTables)
-        ? UserCaseCreationProjectTable.fromJSON(object.projectTables)
+        ? UserCaseCreationProjectTableData.fromJSON(object.projectTables)
         : undefined,
     };
   },
@@ -222,16 +222,16 @@ export const UserCaseCreation = {
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     if (message.userCases) {
-      obj.userCases = message.userCases.map((e) => e ? UserCase.toJSON(e) : undefined);
+      obj.userCases = message.userCases.map((e) => e ? UserCaseData.toJSON(e) : undefined);
     } else {
       obj.userCases = [];
     }
     message.progress !== undefined &&
-      (obj.progress = message.progress ? UserCaseCreationProgress.toJSON(message.progress) : undefined);
+      (obj.progress = message.progress ? UserCaseCreationProgressData.toJSON(message.progress) : undefined);
     message.error !== undefined &&
-      (obj.error = message.error ? UserCaseCreationError.toJSON(message.error) : undefined);
+      (obj.error = message.error ? UserCaseCreationErrorData.toJSON(message.error) : undefined);
     message.projectTables !== undefined && (obj.projectTables = message.projectTables
-      ? UserCaseCreationProjectTable.toJSON(message.projectTables)
+      ? UserCaseCreationProjectTableData.toJSON(message.projectTables)
       : undefined);
     return obj;
   },
@@ -240,15 +240,15 @@ export const UserCaseCreation = {
     const message = createBaseUserCaseCreation();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectId = object.projectId ?? 0;
-    message.userCases = object.userCases?.map((e) => UserCase.fromPartial(e)) || [];
+    message.userCases = object.userCases?.map((e) => UserCaseData.fromPartial(e)) || [];
     message.progress = (object.progress !== undefined && object.progress !== null)
-      ? UserCaseCreationProgress.fromPartial(object.progress)
+      ? UserCaseCreationProgressData.fromPartial(object.progress)
       : undefined;
     message.error = (object.error !== undefined && object.error !== null)
-      ? UserCaseCreationError.fromPartial(object.error)
+      ? UserCaseCreationErrorData.fromPartial(object.error)
       : undefined;
     message.projectTables = (object.projectTables !== undefined && object.projectTables !== null)
-      ? UserCaseCreationProjectTable.fromPartial(object.projectTables)
+      ? UserCaseCreationProjectTableData.fromPartial(object.projectTables)
       : undefined;
     return message;
   },
@@ -258,7 +258,7 @@ function createBaseUserCaseCreationProgress(): UserCaseCreationProgress {
   return { message: "" };
 }
 
-export const UserCaseCreationProgress = {
+export const UserCaseCreationProgressData = {
   encode(message: UserCaseCreationProgress, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.message !== "") {
       writer.uint32(10).string(message.message);
@@ -305,7 +305,7 @@ function createBaseUserCaseCreationError(): UserCaseCreationError {
   return { message: "" };
 }
 
-export const UserCaseCreationError = {
+export const UserCaseCreationErrorData = {
   encode(message: UserCaseCreationError, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.message !== "") {
       writer.uint32(10).string(message.message);
@@ -352,13 +352,13 @@ function createBaseUserCaseCreationProjectTable(): UserCaseCreationProjectTable 
   return { tables: [], relations: [] };
 }
 
-export const UserCaseCreationProjectTable = {
+export const UserCaseCreationProjectTableData = {
   encode(message: UserCaseCreationProjectTable, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.tables) {
-      ProjectSourceTable.encode(v!, writer.uint32(10).fork()).ldelim();
+      ProjectSourceTableData.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     for (const v of message.relations) {
-      ProjectSourceRelation.encode(v!, writer.uint32(18).fork()).ldelim();
+      ProjectSourceRelationData.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -371,10 +371,10 @@ export const UserCaseCreationProjectTable = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.tables.push(ProjectSourceTable.decode(reader, reader.uint32()));
+          message.tables.push(ProjectSourceTableData.decode(reader, reader.uint32()));
           break;
         case 2:
-          message.relations.push(ProjectSourceRelation.decode(reader, reader.uint32()));
+          message.relations.push(ProjectSourceRelationData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -386,9 +386,9 @@ export const UserCaseCreationProjectTable = {
 
   fromJSON(object: any): UserCaseCreationProjectTable {
     return {
-      tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => ProjectSourceTable.fromJSON(e)) : [],
+      tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => ProjectSourceTableData.fromJSON(e)) : [],
       relations: Array.isArray(object?.relations)
-        ? object.relations.map((e: any) => ProjectSourceRelation.fromJSON(e))
+        ? object.relations.map((e: any) => ProjectSourceRelationData.fromJSON(e))
         : [],
     };
   },
@@ -396,12 +396,12 @@ export const UserCaseCreationProjectTable = {
   toJSON(message: UserCaseCreationProjectTable): unknown {
     const obj: any = {};
     if (message.tables) {
-      obj.tables = message.tables.map((e) => e ? ProjectSourceTable.toJSON(e) : undefined);
+      obj.tables = message.tables.map((e) => e ? ProjectSourceTableData.toJSON(e) : undefined);
     } else {
       obj.tables = [];
     }
     if (message.relations) {
-      obj.relations = message.relations.map((e) => e ? ProjectSourceRelation.toJSON(e) : undefined);
+      obj.relations = message.relations.map((e) => e ? ProjectSourceRelationData.toJSON(e) : undefined);
     } else {
       obj.relations = [];
     }
@@ -410,8 +410,8 @@ export const UserCaseCreationProjectTable = {
 
   fromPartial(object: DeepPartial<UserCaseCreationProjectTable>): UserCaseCreationProjectTable {
     const message = createBaseUserCaseCreationProjectTable();
-    message.tables = object.tables?.map((e) => ProjectSourceTable.fromPartial(e)) || [];
-    message.relations = object.relations?.map((e) => ProjectSourceRelation.fromPartial(e)) || [];
+    message.tables = object.tables?.map((e) => ProjectSourceTableData.fromPartial(e)) || [];
+    message.relations = object.relations?.map((e) => ProjectSourceRelationData.fromPartial(e)) || [];
     return message;
   },
 };
@@ -420,7 +420,7 @@ function createBaseUserCase(): UserCase {
   return { id: 0, name: "", nodeId: "", parentNodeId: "", blockType: "", content: [], projectId: 0, children: [] };
 }
 
-export const UserCase = {
+export const UserCaseData = {
   encode(message: UserCase, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== 0) {
       writer.uint32(8).int32(message.id);
@@ -438,16 +438,16 @@ export const UserCase = {
       writer.uint32(42).string(message.blockType);
     }
     for (const v of message.content) {
-      UserCaseContent.encode(v!, writer.uint32(50).fork()).ldelim();
+      UserCaseContentData.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     if (message.properties !== undefined) {
-      UserCaseProperty.encode(message.properties, writer.uint32(58).fork()).ldelim();
+      UserCasePropertyData.encode(message.properties, writer.uint32(58).fork()).ldelim();
     }
     if (message.projectId !== 0) {
       writer.uint32(64).int32(message.projectId);
     }
     for (const v of message.children) {
-      UserCase.encode(v!, writer.uint32(74).fork()).ldelim();
+      UserCaseData.encode(v!, writer.uint32(74).fork()).ldelim();
     }
     return writer;
   },
@@ -475,16 +475,16 @@ export const UserCase = {
           message.blockType = reader.string();
           break;
         case 6:
-          message.content.push(UserCaseContent.decode(reader, reader.uint32()));
+          message.content.push(UserCaseContentData.decode(reader, reader.uint32()));
           break;
         case 7:
-          message.properties = UserCaseProperty.decode(reader, reader.uint32());
+          message.properties = UserCasePropertyData.decode(reader, reader.uint32());
           break;
         case 8:
           message.projectId = reader.int32();
           break;
         case 9:
-          message.children.push(UserCase.decode(reader, reader.uint32()));
+          message.children.push(UserCaseData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -501,10 +501,10 @@ export const UserCase = {
       nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
       parentNodeId: isSet(object.parentNodeId) ? String(object.parentNodeId) : "",
       blockType: isSet(object.blockType) ? String(object.blockType) : "",
-      content: Array.isArray(object?.content) ? object.content.map((e: any) => UserCaseContent.fromJSON(e)) : [],
-      properties: isSet(object.properties) ? UserCaseProperty.fromJSON(object.properties) : undefined,
+      content: Array.isArray(object?.content) ? object.content.map((e: any) => UserCaseContentData.fromJSON(e)) : [],
+      properties: isSet(object.properties) ? UserCasePropertyData.fromJSON(object.properties) : undefined,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      children: Array.isArray(object?.children) ? object.children.map((e: any) => UserCase.fromJSON(e)) : [],
+      children: Array.isArray(object?.children) ? object.children.map((e: any) => UserCaseData.fromJSON(e)) : [],
     };
   },
 
@@ -516,15 +516,15 @@ export const UserCase = {
     message.parentNodeId !== undefined && (obj.parentNodeId = message.parentNodeId);
     message.blockType !== undefined && (obj.blockType = message.blockType);
     if (message.content) {
-      obj.content = message.content.map((e) => e ? UserCaseContent.toJSON(e) : undefined);
+      obj.content = message.content.map((e) => e ? UserCaseContentData.toJSON(e) : undefined);
     } else {
       obj.content = [];
     }
     message.properties !== undefined &&
-      (obj.properties = message.properties ? UserCaseProperty.toJSON(message.properties) : undefined);
+      (obj.properties = message.properties ? UserCasePropertyData.toJSON(message.properties) : undefined);
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     if (message.children) {
-      obj.children = message.children.map((e) => e ? UserCase.toJSON(e) : undefined);
+      obj.children = message.children.map((e) => e ? UserCaseData.toJSON(e) : undefined);
     } else {
       obj.children = [];
     }
@@ -538,12 +538,12 @@ export const UserCase = {
     message.nodeId = object.nodeId ?? "";
     message.parentNodeId = object.parentNodeId ?? "";
     message.blockType = object.blockType ?? "";
-    message.content = object.content?.map((e) => UserCaseContent.fromPartial(e)) || [];
+    message.content = object.content?.map((e) => UserCaseContentData.fromPartial(e)) || [];
     message.properties = (object.properties !== undefined && object.properties !== null)
-      ? UserCaseProperty.fromPartial(object.properties)
+      ? UserCasePropertyData.fromPartial(object.properties)
       : undefined;
     message.projectId = object.projectId ?? 0;
-    message.children = object.children?.map((e) => UserCase.fromPartial(e)) || [];
+    message.children = object.children?.map((e) => UserCaseData.fromPartial(e)) || [];
     return message;
   },
 };
@@ -552,7 +552,7 @@ function createBaseUserCaseContent(): UserCaseContent {
   return { type: "", value: "" };
 }
 
-export const UserCaseContent = {
+export const UserCaseContentData = {
   encode(message: UserCaseContent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.type !== "") {
       writer.uint32(10).string(message.type);
@@ -610,7 +610,7 @@ function createBaseUserCaseProperty(): UserCaseProperty {
   return { category: "" };
 }
 
-export const UserCaseProperty = {
+export const UserCasePropertyData = {
   encode(message: UserCaseProperty, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.category !== "") {
       writer.uint32(10).string(message.category);
@@ -657,7 +657,7 @@ function createBaseUserCaseCreationResponse(): UserCaseCreationResponse {
   return { projectGenerateQueueId: 0, message: "", module: 0, status: 0, tokenUsage: 0 };
 }
 
-export const UserCaseCreationResponse = {
+export const UserCaseCreationResponseData = {
   encode(message: UserCaseCreationResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);

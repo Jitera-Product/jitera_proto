@@ -1,13 +1,13 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 
-export interface BusinessLogicResponse {
+export class BusinessLogicResponse {
   projectGenerateQueueId: number;
   projectId: number;
   businessLogics: BusinessLogic[];
 }
 
-export interface BusinessLogic {
+export class BusinessLogic {
   nodeId: string;
   parentNodeId: string;
   pageNodeId: string;
@@ -19,13 +19,13 @@ export interface BusinessLogic {
   children: string[];
 }
 
-export interface BusinessLogicContent {
+export class BusinessLogicContent {
   type: string;
   value: string;
   styles: string;
 }
 
-export interface BusinessLogicProperty {
+export class BusinessLogicProperty {
   useCaseId?: string | undefined;
   category?: string | undefined;
   level?: number | undefined;
@@ -38,7 +38,7 @@ function createBaseBusinessLogicResponse(): BusinessLogicResponse {
   return { projectGenerateQueueId: 0, projectId: 0, businessLogics: [] };
 }
 
-export const BusinessLogicResponse = {
+export const BusinessLogicResponseData = {
   encode(message: BusinessLogicResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
@@ -47,7 +47,7 @@ export const BusinessLogicResponse = {
       writer.uint32(16).int32(message.projectId);
     }
     for (const v of message.businessLogics) {
-      BusinessLogic.encode(v!, writer.uint32(26).fork()).ldelim();
+      BusinessLogicData.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -66,7 +66,7 @@ export const BusinessLogicResponse = {
           message.projectId = reader.int32();
           break;
         case 3:
-          message.businessLogics.push(BusinessLogic.decode(reader, reader.uint32()));
+          message.businessLogics.push(BusinessLogicData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -81,7 +81,7 @@ export const BusinessLogicResponse = {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       businessLogics: Array.isArray(object?.businessLogics)
-        ? object.businessLogics.map((e: any) => BusinessLogic.fromJSON(e))
+        ? object.businessLogics.map((e: any) => BusinessLogicData.fromJSON(e))
         : [],
     };
   },
@@ -92,7 +92,7 @@ export const BusinessLogicResponse = {
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     if (message.businessLogics) {
-      obj.businessLogics = message.businessLogics.map((e) => e ? BusinessLogic.toJSON(e) : undefined);
+      obj.businessLogics = message.businessLogics.map((e) => e ? BusinessLogicData.toJSON(e) : undefined);
     } else {
       obj.businessLogics = [];
     }
@@ -103,7 +103,7 @@ export const BusinessLogicResponse = {
     const message = createBaseBusinessLogicResponse();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectId = object.projectId ?? 0;
-    message.businessLogics = object.businessLogics?.map((e) => BusinessLogic.fromPartial(e)) || [];
+    message.businessLogics = object.businessLogics?.map((e) => BusinessLogicData.fromPartial(e)) || [];
     return message;
   },
 };
@@ -121,7 +121,7 @@ function createBaseBusinessLogic(): BusinessLogic {
   };
 }
 
-export const BusinessLogic = {
+export const BusinessLogicData = {
   encode(message: BusinessLogic, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.nodeId !== "") {
       writer.uint32(10).string(message.nodeId);
@@ -139,10 +139,10 @@ export const BusinessLogic = {
       writer.uint32(42).string(message.name);
     }
     for (const v of message.content) {
-      BusinessLogicContent.encode(v!, writer.uint32(50).fork()).ldelim();
+      BusinessLogicContentData.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     if (message.properties !== undefined) {
-      BusinessLogicProperty.encode(message.properties, writer.uint32(58).fork()).ldelim();
+      BusinessLogicPropertyData.encode(message.properties, writer.uint32(58).fork()).ldelim();
     }
     if (message.projectId !== 0) {
       writer.uint32(64).int32(message.projectId);
@@ -176,10 +176,10 @@ export const BusinessLogic = {
           message.name = reader.string();
           break;
         case 6:
-          message.content.push(BusinessLogicContent.decode(reader, reader.uint32()));
+          message.content.push(BusinessLogicContentData.decode(reader, reader.uint32()));
           break;
         case 7:
-          message.properties = BusinessLogicProperty.decode(reader, reader.uint32());
+          message.properties = BusinessLogicPropertyData.decode(reader, reader.uint32());
           break;
         case 8:
           message.projectId = reader.int32();
@@ -202,8 +202,10 @@ export const BusinessLogic = {
       pageNodeId: isSet(object.pageNodeId) ? String(object.pageNodeId) : "",
       blockType: isSet(object.blockType) ? String(object.blockType) : "",
       name: isSet(object.name) ? String(object.name) : "",
-      content: Array.isArray(object?.content) ? object.content.map((e: any) => BusinessLogicContent.fromJSON(e)) : [],
-      properties: isSet(object.properties) ? BusinessLogicProperty.fromJSON(object.properties) : undefined,
+      content: Array.isArray(object?.content)
+        ? object.content.map((e: any) => BusinessLogicContentData.fromJSON(e))
+        : [],
+      properties: isSet(object.properties) ? BusinessLogicPropertyData.fromJSON(object.properties) : undefined,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       children: Array.isArray(object?.children) ? object.children.map((e: any) => String(e)) : [],
     };
@@ -217,12 +219,12 @@ export const BusinessLogic = {
     message.blockType !== undefined && (obj.blockType = message.blockType);
     message.name !== undefined && (obj.name = message.name);
     if (message.content) {
-      obj.content = message.content.map((e) => e ? BusinessLogicContent.toJSON(e) : undefined);
+      obj.content = message.content.map((e) => e ? BusinessLogicContentData.toJSON(e) : undefined);
     } else {
       obj.content = [];
     }
     message.properties !== undefined &&
-      (obj.properties = message.properties ? BusinessLogicProperty.toJSON(message.properties) : undefined);
+      (obj.properties = message.properties ? BusinessLogicPropertyData.toJSON(message.properties) : undefined);
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     if (message.children) {
       obj.children = message.children.map((e) => e);
@@ -239,9 +241,9 @@ export const BusinessLogic = {
     message.pageNodeId = object.pageNodeId ?? "";
     message.blockType = object.blockType ?? "";
     message.name = object.name ?? "";
-    message.content = object.content?.map((e) => BusinessLogicContent.fromPartial(e)) || [];
+    message.content = object.content?.map((e) => BusinessLogicContentData.fromPartial(e)) || [];
     message.properties = (object.properties !== undefined && object.properties !== null)
-      ? BusinessLogicProperty.fromPartial(object.properties)
+      ? BusinessLogicPropertyData.fromPartial(object.properties)
       : undefined;
     message.projectId = object.projectId ?? 0;
     message.children = object.children?.map((e) => e) || [];
@@ -253,7 +255,7 @@ function createBaseBusinessLogicContent(): BusinessLogicContent {
   return { type: "", value: "", styles: "" };
 }
 
-export const BusinessLogicContent = {
+export const BusinessLogicContentData = {
   encode(message: BusinessLogicContent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.type !== "") {
       writer.uint32(10).string(message.type);
@@ -320,7 +322,7 @@ function createBaseBusinessLogicProperty(): BusinessLogicProperty {
   return {};
 }
 
-export const BusinessLogicProperty = {
+export const BusinessLogicPropertyData = {
   encode(message: BusinessLogicProperty, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.useCaseId !== undefined) {
       writer.uint32(10).string(message.useCaseId);
