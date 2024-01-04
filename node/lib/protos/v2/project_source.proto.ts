@@ -214,6 +214,9 @@ export enum ProjectSourceCreationAction {
   INDEX_CODE = 0,
   ANALYZE_CODE = 1,
   CODE_TO_ERD = 2,
+  REMOVE_INDEX = 3,
+  FORCE_INDEX = 4,
+  RE_INDEX = 5,
   UNRECOGNIZED = -1,
 }
 
@@ -228,6 +231,15 @@ export function projectSourceCreationActionFromJSON(object: any): ProjectSourceC
     case 2:
     case "CODE_TO_ERD":
       return ProjectSourceCreationAction.CODE_TO_ERD;
+    case 3:
+    case "REMOVE_INDEX":
+      return ProjectSourceCreationAction.REMOVE_INDEX;
+    case 4:
+    case "FORCE_INDEX":
+      return ProjectSourceCreationAction.FORCE_INDEX;
+    case 5:
+    case "RE_INDEX":
+      return ProjectSourceCreationAction.RE_INDEX;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -243,6 +255,12 @@ export function projectSourceCreationActionToJSON(object: ProjectSourceCreationA
       return "ANALYZE_CODE";
     case ProjectSourceCreationAction.CODE_TO_ERD:
       return "CODE_TO_ERD";
+    case ProjectSourceCreationAction.REMOVE_INDEX:
+      return "REMOVE_INDEX";
+    case ProjectSourceCreationAction.FORCE_INDEX:
+      return "FORCE_INDEX";
+    case ProjectSourceCreationAction.RE_INDEX:
+      return "RE_INDEX";
     case ProjectSourceCreationAction.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
