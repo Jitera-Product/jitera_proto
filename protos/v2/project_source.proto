@@ -32,7 +32,7 @@ message ProjectSource {
 		int32 id = 1;
 		string name = 2;
 		repeated Column columns = 3;
-	
+
 		message Column {
 			int32 id = 1;
 			string name = 2;
@@ -83,11 +83,14 @@ message ProjectSourceCreation {
 		INDEX_CODE = 0;
 		ANALYZE_CODE = 1;
 		CODE_TO_ERD = 2;
+		REMOVE_INDEX = 3;
+		FORCE_INDEX = 4;
+		RE_INDEX = 5;
 	}
 
 	oneof source {
 		string source_path = 3;
-		Git git = 4;	
+		Git git = 4;
 	}
 }
 
