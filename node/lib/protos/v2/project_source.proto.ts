@@ -1,6 +1,6 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-import { StructData } from "../google/protobuf/struct.proto";
+import { Struct, StructData } from "../google/protobuf/struct.proto";
 import { Table, TableData } from "../v1/payloads.proto";
 
 export enum ImportBy {
@@ -184,12 +184,21 @@ export class ProjectSourceRelation {
   type: string;
 }
 
+export class PullRequest {
+  id: number;
+  number: number;
+  name: string;
+  status: string;
+}
+
 export class Git {
   repo: string;
   owner: string;
   branch: string;
   token: string;
   jiteraBranch: string;
+  targetBranch: string;
+  pullRequest?: PullRequest;
 }
 
 export class ProjectSourceCreation {
@@ -205,6 +214,9 @@ export enum ProjectSourceCreationAction {
   INDEX_CODE = 0,
   ANALYZE_CODE = 1,
   CODE_TO_ERD = 2,
+  REMOVE_INDEX = 3,
+  FORCE_INDEX = 4,
+  RE_INDEX = 5,
   UNRECOGNIZED = -1,
 }
 
@@ -219,6 +231,15 @@ export function projectSourceCreationActionFromJSON(object: any): ProjectSourceC
     case 2:
     case "CODE_TO_ERD":
       return ProjectSourceCreationAction.CODE_TO_ERD;
+    case 3:
+    case "REMOVE_INDEX":
+      return ProjectSourceCreationAction.REMOVE_INDEX;
+    case 4:
+    case "FORCE_INDEX":
+      return ProjectSourceCreationAction.FORCE_INDEX;
+    case 5:
+    case "RE_INDEX":
+      return ProjectSourceCreationAction.RE_INDEX;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -234,6 +255,12 @@ export function projectSourceCreationActionToJSON(object: ProjectSourceCreationA
       return "ANALYZE_CODE";
     case ProjectSourceCreationAction.CODE_TO_ERD:
       return "CODE_TO_ERD";
+    case ProjectSourceCreationAction.REMOVE_INDEX:
+      return "REMOVE_INDEX";
+    case ProjectSourceCreationAction.FORCE_INDEX:
+      return "FORCE_INDEX";
+    case ProjectSourceCreationAction.RE_INDEX:
+      return "RE_INDEX";
     case ProjectSourceCreationAction.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -720,8 +747,84 @@ export const ProjectSourceRelationData = {
   },
 };
 
+function createBasePullRequest(): PullRequest {
+  return { id: 0, number: 0, name: "", status: "" };
+}
+
+export const PullRequestData = {
+  encode(message: PullRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
+    if (message.number !== 0) {
+      writer.uint32(16).int32(message.number);
+    }
+    if (message.name !== "") {
+      writer.uint32(26).string(message.name);
+    }
+    if (message.status !== "") {
+      writer.uint32(34).string(message.status);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): PullRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePullRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.int32();
+          break;
+        case 2:
+          message.number = reader.int32();
+          break;
+        case 3:
+          message.name = reader.string();
+          break;
+        case 4:
+          message.status = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PullRequest {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      number: isSet(object.number) ? Number(object.number) : 0,
+      name: isSet(object.name) ? String(object.name) : "",
+      status: isSet(object.status) ? String(object.status) : "",
+    };
+  },
+
+  toJSON(message: PullRequest): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.number !== undefined && (obj.number = Math.round(message.number));
+    message.name !== undefined && (obj.name = message.name);
+    message.status !== undefined && (obj.status = message.status);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<PullRequest>): PullRequest {
+    const message = createBasePullRequest();
+    message.id = object.id ?? 0;
+    message.number = object.number ?? 0;
+    message.name = object.name ?? "";
+    message.status = object.status ?? "";
+    return message;
+  },
+};
+
 function createBaseGit(): Git {
-  return { repo: "", owner: "", branch: "", token: "", jiteraBranch: "" };
+  return { repo: "", owner: "", branch: "", token: "", jiteraBranch: "", targetBranch: "" };
 }
 
 export const GitData = {
@@ -740,6 +843,12 @@ export const GitData = {
     }
     if (message.jiteraBranch !== "") {
       writer.uint32(58).string(message.jiteraBranch);
+    }
+    if (message.targetBranch !== "") {
+      writer.uint32(66).string(message.targetBranch);
+    }
+    if (message.pullRequest !== undefined) {
+      PullRequestData.encode(message.pullRequest, writer.uint32(74).fork()).ldelim();
     }
     return writer;
   },
@@ -766,6 +875,12 @@ export const GitData = {
         case 7:
           message.jiteraBranch = reader.string();
           break;
+        case 8:
+          message.targetBranch = reader.string();
+          break;
+        case 9:
+          message.pullRequest = PullRequestData.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -781,6 +896,8 @@ export const GitData = {
       branch: isSet(object.branch) ? String(object.branch) : "",
       token: isSet(object.token) ? String(object.token) : "",
       jiteraBranch: isSet(object.jiteraBranch) ? String(object.jiteraBranch) : "",
+      targetBranch: isSet(object.targetBranch) ? String(object.targetBranch) : "",
+      pullRequest: isSet(object.pullRequest) ? PullRequestData.fromJSON(object.pullRequest) : undefined,
     };
   },
 
@@ -791,6 +908,9 @@ export const GitData = {
     message.branch !== undefined && (obj.branch = message.branch);
     message.token !== undefined && (obj.token = message.token);
     message.jiteraBranch !== undefined && (obj.jiteraBranch = message.jiteraBranch);
+    message.targetBranch !== undefined && (obj.targetBranch = message.targetBranch);
+    message.pullRequest !== undefined &&
+      (obj.pullRequest = message.pullRequest ? PullRequestData.toJSON(message.pullRequest) : undefined);
     return obj;
   },
 
@@ -801,6 +921,10 @@ export const GitData = {
     message.branch = object.branch ?? "";
     message.token = object.token ?? "";
     message.jiteraBranch = object.jiteraBranch ?? "";
+    message.targetBranch = object.targetBranch ?? "";
+    message.pullRequest = (object.pullRequest !== undefined && object.pullRequest !== null)
+      ? PullRequestData.fromPartial(object.pullRequest)
+      : undefined;
     return message;
   },
 };

@@ -1,6 +1,6 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-import { ProjectSourceTableData, ProjectSourceRelationData, ProjectSourceRelation, ProjectSourceTable } from "./project_source.proto";
+import { ProjectSourceRelation, ProjectSourceRelationData, ProjectSourceTable, ProjectSourceTableData } from "./project_source.proto";
 
 export class UserCaseCreation {
   projectGenerateQueueId: number;
