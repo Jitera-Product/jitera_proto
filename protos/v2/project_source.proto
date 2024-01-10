@@ -86,6 +86,7 @@ message ProjectSourceCreation {
 		REMOVE_INDEX = 3;
 		FORCE_INDEX = 4;
 		RE_INDEX = 5;
+		MERGE_UC_ERD_INDEX = 6;
 	}
 
 	oneof source {
