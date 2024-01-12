@@ -217,6 +217,7 @@ export enum ProjectSourceCreationAction {
   REMOVE_INDEX = 3,
   FORCE_INDEX = 4,
   RE_INDEX = 5,
+  MERGE_UC_ERD_INDEX = 6,
   UNRECOGNIZED = -1,
 }
 
@@ -240,6 +241,9 @@ export function projectSourceCreationActionFromJSON(object: any): ProjectSourceC
     case 5:
     case "RE_INDEX":
       return ProjectSourceCreationAction.RE_INDEX;
+    case 6:
+    case "MERGE_UC_ERD_INDEX":
+      return ProjectSourceCreationAction.MERGE_UC_ERD_INDEX;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -261,6 +265,8 @@ export function projectSourceCreationActionToJSON(object: ProjectSourceCreationA
       return "FORCE_INDEX";
     case ProjectSourceCreationAction.RE_INDEX:
       return "RE_INDEX";
+    case ProjectSourceCreationAction.MERGE_UC_ERD_INDEX:
+      return "MERGE_UC_ERD_INDEX";
     case ProjectSourceCreationAction.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
