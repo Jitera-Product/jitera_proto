@@ -47,6 +47,7 @@ message UserCase {
 
 	message Property {
 		string category = 1;
+		optional string generated_description = 2;
 	}
 }
 
@@ -62,6 +63,7 @@ message UserCaseCreationResponse {
 		BUSINESS_LOGIC = 1;
 		ERD = 2;
 		API = 3;
+		IMAGE = 4;
 	}
 
 	enum Status {
