@@ -43,6 +43,7 @@ export class UserCaseContent {
 
 export class UserCaseProperty {
   category: string;
+  generatedDescription?: string | undefined;
 }
 
 export class UserCaseCreationResponse {
@@ -58,6 +59,7 @@ export enum UserCaseCreationResponseModule {
   BUSINESS_LOGIC = 1,
   ERD = 2,
   API = 3,
+  IMAGE = 4,
   UNRECOGNIZED = -1,
 }
 
@@ -75,6 +77,9 @@ export function userCaseCreationResponseModuleFromJSON(object: any): UserCaseCre
     case 3:
     case "API":
       return UserCaseCreationResponseModule.API;
+    case 4:
+    case "IMAGE":
+      return UserCaseCreationResponseModule.IMAGE;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -92,6 +97,8 @@ export function userCaseCreationResponseModuleToJSON(object: UserCaseCreationRes
       return "ERD";
     case UserCaseCreationResponseModule.API:
       return "API";
+    case UserCaseCreationResponseModule.IMAGE:
+      return "IMAGE";
     case UserCaseCreationResponseModule.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -615,6 +622,9 @@ export const UserCasePropertyData = {
     if (message.category !== "") {
       writer.uint32(10).string(message.category);
     }
+    if (message.generatedDescription !== undefined) {
+      writer.uint32(18).string(message.generatedDescription);
+    }
     return writer;
   },
 
@@ -628,6 +638,9 @@ export const UserCasePropertyData = {
         case 1:
           message.category = reader.string();
           break;
+        case 2:
+          message.generatedDescription = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -637,18 +650,23 @@ export const UserCasePropertyData = {
   },
 
   fromJSON(object: any): UserCaseProperty {
-    return { category: isSet(object.category) ? String(object.category) : "" };
+    return {
+      category: isSet(object.category) ? String(object.category) : "",
+      generatedDescription: isSet(object.generatedDescription) ? String(object.generatedDescription) : undefined,
+    };
   },
 
   toJSON(message: UserCaseProperty): unknown {
     const obj: any = {};
     message.category !== undefined && (obj.category = message.category);
+    message.generatedDescription !== undefined && (obj.generatedDescription = message.generatedDescription);
     return obj;
   },
 
   fromPartial(object: DeepPartial<UserCaseProperty>): UserCaseProperty {
     const message = createBaseUserCaseProperty();
     message.category = object.category ?? "";
+    message.generatedDescription = object.generatedDescription ?? undefined;
     return message;
   },
 };
