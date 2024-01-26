@@ -1,6 +1,6 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-import { Block, BlockData } from "./block.proto";
+import { StructData } from "../google/protobuf/struct.proto";
 
 export class ProjectFigmaImportRequest {
   projectGenerateQueueId: number;
@@ -16,7 +16,7 @@ export class ProjectFigmaImportResponse {
   module: ProjectFigmaImportResponseModule;
   status: ProjectFigmaImportResponseStatus;
   tokenUsage: number;
-  useCaseBlocks: Block[];
+  useCaseBlocks: { [key: string]: any }[];
   errorMessage: string;
 }
 
@@ -202,7 +202,7 @@ export const ProjectFigmaImportResponseData = {
       writer.uint32(40).int32(message.tokenUsage);
     }
     for (const v of message.useCaseBlocks) {
-      BlockData.encode(v!, writer.uint32(50).fork()).ldelim();
+      StructData.encode(StructData.wrap(v!), writer.uint32(50).fork()).ldelim();
     }
     if (message.errorMessage !== "") {
       writer.uint32(58).string(message.errorMessage);
@@ -233,7 +233,7 @@ export const ProjectFigmaImportResponseData = {
           message.tokenUsage = reader.int32();
           break;
         case 6:
-          message.useCaseBlocks.push(BlockData.decode(reader, reader.uint32()));
+          message.useCaseBlocks.push(StructData.unwrap(StructData.decode(reader, reader.uint32())));
           break;
         case 7:
           message.errorMessage = reader.string();
@@ -253,9 +253,7 @@ export const ProjectFigmaImportResponseData = {
       module: isSet(object.module) ? projectFigmaImportResponseModuleFromJSON(object.module) : 0,
       status: isSet(object.status) ? projectFigmaImportResponseStatusFromJSON(object.status) : 0,
       tokenUsage: isSet(object.tokenUsage) ? Number(object.tokenUsage) : 0,
-      useCaseBlocks: Array.isArray(object?.useCaseBlocks)
-        ? object.useCaseBlocks.map((e: any) => BlockData.fromJSON(e))
-        : [],
+      useCaseBlocks: Array.isArray(object?.useCaseBlocks) ? [...object.useCaseBlocks] : [],
       errorMessage: isSet(object.errorMessage) ? String(object.errorMessage) : "",
     };
   },
@@ -269,7 +267,7 @@ export const ProjectFigmaImportResponseData = {
     message.status !== undefined && (obj.status = projectFigmaImportResponseStatusToJSON(message.status));
     message.tokenUsage !== undefined && (obj.tokenUsage = Math.round(message.tokenUsage));
     if (message.useCaseBlocks) {
-      obj.useCaseBlocks = message.useCaseBlocks.map((e) => e ? BlockData.toJSON(e) : undefined);
+      obj.useCaseBlocks = message.useCaseBlocks.map((e) => e);
     } else {
       obj.useCaseBlocks = [];
     }
@@ -284,7 +282,7 @@ export const ProjectFigmaImportResponseData = {
     message.module = object.module ?? 0;
     message.status = object.status ?? 0;
     message.tokenUsage = object.tokenUsage ?? 0;
-    message.useCaseBlocks = object.useCaseBlocks?.map((e) => BlockData.fromPartial(e)) || [];
+    message.useCaseBlocks = object.useCaseBlocks?.map((e) => e) || [];
     message.errorMessage = object.errorMessage ?? "";
     return message;
   },
