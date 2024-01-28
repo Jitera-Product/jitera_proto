@@ -6,9 +6,7 @@ import "v1/payloads.proto";
 
 message GenerateSource {
 	int32 id = 1;
-	string source_type = 2;
-	int32 source_id = 3;
-	string generate_type = 4;
+	string type = 2;
 }
 
 message ProjectSource {

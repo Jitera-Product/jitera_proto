@@ -50,9 +50,7 @@ export function importByToJSON(object: ImportBy): string {
 
 export class GenerateSource {
   id: number;
-  sourceType: string;
-  sourceId: number;
-  generateType: string;
+  type: string;
 }
 
 export class ProjectSource {
@@ -453,7 +451,7 @@ export class UseCaseRemovalBlock {
 }
 
 function createBaseGenerateSource(): GenerateSource {
-  return { id: 0, sourceType: "", sourceId: 0, generateType: "" };
+  return { id: 0, type: "" };
 }
 
 export const GenerateSourceData = {
@@ -461,14 +459,8 @@ export const GenerateSourceData = {
     if (message.id !== 0) {
       writer.uint32(8).int32(message.id);
     }
-    if (message.sourceType !== "") {
-      writer.uint32(18).string(message.sourceType);
-    }
-    if (message.sourceId !== 0) {
-      writer.uint32(24).int32(message.sourceId);
-    }
-    if (message.generateType !== "") {
-      writer.uint32(34).string(message.generateType);
+    if (message.type !== "") {
+      writer.uint32(18).string(message.type);
     }
     return writer;
   },
@@ -484,13 +476,7 @@ export const GenerateSourceData = {
           message.id = reader.int32();
           break;
         case 2:
-          message.sourceType = reader.string();
-          break;
-        case 3:
-          message.sourceId = reader.int32();
-          break;
-        case 4:
-          message.generateType = reader.string();
+          message.type = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -501,29 +487,20 @@ export const GenerateSourceData = {
   },
 
   fromJSON(object: any): GenerateSource {
-    return {
-      id: isSet(object.id) ? Number(object.id) : 0,
-      sourceType: isSet(object.sourceType) ? String(object.sourceType) : "",
-      sourceId: isSet(object.sourceId) ? Number(object.sourceId) : 0,
-      generateType: isSet(object.generateType) ? String(object.generateType) : "",
-    };
+    return { id: isSet(object.id) ? Number(object.id) : 0, type: isSet(object.type) ? String(object.type) : "" };
   },
 
   toJSON(message: GenerateSource): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
-    message.sourceType !== undefined && (obj.sourceType = message.sourceType);
-    message.sourceId !== undefined && (obj.sourceId = Math.round(message.sourceId));
-    message.generateType !== undefined && (obj.generateType = message.generateType);
+    message.type !== undefined && (obj.type = message.type);
     return obj;
   },
 
   fromPartial(object: DeepPartial<GenerateSource>): GenerateSource {
     const message = createBaseGenerateSource();
     message.id = object.id ?? 0;
-    message.sourceType = object.sourceType ?? "";
-    message.sourceId = object.sourceId ?? 0;
-    message.generateType = object.generateType ?? "";
+    message.type = object.type ?? "";
     return message;
   },
 };
