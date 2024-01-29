@@ -7,6 +7,7 @@ import "v1/payloads.proto";
 message GenerateSource {
 	int32 id = 1;
 	string type = 2;
+	optional google.protobuf.Struct data = 3;
 }
 
 message ProjectSource {

@@ -1,6 +1,6 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-import { StructData } from "../google/protobuf/struct.proto";
+import { Struct, StructData } from "../google/protobuf/struct.proto";
 import { Table, TableData } from "../v1/payloads.proto";
 
 export enum ImportBy {
@@ -51,6 +51,7 @@ export function importByToJSON(object: ImportBy): string {
 export class GenerateSource {
   id: number;
   type: string;
+  data?: { [key: string]: any };
 }
 
 export class ProjectSource {
@@ -462,6 +463,9 @@ export const GenerateSourceData = {
     if (message.type !== "") {
       writer.uint32(18).string(message.type);
     }
+    if (message.data !== undefined) {
+      StructData.encode(StructData.wrap(message.data), writer.uint32(26).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -478,6 +482,9 @@ export const GenerateSourceData = {
         case 2:
           message.type = reader.string();
           break;
+        case 3:
+          message.data = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -487,13 +494,18 @@ export const GenerateSourceData = {
   },
 
   fromJSON(object: any): GenerateSource {
-    return { id: isSet(object.id) ? Number(object.id) : 0, type: isSet(object.type) ? String(object.type) : "" };
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      type: isSet(object.type) ? String(object.type) : "",
+      data: isObject(object.data) ? object.data : undefined,
+    };
   },
 
   toJSON(message: GenerateSource): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
     message.type !== undefined && (obj.type = message.type);
+    message.data !== undefined && (obj.data = message.data);
     return obj;
   },
 
@@ -501,6 +513,7 @@ export const GenerateSourceData = {
     const message = createBaseGenerateSource();
     message.id = object.id ?? 0;
     message.type = object.type ?? "";
+    message.data = object.data ?? undefined;
     return message;
   },
 };
