@@ -4,6 +4,12 @@ package schema.v2;
 import "google/protobuf/struct.proto";
 import "v1/payloads.proto";
 
+message GenerateSource {
+	int32 id = 1;
+	string type = 2;
+	optional google.protobuf.Struct data = 3;
+}
+
 message ProjectSource {
 	int32 id = 1;
 	int32 project_id = 2;
@@ -136,6 +142,7 @@ message BusinessLogicChanges {
 	BlockDiff block_diff = 5;
 	Git git = 6;
 	optional ImportBy import_by = 7;
+	optional GenerateSource generate_source = 8;
 }
 
 message BlockDiff {
@@ -187,6 +194,7 @@ message ApiChanges {
 	int32 project_generate_queue_id = 5;
 	Git git = 6;
 	optional ImportBy import_by = 7;
+	optional GenerateSource generate_source = 8;
 }
 
 message ProjectSourceReport {

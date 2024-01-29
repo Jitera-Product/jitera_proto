@@ -48,6 +48,12 @@ export function importByToJSON(object: ImportBy): string {
   }
 }
 
+export class GenerateSource {
+  id: number;
+  type: string;
+  data?: { [key: string]: any };
+}
+
 export class ProjectSource {
   id: number;
   projectId: number;
@@ -349,6 +355,7 @@ export class BusinessLogicChanges {
   blockDiff?: BlockDiff;
   git?: Git;
   importBy?: ImportBy | undefined;
+  generateSource?: GenerateSource | undefined;
 }
 
 export class BlockDiff {
@@ -397,6 +404,7 @@ export class ApiChanges {
   projectGenerateQueueId: number;
   git?: Git;
   importBy?: ImportBy | undefined;
+  generateSource?: GenerateSource | undefined;
 }
 
 export class ProjectSourceReport {
@@ -442,6 +450,73 @@ export class UseCaseRemovalBlock {
   properties?: { [key: string]: any };
   children: string[];
 }
+
+function createBaseGenerateSource(): GenerateSource {
+  return { id: 0, type: "" };
+}
+
+export const GenerateSourceData = {
+  encode(message: GenerateSource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
+    if (message.type !== "") {
+      writer.uint32(18).string(message.type);
+    }
+    if (message.data !== undefined) {
+      StructData.encode(StructData.wrap(message.data), writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GenerateSource {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGenerateSource();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.int32();
+          break;
+        case 2:
+          message.type = reader.string();
+          break;
+        case 3:
+          message.data = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GenerateSource {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      type: isSet(object.type) ? String(object.type) : "",
+      data: isObject(object.data) ? object.data : undefined,
+    };
+  },
+
+  toJSON(message: GenerateSource): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.type !== undefined && (obj.type = message.type);
+    message.data !== undefined && (obj.data = message.data);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<GenerateSource>): GenerateSource {
+    const message = createBaseGenerateSource();
+    message.id = object.id ?? 0;
+    message.type = object.type ?? "";
+    message.data = object.data ?? undefined;
+    return message;
+  },
+};
 
 function createBaseProjectSource(): ProjectSource {
   return { id: 0, projectId: 0, framework: 0, layer: 0, files: "" };
@@ -1341,6 +1416,9 @@ export const BusinessLogicChangesData = {
     if (message.importBy !== undefined) {
       writer.uint32(56).int32(message.importBy);
     }
+    if (message.generateSource !== undefined) {
+      GenerateSourceData.encode(message.generateSource, writer.uint32(66).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -1372,6 +1450,9 @@ export const BusinessLogicChangesData = {
         case 7:
           message.importBy = reader.int32() as any;
           break;
+        case 8:
+          message.generateSource = GenerateSourceData.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1391,6 +1472,7 @@ export const BusinessLogicChangesData = {
       blockDiff: isSet(object.blockDiff) ? BlockDiffData.fromJSON(object.blockDiff) : undefined,
       git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
       importBy: isSet(object.importBy) ? importByFromJSON(object.importBy) : undefined,
+      generateSource: isSet(object.generateSource) ? GenerateSourceData.fromJSON(object.generateSource) : undefined,
     };
   },
 
@@ -1415,6 +1497,8 @@ export const BusinessLogicChangesData = {
     message.git !== undefined && (obj.git = message.git ? GitData.toJSON(message.git) : undefined);
     message.importBy !== undefined &&
       (obj.importBy = message.importBy !== undefined ? importByToJSON(message.importBy) : undefined);
+    message.generateSource !== undefined &&
+      (obj.generateSource = message.generateSource ? GenerateSourceData.toJSON(message.generateSource) : undefined);
     return obj;
   },
 
@@ -1431,6 +1515,9 @@ export const BusinessLogicChangesData = {
       : undefined;
     message.git = (object.git !== undefined && object.git !== null) ? GitData.fromPartial(object.git) : undefined;
     message.importBy = object.importBy ?? undefined;
+    message.generateSource = (object.generateSource !== undefined && object.generateSource !== null)
+      ? GenerateSourceData.fromPartial(object.generateSource)
+      : undefined;
     return message;
   },
 };
@@ -1918,6 +2005,9 @@ export const ApiChangesData = {
     if (message.importBy !== undefined) {
       writer.uint32(56).int32(message.importBy);
     }
+    if (message.generateSource !== undefined) {
+      GenerateSourceData.encode(message.generateSource, writer.uint32(66).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -1949,6 +2039,9 @@ export const ApiChangesData = {
         case 7:
           message.importBy = reader.int32() as any;
           break;
+        case 8:
+          message.generateSource = GenerateSourceData.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1968,6 +2061,7 @@ export const ApiChangesData = {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
       importBy: isSet(object.importBy) ? importByFromJSON(object.importBy) : undefined,
+      generateSource: isSet(object.generateSource) ? GenerateSourceData.fromJSON(object.generateSource) : undefined,
     };
   },
 
@@ -1992,6 +2086,8 @@ export const ApiChangesData = {
     message.git !== undefined && (obj.git = message.git ? GitData.toJSON(message.git) : undefined);
     message.importBy !== undefined &&
       (obj.importBy = message.importBy !== undefined ? importByToJSON(message.importBy) : undefined);
+    message.generateSource !== undefined &&
+      (obj.generateSource = message.generateSource ? GenerateSourceData.toJSON(message.generateSource) : undefined);
     return obj;
   },
 
@@ -2008,6 +2104,9 @@ export const ApiChangesData = {
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.git = (object.git !== undefined && object.git !== null) ? GitData.fromPartial(object.git) : undefined;
     message.importBy = object.importBy ?? undefined;
+    message.generateSource = (object.generateSource !== undefined && object.generateSource !== null)
+      ? GenerateSourceData.fromPartial(object.generateSource)
+      : undefined;
     return message;
   },
 };
