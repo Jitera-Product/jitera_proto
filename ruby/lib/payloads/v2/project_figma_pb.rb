@@ -4,10 +4,9 @@
 
 require 'google/protobuf'
 
-require 'google/protobuf/struct_pb'
 
 
-descriptor_data = "\n\x16v2/project_figma.proto\x12\tschema.v2\x1a\x1cgoogle/protobuf/struct.proto\"\x8c\x01\n\x19ProjectFigmaImportRequest\x12!\n\x19project_generate_queue_id\x18\x01 \x01(\x05\x12\x12\n\nproject_id\x18\x02 \x01(\x05\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x03 \x01(\t\x12\x10\n\x08node_ids\x18\x04 \x01(\t\x12\x10\n\x08\x66ile_key\x18\x05 \x01(\t\"\x8b\x03\n\x1aProjectFigmaImportResponse\x12!\n\x19project_generate_queue_id\x18\x01 \x01(\x05\x12\x12\n\nproject_id\x18\x02 \x01(\x05\x12<\n\x06module\x18\x03 \x01(\x0e\x32,.schema.v2.ProjectFigmaImportResponse.Module\x12<\n\x06status\x18\x04 \x01(\x0e\x32,.schema.v2.ProjectFigmaImportResponse.Status\x12\x13\n\x0btoken_usage\x18\x05 \x01(\x05\x12\x30\n\x0fuse_case_blocks\x18\x06 \x03(\x0b\x32\x17.google.protobuf.Struct\x12\x15\n\rerror_message\x18\x07 \x01(\t\"\'\n\x06Module\x12\x1d\n\x19\x46IGMA_TO_NATURAL_LANGUAGE\x10\x00\"3\n\x06Status\x12\r\n\tSUCCEEDED\x10\x00\x12\x0e\n\nINPROGRESS\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\x62\x06proto3"
+descriptor_data = "\n\x16v2/project_figma.proto\x12\tschema.v2\x1a\x14v2/block_minor.proto\"\x8c\x01\n\x19ProjectFigmaImportRequest\x12!\n\x19project_generate_queue_id\x18\x01 \x01(\x05\x12\x12\n\nproject_id\x18\x02 \x01(\x05\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x03 \x01(\t\x12\x10\n\x08node_ids\x18\x04 \x01(\t\x12\x10\n\x08\x66ile_key\x18\x05 \x01(\t\"\x8a\x03\n\x1aProjectFigmaImportResponse\x12!\n\x19project_generate_queue_id\x18\x01 \x01(\x05\x12\x12\n\nproject_id\x18\x02 \x01(\x05\x12<\n\x06module\x18\x03 \x01(\x0e\x32,.schema.v2.ProjectFigmaImportResponse.Module\x12<\n\x06status\x18\x04 \x01(\x0e\x32,.schema.v2.ProjectFigmaImportResponse.Status\x12\x13\n\x0btoken_usage\x18\x05 \x01(\x05\x12/\n\x0fuse_case_blocks\x18\x06 \x03(\x0b\x32\x16.schema.v2.minor.Block\x12\x15\n\rerror_message\x18\x07 \x01(\t\"\'\n\x06Module\x12\x1d\n\x19\x46IGMA_TO_NATURAL_LANGUAGE\x10\x00\"3\n\x06Status\x12\r\n\tSUCCEEDED\x10\x00\x12\x0e\n\nINPROGRESS\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\x62\x06proto3"
 
 pool = Google::Protobuf::DescriptorPool.generated_pool
 
@@ -22,7 +21,7 @@ rescue TypeError => e
   file = pool.add_serialized_file(serialized)
   warn "Warning: Protobuf detected an import path issue while loading generated file #{__FILE__}"
   imports = [
-    ["google.protobuf.Struct", "google/protobuf/struct.proto"],
+    ["schema.v2.minor.Block", "v2/block_minor.proto"],
   ]
   imports.each do |type_name, expected_filename|
     import_file = pool.lookup(type_name).file_descriptor
