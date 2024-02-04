@@ -64,6 +64,7 @@ message UserCaseCreationResponse {
 		ERD = 2;
 		API = 3;
 		IMAGE = 4;
+		WIREFRAME = 5;
 	}
 
 	enum Status {
