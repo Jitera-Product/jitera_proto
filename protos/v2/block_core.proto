@@ -1,5 +1,5 @@
 syntax = "proto3";
-package schema.v2.minor;
+package schema.v2.core;
 
 import "google/protobuf/struct.proto";
 
