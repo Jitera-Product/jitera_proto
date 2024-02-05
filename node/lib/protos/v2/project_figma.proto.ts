@@ -1,6 +1,6 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-import { Block, BlockData } from "./block.proto";
+import { Block, BlockData } from "./block_core.proto";
 
 export class ProjectFigmaImportRequest {
   projectGenerateQueueId: number;
