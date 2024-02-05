@@ -1,0 +1,24 @@
+syntax = "proto3";
+package schema.v2.core;
+
+import "google/protobuf/struct.proto";
+
+message Block {
+  int32 id = 1;
+  string node_id = 2;
+  string parent_node_id = 3;
+  string page_node_id = 4;
+  string block_type = 5;
+  string name = 6;
+  int32 project_id = 7;
+  google.protobuf.Struct properties = 8;
+  repeated Content content = 9;
+  repeated string children = 10;
+
+  message Content {
+    string type = 1;
+    string value = 2;
+    optional string href = 3;
+    google.protobuf.Struct styles = 4;
+  }
+}
