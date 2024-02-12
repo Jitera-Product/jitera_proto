@@ -429,6 +429,7 @@ export class ProjectSourceReportError {
 
 export class ProjectSourceReportComplete {
   files: string;
+  developmentPlanId: number;
 }
 
 export class UseCaseRemoval {
@@ -2339,13 +2340,16 @@ export const ProjectSourceReportErrorData = {
 };
 
 function createBaseProjectSourceReportComplete(): ProjectSourceReportComplete {
-  return { files: "" };
+  return { files: "", developmentPlanId: 0 };
 }
 
 export const ProjectSourceReportCompleteData = {
   encode(message: ProjectSourceReportComplete, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.files !== "") {
       writer.uint32(34).string(message.files);
+    }
+    if (message.developmentPlanId !== 0) {
+      writer.uint32(40).int32(message.developmentPlanId);
     }
     return writer;
   },
@@ -2360,6 +2364,9 @@ export const ProjectSourceReportCompleteData = {
         case 4:
           message.files = reader.string();
           break;
+        case 5:
+          message.developmentPlanId = reader.int32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2369,18 +2376,23 @@ export const ProjectSourceReportCompleteData = {
   },
 
   fromJSON(object: any): ProjectSourceReportComplete {
-    return { files: isSet(object.files) ? String(object.files) : "" };
+    return {
+      files: isSet(object.files) ? String(object.files) : "",
+      developmentPlanId: isSet(object.developmentPlanId) ? Number(object.developmentPlanId) : 0,
+    };
   },
 
   toJSON(message: ProjectSourceReportComplete): unknown {
     const obj: any = {};
     message.files !== undefined && (obj.files = message.files);
+    message.developmentPlanId !== undefined && (obj.developmentPlanId = Math.round(message.developmentPlanId));
     return obj;
   },
 
   fromPartial(object: DeepPartial<ProjectSourceReportComplete>): ProjectSourceReportComplete {
     const message = createBaseProjectSourceReportComplete();
     message.files = object.files ?? "";
+    message.developmentPlanId = object.developmentPlanId ?? 0;
     return message;
   },
 };
