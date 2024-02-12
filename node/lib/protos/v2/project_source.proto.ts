@@ -429,7 +429,7 @@ export class ProjectSourceReportError {
 
 export class ProjectSourceReportComplete {
   files: string;
-  developmentPlanId: number;
+  developmentPlanId?: number | undefined;
 }
 
 export class UseCaseRemoval {
@@ -2340,7 +2340,7 @@ export const ProjectSourceReportErrorData = {
 };
 
 function createBaseProjectSourceReportComplete(): ProjectSourceReportComplete {
-  return { files: "", developmentPlanId: 0 };
+  return { files: "" };
 }
 
 export const ProjectSourceReportCompleteData = {
@@ -2348,7 +2348,7 @@ export const ProjectSourceReportCompleteData = {
     if (message.files !== "") {
       writer.uint32(34).string(message.files);
     }
-    if (message.developmentPlanId !== 0) {
+    if (message.developmentPlanId !== undefined) {
       writer.uint32(40).int32(message.developmentPlanId);
     }
     return writer;
@@ -2378,7 +2378,7 @@ export const ProjectSourceReportCompleteData = {
   fromJSON(object: any): ProjectSourceReportComplete {
     return {
       files: isSet(object.files) ? String(object.files) : "",
-      developmentPlanId: isSet(object.developmentPlanId) ? Number(object.developmentPlanId) : 0,
+      developmentPlanId: isSet(object.developmentPlanId) ? Number(object.developmentPlanId) : undefined,
     };
   },
 
@@ -2392,7 +2392,7 @@ export const ProjectSourceReportCompleteData = {
   fromPartial(object: DeepPartial<ProjectSourceReportComplete>): ProjectSourceReportComplete {
     const message = createBaseProjectSourceReportComplete();
     message.files = object.files ?? "";
-    message.developmentPlanId = object.developmentPlanId ?? 0;
+    message.developmentPlanId = object.developmentPlanId ?? undefined;
     return message;
   },
 };
