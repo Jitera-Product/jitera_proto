@@ -14,6 +14,7 @@ export class Block {
   content: BlockContent[];
   children: string[];
   status?: string | undefined;
+  childrenNodes: Block[];
 }
 
 export class BlockContent {
@@ -34,6 +35,7 @@ function createBaseBlock(): Block {
     projectId: 0,
     content: [],
     children: [],
+    childrenNodes: [],
   };
 }
 
@@ -71,6 +73,9 @@ export const BlockData = {
     }
     if (message.status !== undefined) {
       writer.uint32(90).string(message.status);
+    }
+    for (const v of message.childrenNodes) {
+      BlockData.encode(v!, writer.uint32(98).fork()).ldelim();
     }
     return writer;
   },
@@ -115,6 +120,9 @@ export const BlockData = {
         case 11:
           message.status = reader.string();
           break;
+        case 12:
+          message.childrenNodes.push(BlockData.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -136,6 +144,9 @@ export const BlockData = {
       content: Array.isArray(object?.content) ? object.content.map((e: any) => BlockContentData.fromJSON(e)) : [],
       children: Array.isArray(object?.children) ? object.children.map((e: any) => String(e)) : [],
       status: isSet(object.status) ? String(object.status) : undefined,
+      childrenNodes: Array.isArray(object?.childrenNodes)
+        ? object.childrenNodes.map((e: any) => BlockData.fromJSON(e))
+        : [],
     };
   },
 
@@ -160,6 +171,11 @@ export const BlockData = {
       obj.children = [];
     }
     message.status !== undefined && (obj.status = message.status);
+    if (message.childrenNodes) {
+      obj.childrenNodes = message.childrenNodes.map((e) => e ? BlockData.toJSON(e) : undefined);
+    } else {
+      obj.childrenNodes = [];
+    }
     return obj;
   },
 
@@ -176,6 +192,7 @@ export const BlockData = {
     message.content = object.content?.map((e) => BlockContentData.fromPartial(e)) || [];
     message.children = object.children?.map((e) => e) || [];
     message.status = object.status ?? undefined;
+    message.childrenNodes = object.childrenNodes?.map((e) => BlockData.fromPartial(e)) || [];
     return message;
   },
 };
