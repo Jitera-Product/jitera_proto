@@ -13,6 +13,7 @@ export class Block {
   properties?: { [key: string]: any };
   content: BlockContent[];
   children: string[];
+  status?: string | undefined;
 }
 
 export class BlockContent {
@@ -68,6 +69,9 @@ export const BlockData = {
     for (const v of message.children) {
       writer.uint32(82).string(v!);
     }
+    if (message.status !== undefined) {
+      writer.uint32(90).string(message.status);
+    }
     return writer;
   },
 
@@ -108,6 +112,9 @@ export const BlockData = {
         case 10:
           message.children.push(reader.string());
           break;
+        case 11:
+          message.status = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -128,6 +135,7 @@ export const BlockData = {
       properties: isObject(object.properties) ? object.properties : undefined,
       content: Array.isArray(object?.content) ? object.content.map((e: any) => BlockContentData.fromJSON(e)) : [],
       children: Array.isArray(object?.children) ? object.children.map((e: any) => String(e)) : [],
+      status: isSet(object.status) ? String(object.status) : undefined,
     };
   },
 
@@ -151,6 +159,7 @@ export const BlockData = {
     } else {
       obj.children = [];
     }
+    message.status !== undefined && (obj.status = message.status);
     return obj;
   },
 
@@ -166,6 +175,7 @@ export const BlockData = {
     message.properties = object.properties ?? undefined;
     message.content = object.content?.map((e) => BlockContentData.fromPartial(e)) || [];
     message.children = object.children?.map((e) => e) || [];
+    message.status = object.status ?? undefined;
     return message;
   },
 };

@@ -14,6 +14,7 @@ message Block {
   google.protobuf.Struct properties = 8;
   repeated Content content = 9;
   repeated string children = 10;
+  optional string status = 11;
 
   message Content {
     string type = 1;
