@@ -15,6 +15,7 @@ message Block {
   repeated Content content = 9;
   repeated string children = 10;
   optional string status = 11;
+  repeated Block children_node = 12;
 
   message Content {
     string type = 1;

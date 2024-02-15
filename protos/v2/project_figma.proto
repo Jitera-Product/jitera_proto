@@ -2,7 +2,6 @@ syntax = "proto3";
 package schema.v2;
 
 import "v2/block_core.proto";
-import "v2/block.proto";
 
 message ProjectFigmaImportRequest {
   int32 project_generate_queue_id = 1;
@@ -16,7 +15,7 @@ message ProjectFigmaSyncRequest {
   int32 project_generate_queue_id = 1;
   int32 project_id = 2;
   string access_token = 3;
-  repeated Block use_case_blocks = 4;
+  repeated core.Block use_case_blocks = 4;
 }
 
 message ProjectFigmaImportResponse {
