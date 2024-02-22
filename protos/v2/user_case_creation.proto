@@ -7,6 +7,7 @@ message UserCaseCreation {
 	int32 project_generate_queue_id = 1;
 	int32 project_id = 2;
   repeated UserCase user_cases = 3;
+	repeated HtmlWireframe html_wireframes = 7;
 
 	oneof state {
 		Progress progress = 4;
@@ -26,6 +27,11 @@ message UserCaseCreation {
 	message ProjectTable {
 		repeated ProjectSource.Table tables = 1;
 		repeated ProjectSource.Relation relations = 2;
+	}
+
+	message HtmlWireframe {
+		int32 id = 1;
+		string html = 2;
 	}
 }
 
@@ -64,6 +70,7 @@ message UserCaseCreationResponse {
 		ERD = 2;
 		API = 3;
 		IMAGE = 4;
+		WIREFRAME = 5;
 	}
 
 	enum Status {

@@ -10,6 +10,13 @@ export class ProjectFigmaImportRequest {
   fileKey: string;
 }
 
+export class ProjectFigmaSyncRequest {
+  projectGenerateQueueId: number;
+  projectId: number;
+  accessToken: string;
+  useCaseBlocks: Block[];
+}
+
 export class ProjectFigmaImportResponse {
   projectGenerateQueueId: number;
   projectId: number;
@@ -168,6 +175,89 @@ export const ProjectFigmaImportRequestData = {
     message.accessToken = object.accessToken ?? "";
     message.nodeIds = object.nodeIds ?? "";
     message.fileKey = object.fileKey ?? "";
+    return message;
+  },
+};
+
+function createBaseProjectFigmaSyncRequest(): ProjectFigmaSyncRequest {
+  return { projectGenerateQueueId: 0, projectId: 0, accessToken: "", useCaseBlocks: [] };
+}
+
+export const ProjectFigmaSyncRequestData = {
+  encode(message: ProjectFigmaSyncRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.projectGenerateQueueId !== 0) {
+      writer.uint32(8).int32(message.projectGenerateQueueId);
+    }
+    if (message.projectId !== 0) {
+      writer.uint32(16).int32(message.projectId);
+    }
+    if (message.accessToken !== "") {
+      writer.uint32(26).string(message.accessToken);
+    }
+    for (const v of message.useCaseBlocks) {
+      BlockData.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectFigmaSyncRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseProjectFigmaSyncRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.projectGenerateQueueId = reader.int32();
+          break;
+        case 2:
+          message.projectId = reader.int32();
+          break;
+        case 3:
+          message.accessToken = reader.string();
+          break;
+        case 4:
+          message.useCaseBlocks.push(BlockData.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ProjectFigmaSyncRequest {
+    return {
+      projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
+      projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
+      accessToken: isSet(object.accessToken) ? String(object.accessToken) : "",
+      useCaseBlocks: Array.isArray(object?.useCaseBlocks)
+        ? object.useCaseBlocks.map((e: any) => BlockData.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: ProjectFigmaSyncRequest): unknown {
+    const obj: any = {};
+    message.projectGenerateQueueId !== undefined &&
+      (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
+    message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
+    message.accessToken !== undefined && (obj.accessToken = message.accessToken);
+    if (message.useCaseBlocks) {
+      obj.useCaseBlocks = message.useCaseBlocks.map((e) => e ? BlockData.toJSON(e) : undefined);
+    } else {
+      obj.useCaseBlocks = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ProjectFigmaSyncRequest>): ProjectFigmaSyncRequest {
+    const message = createBaseProjectFigmaSyncRequest();
+    message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
+    message.projectId = object.projectId ?? 0;
+    message.accessToken = object.accessToken ?? "";
+    message.useCaseBlocks = object.useCaseBlocks?.map((e) => BlockData.fromPartial(e)) || [];
     return message;
   },
 };

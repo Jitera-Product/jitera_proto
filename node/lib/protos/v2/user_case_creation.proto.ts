@@ -6,6 +6,7 @@ export class UserCaseCreation {
   projectGenerateQueueId: number;
   projectId: number;
   userCases: UserCase[];
+  htmlWireframes: UserCaseCreationHtmlWireframe[];
   progress?: UserCaseCreationProgress | undefined;
   error?: UserCaseCreationError | undefined;
   projectTables?: UserCaseCreationProjectTable | undefined;
@@ -22,6 +23,11 @@ export class UserCaseCreationError {
 export class UserCaseCreationProjectTable {
   tables: ProjectSourceTable[];
   relations: ProjectSourceRelation[];
+}
+
+export class UserCaseCreationHtmlWireframe {
+  id: number;
+  html: string;
 }
 
 export class UserCase {
@@ -60,6 +66,7 @@ export enum UserCaseCreationResponseModule {
   ERD = 2,
   API = 3,
   IMAGE = 4,
+  WIREFRAME = 5,
   UNRECOGNIZED = -1,
 }
 
@@ -80,6 +87,9 @@ export function userCaseCreationResponseModuleFromJSON(object: any): UserCaseCre
     case 4:
     case "IMAGE":
       return UserCaseCreationResponseModule.IMAGE;
+    case 5:
+    case "WIREFRAME":
+      return UserCaseCreationResponseModule.WIREFRAME;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -99,6 +109,8 @@ export function userCaseCreationResponseModuleToJSON(object: UserCaseCreationRes
       return "API";
     case UserCaseCreationResponseModule.IMAGE:
       return "IMAGE";
+    case UserCaseCreationResponseModule.WIREFRAME:
+      return "WIREFRAME";
     case UserCaseCreationResponseModule.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -151,7 +163,7 @@ export function userCaseCreationResponseStatusToJSON(object: UserCaseCreationRes
 }
 
 function createBaseUserCaseCreation(): UserCaseCreation {
-  return { projectGenerateQueueId: 0, projectId: 0, userCases: [] };
+  return { projectGenerateQueueId: 0, projectId: 0, userCases: [], htmlWireframes: [] };
 }
 
 export const UserCaseCreationData = {
@@ -164,6 +176,9 @@ export const UserCaseCreationData = {
     }
     for (const v of message.userCases) {
       UserCaseData.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    for (const v of message.htmlWireframes) {
+      UserCaseCreationHtmlWireframeData.encode(v!, writer.uint32(58).fork()).ldelim();
     }
     if (message.progress !== undefined) {
       UserCaseCreationProgressData.encode(message.progress, writer.uint32(34).fork()).ldelim();
@@ -193,6 +208,9 @@ export const UserCaseCreationData = {
         case 3:
           message.userCases.push(UserCaseData.decode(reader, reader.uint32()));
           break;
+        case 7:
+          message.htmlWireframes.push(UserCaseCreationHtmlWireframeData.decode(reader, reader.uint32()));
+          break;
         case 4:
           message.progress = UserCaseCreationProgressData.decode(reader, reader.uint32());
           break;
@@ -215,6 +233,9 @@ export const UserCaseCreationData = {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       userCases: Array.isArray(object?.userCases) ? object.userCases.map((e: any) => UserCaseData.fromJSON(e)) : [],
+      htmlWireframes: Array.isArray(object?.htmlWireframes)
+        ? object.htmlWireframes.map((e: any) => UserCaseCreationHtmlWireframeData.fromJSON(e))
+        : [],
       progress: isSet(object.progress) ? UserCaseCreationProgressData.fromJSON(object.progress) : undefined,
       error: isSet(object.error) ? UserCaseCreationErrorData.fromJSON(object.error) : undefined,
       projectTables: isSet(object.projectTables)
@@ -233,6 +254,13 @@ export const UserCaseCreationData = {
     } else {
       obj.userCases = [];
     }
+    if (message.htmlWireframes) {
+      obj.htmlWireframes = message.htmlWireframes.map((e) =>
+        e ? UserCaseCreationHtmlWireframeData.toJSON(e) : undefined
+      );
+    } else {
+      obj.htmlWireframes = [];
+    }
     message.progress !== undefined &&
       (obj.progress = message.progress ? UserCaseCreationProgressData.toJSON(message.progress) : undefined);
     message.error !== undefined &&
@@ -248,6 +276,7 @@ export const UserCaseCreationData = {
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectId = object.projectId ?? 0;
     message.userCases = object.userCases?.map((e) => UserCaseData.fromPartial(e)) || [];
+    message.htmlWireframes = object.htmlWireframes?.map((e) => UserCaseCreationHtmlWireframeData.fromPartial(e)) || [];
     message.progress = (object.progress !== undefined && object.progress !== null)
       ? UserCaseCreationProgressData.fromPartial(object.progress)
       : undefined;
@@ -419,6 +448,61 @@ export const UserCaseCreationProjectTableData = {
     const message = createBaseUserCaseCreationProjectTable();
     message.tables = object.tables?.map((e) => ProjectSourceTableData.fromPartial(e)) || [];
     message.relations = object.relations?.map((e) => ProjectSourceRelationData.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseUserCaseCreationHtmlWireframe(): UserCaseCreationHtmlWireframe {
+  return { id: 0, html: "" };
+}
+
+export const UserCaseCreationHtmlWireframeData = {
+  encode(message: UserCaseCreationHtmlWireframe, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
+    if (message.html !== "") {
+      writer.uint32(18).string(message.html);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): UserCaseCreationHtmlWireframe {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUserCaseCreationHtmlWireframe();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.int32();
+          break;
+        case 2:
+          message.html = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UserCaseCreationHtmlWireframe {
+    return { id: isSet(object.id) ? Number(object.id) : 0, html: isSet(object.html) ? String(object.html) : "" };
+  },
+
+  toJSON(message: UserCaseCreationHtmlWireframe): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.html !== undefined && (obj.html = message.html);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<UserCaseCreationHtmlWireframe>): UserCaseCreationHtmlWireframe {
+    const message = createBaseUserCaseCreationHtmlWireframe();
+    message.id = object.id ?? 0;
+    message.html = object.html ?? "";
     return message;
   },
 };
