@@ -202,6 +202,7 @@ message ProjectSourceReport {
 	int32 project_id = 2;
 	int32 project_source_id = 3;
 	int32 token_usage = 4;
+	optional google.protobuf.Struct payload = 8;
 
 	oneof state {
 		Progress progress = 5;
