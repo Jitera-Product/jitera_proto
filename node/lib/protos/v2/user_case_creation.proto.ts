@@ -1,5 +1,6 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
+import { StructData } from "../google/protobuf/struct.proto";
 import { ProjectSourceRelation, ProjectSourceRelationData, ProjectSourceTable, ProjectSourceTableData } from "./project_source.proto";
 
 export class UserCaseCreation {
@@ -10,6 +11,7 @@ export class UserCaseCreation {
   progress?: UserCaseCreationProgress | undefined;
   error?: UserCaseCreationError | undefined;
   projectTables?: UserCaseCreationProjectTable | undefined;
+  relatedTables?: UserCaseCreationProjectTable | undefined;
 }
 
 export class UserCaseCreationProgress {
@@ -37,7 +39,7 @@ export class UserCase {
   parentNodeId: string;
   blockType: string;
   content: UserCaseContent[];
-  properties?: UserCaseProperty;
+  properties?: { [key: string]: any };
   projectId: number;
   children: UserCase[];
 }
@@ -45,11 +47,6 @@ export class UserCase {
 export class UserCaseContent {
   type: string;
   value: string;
-}
-
-export class UserCaseProperty {
-  category: string;
-  generatedDescription?: string | undefined;
 }
 
 export class UserCaseCreationResponse {
@@ -189,6 +186,9 @@ export const UserCaseCreationData = {
     if (message.projectTables !== undefined) {
       UserCaseCreationProjectTableData.encode(message.projectTables, writer.uint32(50).fork()).ldelim();
     }
+    if (message.relatedTables !== undefined) {
+      UserCaseCreationProjectTableData.encode(message.relatedTables, writer.uint32(66).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -220,6 +220,9 @@ export const UserCaseCreationData = {
         case 6:
           message.projectTables = UserCaseCreationProjectTableData.decode(reader, reader.uint32());
           break;
+        case 8:
+          message.relatedTables = UserCaseCreationProjectTableData.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -240,6 +243,9 @@ export const UserCaseCreationData = {
       error: isSet(object.error) ? UserCaseCreationErrorData.fromJSON(object.error) : undefined,
       projectTables: isSet(object.projectTables)
         ? UserCaseCreationProjectTableData.fromJSON(object.projectTables)
+        : undefined,
+      relatedTables: isSet(object.relatedTables)
+        ? UserCaseCreationProjectTableData.fromJSON(object.relatedTables)
         : undefined,
     };
   },
@@ -268,6 +274,9 @@ export const UserCaseCreationData = {
     message.projectTables !== undefined && (obj.projectTables = message.projectTables
       ? UserCaseCreationProjectTableData.toJSON(message.projectTables)
       : undefined);
+    message.relatedTables !== undefined && (obj.relatedTables = message.relatedTables
+      ? UserCaseCreationProjectTableData.toJSON(message.relatedTables)
+      : undefined);
     return obj;
   },
 
@@ -285,6 +294,9 @@ export const UserCaseCreationData = {
       : undefined;
     message.projectTables = (object.projectTables !== undefined && object.projectTables !== null)
       ? UserCaseCreationProjectTableData.fromPartial(object.projectTables)
+      : undefined;
+    message.relatedTables = (object.relatedTables !== undefined && object.relatedTables !== null)
+      ? UserCaseCreationProjectTableData.fromPartial(object.relatedTables)
       : undefined;
     return message;
   },
@@ -532,7 +544,7 @@ export const UserCaseData = {
       UserCaseContentData.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     if (message.properties !== undefined) {
-      UserCasePropertyData.encode(message.properties, writer.uint32(58).fork()).ldelim();
+      StructData.encode(StructData.wrap(message.properties), writer.uint32(58).fork()).ldelim();
     }
     if (message.projectId !== 0) {
       writer.uint32(64).int32(message.projectId);
@@ -569,7 +581,7 @@ export const UserCaseData = {
           message.content.push(UserCaseContentData.decode(reader, reader.uint32()));
           break;
         case 7:
-          message.properties = UserCasePropertyData.decode(reader, reader.uint32());
+          message.properties = StructData.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 8:
           message.projectId = reader.int32();
@@ -593,7 +605,7 @@ export const UserCaseData = {
       parentNodeId: isSet(object.parentNodeId) ? String(object.parentNodeId) : "",
       blockType: isSet(object.blockType) ? String(object.blockType) : "",
       content: Array.isArray(object?.content) ? object.content.map((e: any) => UserCaseContentData.fromJSON(e)) : [],
-      properties: isSet(object.properties) ? UserCasePropertyData.fromJSON(object.properties) : undefined,
+      properties: isObject(object.properties) ? object.properties : undefined,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       children: Array.isArray(object?.children) ? object.children.map((e: any) => UserCaseData.fromJSON(e)) : [],
     };
@@ -611,8 +623,7 @@ export const UserCaseData = {
     } else {
       obj.content = [];
     }
-    message.properties !== undefined &&
-      (obj.properties = message.properties ? UserCasePropertyData.toJSON(message.properties) : undefined);
+    message.properties !== undefined && (obj.properties = message.properties);
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     if (message.children) {
       obj.children = message.children.map((e) => e ? UserCaseData.toJSON(e) : undefined);
@@ -630,9 +641,7 @@ export const UserCaseData = {
     message.parentNodeId = object.parentNodeId ?? "";
     message.blockType = object.blockType ?? "";
     message.content = object.content?.map((e) => UserCaseContentData.fromPartial(e)) || [];
-    message.properties = (object.properties !== undefined && object.properties !== null)
-      ? UserCasePropertyData.fromPartial(object.properties)
-      : undefined;
+    message.properties = object.properties ?? undefined;
     message.projectId = object.projectId ?? 0;
     message.children = object.children?.map((e) => UserCaseData.fromPartial(e)) || [];
     return message;
@@ -693,64 +702,6 @@ export const UserCaseContentData = {
     const message = createBaseUserCaseContent();
     message.type = object.type ?? "";
     message.value = object.value ?? "";
-    return message;
-  },
-};
-
-function createBaseUserCaseProperty(): UserCaseProperty {
-  return { category: "" };
-}
-
-export const UserCasePropertyData = {
-  encode(message: UserCaseProperty, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.category !== "") {
-      writer.uint32(10).string(message.category);
-    }
-    if (message.generatedDescription !== undefined) {
-      writer.uint32(18).string(message.generatedDescription);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): UserCaseProperty {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseUserCaseProperty();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.category = reader.string();
-          break;
-        case 2:
-          message.generatedDescription = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): UserCaseProperty {
-    return {
-      category: isSet(object.category) ? String(object.category) : "",
-      generatedDescription: isSet(object.generatedDescription) ? String(object.generatedDescription) : undefined,
-    };
-  },
-
-  toJSON(message: UserCaseProperty): unknown {
-    const obj: any = {};
-    message.category !== undefined && (obj.category = message.category);
-    message.generatedDescription !== undefined && (obj.generatedDescription = message.generatedDescription);
-    return obj;
-  },
-
-  fromPartial(object: DeepPartial<UserCaseProperty>): UserCaseProperty {
-    const message = createBaseUserCaseProperty();
-    message.category = object.category ?? "";
-    message.generatedDescription = object.generatedDescription ?? undefined;
     return message;
   },
 };
@@ -847,6 +798,10 @@ type DeepPartial<T> = T extends Builtin ? T
   : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
+
+function isObject(value: any): boolean {
+  return typeof value === "object" && value !== null;
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;
