@@ -5,7 +5,7 @@ message TranslationBlocks {
 	int32 project_generate_queue_id = 1;
 	int32 project_id = 2;
 	LanguageConfig language_config = 3;
-	repeated TranslationBlock blocks = 4;
+	TranslationBlock block = 4;
 
 	oneof state {
 		Progress progress = 5;
@@ -30,5 +30,7 @@ message TranslationBlock {
 	int32 id = 1;
 	string node_id = 2;
   string parent_node_id = 3;
-	repeated string content = 4;
+	string name = 4;
+	repeated string content = 5;
+	repeated TranslationBlock children = 6;
 }
