@@ -3,34 +3,32 @@ package schema.v2;
 
 message TranslationBlocks {
 	int32 project_generate_queue_id = 1;
-	int32 project_id = 2;
-	LanguageConfig language_config = 3;
-	TranslationBlock block = 4;
-
-	oneof state {
-		Progress progress = 5;
-		Error error = 6;
-	}
+	LanguageConfig language_config = 2;
+	TranslationBlock block = 3;
 
 	message LanguageConfig {
 		string from_language = 1;
 		string to_language = 2;
 	}
-
-	message Progress {
-		string message = 1;
-	}
-
-	message Error {
-		string message = 1;
-	}
 }
 
 message TranslationBlock {
 	int32 id = 1;
-	string node_id = 2;
-  string parent_node_id = 3;
-	string name = 4;
-	repeated string content = 5;
-	repeated TranslationBlock children = 6;
+	string name = 2;
+	repeated string content = 3;
+	repeated TranslationBlock children = 4;
+}
+
+message TranslationBlocksResponse {
+	int32 project_generate_queue_id = 1;
+	int32 token_usage = 2;
+	repeated TranslationBlock blocks = 3;
+	repeated string errors = 4;
+
+	LanguageConfig language_config = 5;
+
+	message LanguageConfig {
+		string from_language = 1;
+		string to_language = 2;
+	}
 }
