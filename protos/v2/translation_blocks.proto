@@ -4,7 +4,7 @@ package schema.v2;
 message TranslationBlocks {
 	int32 project_generate_queue_id = 1;
 	LanguageConfig language_config = 2;
-	TranslationBlock block = 3;
+	repeated TranslationBlock blocks = 3;
 
 	message LanguageConfig {
 		string from_language = 1;
@@ -16,7 +16,6 @@ message TranslationBlock {
 	int32 id = 1;
 	string name = 2;
 	repeated string content = 3;
-	repeated TranslationBlock children = 4;
 }
 
 message TranslationBlocksResponse {

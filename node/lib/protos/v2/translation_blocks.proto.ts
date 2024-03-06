@@ -4,7 +4,7 @@ import * as _m0 from "protobufjs/minimal";
 export class TranslationBlocks {
   projectGenerateQueueId: number;
   languageConfig?: TranslationBlocksLanguageConfig;
-  block?: TranslationBlock;
+  blocks: TranslationBlock[];
 }
 
 export class TranslationBlocksLanguageConfig {
@@ -16,7 +16,6 @@ export class TranslationBlock {
   id: number;
   name: string;
   content: string[];
-  children: TranslationBlock[];
 }
 
 export class TranslationBlocksResponse {
@@ -33,7 +32,7 @@ export class TranslationBlocksResponseLanguageConfig {
 }
 
 function createBaseTranslationBlocks(): TranslationBlocks {
-  return { projectGenerateQueueId: 0 };
+  return { projectGenerateQueueId: 0, blocks: [] };
 }
 
 export const TranslationBlocksData = {
@@ -44,8 +43,8 @@ export const TranslationBlocksData = {
     if (message.languageConfig !== undefined) {
       TranslationBlocksLanguageConfigData.encode(message.languageConfig, writer.uint32(18).fork()).ldelim();
     }
-    if (message.block !== undefined) {
-      TranslationBlockData.encode(message.block, writer.uint32(26).fork()).ldelim();
+    for (const v of message.blocks) {
+      TranslationBlockData.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -64,7 +63,7 @@ export const TranslationBlocksData = {
           message.languageConfig = TranslationBlocksLanguageConfigData.decode(reader, reader.uint32());
           break;
         case 3:
-          message.block = TranslationBlockData.decode(reader, reader.uint32());
+          message.blocks.push(TranslationBlockData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -80,7 +79,7 @@ export const TranslationBlocksData = {
       languageConfig: isSet(object.languageConfig)
         ? TranslationBlocksLanguageConfigData.fromJSON(object.languageConfig)
         : undefined,
-      block: isSet(object.block) ? TranslationBlockData.fromJSON(object.block) : undefined,
+      blocks: Array.isArray(object?.blocks) ? object.blocks.map((e: any) => TranslationBlockData.fromJSON(e)) : [],
     };
   },
 
@@ -91,7 +90,11 @@ export const TranslationBlocksData = {
     message.languageConfig !== undefined && (obj.languageConfig = message.languageConfig
       ? TranslationBlocksLanguageConfigData.toJSON(message.languageConfig)
       : undefined);
-    message.block !== undefined && (obj.block = message.block ? TranslationBlockData.toJSON(message.block) : undefined);
+    if (message.blocks) {
+      obj.blocks = message.blocks.map((e) => e ? TranslationBlockData.toJSON(e) : undefined);
+    } else {
+      obj.blocks = [];
+    }
     return obj;
   },
 
@@ -101,9 +104,7 @@ export const TranslationBlocksData = {
     message.languageConfig = (object.languageConfig !== undefined && object.languageConfig !== null)
       ? TranslationBlocksLanguageConfigData.fromPartial(object.languageConfig)
       : undefined;
-    message.block = (object.block !== undefined && object.block !== null)
-      ? TranslationBlockData.fromPartial(object.block)
-      : undefined;
+    message.blocks = object.blocks?.map((e) => TranslationBlockData.fromPartial(e)) || [];
     return message;
   },
 };
@@ -167,7 +168,7 @@ export const TranslationBlocksLanguageConfigData = {
 };
 
 function createBaseTranslationBlock(): TranslationBlock {
-  return { id: 0, name: "", content: [], children: [] };
+  return { id: 0, name: "", content: [] };
 }
 
 export const TranslationBlockData = {
@@ -180,9 +181,6 @@ export const TranslationBlockData = {
     }
     for (const v of message.content) {
       writer.uint32(26).string(v!);
-    }
-    for (const v of message.children) {
-      TranslationBlockData.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -203,9 +201,6 @@ export const TranslationBlockData = {
         case 3:
           message.content.push(reader.string());
           break;
-        case 4:
-          message.children.push(TranslationBlockData.decode(reader, reader.uint32()));
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -219,9 +214,6 @@ export const TranslationBlockData = {
       id: isSet(object.id) ? Number(object.id) : 0,
       name: isSet(object.name) ? String(object.name) : "",
       content: Array.isArray(object?.content) ? object.content.map((e: any) => String(e)) : [],
-      children: Array.isArray(object?.children)
-        ? object.children.map((e: any) => TranslationBlockData.fromJSON(e))
-        : [],
     };
   },
 
@@ -234,11 +226,6 @@ export const TranslationBlockData = {
     } else {
       obj.content = [];
     }
-    if (message.children) {
-      obj.children = message.children.map((e) => e ? TranslationBlockData.toJSON(e) : undefined);
-    } else {
-      obj.children = [];
-    }
     return obj;
   },
 
@@ -247,7 +234,6 @@ export const TranslationBlockData = {
     message.id = object.id ?? 0;
     message.name = object.name ?? "";
     message.content = object.content?.map((e) => e) || [];
-    message.children = object.children?.map((e) => TranslationBlockData.fromPartial(e)) || [];
     return message;
   },
 };
