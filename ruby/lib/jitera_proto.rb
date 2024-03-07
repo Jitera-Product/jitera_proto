@@ -14,6 +14,7 @@ require_relative 'payloads/v2/block_core_pb'
 require_relative 'payloads/v2/project_figma_pb'
 require_relative 'payloads/v2/project_preview_pb'
 require_relative 'payloads/v2/project_git_pb'
+require_relative 'payloads/v2/translation_blocks_pb'
 
 module JiteraProto
 end
