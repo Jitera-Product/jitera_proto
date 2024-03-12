@@ -1,7 +1,7 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-import { Struct, StructData } from "../google/protobuf/struct.proto";
 import { Table, TableData } from "../v1/payloads.proto";
+import { StructData } from "../google/protobuf/struct.proto";
 
 export enum ImportBy {
   github = 0,
@@ -412,6 +412,7 @@ export class ProjectSourceReport {
   projectId: number;
   projectSourceId: number;
   tokenUsage: number;
+  payload?: { [key: string]: any };
   progress?: ProjectSourceReportProgress | undefined;
   complete?: ProjectSourceReportComplete | undefined;
   error?: ProjectSourceReportError | undefined;
@@ -2129,6 +2130,9 @@ export const ProjectSourceReportData = {
     if (message.tokenUsage !== 0) {
       writer.uint32(32).int32(message.tokenUsage);
     }
+    if (message.payload !== undefined) {
+      StructData.encode(StructData.wrap(message.payload), writer.uint32(66).fork()).ldelim();
+    }
     if (message.progress !== undefined) {
       ProjectSourceReportProgressData.encode(message.progress, writer.uint32(42).fork()).ldelim();
     }
@@ -2160,6 +2164,9 @@ export const ProjectSourceReportData = {
         case 4:
           message.tokenUsage = reader.int32();
           break;
+        case 8:
+          message.payload = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          break;
         case 5:
           message.progress = ProjectSourceReportProgressData.decode(reader, reader.uint32());
           break;
@@ -2183,6 +2190,7 @@ export const ProjectSourceReportData = {
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       projectSourceId: isSet(object.projectSourceId) ? Number(object.projectSourceId) : 0,
       tokenUsage: isSet(object.tokenUsage) ? Number(object.tokenUsage) : 0,
+      payload: isObject(object.payload) ? object.payload : undefined,
       progress: isSet(object.progress) ? ProjectSourceReportProgressData.fromJSON(object.progress) : undefined,
       complete: isSet(object.complete) ? ProjectSourceReportCompleteData.fromJSON(object.complete) : undefined,
       error: isSet(object.error) ? ProjectSourceReportErrorData.fromJSON(object.error) : undefined,
@@ -2196,6 +2204,7 @@ export const ProjectSourceReportData = {
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     message.projectSourceId !== undefined && (obj.projectSourceId = Math.round(message.projectSourceId));
     message.tokenUsage !== undefined && (obj.tokenUsage = Math.round(message.tokenUsage));
+    message.payload !== undefined && (obj.payload = message.payload);
     message.progress !== undefined &&
       (obj.progress = message.progress ? ProjectSourceReportProgressData.toJSON(message.progress) : undefined);
     message.complete !== undefined &&
@@ -2211,6 +2220,7 @@ export const ProjectSourceReportData = {
     message.projectId = object.projectId ?? 0;
     message.projectSourceId = object.projectSourceId ?? 0;
     message.tokenUsage = object.tokenUsage ?? 0;
+    message.payload = object.payload ?? undefined;
     message.progress = (object.progress !== undefined && object.progress !== null)
       ? ProjectSourceReportProgressData.fromPartial(object.progress)
       : undefined;
