@@ -13,25 +13,25 @@ message FrontendUIChanges {
 	optional ImportBy import_by = 7;
 	optional GenerateSource generate_source = 8;
   oneof data {
-		HtmlPageInfo html = 9;
+		HtmlInfo html = 9;
 		FigmaInfo figma = 10;
 	}
 
-  message HtmlPage {
+  message HtmlScreen {
     int32 id = 1;
     string html = 2;
   }
-  message FigmaPage {
+  message FigmaScreen {
     string node_id = 1;
+    string file_key = 2;
   }
-  message HtmlPageInfo {
-		repeated HtmlPage pages = 1;
+  message HtmlInfo {
+		repeated HtmlScreen screens = 1;
   }
 
   message FigmaInfo {
     string access_token = 1;
-    string file_key = 2;
-    repeated FigmaPage pages = 3;
+    repeated FigmaScreen screens = 3;
   }
 }
 
