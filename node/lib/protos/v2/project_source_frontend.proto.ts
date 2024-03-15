@@ -27,27 +27,27 @@ export class FrontendUIChanges {
   git?: Git;
   importBy?: ImportBy | undefined;
   generateSource?: GenerateSource | undefined;
-  html?: FrontendUIChangesHtmlPageInfo | undefined;
+  html?: FrontendUIChangesHtmlInfo | undefined;
   figma?: FrontendUIChangesFigmaInfo | undefined;
 }
 
-export class FrontendUIChangesHtmlPage {
+export class FrontendUIChangesHtmlScreen {
   id: number;
   html: string;
 }
 
-export class FrontendUIChangesFigmaPage {
+export class FrontendUIChangesFigmaScreen {
   nodeId: string;
+  fileKey: string;
 }
 
-export class FrontendUIChangesHtmlPageInfo {
-  pages: FrontendUIChangesHtmlPage[];
+export class FrontendUIChangesHtmlInfo {
+  screens: FrontendUIChangesHtmlScreen[];
 }
 
 export class FrontendUIChangesFigmaInfo {
   accessToken: string;
-  fileKey: string;
-  pages: FrontendUIChangesFigmaPage[];
+  screens: FrontendUIChangesFigmaScreen[];
 }
 
 export class FrontendUIChangesResponse {
@@ -168,7 +168,7 @@ export const FrontendUIChangesData = {
       GenerateSourceData.encode(message.generateSource, writer.uint32(66).fork()).ldelim();
     }
     if (message.html !== undefined) {
-      FrontendUIChangesHtmlPageInfoData.encode(message.html, writer.uint32(74).fork()).ldelim();
+      FrontendUIChangesHtmlInfoData.encode(message.html, writer.uint32(74).fork()).ldelim();
     }
     if (message.figma !== undefined) {
       FrontendUIChangesFigmaInfoData.encode(message.figma, writer.uint32(82).fork()).ldelim();
@@ -208,7 +208,7 @@ export const FrontendUIChangesData = {
           message.generateSource = GenerateSourceData.decode(reader, reader.uint32());
           break;
         case 9:
-          message.html = FrontendUIChangesHtmlPageInfoData.decode(reader, reader.uint32());
+          message.html = FrontendUIChangesHtmlInfoData.decode(reader, reader.uint32());
           break;
         case 10:
           message.figma = FrontendUIChangesFigmaInfoData.decode(reader, reader.uint32());
@@ -233,7 +233,7 @@ export const FrontendUIChangesData = {
       git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
       importBy: isSet(object.importBy) ? importByFromJSON(object.importBy) : undefined,
       generateSource: isSet(object.generateSource) ? GenerateSourceData.fromJSON(object.generateSource) : undefined,
-      html: isSet(object.html) ? FrontendUIChangesHtmlPageInfoData.fromJSON(object.html) : undefined,
+      html: isSet(object.html) ? FrontendUIChangesHtmlInfoData.fromJSON(object.html) : undefined,
       figma: isSet(object.figma) ? FrontendUIChangesFigmaInfoData.fromJSON(object.figma) : undefined,
     };
   },
@@ -262,7 +262,7 @@ export const FrontendUIChangesData = {
     message.generateSource !== undefined &&
       (obj.generateSource = message.generateSource ? GenerateSourceData.toJSON(message.generateSource) : undefined);
     message.html !== undefined &&
-      (obj.html = message.html ? FrontendUIChangesHtmlPageInfoData.toJSON(message.html) : undefined);
+      (obj.html = message.html ? FrontendUIChangesHtmlInfoData.toJSON(message.html) : undefined);
     message.figma !== undefined &&
       (obj.figma = message.figma ? FrontendUIChangesFigmaInfoData.toJSON(message.figma) : undefined);
     return obj;
@@ -285,7 +285,7 @@ export const FrontendUIChangesData = {
       ? GenerateSourceData.fromPartial(object.generateSource)
       : undefined;
     message.html = (object.html !== undefined && object.html !== null)
-      ? FrontendUIChangesHtmlPageInfoData.fromPartial(object.html)
+      ? FrontendUIChangesHtmlInfoData.fromPartial(object.html)
       : undefined;
     message.figma = (object.figma !== undefined && object.figma !== null)
       ? FrontendUIChangesFigmaInfoData.fromPartial(object.figma)
@@ -294,12 +294,12 @@ export const FrontendUIChangesData = {
   },
 };
 
-function createBaseFrontendUIChangesHtmlPage(): FrontendUIChangesHtmlPage {
+function createBaseFrontendUIChangesHtmlScreen(): FrontendUIChangesHtmlScreen {
   return { id: 0, html: "" };
 }
 
-export const FrontendUIChangesHtmlPageData = {
-  encode(message: FrontendUIChangesHtmlPage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const FrontendUIChangesHtmlScreenData = {
+  encode(message: FrontendUIChangesHtmlScreen, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== 0) {
       writer.uint32(8).int32(message.id);
     }
@@ -309,10 +309,10 @@ export const FrontendUIChangesHtmlPageData = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): FrontendUIChangesHtmlPage {
+  decode(input: _m0.Reader | Uint8Array, length?: number): FrontendUIChangesHtmlScreen {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseFrontendUIChangesHtmlPage();
+    const message = createBaseFrontendUIChangesHtmlScreen();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -330,47 +330,53 @@ export const FrontendUIChangesHtmlPageData = {
     return message;
   },
 
-  fromJSON(object: any): FrontendUIChangesHtmlPage {
+  fromJSON(object: any): FrontendUIChangesHtmlScreen {
     return { id: isSet(object.id) ? Number(object.id) : 0, html: isSet(object.html) ? String(object.html) : "" };
   },
 
-  toJSON(message: FrontendUIChangesHtmlPage): unknown {
+  toJSON(message: FrontendUIChangesHtmlScreen): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
     message.html !== undefined && (obj.html = message.html);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<FrontendUIChangesHtmlPage>): FrontendUIChangesHtmlPage {
-    const message = createBaseFrontendUIChangesHtmlPage();
+  fromPartial(object: DeepPartial<FrontendUIChangesHtmlScreen>): FrontendUIChangesHtmlScreen {
+    const message = createBaseFrontendUIChangesHtmlScreen();
     message.id = object.id ?? 0;
     message.html = object.html ?? "";
     return message;
   },
 };
 
-function createBaseFrontendUIChangesFigmaPage(): FrontendUIChangesFigmaPage {
-  return { nodeId: "" };
+function createBaseFrontendUIChangesFigmaScreen(): FrontendUIChangesFigmaScreen {
+  return { nodeId: "", fileKey: "" };
 }
 
-export const FrontendUIChangesFigmaPageData = {
-  encode(message: FrontendUIChangesFigmaPage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const FrontendUIChangesFigmaScreenData = {
+  encode(message: FrontendUIChangesFigmaScreen, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.nodeId !== "") {
       writer.uint32(10).string(message.nodeId);
+    }
+    if (message.fileKey !== "") {
+      writer.uint32(18).string(message.fileKey);
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): FrontendUIChangesFigmaPage {
+  decode(input: _m0.Reader | Uint8Array, length?: number): FrontendUIChangesFigmaScreen {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseFrontendUIChangesFigmaPage();
+    const message = createBaseFrontendUIChangesFigmaScreen();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
           message.nodeId = reader.string();
           break;
+        case 2:
+          message.fileKey = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -379,44 +385,49 @@ export const FrontendUIChangesFigmaPageData = {
     return message;
   },
 
-  fromJSON(object: any): FrontendUIChangesFigmaPage {
-    return { nodeId: isSet(object.nodeId) ? String(object.nodeId) : "" };
+  fromJSON(object: any): FrontendUIChangesFigmaScreen {
+    return {
+      nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
+      fileKey: isSet(object.fileKey) ? String(object.fileKey) : "",
+    };
   },
 
-  toJSON(message: FrontendUIChangesFigmaPage): unknown {
+  toJSON(message: FrontendUIChangesFigmaScreen): unknown {
     const obj: any = {};
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
+    message.fileKey !== undefined && (obj.fileKey = message.fileKey);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<FrontendUIChangesFigmaPage>): FrontendUIChangesFigmaPage {
-    const message = createBaseFrontendUIChangesFigmaPage();
+  fromPartial(object: DeepPartial<FrontendUIChangesFigmaScreen>): FrontendUIChangesFigmaScreen {
+    const message = createBaseFrontendUIChangesFigmaScreen();
     message.nodeId = object.nodeId ?? "";
+    message.fileKey = object.fileKey ?? "";
     return message;
   },
 };
 
-function createBaseFrontendUIChangesHtmlPageInfo(): FrontendUIChangesHtmlPageInfo {
-  return { pages: [] };
+function createBaseFrontendUIChangesHtmlInfo(): FrontendUIChangesHtmlInfo {
+  return { screens: [] };
 }
 
-export const FrontendUIChangesHtmlPageInfoData = {
-  encode(message: FrontendUIChangesHtmlPageInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.pages) {
-      FrontendUIChangesHtmlPageData.encode(v!, writer.uint32(10).fork()).ldelim();
+export const FrontendUIChangesHtmlInfoData = {
+  encode(message: FrontendUIChangesHtmlInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.screens) {
+      FrontendUIChangesHtmlScreenData.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): FrontendUIChangesHtmlPageInfo {
+  decode(input: _m0.Reader | Uint8Array, length?: number): FrontendUIChangesHtmlInfo {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseFrontendUIChangesHtmlPageInfo();
+    const message = createBaseFrontendUIChangesHtmlInfo();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.pages.push(FrontendUIChangesHtmlPageData.decode(reader, reader.uint32()));
+          message.screens.push(FrontendUIChangesHtmlScreenData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -426,33 +437,33 @@ export const FrontendUIChangesHtmlPageInfoData = {
     return message;
   },
 
-  fromJSON(object: any): FrontendUIChangesHtmlPageInfo {
+  fromJSON(object: any): FrontendUIChangesHtmlInfo {
     return {
-      pages: Array.isArray(object?.pages)
-        ? object.pages.map((e: any) => FrontendUIChangesHtmlPageData.fromJSON(e))
+      screens: Array.isArray(object?.screens)
+        ? object.screens.map((e: any) => FrontendUIChangesHtmlScreenData.fromJSON(e))
         : [],
     };
   },
 
-  toJSON(message: FrontendUIChangesHtmlPageInfo): unknown {
+  toJSON(message: FrontendUIChangesHtmlInfo): unknown {
     const obj: any = {};
-    if (message.pages) {
-      obj.pages = message.pages.map((e) => e ? FrontendUIChangesHtmlPageData.toJSON(e) : undefined);
+    if (message.screens) {
+      obj.screens = message.screens.map((e) => e ? FrontendUIChangesHtmlScreenData.toJSON(e) : undefined);
     } else {
-      obj.pages = [];
+      obj.screens = [];
     }
     return obj;
   },
 
-  fromPartial(object: DeepPartial<FrontendUIChangesHtmlPageInfo>): FrontendUIChangesHtmlPageInfo {
-    const message = createBaseFrontendUIChangesHtmlPageInfo();
-    message.pages = object.pages?.map((e) => FrontendUIChangesHtmlPageData.fromPartial(e)) || [];
+  fromPartial(object: DeepPartial<FrontendUIChangesHtmlInfo>): FrontendUIChangesHtmlInfo {
+    const message = createBaseFrontendUIChangesHtmlInfo();
+    message.screens = object.screens?.map((e) => FrontendUIChangesHtmlScreenData.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseFrontendUIChangesFigmaInfo(): FrontendUIChangesFigmaInfo {
-  return { accessToken: "", fileKey: "", pages: [] };
+  return { accessToken: "", screens: [] };
 }
 
 export const FrontendUIChangesFigmaInfoData = {
@@ -460,11 +471,8 @@ export const FrontendUIChangesFigmaInfoData = {
     if (message.accessToken !== "") {
       writer.uint32(10).string(message.accessToken);
     }
-    if (message.fileKey !== "") {
-      writer.uint32(18).string(message.fileKey);
-    }
-    for (const v of message.pages) {
-      FrontendUIChangesFigmaPageData.encode(v!, writer.uint32(26).fork()).ldelim();
+    for (const v of message.screens) {
+      FrontendUIChangesFigmaScreenData.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -479,11 +487,8 @@ export const FrontendUIChangesFigmaInfoData = {
         case 1:
           message.accessToken = reader.string();
           break;
-        case 2:
-          message.fileKey = reader.string();
-          break;
         case 3:
-          message.pages.push(FrontendUIChangesFigmaPageData.decode(reader, reader.uint32()));
+          message.screens.push(FrontendUIChangesFigmaScreenData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -496,9 +501,8 @@ export const FrontendUIChangesFigmaInfoData = {
   fromJSON(object: any): FrontendUIChangesFigmaInfo {
     return {
       accessToken: isSet(object.accessToken) ? String(object.accessToken) : "",
-      fileKey: isSet(object.fileKey) ? String(object.fileKey) : "",
-      pages: Array.isArray(object?.pages)
-        ? object.pages.map((e: any) => FrontendUIChangesFigmaPageData.fromJSON(e))
+      screens: Array.isArray(object?.screens)
+        ? object.screens.map((e: any) => FrontendUIChangesFigmaScreenData.fromJSON(e))
         : [],
     };
   },
@@ -506,11 +510,10 @@ export const FrontendUIChangesFigmaInfoData = {
   toJSON(message: FrontendUIChangesFigmaInfo): unknown {
     const obj: any = {};
     message.accessToken !== undefined && (obj.accessToken = message.accessToken);
-    message.fileKey !== undefined && (obj.fileKey = message.fileKey);
-    if (message.pages) {
-      obj.pages = message.pages.map((e) => e ? FrontendUIChangesFigmaPageData.toJSON(e) : undefined);
+    if (message.screens) {
+      obj.screens = message.screens.map((e) => e ? FrontendUIChangesFigmaScreenData.toJSON(e) : undefined);
     } else {
-      obj.pages = [];
+      obj.screens = [];
     }
     return obj;
   },
@@ -518,8 +521,7 @@ export const FrontendUIChangesFigmaInfoData = {
   fromPartial(object: DeepPartial<FrontendUIChangesFigmaInfo>): FrontendUIChangesFigmaInfo {
     const message = createBaseFrontendUIChangesFigmaInfo();
     message.accessToken = object.accessToken ?? "";
-    message.fileKey = object.fileKey ?? "";
-    message.pages = object.pages?.map((e) => FrontendUIChangesFigmaPageData.fromPartial(e)) || [];
+    message.screens = object.screens?.map((e) => FrontendUIChangesFigmaScreenData.fromPartial(e)) || [];
     return message;
   },
 };
