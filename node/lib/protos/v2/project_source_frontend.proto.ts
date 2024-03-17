@@ -1,5 +1,6 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
+import { StructData } from "../google/protobuf/struct.proto";
 import {
   BlockDiff,
   BlockDiffData,
@@ -50,91 +51,31 @@ export class FrontendUIChangesFigmaInfo {
   screens: FrontendUIChangesFigmaScreen[];
 }
 
-export class FrontendUIChangesResponse {
+export class ProjectSourceFrontendReport {
   projectGenerateQueueId: number;
   projectId: number;
-  module: FrontendUIChangesResponseModule;
-  status: FrontendUIChangesResponseStatus;
+  projectSourceId: number;
   tokenUsage: number;
-  errorMessage: string;
+  module: string;
+  payload?: { [key: string]: any };
+  progress?: ProjectSourceFrontendReportProgress | undefined;
+  complete?: ProjectSourceFrontendReportComplete | undefined;
+  error?: ProjectSourceFrontendReportError | undefined;
 }
 
-export enum FrontendUIChangesResponseModule {
-  FIGMA_TO_CODE = 0,
-  HTML_TO_CODE = 1,
-  UNRECOGNIZED = -1,
+export class ProjectSourceFrontendReportProgress {
+  percentage: number;
+  message: string;
+  payload?: { [key: string]: any };
 }
 
-export function frontendUIChangesResponseModuleFromJSON(object: any): FrontendUIChangesResponseModule {
-  switch (object) {
-    case 0:
-    case "FIGMA_TO_CODE":
-      return FrontendUIChangesResponseModule.FIGMA_TO_CODE;
-    case 1:
-    case "HTML_TO_CODE":
-      return FrontendUIChangesResponseModule.HTML_TO_CODE;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return FrontendUIChangesResponseModule.UNRECOGNIZED;
-  }
+export class ProjectSourceFrontendReportError {
+  message: string;
+  payload?: { [key: string]: any };
 }
 
-export function frontendUIChangesResponseModuleToJSON(object: FrontendUIChangesResponseModule): string {
-  switch (object) {
-    case FrontendUIChangesResponseModule.FIGMA_TO_CODE:
-      return "FIGMA_TO_CODE";
-    case FrontendUIChangesResponseModule.HTML_TO_CODE:
-      return "HTML_TO_CODE";
-    case FrontendUIChangesResponseModule.UNRECOGNIZED:
-    default:
-      return "UNRECOGNIZED";
-  }
-}
-
-export enum FrontendUIChangesResponseStatus {
-  STARTED = 0,
-  INPROGRESS = 1,
-  SUCCEEDED = 2,
-  FAILED = 3,
-  UNRECOGNIZED = -1,
-}
-
-export function frontendUIChangesResponseStatusFromJSON(object: any): FrontendUIChangesResponseStatus {
-  switch (object) {
-    case 0:
-    case "STARTED":
-      return FrontendUIChangesResponseStatus.STARTED;
-    case 1:
-    case "INPROGRESS":
-      return FrontendUIChangesResponseStatus.INPROGRESS;
-    case 2:
-    case "SUCCEEDED":
-      return FrontendUIChangesResponseStatus.SUCCEEDED;
-    case 3:
-    case "FAILED":
-      return FrontendUIChangesResponseStatus.FAILED;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return FrontendUIChangesResponseStatus.UNRECOGNIZED;
-  }
-}
-
-export function frontendUIChangesResponseStatusToJSON(object: FrontendUIChangesResponseStatus): string {
-  switch (object) {
-    case FrontendUIChangesResponseStatus.STARTED:
-      return "STARTED";
-    case FrontendUIChangesResponseStatus.INPROGRESS:
-      return "INPROGRESS";
-    case FrontendUIChangesResponseStatus.SUCCEEDED:
-      return "SUCCEEDED";
-    case FrontendUIChangesResponseStatus.FAILED:
-      return "FAILED";
-    case FrontendUIChangesResponseStatus.UNRECOGNIZED:
-    default:
-      return "UNRECOGNIZED";
-  }
+export class ProjectSourceFrontendReportComplete {
+  payload?: { [key: string]: any };
 }
 
 function createBaseFrontendUIChanges(): FrontendUIChanges {
@@ -526,37 +467,46 @@ export const FrontendUIChangesFigmaInfoData = {
   },
 };
 
-function createBaseFrontendUIChangesResponse(): FrontendUIChangesResponse {
-  return { projectGenerateQueueId: 0, projectId: 0, module: 0, status: 0, tokenUsage: 0, errorMessage: "" };
+function createBaseProjectSourceFrontendReport(): ProjectSourceFrontendReport {
+  return { projectGenerateQueueId: 0, projectId: 0, projectSourceId: 0, tokenUsage: 0, module: "" };
 }
 
-export const FrontendUIChangesResponseData = {
-  encode(message: FrontendUIChangesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const ProjectSourceFrontendReportData = {
+  encode(message: ProjectSourceFrontendReport, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
     }
     if (message.projectId !== 0) {
       writer.uint32(16).int32(message.projectId);
     }
-    if (message.module !== 0) {
-      writer.uint32(24).int32(message.module);
-    }
-    if (message.status !== 0) {
-      writer.uint32(32).int32(message.status);
+    if (message.projectSourceId !== 0) {
+      writer.uint32(24).int32(message.projectSourceId);
     }
     if (message.tokenUsage !== 0) {
-      writer.uint32(40).int32(message.tokenUsage);
+      writer.uint32(32).int32(message.tokenUsage);
     }
-    if (message.errorMessage !== "") {
-      writer.uint32(58).string(message.errorMessage);
+    if (message.module !== "") {
+      writer.uint32(42).string(message.module);
+    }
+    if (message.payload !== undefined) {
+      StructData.encode(StructData.wrap(message.payload), writer.uint32(50).fork()).ldelim();
+    }
+    if (message.progress !== undefined) {
+      ProjectSourceFrontendReportProgressData.encode(message.progress, writer.uint32(58).fork()).ldelim();
+    }
+    if (message.complete !== undefined) {
+      ProjectSourceFrontendReportCompleteData.encode(message.complete, writer.uint32(66).fork()).ldelim();
+    }
+    if (message.error !== undefined) {
+      ProjectSourceFrontendReportErrorData.encode(message.error, writer.uint32(74).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): FrontendUIChangesResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectSourceFrontendReport {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseFrontendUIChangesResponse();
+    const message = createBaseProjectSourceFrontendReport();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -567,16 +517,25 @@ export const FrontendUIChangesResponseData = {
           message.projectId = reader.int32();
           break;
         case 3:
-          message.module = reader.int32() as any;
+          message.projectSourceId = reader.int32();
           break;
         case 4:
-          message.status = reader.int32() as any;
-          break;
-        case 5:
           message.tokenUsage = reader.int32();
           break;
+        case 5:
+          message.module = reader.string();
+          break;
+        case 6:
+          message.payload = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          break;
         case 7:
-          message.errorMessage = reader.string();
+          message.progress = ProjectSourceFrontendReportProgressData.decode(reader, reader.uint32());
+          break;
+        case 8:
+          message.complete = ProjectSourceFrontendReportCompleteData.decode(reader, reader.uint32());
+          break;
+        case 9:
+          message.error = ProjectSourceFrontendReportErrorData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -586,37 +545,227 @@ export const FrontendUIChangesResponseData = {
     return message;
   },
 
-  fromJSON(object: any): FrontendUIChangesResponse {
+  fromJSON(object: any): ProjectSourceFrontendReport {
     return {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      module: isSet(object.module) ? frontendUIChangesResponseModuleFromJSON(object.module) : 0,
-      status: isSet(object.status) ? frontendUIChangesResponseStatusFromJSON(object.status) : 0,
+      projectSourceId: isSet(object.projectSourceId) ? Number(object.projectSourceId) : 0,
       tokenUsage: isSet(object.tokenUsage) ? Number(object.tokenUsage) : 0,
-      errorMessage: isSet(object.errorMessage) ? String(object.errorMessage) : "",
+      module: isSet(object.module) ? String(object.module) : "",
+      payload: isObject(object.payload) ? object.payload : undefined,
+      progress: isSet(object.progress) ? ProjectSourceFrontendReportProgressData.fromJSON(object.progress) : undefined,
+      complete: isSet(object.complete) ? ProjectSourceFrontendReportCompleteData.fromJSON(object.complete) : undefined,
+      error: isSet(object.error) ? ProjectSourceFrontendReportErrorData.fromJSON(object.error) : undefined,
     };
   },
 
-  toJSON(message: FrontendUIChangesResponse): unknown {
+  toJSON(message: ProjectSourceFrontendReport): unknown {
     const obj: any = {};
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
-    message.module !== undefined && (obj.module = frontendUIChangesResponseModuleToJSON(message.module));
-    message.status !== undefined && (obj.status = frontendUIChangesResponseStatusToJSON(message.status));
+    message.projectSourceId !== undefined && (obj.projectSourceId = Math.round(message.projectSourceId));
     message.tokenUsage !== undefined && (obj.tokenUsage = Math.round(message.tokenUsage));
-    message.errorMessage !== undefined && (obj.errorMessage = message.errorMessage);
+    message.module !== undefined && (obj.module = message.module);
+    message.payload !== undefined && (obj.payload = message.payload);
+    message.progress !== undefined &&
+      (obj.progress = message.progress ? ProjectSourceFrontendReportProgressData.toJSON(message.progress) : undefined);
+    message.complete !== undefined &&
+      (obj.complete = message.complete ? ProjectSourceFrontendReportCompleteData.toJSON(message.complete) : undefined);
+    message.error !== undefined &&
+      (obj.error = message.error ? ProjectSourceFrontendReportErrorData.toJSON(message.error) : undefined);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<FrontendUIChangesResponse>): FrontendUIChangesResponse {
-    const message = createBaseFrontendUIChangesResponse();
+  fromPartial(object: DeepPartial<ProjectSourceFrontendReport>): ProjectSourceFrontendReport {
+    const message = createBaseProjectSourceFrontendReport();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectId = object.projectId ?? 0;
-    message.module = object.module ?? 0;
-    message.status = object.status ?? 0;
+    message.projectSourceId = object.projectSourceId ?? 0;
     message.tokenUsage = object.tokenUsage ?? 0;
-    message.errorMessage = object.errorMessage ?? "";
+    message.module = object.module ?? "";
+    message.payload = object.payload ?? undefined;
+    message.progress = (object.progress !== undefined && object.progress !== null)
+      ? ProjectSourceFrontendReportProgressData.fromPartial(object.progress)
+      : undefined;
+    message.complete = (object.complete !== undefined && object.complete !== null)
+      ? ProjectSourceFrontendReportCompleteData.fromPartial(object.complete)
+      : undefined;
+    message.error = (object.error !== undefined && object.error !== null)
+      ? ProjectSourceFrontendReportErrorData.fromPartial(object.error)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseProjectSourceFrontendReportProgress(): ProjectSourceFrontendReportProgress {
+  return { percentage: 0, message: "" };
+}
+
+export const ProjectSourceFrontendReportProgressData = {
+  encode(message: ProjectSourceFrontendReportProgress, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.percentage !== 0) {
+      writer.uint32(8).int32(message.percentage);
+    }
+    if (message.message !== "") {
+      writer.uint32(18).string(message.message);
+    }
+    if (message.payload !== undefined) {
+      StructData.encode(StructData.wrap(message.payload), writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectSourceFrontendReportProgress {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseProjectSourceFrontendReportProgress();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.percentage = reader.int32();
+          break;
+        case 2:
+          message.message = reader.string();
+          break;
+        case 3:
+          message.payload = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ProjectSourceFrontendReportProgress {
+    return {
+      percentage: isSet(object.percentage) ? Number(object.percentage) : 0,
+      message: isSet(object.message) ? String(object.message) : "",
+      payload: isObject(object.payload) ? object.payload : undefined,
+    };
+  },
+
+  toJSON(message: ProjectSourceFrontendReportProgress): unknown {
+    const obj: any = {};
+    message.percentage !== undefined && (obj.percentage = Math.round(message.percentage));
+    message.message !== undefined && (obj.message = message.message);
+    message.payload !== undefined && (obj.payload = message.payload);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ProjectSourceFrontendReportProgress>): ProjectSourceFrontendReportProgress {
+    const message = createBaseProjectSourceFrontendReportProgress();
+    message.percentage = object.percentage ?? 0;
+    message.message = object.message ?? "";
+    message.payload = object.payload ?? undefined;
+    return message;
+  },
+};
+
+function createBaseProjectSourceFrontendReportError(): ProjectSourceFrontendReportError {
+  return { message: "" };
+}
+
+export const ProjectSourceFrontendReportErrorData = {
+  encode(message: ProjectSourceFrontendReportError, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.message !== "") {
+      writer.uint32(10).string(message.message);
+    }
+    if (message.payload !== undefined) {
+      StructData.encode(StructData.wrap(message.payload), writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectSourceFrontendReportError {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseProjectSourceFrontendReportError();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.message = reader.string();
+          break;
+        case 2:
+          message.payload = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ProjectSourceFrontendReportError {
+    return {
+      message: isSet(object.message) ? String(object.message) : "",
+      payload: isObject(object.payload) ? object.payload : undefined,
+    };
+  },
+
+  toJSON(message: ProjectSourceFrontendReportError): unknown {
+    const obj: any = {};
+    message.message !== undefined && (obj.message = message.message);
+    message.payload !== undefined && (obj.payload = message.payload);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ProjectSourceFrontendReportError>): ProjectSourceFrontendReportError {
+    const message = createBaseProjectSourceFrontendReportError();
+    message.message = object.message ?? "";
+    message.payload = object.payload ?? undefined;
+    return message;
+  },
+};
+
+function createBaseProjectSourceFrontendReportComplete(): ProjectSourceFrontendReportComplete {
+  return {};
+}
+
+export const ProjectSourceFrontendReportCompleteData = {
+  encode(message: ProjectSourceFrontendReportComplete, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.payload !== undefined) {
+      StructData.encode(StructData.wrap(message.payload), writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectSourceFrontendReportComplete {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseProjectSourceFrontendReportComplete();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.payload = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ProjectSourceFrontendReportComplete {
+    return { payload: isObject(object.payload) ? object.payload : undefined };
+  },
+
+  toJSON(message: ProjectSourceFrontendReportComplete): unknown {
+    const obj: any = {};
+    message.payload !== undefined && (obj.payload = message.payload);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ProjectSourceFrontendReportComplete>): ProjectSourceFrontendReportComplete {
+    const message = createBaseProjectSourceFrontendReportComplete();
+    message.payload = object.payload ?? undefined;
     return message;
   },
 };
@@ -627,6 +776,10 @@ type DeepPartial<T> = T extends Builtin ? T
   : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
+
+function isObject(value: any): boolean {
+  return typeof value === "object" && value !== null;
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;
