@@ -1,6 +1,6 @@
 {
   "name": "@jitera/proto",
-  "version": "0.0.2-beta.138",
+  "version": "0.0.2-beta.142",
   "description": "",
   "main": "./build/cjs/index.js",
   "module": "./build/esm/index.js",
