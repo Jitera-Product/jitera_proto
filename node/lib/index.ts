@@ -10,4 +10,5 @@ export * from "./protos/v2/block.proto";
 export * from "./protos/v2/project_preview.proto";
 export * from "./protos/v2/project_figma.proto";
 export * from "./protos/v2/translation_blocks.proto";
+export * from "./protos/v2/project_git.proto";
 export * from "./protos/v2/project_source_frontend.proto";

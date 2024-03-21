@@ -34,7 +34,7 @@ export class FrontendUIChanges {
 
 export class FrontendUIChangesHtmlScreen {
   id: number;
-  html: string;
+  htmlCode: string;
 }
 
 export class FrontendUIChangesFigmaScreen {
@@ -236,7 +236,7 @@ export const FrontendUIChangesData = {
 };
 
 function createBaseFrontendUIChangesHtmlScreen(): FrontendUIChangesHtmlScreen {
-  return { id: 0, html: "" };
+  return { id: 0, htmlCode: "" };
 }
 
 export const FrontendUIChangesHtmlScreenData = {
@@ -244,8 +244,8 @@ export const FrontendUIChangesHtmlScreenData = {
     if (message.id !== 0) {
       writer.uint32(8).int32(message.id);
     }
-    if (message.html !== "") {
-      writer.uint32(18).string(message.html);
+    if (message.htmlCode !== "") {
+      writer.uint32(18).string(message.htmlCode);
     }
     return writer;
   },
@@ -261,7 +261,7 @@ export const FrontendUIChangesHtmlScreenData = {
           message.id = reader.int32();
           break;
         case 2:
-          message.html = reader.string();
+          message.htmlCode = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -272,20 +272,23 @@ export const FrontendUIChangesHtmlScreenData = {
   },
 
   fromJSON(object: any): FrontendUIChangesHtmlScreen {
-    return { id: isSet(object.id) ? Number(object.id) : 0, html: isSet(object.html) ? String(object.html) : "" };
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      htmlCode: isSet(object.htmlCode) ? String(object.htmlCode) : "",
+    };
   },
 
   toJSON(message: FrontendUIChangesHtmlScreen): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
-    message.html !== undefined && (obj.html = message.html);
+    message.htmlCode !== undefined && (obj.htmlCode = message.htmlCode);
     return obj;
   },
 
   fromPartial(object: DeepPartial<FrontendUIChangesHtmlScreen>): FrontendUIChangesHtmlScreen {
     const message = createBaseFrontendUIChangesHtmlScreen();
     message.id = object.id ?? 0;
-    message.html = object.html ?? "";
+    message.htmlCode = object.htmlCode ?? "";
     return message;
   },
 };
