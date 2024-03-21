@@ -20,7 +20,7 @@ message FrontendUIChanges {
 
   message HtmlScreen {
     int32 id = 1;
-    string html = 2;
+    string html_code = 2;
   }
   message FigmaScreen {
     string node_id = 1;
