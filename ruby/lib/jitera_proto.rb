@@ -16,7 +16,7 @@ require_relative 'payloads/v2/project_preview_pb'
 require_relative 'payloads/v2/project_git_pb'
 require_relative 'payloads/v2/translation_blocks_pb'
 require_relative 'payloads/v2/project_source_frontend_pb.rb'
-require_relative 'payloads/v2/project_ticket.rb'
+require_relative 'payloads/v2/project_ticket_pb.rb'
 
 module JiteraProto
 end
