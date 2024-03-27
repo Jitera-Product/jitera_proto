@@ -37,3 +37,7 @@ message ProjectFigmaImportResponse {
     FAILED = 2;
   }
 }
+
+message Figma {
+	string access_token = 1;
+}
