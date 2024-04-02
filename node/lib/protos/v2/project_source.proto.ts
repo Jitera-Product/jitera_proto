@@ -1,7 +1,7 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-import { Table, TableData } from "../v1/payloads.proto";
 import { StructData } from "../google/protobuf/struct.proto";
+import { Table, TableData } from "../v1/payloads.proto";
 
 export enum ImportBy {
   github = 0,
@@ -60,6 +60,8 @@ export class ProjectSource {
   framework: ProjectSourceFramework;
   layer: ProjectSourceLayer;
   files: string;
+  platform: ProjectSourcePlatform;
+  operations: ProjectSourceOperation[];
 }
 
 export enum ProjectSourceFramework {
@@ -70,6 +72,7 @@ export enum ProjectSourceFramework {
   NESTJS = 4,
   ROR = 5,
   LARAVEL = 6,
+  REACT_NATIVE = 7,
   UNRECOGNIZED = -1,
 }
 
@@ -96,6 +99,9 @@ export function projectSourceFrameworkFromJSON(object: any): ProjectSourceFramew
     case 6:
     case "LARAVEL":
       return ProjectSourceFramework.LARAVEL;
+    case 7:
+    case "REACT_NATIVE":
+      return ProjectSourceFramework.REACT_NATIVE;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -119,6 +125,8 @@ export function projectSourceFrameworkToJSON(object: ProjectSourceFramework): st
       return "ROR";
     case ProjectSourceFramework.LARAVEL:
       return "LARAVEL";
+    case ProjectSourceFramework.REACT_NATIVE:
+      return "REACT_NATIVE";
     case ProjectSourceFramework.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -129,7 +137,6 @@ export enum ProjectSourceLayer {
   LAYER_UNSPECIFIED = 0,
   BACKEND = 1,
   FRONTEND = 2,
-  MOBILE = 3,
   UNRECOGNIZED = -1,
 }
 
@@ -144,9 +151,6 @@ export function projectSourceLayerFromJSON(object: any): ProjectSourceLayer {
     case 2:
     case "FRONTEND":
       return ProjectSourceLayer.FRONTEND;
-    case 3:
-    case "MOBILE":
-      return ProjectSourceLayer.MOBILE;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -162,9 +166,103 @@ export function projectSourceLayerToJSON(object: ProjectSourceLayer): string {
       return "BACKEND";
     case ProjectSourceLayer.FRONTEND:
       return "FRONTEND";
-    case ProjectSourceLayer.MOBILE:
-      return "MOBILE";
     case ProjectSourceLayer.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export enum ProjectSourcePlatform {
+  PLATFORM_UNSPECIFIED = 0,
+  WEB = 1,
+  MOBILE = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function projectSourcePlatformFromJSON(object: any): ProjectSourcePlatform {
+  switch (object) {
+    case 0:
+    case "PLATFORM_UNSPECIFIED":
+      return ProjectSourcePlatform.PLATFORM_UNSPECIFIED;
+    case 1:
+    case "WEB":
+      return ProjectSourcePlatform.WEB;
+    case 2:
+    case "MOBILE":
+      return ProjectSourcePlatform.MOBILE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ProjectSourcePlatform.UNRECOGNIZED;
+  }
+}
+
+export function projectSourcePlatformToJSON(object: ProjectSourcePlatform): string {
+  switch (object) {
+    case ProjectSourcePlatform.PLATFORM_UNSPECIFIED:
+      return "PLATFORM_UNSPECIFIED";
+    case ProjectSourcePlatform.WEB:
+      return "WEB";
+    case ProjectSourcePlatform.MOBILE:
+      return "MOBILE";
+    case ProjectSourcePlatform.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export enum ProjectSourceOperation {
+  OPERATION_UNSPECIFIED = 0,
+  WINDOWS = 1,
+  MACOS = 2,
+  LINUX = 3,
+  ANDROID = 4,
+  IOS = 5,
+  UNRECOGNIZED = -1,
+}
+
+export function projectSourceOperationFromJSON(object: any): ProjectSourceOperation {
+  switch (object) {
+    case 0:
+    case "OPERATION_UNSPECIFIED":
+      return ProjectSourceOperation.OPERATION_UNSPECIFIED;
+    case 1:
+    case "WINDOWS":
+      return ProjectSourceOperation.WINDOWS;
+    case 2:
+    case "MACOS":
+      return ProjectSourceOperation.MACOS;
+    case 3:
+    case "LINUX":
+      return ProjectSourceOperation.LINUX;
+    case 4:
+    case "ANDROID":
+      return ProjectSourceOperation.ANDROID;
+    case 5:
+    case "IOS":
+      return ProjectSourceOperation.IOS;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ProjectSourceOperation.UNRECOGNIZED;
+  }
+}
+
+export function projectSourceOperationToJSON(object: ProjectSourceOperation): string {
+  switch (object) {
+    case ProjectSourceOperation.OPERATION_UNSPECIFIED:
+      return "OPERATION_UNSPECIFIED";
+    case ProjectSourceOperation.WINDOWS:
+      return "WINDOWS";
+    case ProjectSourceOperation.MACOS:
+      return "MACOS";
+    case ProjectSourceOperation.LINUX:
+      return "LINUX";
+    case ProjectSourceOperation.ANDROID:
+      return "ANDROID";
+    case ProjectSourceOperation.IOS:
+      return "IOS";
+    case ProjectSourceOperation.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
@@ -520,7 +618,7 @@ export const GenerateSourceData = {
 };
 
 function createBaseProjectSource(): ProjectSource {
-  return { id: 0, projectId: 0, framework: 0, layer: 0, files: "" };
+  return { id: 0, projectId: 0, framework: 0, layer: 0, files: "", platform: 0, operations: [] };
 }
 
 export const ProjectSourceData = {
@@ -540,6 +638,14 @@ export const ProjectSourceData = {
     if (message.files !== "") {
       writer.uint32(42).string(message.files);
     }
+    if (message.platform !== 0) {
+      writer.uint32(48).int32(message.platform);
+    }
+    writer.uint32(58).fork();
+    for (const v of message.operations) {
+      writer.int32(v);
+    }
+    writer.ldelim();
     return writer;
   },
 
@@ -565,6 +671,19 @@ export const ProjectSourceData = {
         case 5:
           message.files = reader.string();
           break;
+        case 6:
+          message.platform = reader.int32() as any;
+          break;
+        case 7:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.operations.push(reader.int32() as any);
+            }
+          } else {
+            message.operations.push(reader.int32() as any);
+          }
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -580,6 +699,10 @@ export const ProjectSourceData = {
       framework: isSet(object.framework) ? projectSourceFrameworkFromJSON(object.framework) : 0,
       layer: isSet(object.layer) ? projectSourceLayerFromJSON(object.layer) : 0,
       files: isSet(object.files) ? String(object.files) : "",
+      platform: isSet(object.platform) ? projectSourcePlatformFromJSON(object.platform) : 0,
+      operations: Array.isArray(object?.operations)
+        ? object.operations.map((e: any) => projectSourceOperationFromJSON(e))
+        : [],
     };
   },
 
@@ -590,6 +713,12 @@ export const ProjectSourceData = {
     message.framework !== undefined && (obj.framework = projectSourceFrameworkToJSON(message.framework));
     message.layer !== undefined && (obj.layer = projectSourceLayerToJSON(message.layer));
     message.files !== undefined && (obj.files = message.files);
+    message.platform !== undefined && (obj.platform = projectSourcePlatformToJSON(message.platform));
+    if (message.operations) {
+      obj.operations = message.operations.map((e) => projectSourceOperationToJSON(e));
+    } else {
+      obj.operations = [];
+    }
     return obj;
   },
 
@@ -600,6 +729,8 @@ export const ProjectSourceData = {
     message.framework = object.framework ?? 0;
     message.layer = object.layer ?? 0;
     message.files = object.files ?? "";
+    message.platform = object.platform ?? 0;
+    message.operations = object.operations?.map((e) => e) || [];
     return message;
   },
 };
