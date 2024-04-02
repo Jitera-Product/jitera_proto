@@ -17,7 +17,6 @@ message ProjectSource {
 	Layer layer = 4;
 	string files = 5;
 	Platform platform = 6;
-	repeated Operation operations = 7;
 
 	enum Framework {
 		FRAMEWORK_UNSPECIFIED = 0;
@@ -34,6 +33,7 @@ message ProjectSource {
 		LAYER_UNSPECIFIED = 0;
 		BACKEND = 1;
 		FRONTEND = 2;
+		MONOREPO = 3;
 	}
 
 	enum Platform {
@@ -42,15 +42,6 @@ message ProjectSource {
 		MOBILE = 2;
 		DESKTOP = 3;
 		CROSS_PLATFORM = 4;
-	}
-
-	enum Operation {
-		OPERATION_UNSPECIFIED = 0;
-		WINDOWS = 1;
-		MACOS = 2;
-		LINUX = 3;
-		ANDROID = 4;
-		IOS = 5;
 	}
 
 	message Table {
