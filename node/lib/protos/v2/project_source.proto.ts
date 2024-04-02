@@ -1,3 +1,4 @@
+
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { StructData } from "../google/protobuf/struct.proto";
@@ -61,6 +62,7 @@ export class ProjectSource {
   layer: ProjectSourceLayer;
   files: string;
   platform: ProjectSourcePlatform;
+  operations: ProjectSourceOperation[];
 }
 
 export enum ProjectSourceFramework {
@@ -136,7 +138,10 @@ export enum ProjectSourceLayer {
   LAYER_UNSPECIFIED = 0,
   BACKEND = 1,
   FRONTEND = 2,
+<<<<<<< HEAD
   MONOREPO = 3,
+=======
+>>>>>>> 2bee70f (feat: operation can be array)
   UNRECOGNIZED = -1,
 }
 
@@ -151,9 +156,12 @@ export function projectSourceLayerFromJSON(object: any): ProjectSourceLayer {
     case 2:
     case "FRONTEND":
       return ProjectSourceLayer.FRONTEND;
+<<<<<<< HEAD
     case 3:
     case "MONOREPO":
       return ProjectSourceLayer.MONOREPO;
+=======
+>>>>>>> 2bee70f (feat: operation can be array)
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -169,8 +177,11 @@ export function projectSourceLayerToJSON(object: ProjectSourceLayer): string {
       return "BACKEND";
     case ProjectSourceLayer.FRONTEND:
       return "FRONTEND";
+<<<<<<< HEAD
     case ProjectSourceLayer.MONOREPO:
       return "MONOREPO";
+=======
+>>>>>>> 2bee70f (feat: operation can be array)
     case ProjectSourceLayer.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -181,8 +192,11 @@ export enum ProjectSourcePlatform {
   PLATFORM_UNSPECIFIED = 0,
   WEB = 1,
   MOBILE = 2,
+<<<<<<< HEAD
   DESKTOP = 3,
   CROSS_PLATFORM = 4,
+=======
+>>>>>>> 2bee70f (feat: operation can be array)
   UNRECOGNIZED = -1,
 }
 
@@ -197,12 +211,15 @@ export function projectSourcePlatformFromJSON(object: any): ProjectSourcePlatfor
     case 2:
     case "MOBILE":
       return ProjectSourcePlatform.MOBILE;
+<<<<<<< HEAD
     case 3:
     case "DESKTOP":
       return ProjectSourcePlatform.DESKTOP;
     case 4:
     case "CROSS_PLATFORM":
       return ProjectSourcePlatform.CROSS_PLATFORM;
+=======
+>>>>>>> 2bee70f (feat: operation can be array)
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -218,16 +235,79 @@ export function projectSourcePlatformToJSON(object: ProjectSourcePlatform): stri
       return "WEB";
     case ProjectSourcePlatform.MOBILE:
       return "MOBILE";
+<<<<<<< HEAD
     case ProjectSourcePlatform.DESKTOP:
       return "DESKTOP";
     case ProjectSourcePlatform.CROSS_PLATFORM:
       return "CROSS_PLATFORM";
+=======
+>>>>>>> 2bee70f (feat: operation can be array)
     case ProjectSourcePlatform.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
 }
 
+<<<<<<< HEAD
+=======
+export enum ProjectSourceOperation {
+  OPERATION_UNSPECIFIED = 0,
+  WINDOWS = 1,
+  MACOS = 2,
+  LINUX = 3,
+  ANDROID = 4,
+  IOS = 5,
+  UNRECOGNIZED = -1,
+}
+
+export function projectSourceOperationFromJSON(object: any): ProjectSourceOperation {
+  switch (object) {
+    case 0:
+    case "OPERATION_UNSPECIFIED":
+      return ProjectSourceOperation.OPERATION_UNSPECIFIED;
+    case 1:
+    case "WINDOWS":
+      return ProjectSourceOperation.WINDOWS;
+    case 2:
+    case "MACOS":
+      return ProjectSourceOperation.MACOS;
+    case 3:
+    case "LINUX":
+      return ProjectSourceOperation.LINUX;
+    case 4:
+    case "ANDROID":
+      return ProjectSourceOperation.ANDROID;
+    case 5:
+    case "IOS":
+      return ProjectSourceOperation.IOS;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ProjectSourceOperation.UNRECOGNIZED;
+  }
+}
+
+export function projectSourceOperationToJSON(object: ProjectSourceOperation): string {
+  switch (object) {
+    case ProjectSourceOperation.OPERATION_UNSPECIFIED:
+      return "OPERATION_UNSPECIFIED";
+    case ProjectSourceOperation.WINDOWS:
+      return "WINDOWS";
+    case ProjectSourceOperation.MACOS:
+      return "MACOS";
+    case ProjectSourceOperation.LINUX:
+      return "LINUX";
+    case ProjectSourceOperation.ANDROID:
+      return "ANDROID";
+    case ProjectSourceOperation.IOS:
+      return "IOS";
+    case ProjectSourceOperation.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+>>>>>>> 2bee70f (feat: operation can be array)
 export class ProjectSourceTable {
   id: number;
   name: string;
@@ -578,7 +658,11 @@ export const GenerateSourceData = {
 };
 
 function createBaseProjectSource(): ProjectSource {
+<<<<<<< HEAD
   return { id: 0, projectId: 0, framework: 0, layer: 0, files: "", platform: 0 };
+=======
+  return { id: 0, projectId: 0, framework: 0, layer: 0, files: "", platform: 0, operations: [] };
+>>>>>>> 2bee70f (feat: operation can be array)
 }
 
 export const ProjectSourceData = {
@@ -601,6 +685,14 @@ export const ProjectSourceData = {
     if (message.platform !== 0) {
       writer.uint32(48).int32(message.platform);
     }
+<<<<<<< HEAD
+=======
+    writer.uint32(58).fork();
+    for (const v of message.operations) {
+      writer.int32(v);
+    }
+    writer.ldelim();
+>>>>>>> 2bee70f (feat: operation can be array)
     return writer;
   },
 
@@ -629,6 +721,19 @@ export const ProjectSourceData = {
         case 6:
           message.platform = reader.int32() as any;
           break;
+<<<<<<< HEAD
+=======
+        case 7:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.operations.push(reader.int32() as any);
+            }
+          } else {
+            message.operations.push(reader.int32() as any);
+          }
+          break;
+>>>>>>> 2bee70f (feat: operation can be array)
         default:
           reader.skipType(tag & 7);
           break;
@@ -645,6 +750,12 @@ export const ProjectSourceData = {
       layer: isSet(object.layer) ? projectSourceLayerFromJSON(object.layer) : 0,
       files: isSet(object.files) ? String(object.files) : "",
       platform: isSet(object.platform) ? projectSourcePlatformFromJSON(object.platform) : 0,
+<<<<<<< HEAD
+=======
+      operations: Array.isArray(object?.operations)
+        ? object.operations.map((e: any) => projectSourceOperationFromJSON(e))
+        : [],
+>>>>>>> 2bee70f (feat: operation can be array)
     };
   },
 
@@ -656,6 +767,14 @@ export const ProjectSourceData = {
     message.layer !== undefined && (obj.layer = projectSourceLayerToJSON(message.layer));
     message.files !== undefined && (obj.files = message.files);
     message.platform !== undefined && (obj.platform = projectSourcePlatformToJSON(message.platform));
+<<<<<<< HEAD
+=======
+    if (message.operations) {
+      obj.operations = message.operations.map((e) => projectSourceOperationToJSON(e));
+    } else {
+      obj.operations = [];
+    }
+>>>>>>> 2bee70f (feat: operation can be array)
     return obj;
   },
 
@@ -667,6 +786,10 @@ export const ProjectSourceData = {
     message.layer = object.layer ?? 0;
     message.files = object.files ?? "";
     message.platform = object.platform ?? 0;
+<<<<<<< HEAD
+=======
+    message.operations = object.operations?.map((e) => e) || [];
+>>>>>>> 2bee70f (feat: operation can be array)
     return message;
   },
 };
