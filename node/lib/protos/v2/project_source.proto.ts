@@ -176,6 +176,8 @@ export enum ProjectSourcePlatform {
   PLATFORM_UNSPECIFIED = 0,
   WEB = 1,
   MOBILE = 2,
+  DESKTOP = 3,
+  CROSS_PLATFORM = 4,
   UNRECOGNIZED = -1,
 }
 
@@ -190,6 +192,12 @@ export function projectSourcePlatformFromJSON(object: any): ProjectSourcePlatfor
     case 2:
     case "MOBILE":
       return ProjectSourcePlatform.MOBILE;
+    case 3:
+    case "DESKTOP":
+      return ProjectSourcePlatform.DESKTOP;
+    case 4:
+    case "CROSS_PLATFORM":
+      return ProjectSourcePlatform.CROSS_PLATFORM;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -205,6 +213,10 @@ export function projectSourcePlatformToJSON(object: ProjectSourcePlatform): stri
       return "WEB";
     case ProjectSourcePlatform.MOBILE:
       return "MOBILE";
+    case ProjectSourcePlatform.DESKTOP:
+      return "DESKTOP";
+    case ProjectSourcePlatform.CROSS_PLATFORM:
+      return "CROSS_PLATFORM";
     case ProjectSourcePlatform.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";

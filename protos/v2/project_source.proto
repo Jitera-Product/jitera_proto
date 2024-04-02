@@ -40,6 +40,8 @@ message ProjectSource {
 		PLATFORM_UNSPECIFIED = 0;
 		WEB = 1;
 		MOBILE = 2;
+		DESKTOP = 3;
+		CROSS_PLATFORM = 4;
 	}
 
 	enum Operation {
