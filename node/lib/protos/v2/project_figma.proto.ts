@@ -93,6 +93,10 @@ export function projectFigmaImportResponseStatusToJSON(object: ProjectFigmaImpor
   }
 }
 
+export class Figma {
+  accessToken: string;
+}
+
 function createBaseProjectFigmaImportRequest(): ProjectFigmaImportRequest {
   return { projectGenerateQueueId: 0, projectId: 0, accessToken: "", nodeIds: "", fileKey: "" };
 }
@@ -376,6 +380,53 @@ export const ProjectFigmaImportResponseData = {
     message.tokenUsage = object.tokenUsage ?? 0;
     message.useCaseBlocks = object.useCaseBlocks?.map((e) => BlockData.fromPartial(e)) || [];
     message.errorMessage = object.errorMessage ?? "";
+    return message;
+  },
+};
+
+function createBaseFigma(): Figma {
+  return { accessToken: "" };
+}
+
+export const FigmaData = {
+  encode(message: Figma, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.accessToken !== "") {
+      writer.uint32(10).string(message.accessToken);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Figma {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseFigma();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.accessToken = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Figma {
+    return { accessToken: isSet(object.accessToken) ? String(object.accessToken) : "" };
+  },
+
+  toJSON(message: Figma): unknown {
+    const obj: any = {};
+    message.accessToken !== undefined && (obj.accessToken = message.accessToken);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<Figma>): Figma {
+    const message = createBaseFigma();
+    message.accessToken = object.accessToken ?? "";
     return message;
   },
 };

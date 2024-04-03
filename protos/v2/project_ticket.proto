@@ -1,0 +1,32 @@
+syntax = "proto3";
+package schema.v2;
+
+import "v2/block_core.proto";
+import "v2/project_figma.proto";
+
+message ProjectTicketCreationRequest {
+  int32 project_generate_queue_id = 1;
+  int32 project_id = 2;
+  optional Figma figma = 3;
+  repeated core.Block use_cases = 4;
+}
+
+message ProjectTicketCreationResponse {
+  int32 project_generate_queue_id = 1;
+  int32 project_id = 2;
+  Module module = 3;
+  Status status = 4;
+  int32 token_usage = 5;
+  repeated core.Block tickets = 6;
+  string error_message = 7;
+
+  enum Module {
+    USECASE_TO_TICKET = 0;
+  }
+
+  enum Status {
+    SUCCEEDED = 0;
+    INPROGRESS = 1;
+    FAILED = 2;
+  }
+}
