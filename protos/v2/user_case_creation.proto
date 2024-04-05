@@ -4,10 +4,11 @@ package schema.v2;
 import "google/protobuf/struct.proto";
 import "v2/project_source.proto";
 
-message UserCaseCreation {
+message UseCaseCreation {
 	int32 project_generate_queue_id = 1;
 	int32 project_id = 2;
-  repeated UserCase user_cases = 3;
+  repeated UseCase user_cases = 3;
+	repeated core.Block tickets = 9;
 	repeated HtmlWireframe html_wireframes = 7;
 
 	oneof state {
@@ -37,7 +38,7 @@ message UserCaseCreation {
 	}
 }
 
-message UserCase {
+message UseCase {
 	int32 id = 1;
   string name = 2;
   string node_id = 3;
@@ -46,7 +47,7 @@ message UserCase {
   repeated Content content = 6;
   optional google.protobuf.Struct properties = 7;
   int32 project_id = 8;
-	repeated UserCase children = 9;
+	repeated UseCase children = 9;
 
 	message Content {
 		string type = 1;
@@ -54,7 +55,7 @@ message UserCase {
 	}
 }
 
-message UserCaseCreationResponse {
+message UseCaseCreationResponse {
 	int32 project_generate_queue_id = 1;
 	string message = 2;
 	Module module = 3;
