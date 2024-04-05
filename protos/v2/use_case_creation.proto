@@ -8,7 +8,7 @@ import "v2/block_core.proto";
 message UseCaseCreation {
 	int32 project_generate_queue_id = 1;
 	int32 project_id = 2;
-  repeated UseCase user_cases = 3;
+  repeated UseCase use_cases = 3;
 	repeated core.Block tickets = 9;
 	repeated HtmlWireframe html_wireframes = 7;
 
