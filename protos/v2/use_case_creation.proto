@@ -3,6 +3,7 @@ package schema.v2;
 
 import "google/protobuf/struct.proto";
 import "v2/project_source.proto";
+import "v2/block_core.proto";
 
 message UseCaseCreation {
 	int32 project_generate_queue_id = 1;
