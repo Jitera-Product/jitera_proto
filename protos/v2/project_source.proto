@@ -16,6 +16,7 @@ message ProjectSource {
 	Framework framework = 3;
 	Layer layer = 4;
 	string files = 5;
+	Platform platform = 6;
 
 	enum Framework {
 		FRAMEWORK_UNSPECIFIED = 0;
@@ -25,13 +26,22 @@ message ProjectSource {
 		NESTJS = 4;
 		ROR = 5;
 		LARAVEL = 6;
+		REACT_NATIVE = 7;
 	}
 
 	enum Layer {
 		LAYER_UNSPECIFIED = 0;
 		BACKEND = 1;
 		FRONTEND = 2;
-		MOBILE = 3;
+		MONOREPO = 3;
+	}
+
+	enum Platform {
+		PLATFORM_UNSPECIFIED = 0;
+		WEB = 1;
+		MOBILE = 2;
+		DESKTOP = 3;
+		CROSS_PLATFORM = 4;
 	}
 
 	message Table {

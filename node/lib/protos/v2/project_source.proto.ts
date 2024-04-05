@@ -1,7 +1,7 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-import { Table, TableData } from "../v1/payloads.proto";
 import { StructData } from "../google/protobuf/struct.proto";
+import { Table, TableData } from "../v1/payloads.proto";
 
 export enum ImportBy {
   github = 0,
@@ -60,6 +60,7 @@ export class ProjectSource {
   framework: ProjectSourceFramework;
   layer: ProjectSourceLayer;
   files: string;
+  platform: ProjectSourcePlatform;
 }
 
 export enum ProjectSourceFramework {
@@ -70,6 +71,7 @@ export enum ProjectSourceFramework {
   NESTJS = 4,
   ROR = 5,
   LARAVEL = 6,
+  REACT_NATIVE = 7,
   UNRECOGNIZED = -1,
 }
 
@@ -96,6 +98,9 @@ export function projectSourceFrameworkFromJSON(object: any): ProjectSourceFramew
     case 6:
     case "LARAVEL":
       return ProjectSourceFramework.LARAVEL;
+    case 7:
+    case "REACT_NATIVE":
+      return ProjectSourceFramework.REACT_NATIVE;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -119,6 +124,8 @@ export function projectSourceFrameworkToJSON(object: ProjectSourceFramework): st
       return "ROR";
     case ProjectSourceFramework.LARAVEL:
       return "LARAVEL";
+    case ProjectSourceFramework.REACT_NATIVE:
+      return "REACT_NATIVE";
     case ProjectSourceFramework.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -129,7 +136,7 @@ export enum ProjectSourceLayer {
   LAYER_UNSPECIFIED = 0,
   BACKEND = 1,
   FRONTEND = 2,
-  MOBILE = 3,
+  MONOREPO = 3,
   UNRECOGNIZED = -1,
 }
 
@@ -145,8 +152,8 @@ export function projectSourceLayerFromJSON(object: any): ProjectSourceLayer {
     case "FRONTEND":
       return ProjectSourceLayer.FRONTEND;
     case 3:
-    case "MOBILE":
-      return ProjectSourceLayer.MOBILE;
+    case "MONOREPO":
+      return ProjectSourceLayer.MONOREPO;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -162,9 +169,60 @@ export function projectSourceLayerToJSON(object: ProjectSourceLayer): string {
       return "BACKEND";
     case ProjectSourceLayer.FRONTEND:
       return "FRONTEND";
-    case ProjectSourceLayer.MOBILE:
-      return "MOBILE";
+    case ProjectSourceLayer.MONOREPO:
+      return "MONOREPO";
     case ProjectSourceLayer.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export enum ProjectSourcePlatform {
+  PLATFORM_UNSPECIFIED = 0,
+  WEB = 1,
+  MOBILE = 2,
+  DESKTOP = 3,
+  CROSS_PLATFORM = 4,
+  UNRECOGNIZED = -1,
+}
+
+export function projectSourcePlatformFromJSON(object: any): ProjectSourcePlatform {
+  switch (object) {
+    case 0:
+    case "PLATFORM_UNSPECIFIED":
+      return ProjectSourcePlatform.PLATFORM_UNSPECIFIED;
+    case 1:
+    case "WEB":
+      return ProjectSourcePlatform.WEB;
+    case 2:
+    case "MOBILE":
+      return ProjectSourcePlatform.MOBILE;
+    case 3:
+    case "DESKTOP":
+      return ProjectSourcePlatform.DESKTOP;
+    case 4:
+    case "CROSS_PLATFORM":
+      return ProjectSourcePlatform.CROSS_PLATFORM;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ProjectSourcePlatform.UNRECOGNIZED;
+  }
+}
+
+export function projectSourcePlatformToJSON(object: ProjectSourcePlatform): string {
+  switch (object) {
+    case ProjectSourcePlatform.PLATFORM_UNSPECIFIED:
+      return "PLATFORM_UNSPECIFIED";
+    case ProjectSourcePlatform.WEB:
+      return "WEB";
+    case ProjectSourcePlatform.MOBILE:
+      return "MOBILE";
+    case ProjectSourcePlatform.DESKTOP:
+      return "DESKTOP";
+    case ProjectSourcePlatform.CROSS_PLATFORM:
+      return "CROSS_PLATFORM";
+    case ProjectSourcePlatform.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
@@ -520,7 +578,7 @@ export const GenerateSourceData = {
 };
 
 function createBaseProjectSource(): ProjectSource {
-  return { id: 0, projectId: 0, framework: 0, layer: 0, files: "" };
+  return { id: 0, projectId: 0, framework: 0, layer: 0, files: "", platform: 0 };
 }
 
 export const ProjectSourceData = {
@@ -539,6 +597,9 @@ export const ProjectSourceData = {
     }
     if (message.files !== "") {
       writer.uint32(42).string(message.files);
+    }
+    if (message.platform !== 0) {
+      writer.uint32(48).int32(message.platform);
     }
     return writer;
   },
@@ -565,6 +626,9 @@ export const ProjectSourceData = {
         case 5:
           message.files = reader.string();
           break;
+        case 6:
+          message.platform = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -580,6 +644,7 @@ export const ProjectSourceData = {
       framework: isSet(object.framework) ? projectSourceFrameworkFromJSON(object.framework) : 0,
       layer: isSet(object.layer) ? projectSourceLayerFromJSON(object.layer) : 0,
       files: isSet(object.files) ? String(object.files) : "",
+      platform: isSet(object.platform) ? projectSourcePlatformFromJSON(object.platform) : 0,
     };
   },
 
@@ -590,6 +655,7 @@ export const ProjectSourceData = {
     message.framework !== undefined && (obj.framework = projectSourceFrameworkToJSON(message.framework));
     message.layer !== undefined && (obj.layer = projectSourceLayerToJSON(message.layer));
     message.files !== undefined && (obj.files = message.files);
+    message.platform !== undefined && (obj.platform = projectSourcePlatformToJSON(message.platform));
     return obj;
   },
 
@@ -600,6 +666,7 @@ export const ProjectSourceData = {
     message.framework = object.framework ?? 0;
     message.layer = object.layer ?? 0;
     message.files = object.files ?? "";
+    message.platform = object.platform ?? 0;
     return message;
   },
 };
