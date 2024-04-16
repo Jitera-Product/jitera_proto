@@ -1,6 +1,7 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { Block, BlockData } from "./block_core.proto";
+import { ComponentSpecification, ComponentSpecificationData } from "./component_specification.proto";
 
 export class ProjectFigmaImportRequest {
   projectGenerateQueueId: number;
@@ -25,6 +26,7 @@ export class ProjectFigmaImportResponse {
   tokenUsage: number;
   useCaseBlocks: Block[];
   errorMessage: string;
+  componentSpecifications: ComponentSpecification[];
 }
 
 export enum ProjectFigmaImportResponseModule {
@@ -163,8 +165,7 @@ export const ProjectFigmaImportRequestData = {
 
   toJSON(message: ProjectFigmaImportRequest): unknown {
     const obj: any = {};
-    message.projectGenerateQueueId !== undefined &&
-      (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
+    message.projectGenerateQueueId !== undefined && (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     message.accessToken !== undefined && (obj.accessToken = message.accessToken);
     message.nodeIds !== undefined && (obj.nodeIds = message.nodeIds);
@@ -236,20 +237,17 @@ export const ProjectFigmaSyncRequestData = {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       accessToken: isSet(object.accessToken) ? String(object.accessToken) : "",
-      useCaseBlocks: Array.isArray(object?.useCaseBlocks)
-        ? object.useCaseBlocks.map((e: any) => BlockData.fromJSON(e))
-        : [],
+      useCaseBlocks: Array.isArray(object?.useCaseBlocks) ? object.useCaseBlocks.map((e: any) => BlockData.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: ProjectFigmaSyncRequest): unknown {
     const obj: any = {};
-    message.projectGenerateQueueId !== undefined &&
-      (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
+    message.projectGenerateQueueId !== undefined && (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     message.accessToken !== undefined && (obj.accessToken = message.accessToken);
     if (message.useCaseBlocks) {
-      obj.useCaseBlocks = message.useCaseBlocks.map((e) => e ? BlockData.toJSON(e) : undefined);
+      obj.useCaseBlocks = message.useCaseBlocks.map((e) => (e ? BlockData.toJSON(e) : undefined));
     } else {
       obj.useCaseBlocks = [];
     }
@@ -275,6 +273,7 @@ function createBaseProjectFigmaImportResponse(): ProjectFigmaImportResponse {
     tokenUsage: 0,
     useCaseBlocks: [],
     errorMessage: "",
+    componentSpecifications: [],
   };
 }
 
@@ -300,6 +299,9 @@ export const ProjectFigmaImportResponseData = {
     }
     if (message.errorMessage !== "") {
       writer.uint32(58).string(message.errorMessage);
+    }
+    for (const v of message.componentSpecifications) {
+      ComponentSpecificationData.encode(v!, writer.uint32(66).fork()).ldelim();
     }
     return writer;
   },
@@ -332,6 +334,9 @@ export const ProjectFigmaImportResponseData = {
         case 7:
           message.errorMessage = reader.string();
           break;
+        case 8:
+          message.componentSpecifications.push(ComponentSpecificationData.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -347,27 +352,34 @@ export const ProjectFigmaImportResponseData = {
       module: isSet(object.module) ? projectFigmaImportResponseModuleFromJSON(object.module) : 0,
       status: isSet(object.status) ? projectFigmaImportResponseStatusFromJSON(object.status) : 0,
       tokenUsage: isSet(object.tokenUsage) ? Number(object.tokenUsage) : 0,
-      useCaseBlocks: Array.isArray(object?.useCaseBlocks)
-        ? object.useCaseBlocks.map((e: any) => BlockData.fromJSON(e))
-        : [],
+      useCaseBlocks: Array.isArray(object?.useCaseBlocks) ? object.useCaseBlocks.map((e: any) => BlockData.fromJSON(e)) : [],
       errorMessage: isSet(object.errorMessage) ? String(object.errorMessage) : "",
+      componentSpecifications: Array.isArray(object?.componentSpecifications)
+        ? object.componentSpecifications.map((e: any) => ComponentSpecificationData.fromJSON(e))
+        : [],
     };
   },
 
   toJSON(message: ProjectFigmaImportResponse): unknown {
     const obj: any = {};
-    message.projectGenerateQueueId !== undefined &&
-      (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
+    message.projectGenerateQueueId !== undefined && (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     message.module !== undefined && (obj.module = projectFigmaImportResponseModuleToJSON(message.module));
     message.status !== undefined && (obj.status = projectFigmaImportResponseStatusToJSON(message.status));
     message.tokenUsage !== undefined && (obj.tokenUsage = Math.round(message.tokenUsage));
     if (message.useCaseBlocks) {
-      obj.useCaseBlocks = message.useCaseBlocks.map((e) => e ? BlockData.toJSON(e) : undefined);
+      obj.useCaseBlocks = message.useCaseBlocks.map((e) => (e ? BlockData.toJSON(e) : undefined));
     } else {
       obj.useCaseBlocks = [];
     }
     message.errorMessage !== undefined && (obj.errorMessage = message.errorMessage);
+    if (message.componentSpecifications) {
+      obj.componentSpecifications = message.componentSpecifications.map((e) =>
+        e ? ComponentSpecificationData.toJSON(e) : undefined
+      );
+    } else {
+      obj.componentSpecifications = [];
+    }
     return obj;
   },
 
@@ -380,6 +392,8 @@ export const ProjectFigmaImportResponseData = {
     message.tokenUsage = object.tokenUsage ?? 0;
     message.useCaseBlocks = object.useCaseBlocks?.map((e) => BlockData.fromPartial(e)) || [];
     message.errorMessage = object.errorMessage ?? "";
+    message.componentSpecifications =
+      object.componentSpecifications?.map((e) => ComponentSpecificationData.fromPartial(e)) || [];
     return message;
   },
 };
@@ -433,9 +447,14 @@ export const FigmaData = {
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
-type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
+type DeepPartial<T> = T extends Builtin
+  ? T
+  : T extends Array<infer U>
+  ? Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U>
+  ? ReadonlyArray<DeepPartial<U>>
+  : T extends {}
+  ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
 function isSet(value: any): boolean {

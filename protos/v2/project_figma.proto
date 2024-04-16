@@ -2,6 +2,7 @@ syntax = "proto3";
 package schema.v2;
 
 import "v2/block_core.proto";
+import "v2/component_specification.proto";
 
 message ProjectFigmaImportRequest {
   int32 project_generate_queue_id = 1;
@@ -26,6 +27,7 @@ message ProjectFigmaImportResponse {
   int32 token_usage = 5;
   repeated core.Block use_case_blocks = 6;
   string error_message = 7;
+  repeated ComponentSpecification component_specifications = 8;
 
   enum Module {
     FIGMA_TO_NATURAL_LANGUAGE = 0;
