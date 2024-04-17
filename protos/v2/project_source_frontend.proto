@@ -25,6 +25,7 @@ message FrontendUIChanges {
   message FigmaScreen {
     string node_id = 1;
     string file_key = 2;
+		optional string image_uri = 3;
   }
   message HtmlInfo {
 		repeated HtmlScreen screens = 1;

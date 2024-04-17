@@ -40,6 +40,7 @@ export class FrontendUIChangesHtmlScreen {
 export class FrontendUIChangesFigmaScreen {
   nodeId: string;
   fileKey: string;
+  imageUri?: string | undefined;
 }
 
 export class FrontendUIChangesHtmlInfo {
@@ -305,6 +306,9 @@ export const FrontendUIChangesFigmaScreenData = {
     if (message.fileKey !== "") {
       writer.uint32(18).string(message.fileKey);
     }
+    if (message.imageUri !== undefined) {
+      writer.uint32(26).string(message.imageUri);
+    }
     return writer;
   },
 
@@ -321,6 +325,9 @@ export const FrontendUIChangesFigmaScreenData = {
         case 2:
           message.fileKey = reader.string();
           break;
+        case 3:
+          message.imageUri = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -333,6 +340,7 @@ export const FrontendUIChangesFigmaScreenData = {
     return {
       nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
       fileKey: isSet(object.fileKey) ? String(object.fileKey) : "",
+      imageUri: isSet(object.imageUri) ? String(object.imageUri) : undefined,
     };
   },
 
@@ -340,6 +348,7 @@ export const FrontendUIChangesFigmaScreenData = {
     const obj: any = {};
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
     message.fileKey !== undefined && (obj.fileKey = message.fileKey);
+    message.imageUri !== undefined && (obj.imageUri = message.imageUri);
     return obj;
   },
 
@@ -347,6 +356,7 @@ export const FrontendUIChangesFigmaScreenData = {
     const message = createBaseFrontendUIChangesFigmaScreen();
     message.nodeId = object.nodeId ?? "";
     message.fileKey = object.fileKey ?? "";
+    message.imageUri = object.imageUri ?? undefined;
     return message;
   },
 };
