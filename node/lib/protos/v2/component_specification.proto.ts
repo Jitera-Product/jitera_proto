@@ -3,20 +3,21 @@ import * as _m0 from "protobufjs/minimal";
 
 export class ComponentSpecification {
   type: string;
+  title: string;
   description: string;
   figmaNodeId: string;
-  boundingBox: ComponentSpecificationBoundingBox[];
+  boundingBox?: ComponentSpecificationBoundingBox;
 }
 
 export class ComponentSpecificationBoundingBox {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
+  top: number;
+  left: number;
+  right: number;
+  bottom: number;
 }
 
 function createBaseComponentSpecification(): ComponentSpecification {
-  return { type: "", description: "", figmaNodeId: "", boundingBox: [] };
+  return { type: "", title: "", description: "", figmaNodeId: "" };
 }
 
 export const ComponentSpecificationData = {
@@ -24,14 +25,17 @@ export const ComponentSpecificationData = {
     if (message.type !== "") {
       writer.uint32(10).string(message.type);
     }
+    if (message.title !== "") {
+      writer.uint32(18).string(message.title);
+    }
     if (message.description !== "") {
-      writer.uint32(18).string(message.description);
+      writer.uint32(26).string(message.description);
     }
     if (message.figmaNodeId !== "") {
-      writer.uint32(26).string(message.figmaNodeId);
+      writer.uint32(34).string(message.figmaNodeId);
     }
-    for (const v of message.boundingBox) {
-      ComponentSpecificationBoundingBoxData.encode(v!, writer.uint32(34).fork()).ldelim();
+    if (message.boundingBox !== undefined) {
+      ComponentSpecificationBoundingBoxData.encode(message.boundingBox, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -47,13 +51,16 @@ export const ComponentSpecificationData = {
           message.type = reader.string();
           break;
         case 2:
-          message.description = reader.string();
+          message.title = reader.string();
           break;
         case 3:
-          message.figmaNodeId = reader.string();
+          message.description = reader.string();
           break;
         case 4:
-          message.boundingBox.push(ComponentSpecificationBoundingBoxData.decode(reader, reader.uint32()));
+          message.figmaNodeId = reader.string();
+          break;
+        case 5:
+          message.boundingBox = ComponentSpecificationBoundingBoxData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -66,54 +73,57 @@ export const ComponentSpecificationData = {
   fromJSON(object: any): ComponentSpecification {
     return {
       type: isSet(object.type) ? String(object.type) : "",
+      title: isSet(object.title) ? String(object.title) : "",
       description: isSet(object.description) ? String(object.description) : "",
       figmaNodeId: isSet(object.figmaNodeId) ? String(object.figmaNodeId) : "",
-      boundingBox: Array.isArray(object?.boundingBox)
-        ? object.boundingBox.map((e: any) => ComponentSpecificationBoundingBoxData.fromJSON(e))
-        : [],
+      boundingBox: isSet(object.boundingBox)
+        ? ComponentSpecificationBoundingBoxData.fromJSON(object.boundingBox)
+        : undefined,
     };
   },
 
   toJSON(message: ComponentSpecification): unknown {
     const obj: any = {};
     message.type !== undefined && (obj.type = message.type);
+    message.title !== undefined && (obj.title = message.title);
     message.description !== undefined && (obj.description = message.description);
     message.figmaNodeId !== undefined && (obj.figmaNodeId = message.figmaNodeId);
-    if (message.boundingBox) {
-      obj.boundingBox = message.boundingBox.map((e) => e ? ComponentSpecificationBoundingBoxData.toJSON(e) : undefined);
-    } else {
-      obj.boundingBox = [];
-    }
+    message.boundingBox !== undefined && (obj.boundingBox = message.boundingBox
+      ? ComponentSpecificationBoundingBoxData.toJSON(message.boundingBox)
+      : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<ComponentSpecification>): ComponentSpecification {
     const message = createBaseComponentSpecification();
     message.type = object.type ?? "";
+    message.title = object.title ?? "";
     message.description = object.description ?? "";
     message.figmaNodeId = object.figmaNodeId ?? "";
-    message.boundingBox = object.boundingBox?.map((e) => ComponentSpecificationBoundingBoxData.fromPartial(e)) || [];
+    message.boundingBox = (object.boundingBox !== undefined && object.boundingBox !== null)
+      ? ComponentSpecificationBoundingBoxData.fromPartial(object.boundingBox)
+      : undefined;
     return message;
   },
 };
 
 function createBaseComponentSpecificationBoundingBox(): ComponentSpecificationBoundingBox {
-  return { x: 0, y: 0, width: 0, height: 0 };
+  return { top: 0, left: 0, right: 0, bottom: 0 };
 }
 
 export const ComponentSpecificationBoundingBoxData = {
   encode(message: ComponentSpecificationBoundingBox, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.x !== 0) {
-      writer.uint32(13).float(message.x);
+    if (message.top !== 0) {
+      writer.uint32(13).float(message.top);
     }
-    if (message.y !== 0) {
-      writer.uint32(21).float(message.y);
+    if (message.left !== 0) {
+      writer.uint32(21).float(message.left);
     }
-    if (message.width !== 0) {
-      writer.uint32(29).float(message.width);
+    if (message.right !== 0) {
+      writer.uint32(29).float(message.right);
     }
-    if (message.height !== 0) {
-      writer.uint32(37).float(message.height);
+    if (message.bottom !== 0) {
+      writer.uint32(37).float(message.bottom);
     }
     return writer;
   },
@@ -126,16 +136,16 @@ export const ComponentSpecificationBoundingBoxData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.x = reader.float();
+          message.top = reader.float();
           break;
         case 2:
-          message.y = reader.float();
+          message.left = reader.float();
           break;
         case 3:
-          message.width = reader.float();
+          message.right = reader.float();
           break;
         case 4:
-          message.height = reader.float();
+          message.bottom = reader.float();
           break;
         default:
           reader.skipType(tag & 7);
@@ -147,28 +157,28 @@ export const ComponentSpecificationBoundingBoxData = {
 
   fromJSON(object: any): ComponentSpecificationBoundingBox {
     return {
-      x: isSet(object.x) ? Number(object.x) : 0,
-      y: isSet(object.y) ? Number(object.y) : 0,
-      width: isSet(object.width) ? Number(object.width) : 0,
-      height: isSet(object.height) ? Number(object.height) : 0,
+      top: isSet(object.top) ? Number(object.top) : 0,
+      left: isSet(object.left) ? Number(object.left) : 0,
+      right: isSet(object.right) ? Number(object.right) : 0,
+      bottom: isSet(object.bottom) ? Number(object.bottom) : 0,
     };
   },
 
   toJSON(message: ComponentSpecificationBoundingBox): unknown {
     const obj: any = {};
-    message.x !== undefined && (obj.x = message.x);
-    message.y !== undefined && (obj.y = message.y);
-    message.width !== undefined && (obj.width = message.width);
-    message.height !== undefined && (obj.height = message.height);
+    message.top !== undefined && (obj.top = message.top);
+    message.left !== undefined && (obj.left = message.left);
+    message.right !== undefined && (obj.right = message.right);
+    message.bottom !== undefined && (obj.bottom = message.bottom);
     return obj;
   },
 
   fromPartial(object: DeepPartial<ComponentSpecificationBoundingBox>): ComponentSpecificationBoundingBox {
     const message = createBaseComponentSpecificationBoundingBox();
-    message.x = object.x ?? 0;
-    message.y = object.y ?? 0;
-    message.width = object.width ?? 0;
-    message.height = object.height ?? 0;
+    message.top = object.top ?? 0;
+    message.left = object.left ?? 0;
+    message.right = object.right ?? 0;
+    message.bottom = object.bottom ?? 0;
     return message;
   },
 };
