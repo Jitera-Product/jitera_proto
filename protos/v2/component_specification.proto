@@ -1,0 +1,17 @@
+syntax = "proto3";
+package schema.v2;
+
+message ComponentSpecification {
+  string type = 1;
+  string title = 2;
+  string description = 3;
+  string figmaNodeId = 4;
+  BoundingBox boundingBox = 5;
+
+  message BoundingBox {
+    float top = 1;
+    float left = 2;
+    float right = 3;
+    float bottom = 4;
+  }
+}
