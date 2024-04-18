@@ -31,6 +31,7 @@ message ProjectFigmaImportResponse {
 
   enum Module {
     FIGMA_TO_NATURAL_LANGUAGE = 0;
+    FIGMA_TO_COMPONENT_SPECIFICATION = 1;
   }
 
   enum Status {

@@ -31,6 +31,7 @@ export class ProjectFigmaImportResponse {
 
 export enum ProjectFigmaImportResponseModule {
   FIGMA_TO_NATURAL_LANGUAGE = 0,
+  FIGMA_TO_COMPONENT_SPECIFICATION = 1,
   UNRECOGNIZED = -1,
 }
 
@@ -39,6 +40,9 @@ export function projectFigmaImportResponseModuleFromJSON(object: any): ProjectFi
     case 0:
     case "FIGMA_TO_NATURAL_LANGUAGE":
       return ProjectFigmaImportResponseModule.FIGMA_TO_NATURAL_LANGUAGE;
+    case 1:
+    case "FIGMA_TO_COMPONENT_SPECIFICATION":
+      return ProjectFigmaImportResponseModule.FIGMA_TO_COMPONENT_SPECIFICATION;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -50,6 +54,8 @@ export function projectFigmaImportResponseModuleToJSON(object: ProjectFigmaImpor
   switch (object) {
     case ProjectFigmaImportResponseModule.FIGMA_TO_NATURAL_LANGUAGE:
       return "FIGMA_TO_NATURAL_LANGUAGE";
+    case ProjectFigmaImportResponseModule.FIGMA_TO_COMPONENT_SPECIFICATION:
+      return "FIGMA_TO_COMPONENT_SPECIFICATION";
     case ProjectFigmaImportResponseModule.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -165,7 +171,8 @@ export const ProjectFigmaImportRequestData = {
 
   toJSON(message: ProjectFigmaImportRequest): unknown {
     const obj: any = {};
-    message.projectGenerateQueueId !== undefined && (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
+    message.projectGenerateQueueId !== undefined &&
+      (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     message.accessToken !== undefined && (obj.accessToken = message.accessToken);
     message.nodeIds !== undefined && (obj.nodeIds = message.nodeIds);
@@ -237,17 +244,20 @@ export const ProjectFigmaSyncRequestData = {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       accessToken: isSet(object.accessToken) ? String(object.accessToken) : "",
-      useCaseBlocks: Array.isArray(object?.useCaseBlocks) ? object.useCaseBlocks.map((e: any) => BlockData.fromJSON(e)) : [],
+      useCaseBlocks: Array.isArray(object?.useCaseBlocks)
+        ? object.useCaseBlocks.map((e: any) => BlockData.fromJSON(e))
+        : [],
     };
   },
 
   toJSON(message: ProjectFigmaSyncRequest): unknown {
     const obj: any = {};
-    message.projectGenerateQueueId !== undefined && (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
+    message.projectGenerateQueueId !== undefined &&
+      (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     message.accessToken !== undefined && (obj.accessToken = message.accessToken);
     if (message.useCaseBlocks) {
-      obj.useCaseBlocks = message.useCaseBlocks.map((e) => (e ? BlockData.toJSON(e) : undefined));
+      obj.useCaseBlocks = message.useCaseBlocks.map((e) => e ? BlockData.toJSON(e) : undefined);
     } else {
       obj.useCaseBlocks = [];
     }
@@ -352,7 +362,9 @@ export const ProjectFigmaImportResponseData = {
       module: isSet(object.module) ? projectFigmaImportResponseModuleFromJSON(object.module) : 0,
       status: isSet(object.status) ? projectFigmaImportResponseStatusFromJSON(object.status) : 0,
       tokenUsage: isSet(object.tokenUsage) ? Number(object.tokenUsage) : 0,
-      useCaseBlocks: Array.isArray(object?.useCaseBlocks) ? object.useCaseBlocks.map((e: any) => BlockData.fromJSON(e)) : [],
+      useCaseBlocks: Array.isArray(object?.useCaseBlocks)
+        ? object.useCaseBlocks.map((e: any) => BlockData.fromJSON(e))
+        : [],
       errorMessage: isSet(object.errorMessage) ? String(object.errorMessage) : "",
       componentSpecifications: Array.isArray(object?.componentSpecifications)
         ? object.componentSpecifications.map((e: any) => ComponentSpecificationData.fromJSON(e))
@@ -362,13 +374,14 @@ export const ProjectFigmaImportResponseData = {
 
   toJSON(message: ProjectFigmaImportResponse): unknown {
     const obj: any = {};
-    message.projectGenerateQueueId !== undefined && (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
+    message.projectGenerateQueueId !== undefined &&
+      (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     message.module !== undefined && (obj.module = projectFigmaImportResponseModuleToJSON(message.module));
     message.status !== undefined && (obj.status = projectFigmaImportResponseStatusToJSON(message.status));
     message.tokenUsage !== undefined && (obj.tokenUsage = Math.round(message.tokenUsage));
     if (message.useCaseBlocks) {
-      obj.useCaseBlocks = message.useCaseBlocks.map((e) => (e ? BlockData.toJSON(e) : undefined));
+      obj.useCaseBlocks = message.useCaseBlocks.map((e) => e ? BlockData.toJSON(e) : undefined);
     } else {
       obj.useCaseBlocks = [];
     }
@@ -447,14 +460,9 @@ export const FigmaData = {
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
-type DeepPartial<T> = T extends Builtin
-  ? T
-  : T extends Array<infer U>
-  ? Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U>
-  ? ReadonlyArray<DeepPartial<U>>
-  : T extends {}
-  ? { [K in keyof T]?: DeepPartial<T[K]> }
+type DeepPartial<T> = T extends Builtin ? T
+  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
 function isSet(value: any): boolean {
