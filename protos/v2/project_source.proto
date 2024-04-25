@@ -270,5 +270,5 @@ message ProjectPlugin {
 
 message ProjectPluginTable {
 	int32 id = 1;
-	repeated schema.v1.Table table = 2;
+	schema.v1.Table table = 2;
 }
