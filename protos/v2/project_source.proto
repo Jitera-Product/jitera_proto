@@ -257,14 +257,9 @@ message UseCaseRemoval {
 }
 
 message ProjectPlugin {
-	enum PluginStatus {
-		ENABLED = 0;
-		DISBALED = 1;
-	}
-
 	int32 id = 1;
 	string name = 3;
-	PluginStatus status = 4;
+	string status = 4;
 	repeated ProjectPluginTable project_plugin_tables = 5;
 }
 
