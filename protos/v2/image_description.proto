@@ -1,0 +1,38 @@
+syntax = "proto3";
+package schema.v2;
+
+import "v2/component_specification.proto";
+
+message ImageToDescriptionRequest {
+  int32 project_generate_queue_id = 1;
+  int32 project_id = 2;
+  repeated Image images = 3;
+
+	message Image {
+    string id = 1;
+    string source_type = 2;
+		string url = 3;
+		string html = 4;
+	}
+}
+
+message ImageToDescriptionResponse {
+  int32 project_generate_queue_id = 1;
+  int32 project_id = 2;
+	Status status = 3;
+  repeated Image images = 4;
+  int32 token_usage = 5;
+  string error_message = 6;
+
+  enum Status {
+    SUCCEEDED = 0;
+    INPROGRESS = 1;
+    FAILED = 2;
+  }
+
+	message Image {
+		string id = 1;
+    string source_type = 2;
+		repeated ComponentSpecification component_specifications = 3;
+	}
+}
