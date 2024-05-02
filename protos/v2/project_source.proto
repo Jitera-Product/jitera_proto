@@ -125,6 +125,7 @@ message ERDConfig {
 	message Local {
 		string source_path = 1;
 		repeated schema.v1.Table tables = 2;
+		repeated ProjectPlugin project_plugins = 3;
 	}
 
 	message Import {
@@ -253,4 +254,16 @@ message UseCaseRemoval {
 		google.protobuf.Struct properties = 6;
 		repeated string children = 7;
 	}
+}
+
+message ProjectPlugin {
+	int32 id = 1;
+	string name = 3;
+	string status = 4;
+	repeated ProjectPluginTable project_plugin_tables = 5;
+}
+
+message ProjectPluginTable {
+	int32 id = 1;
+	schema.v1.Table table = 2;
 }

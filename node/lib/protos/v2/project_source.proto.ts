@@ -394,6 +394,7 @@ export function eRDConfigTableChangedTypeToJSON(object: ERDConfigTableChangedTyp
 export class ERDConfigLocal {
   sourcePath: string;
   tables: Table[];
+  projectPlugins: ProjectPlugin[];
 }
 
 export class ERDConfigImport {
@@ -508,6 +509,18 @@ export class UseCaseRemovalBlock {
   parentNodeId: string;
   properties?: { [key: string]: any };
   children: string[];
+}
+
+export class ProjectPlugin {
+  id: number;
+  name: string;
+  status: string;
+  projectPluginTables: ProjectPluginTable[];
+}
+
+export class ProjectPluginTable {
+  id: number;
+  table?: Table;
 }
 
 function createBaseGenerateSource(): GenerateSource {
@@ -1283,7 +1296,7 @@ export const ERDConfigData = {
 };
 
 function createBaseERDConfigLocal(): ERDConfigLocal {
-  return { sourcePath: "", tables: [] };
+  return { sourcePath: "", tables: [], projectPlugins: [] };
 }
 
 export const ERDConfigLocalData = {
@@ -1293,6 +1306,9 @@ export const ERDConfigLocalData = {
     }
     for (const v of message.tables) {
       TableData.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    for (const v of message.projectPlugins) {
+      ProjectPluginData.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -1310,6 +1326,9 @@ export const ERDConfigLocalData = {
         case 2:
           message.tables.push(TableData.decode(reader, reader.uint32()));
           break;
+        case 3:
+          message.projectPlugins.push(ProjectPluginData.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1322,6 +1341,9 @@ export const ERDConfigLocalData = {
     return {
       sourcePath: isSet(object.sourcePath) ? String(object.sourcePath) : "",
       tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => TableData.fromJSON(e)) : [],
+      projectPlugins: Array.isArray(object?.projectPlugins)
+        ? object.projectPlugins.map((e: any) => ProjectPluginData.fromJSON(e))
+        : [],
     };
   },
 
@@ -1333,6 +1355,11 @@ export const ERDConfigLocalData = {
     } else {
       obj.tables = [];
     }
+    if (message.projectPlugins) {
+      obj.projectPlugins = message.projectPlugins.map((e) => e ? ProjectPluginData.toJSON(e) : undefined);
+    } else {
+      obj.projectPlugins = [];
+    }
     return obj;
   },
 
@@ -1340,6 +1367,7 @@ export const ERDConfigLocalData = {
     const message = createBaseERDConfigLocal();
     message.sourcePath = object.sourcePath ?? "";
     message.tables = object.tables?.map((e) => TableData.fromPartial(e)) || [];
+    message.projectPlugins = object.projectPlugins?.map((e) => ProjectPluginData.fromPartial(e)) || [];
     return message;
   },
 };
@@ -2693,6 +2721,150 @@ export const UseCaseRemovalBlockData = {
     message.parentNodeId = object.parentNodeId ?? "";
     message.properties = object.properties ?? undefined;
     message.children = object.children?.map((e) => e) || [];
+    return message;
+  },
+};
+
+function createBaseProjectPlugin(): ProjectPlugin {
+  return { id: 0, name: "", status: "", projectPluginTables: [] };
+}
+
+export const ProjectPluginData = {
+  encode(message: ProjectPlugin, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
+    if (message.name !== "") {
+      writer.uint32(26).string(message.name);
+    }
+    if (message.status !== "") {
+      writer.uint32(34).string(message.status);
+    }
+    for (const v of message.projectPluginTables) {
+      ProjectPluginTableData.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectPlugin {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseProjectPlugin();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.int32();
+          break;
+        case 3:
+          message.name = reader.string();
+          break;
+        case 4:
+          message.status = reader.string();
+          break;
+        case 5:
+          message.projectPluginTables.push(ProjectPluginTableData.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ProjectPlugin {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      name: isSet(object.name) ? String(object.name) : "",
+      status: isSet(object.status) ? String(object.status) : "",
+      projectPluginTables: Array.isArray(object?.projectPluginTables)
+        ? object.projectPluginTables.map((e: any) => ProjectPluginTableData.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: ProjectPlugin): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.name !== undefined && (obj.name = message.name);
+    message.status !== undefined && (obj.status = message.status);
+    if (message.projectPluginTables) {
+      obj.projectPluginTables = message.projectPluginTables.map((e) =>
+        e ? ProjectPluginTableData.toJSON(e) : undefined
+      );
+    } else {
+      obj.projectPluginTables = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ProjectPlugin>): ProjectPlugin {
+    const message = createBaseProjectPlugin();
+    message.id = object.id ?? 0;
+    message.name = object.name ?? "";
+    message.status = object.status ?? "";
+    message.projectPluginTables = object.projectPluginTables?.map((e) => ProjectPluginTableData.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseProjectPluginTable(): ProjectPluginTable {
+  return { id: 0 };
+}
+
+export const ProjectPluginTableData = {
+  encode(message: ProjectPluginTable, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
+    if (message.table !== undefined) {
+      TableData.encode(message.table, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectPluginTable {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseProjectPluginTable();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.int32();
+          break;
+        case 2:
+          message.table = TableData.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ProjectPluginTable {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      table: isSet(object.table) ? TableData.fromJSON(object.table) : undefined,
+    };
+  },
+
+  toJSON(message: ProjectPluginTable): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.table !== undefined && (obj.table = message.table ? TableData.toJSON(message.table) : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ProjectPluginTable>): ProjectPluginTable {
+    const message = createBaseProjectPluginTable();
+    message.id = object.id ?? 0;
+    message.table = (object.table !== undefined && object.table !== null)
+      ? TableData.fromPartial(object.table)
+      : undefined;
     return message;
   },
 };
