@@ -3,6 +3,7 @@ package schema.v2;
 
 import "google/protobuf/struct.proto";
 import "v2/project_source.proto";
+import "v2/component_specification.proto";
 
 message FrontendUIChanges {
 	int32 project_generate_queue_id = 1;
@@ -21,11 +22,13 @@ message FrontendUIChanges {
   message HtmlScreen {
     int32 id = 1;
     string html_code = 2;
+		repeated ComponentSpecification component_specifications = 4;
   }
   message FigmaScreen {
     string node_id = 1;
     string file_key = 2;
 		optional string image_uri = 3;
+		repeated ComponentSpecification component_specifications = 4;
   }
   message HtmlInfo {
 		repeated HtmlScreen screens = 1;

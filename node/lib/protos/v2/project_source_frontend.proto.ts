@@ -1,6 +1,7 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { StructData } from "../google/protobuf/struct.proto";
+import { ComponentSpecification, ComponentSpecificationData } from "./component_specification.proto";
 import {
   BlockDiff,
   BlockDiffData,
@@ -35,12 +36,14 @@ export class FrontendUIChanges {
 export class FrontendUIChangesHtmlScreen {
   id: number;
   htmlCode: string;
+  componentSpecifications: ComponentSpecification[];
 }
 
 export class FrontendUIChangesFigmaScreen {
   nodeId: string;
   fileKey: string;
   imageUri?: string | undefined;
+  componentSpecifications: ComponentSpecification[];
 }
 
 export class FrontendUIChangesHtmlInfo {
@@ -237,7 +240,7 @@ export const FrontendUIChangesData = {
 };
 
 function createBaseFrontendUIChangesHtmlScreen(): FrontendUIChangesHtmlScreen {
-  return { id: 0, htmlCode: "" };
+  return { id: 0, htmlCode: "", componentSpecifications: [] };
 }
 
 export const FrontendUIChangesHtmlScreenData = {
@@ -247,6 +250,9 @@ export const FrontendUIChangesHtmlScreenData = {
     }
     if (message.htmlCode !== "") {
       writer.uint32(18).string(message.htmlCode);
+    }
+    for (const v of message.componentSpecifications) {
+      ComponentSpecificationData.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -264,6 +270,9 @@ export const FrontendUIChangesHtmlScreenData = {
         case 2:
           message.htmlCode = reader.string();
           break;
+        case 4:
+          message.componentSpecifications.push(ComponentSpecificationData.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -276,6 +285,9 @@ export const FrontendUIChangesHtmlScreenData = {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
       htmlCode: isSet(object.htmlCode) ? String(object.htmlCode) : "",
+      componentSpecifications: Array.isArray(object?.componentSpecifications)
+        ? object.componentSpecifications.map((e: any) => ComponentSpecificationData.fromJSON(e))
+        : [],
     };
   },
 
@@ -283,6 +295,13 @@ export const FrontendUIChangesHtmlScreenData = {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
     message.htmlCode !== undefined && (obj.htmlCode = message.htmlCode);
+    if (message.componentSpecifications) {
+      obj.componentSpecifications = message.componentSpecifications.map((e) =>
+        e ? ComponentSpecificationData.toJSON(e) : undefined
+      );
+    } else {
+      obj.componentSpecifications = [];
+    }
     return obj;
   },
 
@@ -290,12 +309,14 @@ export const FrontendUIChangesHtmlScreenData = {
     const message = createBaseFrontendUIChangesHtmlScreen();
     message.id = object.id ?? 0;
     message.htmlCode = object.htmlCode ?? "";
+    message.componentSpecifications =
+      object.componentSpecifications?.map((e) => ComponentSpecificationData.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseFrontendUIChangesFigmaScreen(): FrontendUIChangesFigmaScreen {
-  return { nodeId: "", fileKey: "" };
+  return { nodeId: "", fileKey: "", componentSpecifications: [] };
 }
 
 export const FrontendUIChangesFigmaScreenData = {
@@ -308,6 +329,9 @@ export const FrontendUIChangesFigmaScreenData = {
     }
     if (message.imageUri !== undefined) {
       writer.uint32(26).string(message.imageUri);
+    }
+    for (const v of message.componentSpecifications) {
+      ComponentSpecificationData.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -328,6 +352,9 @@ export const FrontendUIChangesFigmaScreenData = {
         case 3:
           message.imageUri = reader.string();
           break;
+        case 4:
+          message.componentSpecifications.push(ComponentSpecificationData.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -341,6 +368,9 @@ export const FrontendUIChangesFigmaScreenData = {
       nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
       fileKey: isSet(object.fileKey) ? String(object.fileKey) : "",
       imageUri: isSet(object.imageUri) ? String(object.imageUri) : undefined,
+      componentSpecifications: Array.isArray(object?.componentSpecifications)
+        ? object.componentSpecifications.map((e: any) => ComponentSpecificationData.fromJSON(e))
+        : [],
     };
   },
 
@@ -349,6 +379,13 @@ export const FrontendUIChangesFigmaScreenData = {
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
     message.fileKey !== undefined && (obj.fileKey = message.fileKey);
     message.imageUri !== undefined && (obj.imageUri = message.imageUri);
+    if (message.componentSpecifications) {
+      obj.componentSpecifications = message.componentSpecifications.map((e) =>
+        e ? ComponentSpecificationData.toJSON(e) : undefined
+      );
+    } else {
+      obj.componentSpecifications = [];
+    }
     return obj;
   },
 
@@ -357,6 +394,8 @@ export const FrontendUIChangesFigmaScreenData = {
     message.nodeId = object.nodeId ?? "";
     message.fileKey = object.fileKey ?? "";
     message.imageUri = object.imageUri ?? undefined;
+    message.componentSpecifications =
+      object.componentSpecifications?.map((e) => ComponentSpecificationData.fromPartial(e)) || [];
     return message;
   },
 };
