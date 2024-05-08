@@ -22,7 +22,7 @@ message FrontendUIChanges {
   message HtmlScreen {
     int32 id = 1;
     string html_code = 2;
-		repeated ComponentSpecification component_specifications = 4;
+		repeated ComponentSpecification component_specifications = 3;
   }
   message FigmaScreen {
     string node_id = 1;

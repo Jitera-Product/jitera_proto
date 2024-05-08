@@ -252,7 +252,7 @@ export const FrontendUIChangesHtmlScreenData = {
       writer.uint32(18).string(message.htmlCode);
     }
     for (const v of message.componentSpecifications) {
-      ComponentSpecificationData.encode(v!, writer.uint32(34).fork()).ldelim();
+      ComponentSpecificationData.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -270,7 +270,7 @@ export const FrontendUIChangesHtmlScreenData = {
         case 2:
           message.htmlCode = reader.string();
           break;
-        case 4:
+        case 3:
           message.componentSpecifications.push(ComponentSpecificationData.decode(reader, reader.uint32()));
           break;
         default:
