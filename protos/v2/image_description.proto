@@ -34,5 +34,6 @@ message ImageToDescriptionResponse {
 		string id = 1;
     string source_type = 2;
 		repeated ComponentSpecification component_specifications = 3;
+    int32 image_width = 4;
 	}
 }

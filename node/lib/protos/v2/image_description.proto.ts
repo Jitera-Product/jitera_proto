@@ -1,7 +1,6 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { ComponentSpecification, ComponentSpecificationData } from "./component_specification.proto";
-
 export class ImageToDescriptionRequest {
   projectGenerateQueueId: number;
   projectId: number;
@@ -67,6 +66,7 @@ export class ImageToDescriptionResponseImage {
   id: string;
   sourceType: string;
   componentSpecifications: ComponentSpecification[];
+  imageWidth: number;
 }
 
 function createBaseImageToDescriptionRequest(): ImageToDescriptionRequest {
@@ -123,10 +123,11 @@ export const ImageToDescriptionRequestData = {
 
   toJSON(message: ImageToDescriptionRequest): unknown {
     const obj: any = {};
-    message.projectGenerateQueueId !== undefined && (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
+    message.projectGenerateQueueId !== undefined &&
+      (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     if (message.images) {
-      obj.images = message.images.map((e) => (e ? ImageToDescriptionRequestImageData.toJSON(e) : undefined));
+      obj.images = message.images.map((e) => e ? ImageToDescriptionRequestImageData.toJSON(e) : undefined);
     } else {
       obj.images = [];
     }
@@ -293,11 +294,12 @@ export const ImageToDescriptionResponseData = {
 
   toJSON(message: ImageToDescriptionResponse): unknown {
     const obj: any = {};
-    message.projectGenerateQueueId !== undefined && (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
+    message.projectGenerateQueueId !== undefined &&
+      (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     message.status !== undefined && (obj.status = imageToDescriptionResponseStatusToJSON(message.status));
     if (message.images) {
-      obj.images = message.images.map((e) => (e ? ImageToDescriptionResponseImageData.toJSON(e) : undefined));
+      obj.images = message.images.map((e) => e ? ImageToDescriptionResponseImageData.toJSON(e) : undefined);
     } else {
       obj.images = [];
     }
@@ -319,7 +321,7 @@ export const ImageToDescriptionResponseData = {
 };
 
 function createBaseImageToDescriptionResponseImage(): ImageToDescriptionResponseImage {
-  return { id: "", sourceType: "", componentSpecifications: [] };
+  return { id: "", sourceType: "", componentSpecifications: [], imageWidth: 0 };
 }
 
 export const ImageToDescriptionResponseImageData = {
@@ -332,6 +334,9 @@ export const ImageToDescriptionResponseImageData = {
     }
     for (const v of message.componentSpecifications) {
       ComponentSpecificationData.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.imageWidth !== 0) {
+      writer.uint32(32).int32(message.imageWidth);
     }
     return writer;
   },
@@ -352,6 +357,9 @@ export const ImageToDescriptionResponseImageData = {
         case 3:
           message.componentSpecifications.push(ComponentSpecificationData.decode(reader, reader.uint32()));
           break;
+        case 4:
+          message.imageWidth = reader.int32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -367,6 +375,7 @@ export const ImageToDescriptionResponseImageData = {
       componentSpecifications: Array.isArray(object?.componentSpecifications)
         ? object.componentSpecifications.map((e: any) => ComponentSpecificationData.fromJSON(e))
         : [],
+      imageWidth: isSet(object.imageWidth) ? Number(object.imageWidth) : 0,
     };
   },
 
@@ -381,6 +390,7 @@ export const ImageToDescriptionResponseImageData = {
     } else {
       obj.componentSpecifications = [];
     }
+    message.imageWidth !== undefined && (obj.imageWidth = Math.round(message.imageWidth));
     return obj;
   },
 
@@ -390,20 +400,16 @@ export const ImageToDescriptionResponseImageData = {
     message.sourceType = object.sourceType ?? "";
     message.componentSpecifications =
       object.componentSpecifications?.map((e) => ComponentSpecificationData.fromPartial(e)) || [];
+    message.imageWidth = object.imageWidth ?? 0;
     return message;
   },
 };
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
-type DeepPartial<T> = T extends Builtin
-  ? T
-  : T extends Array<infer U>
-  ? Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U>
-  ? ReadonlyArray<DeepPartial<U>>
-  : T extends {}
-  ? { [K in keyof T]?: DeepPartial<T[K]> }
+type DeepPartial<T> = T extends Builtin ? T
+  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
 function isSet(value: any): boolean {
