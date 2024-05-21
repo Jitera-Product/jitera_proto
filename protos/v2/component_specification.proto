@@ -7,11 +7,19 @@ message ComponentSpecification {
   string description = 3;
   string figmaNodeId = 4;
   BoundingBox boundingBox = 5;
+  repeated Action actions = 6;
 
   message BoundingBox {
     float top = 1;
     float left = 2;
     float right = 3;
     float bottom = 4;
+  }
+
+  message Action {
+    string type = 1;
+    string description = 2;
+    string reference = 3;
+    string reference_id = 4;
   }
 }
