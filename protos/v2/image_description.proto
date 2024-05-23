@@ -13,7 +13,14 @@ message ImageToDescriptionRequest {
     string source_type = 2;
 		string url = 3;
 		string html = 4;
+    FigmaNode figma_node = 5;
 	}
+
+  message FigmaNode {
+    string node_id = 1;
+    string file_key = 2;
+    string access_token = 3;
+  }
 }
 
 message ImageToDescriptionResponse {

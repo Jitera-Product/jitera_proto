@@ -1,6 +1,7 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { ComponentSpecification, ComponentSpecificationData } from "./component_specification.proto";
+
 export class ImageToDescriptionRequest {
   projectGenerateQueueId: number;
   projectId: number;
@@ -12,6 +13,13 @@ export class ImageToDescriptionRequestImage {
   sourceType: string;
   url: string;
   html: string;
+  figmaNode?: ImageToDescriptionRequestFigmaNode;
+}
+
+export class ImageToDescriptionRequestFigmaNode {
+  nodeId: string;
+  fileKey: string;
+  accessToken: string;
 }
 
 export class ImageToDescriptionResponse {
@@ -161,6 +169,9 @@ export const ImageToDescriptionRequestImageData = {
     if (message.html !== "") {
       writer.uint32(34).string(message.html);
     }
+    if (message.figmaNode !== undefined) {
+      ImageToDescriptionRequestFigmaNodeData.encode(message.figmaNode, writer.uint32(42).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -183,6 +194,9 @@ export const ImageToDescriptionRequestImageData = {
         case 4:
           message.html = reader.string();
           break;
+        case 5:
+          message.figmaNode = ImageToDescriptionRequestFigmaNodeData.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -197,6 +211,9 @@ export const ImageToDescriptionRequestImageData = {
       sourceType: isSet(object.sourceType) ? String(object.sourceType) : "",
       url: isSet(object.url) ? String(object.url) : "",
       html: isSet(object.html) ? String(object.html) : "",
+      figmaNode: isSet(object.figmaNode)
+        ? ImageToDescriptionRequestFigmaNodeData.fromJSON(object.figmaNode)
+        : undefined,
     };
   },
 
@@ -206,6 +223,10 @@ export const ImageToDescriptionRequestImageData = {
     message.sourceType !== undefined && (obj.sourceType = message.sourceType);
     message.url !== undefined && (obj.url = message.url);
     message.html !== undefined && (obj.html = message.html);
+    message.figmaNode !== undefined &&
+      (obj.figmaNode = message.figmaNode
+        ? ImageToDescriptionRequestFigmaNodeData.toJSON(message.figmaNode)
+        : undefined);
     return obj;
   },
 
@@ -215,6 +236,76 @@ export const ImageToDescriptionRequestImageData = {
     message.sourceType = object.sourceType ?? "";
     message.url = object.url ?? "";
     message.html = object.html ?? "";
+    message.figmaNode = (object.figmaNode !== undefined && object.figmaNode !== null)
+      ? ImageToDescriptionRequestFigmaNodeData.fromPartial(object.figmaNode)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseImageToDescriptionRequestFigmaNode(): ImageToDescriptionRequestFigmaNode {
+  return { nodeId: "", fileKey: "", accessToken: "" };
+}
+
+export const ImageToDescriptionRequestFigmaNodeData = {
+  encode(message: ImageToDescriptionRequestFigmaNode, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.nodeId !== "") {
+      writer.uint32(10).string(message.nodeId);
+    }
+    if (message.fileKey !== "") {
+      writer.uint32(18).string(message.fileKey);
+    }
+    if (message.accessToken !== "") {
+      writer.uint32(26).string(message.accessToken);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ImageToDescriptionRequestFigmaNode {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseImageToDescriptionRequestFigmaNode();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.nodeId = reader.string();
+          break;
+        case 2:
+          message.fileKey = reader.string();
+          break;
+        case 3:
+          message.accessToken = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ImageToDescriptionRequestFigmaNode {
+    return {
+      nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
+      fileKey: isSet(object.fileKey) ? String(object.fileKey) : "",
+      accessToken: isSet(object.accessToken) ? String(object.accessToken) : "",
+    };
+  },
+
+  toJSON(message: ImageToDescriptionRequestFigmaNode): unknown {
+    const obj: any = {};
+    message.nodeId !== undefined && (obj.nodeId = message.nodeId);
+    message.fileKey !== undefined && (obj.fileKey = message.fileKey);
+    message.accessToken !== undefined && (obj.accessToken = message.accessToken);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ImageToDescriptionRequestFigmaNode>): ImageToDescriptionRequestFigmaNode {
+    const message = createBaseImageToDescriptionRequestFigmaNode();
+    message.nodeId = object.nodeId ?? "";
+    message.fileKey = object.fileKey ?? "";
+    message.accessToken = object.accessToken ?? "";
     return message;
   },
 };
