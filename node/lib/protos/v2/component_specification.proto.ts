@@ -1,7 +1,7 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 
-export interface ComponentSpecification {
+export class ComponentSpecification {
   type: string;
   title: string;
   description: string;
@@ -10,14 +10,14 @@ export interface ComponentSpecification {
   actions: ComponentSpecificationAction[];
 }
 
-export interface ComponentSpecificationBoundingBox {
+export class ComponentSpecificationBoundingBox {
   top: number;
   left: number;
   right: number;
   bottom: number;
 }
 
-export interface ComponentSpecificationAction {
+export class ComponentSpecificationAction {
   type: string;
   description: string;
   reference: string;
@@ -28,7 +28,7 @@ function createBaseComponentSpecification(): ComponentSpecification {
   return { type: "", title: "", description: "", figmaNodeId: "", actions: [] };
 }
 
-export const ComponentSpecification = {
+export const ComponentSpecificationData = {
   encode(message: ComponentSpecification, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.type !== "") {
       writer.uint32(10).string(message.type);
@@ -43,10 +43,10 @@ export const ComponentSpecification = {
       writer.uint32(34).string(message.figmaNodeId);
     }
     if (message.boundingBox !== undefined) {
-      ComponentSpecificationBoundingBox.encode(message.boundingBox, writer.uint32(42).fork()).ldelim();
+      ComponentSpecificationBoundingBoxData.encode(message.boundingBox, writer.uint32(42).fork()).ldelim();
     }
     for (const v of message.actions) {
-      ComponentSpecificationAction.encode(v!, writer.uint32(50).fork()).ldelim();
+      ComponentSpecificationActionData.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -71,10 +71,10 @@ export const ComponentSpecification = {
           message.figmaNodeId = reader.string();
           break;
         case 5:
-          message.boundingBox = ComponentSpecificationBoundingBox.decode(reader, reader.uint32());
+          message.boundingBox = ComponentSpecificationBoundingBoxData.decode(reader, reader.uint32());
           break;
         case 6:
-          message.actions.push(ComponentSpecificationAction.decode(reader, reader.uint32()));
+          message.actions.push(ComponentSpecificationActionData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -91,10 +91,10 @@ export const ComponentSpecification = {
       description: isSet(object.description) ? String(object.description) : "",
       figmaNodeId: isSet(object.figmaNodeId) ? String(object.figmaNodeId) : "",
       boundingBox: isSet(object.boundingBox)
-        ? ComponentSpecificationBoundingBox.fromJSON(object.boundingBox)
+        ? ComponentSpecificationBoundingBoxData.fromJSON(object.boundingBox)
         : undefined,
       actions: Array.isArray(object?.actions)
-        ? object.actions.map((e: any) => ComponentSpecificationAction.fromJSON(e))
+        ? object.actions.map((e: any) => ComponentSpecificationActionData.fromJSON(e))
         : [],
     };
   },
@@ -105,12 +105,11 @@ export const ComponentSpecification = {
     message.title !== undefined && (obj.title = message.title);
     message.description !== undefined && (obj.description = message.description);
     message.figmaNodeId !== undefined && (obj.figmaNodeId = message.figmaNodeId);
-    message.boundingBox !== undefined &&
-      (obj.boundingBox = message.boundingBox
-        ? ComponentSpecificationBoundingBox.toJSON(message.boundingBox)
-        : undefined);
+    message.boundingBox !== undefined && (obj.boundingBox = message.boundingBox
+      ? ComponentSpecificationBoundingBoxData.toJSON(message.boundingBox)
+      : undefined);
     if (message.actions) {
-      obj.actions = message.actions.map((e) => e ? ComponentSpecificationAction.toJSON(e) : undefined);
+      obj.actions = message.actions.map((e) => e ? ComponentSpecificationActionData.toJSON(e) : undefined);
     } else {
       obj.actions = [];
     }
@@ -124,9 +123,9 @@ export const ComponentSpecification = {
     message.description = object.description ?? "";
     message.figmaNodeId = object.figmaNodeId ?? "";
     message.boundingBox = (object.boundingBox !== undefined && object.boundingBox !== null)
-      ? ComponentSpecificationBoundingBox.fromPartial(object.boundingBox)
+      ? ComponentSpecificationBoundingBoxData.fromPartial(object.boundingBox)
       : undefined;
-    message.actions = object.actions?.map((e) => ComponentSpecificationAction.fromPartial(e)) || [];
+    message.actions = object.actions?.map((e) => ComponentSpecificationActionData.fromPartial(e)) || [];
     return message;
   },
 };
@@ -135,7 +134,7 @@ function createBaseComponentSpecificationBoundingBox(): ComponentSpecificationBo
   return { top: 0, left: 0, right: 0, bottom: 0 };
 }
 
-export const ComponentSpecificationBoundingBox = {
+export const ComponentSpecificationBoundingBoxData = {
   encode(message: ComponentSpecificationBoundingBox, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.top !== 0) {
       writer.uint32(13).float(message.top);
@@ -211,7 +210,7 @@ function createBaseComponentSpecificationAction(): ComponentSpecificationAction 
   return { type: "", description: "", reference: "", referenceId: "" };
 }
 
-export const ComponentSpecificationAction = {
+export const ComponentSpecificationActionData = {
   encode(message: ComponentSpecificationAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.type !== "") {
       writer.uint32(10).string(message.type);
