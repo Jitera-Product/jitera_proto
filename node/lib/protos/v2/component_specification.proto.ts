@@ -20,7 +20,7 @@ export class ComponentSpecificationBoundingBox {
 export class ComponentSpecificationAction {
   type: string;
   description: string;
-  reference: string;
+  referenceType: string;
   referenceId: string;
 }
 
@@ -207,7 +207,7 @@ export const ComponentSpecificationBoundingBoxData = {
 };
 
 function createBaseComponentSpecificationAction(): ComponentSpecificationAction {
-  return { type: "", description: "", reference: "", referenceId: "" };
+  return { type: "", description: "", referenceType: "", referenceId: "" };
 }
 
 export const ComponentSpecificationActionData = {
@@ -218,8 +218,8 @@ export const ComponentSpecificationActionData = {
     if (message.description !== "") {
       writer.uint32(18).string(message.description);
     }
-    if (message.reference !== "") {
-      writer.uint32(26).string(message.reference);
+    if (message.referenceType !== "") {
+      writer.uint32(26).string(message.referenceType);
     }
     if (message.referenceId !== "") {
       writer.uint32(34).string(message.referenceId);
@@ -241,7 +241,7 @@ export const ComponentSpecificationActionData = {
           message.description = reader.string();
           break;
         case 3:
-          message.reference = reader.string();
+          message.referenceType = reader.string();
           break;
         case 4:
           message.referenceId = reader.string();
@@ -258,7 +258,7 @@ export const ComponentSpecificationActionData = {
     return {
       type: isSet(object.type) ? String(object.type) : "",
       description: isSet(object.description) ? String(object.description) : "",
-      reference: isSet(object.reference) ? String(object.reference) : "",
+      referenceType: isSet(object.referenceType) ? String(object.referenceType) : "",
       referenceId: isSet(object.referenceId) ? String(object.referenceId) : "",
     };
   },
@@ -267,7 +267,7 @@ export const ComponentSpecificationActionData = {
     const obj: any = {};
     message.type !== undefined && (obj.type = message.type);
     message.description !== undefined && (obj.description = message.description);
-    message.reference !== undefined && (obj.reference = message.reference);
+    message.referenceType !== undefined && (obj.referenceType = message.referenceType);
     message.referenceId !== undefined && (obj.referenceId = message.referenceId);
     return obj;
   },
@@ -276,7 +276,7 @@ export const ComponentSpecificationActionData = {
     const message = createBaseComponentSpecificationAction();
     message.type = object.type ?? "";
     message.description = object.description ?? "";
-    message.reference = object.reference ?? "";
+    message.referenceType = object.referenceType ?? "";
     message.referenceId = object.referenceId ?? "";
     return message;
   },
