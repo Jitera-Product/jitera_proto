@@ -7,6 +7,7 @@ export class ComponentSpecification {
   description: string;
   figmaNodeId: string;
   boundingBox?: ComponentSpecificationBoundingBox;
+  actions: ComponentSpecificationAction[];
 }
 
 export class ComponentSpecificationBoundingBox {
@@ -16,8 +17,15 @@ export class ComponentSpecificationBoundingBox {
   bottom: number;
 }
 
+export class ComponentSpecificationAction {
+  type: string;
+  description: string;
+  referenceType: string;
+  referenceId: string;
+}
+
 function createBaseComponentSpecification(): ComponentSpecification {
-  return { type: "", title: "", description: "", figmaNodeId: "" };
+  return { type: "", title: "", description: "", figmaNodeId: "", actions: [] };
 }
 
 export const ComponentSpecificationData = {
@@ -36,6 +44,9 @@ export const ComponentSpecificationData = {
     }
     if (message.boundingBox !== undefined) {
       ComponentSpecificationBoundingBoxData.encode(message.boundingBox, writer.uint32(42).fork()).ldelim();
+    }
+    for (const v of message.actions) {
+      ComponentSpecificationActionData.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -62,6 +73,9 @@ export const ComponentSpecificationData = {
         case 5:
           message.boundingBox = ComponentSpecificationBoundingBoxData.decode(reader, reader.uint32());
           break;
+        case 6:
+          message.actions.push(ComponentSpecificationActionData.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -79,6 +93,9 @@ export const ComponentSpecificationData = {
       boundingBox: isSet(object.boundingBox)
         ? ComponentSpecificationBoundingBoxData.fromJSON(object.boundingBox)
         : undefined,
+      actions: Array.isArray(object?.actions)
+        ? object.actions.map((e: any) => ComponentSpecificationActionData.fromJSON(e))
+        : [],
     };
   },
 
@@ -91,6 +108,11 @@ export const ComponentSpecificationData = {
     message.boundingBox !== undefined && (obj.boundingBox = message.boundingBox
       ? ComponentSpecificationBoundingBoxData.toJSON(message.boundingBox)
       : undefined);
+    if (message.actions) {
+      obj.actions = message.actions.map((e) => e ? ComponentSpecificationActionData.toJSON(e) : undefined);
+    } else {
+      obj.actions = [];
+    }
     return obj;
   },
 
@@ -103,6 +125,7 @@ export const ComponentSpecificationData = {
     message.boundingBox = (object.boundingBox !== undefined && object.boundingBox !== null)
       ? ComponentSpecificationBoundingBoxData.fromPartial(object.boundingBox)
       : undefined;
+    message.actions = object.actions?.map((e) => ComponentSpecificationActionData.fromPartial(e)) || [];
     return message;
   },
 };
@@ -179,6 +202,82 @@ export const ComponentSpecificationBoundingBoxData = {
     message.left = object.left ?? 0;
     message.right = object.right ?? 0;
     message.bottom = object.bottom ?? 0;
+    return message;
+  },
+};
+
+function createBaseComponentSpecificationAction(): ComponentSpecificationAction {
+  return { type: "", description: "", referenceType: "", referenceId: "" };
+}
+
+export const ComponentSpecificationActionData = {
+  encode(message: ComponentSpecificationAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.type !== "") {
+      writer.uint32(10).string(message.type);
+    }
+    if (message.description !== "") {
+      writer.uint32(18).string(message.description);
+    }
+    if (message.referenceType !== "") {
+      writer.uint32(26).string(message.referenceType);
+    }
+    if (message.referenceId !== "") {
+      writer.uint32(34).string(message.referenceId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ComponentSpecificationAction {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseComponentSpecificationAction();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.type = reader.string();
+          break;
+        case 2:
+          message.description = reader.string();
+          break;
+        case 3:
+          message.referenceType = reader.string();
+          break;
+        case 4:
+          message.referenceId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ComponentSpecificationAction {
+    return {
+      type: isSet(object.type) ? String(object.type) : "",
+      description: isSet(object.description) ? String(object.description) : "",
+      referenceType: isSet(object.referenceType) ? String(object.referenceType) : "",
+      referenceId: isSet(object.referenceId) ? String(object.referenceId) : "",
+    };
+  },
+
+  toJSON(message: ComponentSpecificationAction): unknown {
+    const obj: any = {};
+    message.type !== undefined && (obj.type = message.type);
+    message.description !== undefined && (obj.description = message.description);
+    message.referenceType !== undefined && (obj.referenceType = message.referenceType);
+    message.referenceId !== undefined && (obj.referenceId = message.referenceId);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ComponentSpecificationAction>): ComponentSpecificationAction {
+    const message = createBaseComponentSpecificationAction();
+    message.type = object.type ?? "";
+    message.description = object.description ?? "";
+    message.referenceType = object.referenceType ?? "";
+    message.referenceId = object.referenceId ?? "";
     return message;
   },
 };
