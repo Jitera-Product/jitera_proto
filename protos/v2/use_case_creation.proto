@@ -20,6 +20,8 @@ message UseCaseCreation {
 	optional ProjectTable project_tables = 6;
 	optional ProjectTable related_tables = 8;
 
+	optional string users_comment = 10;
+
 	message Progress {
 		string message = 1;
 	}
