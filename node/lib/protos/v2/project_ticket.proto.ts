@@ -17,11 +17,13 @@ export class ProjectTicketCreationResponse {
   status: ProjectTicketCreationResponseStatus;
   tokenUsage: number;
   tickets: Block[];
+  useCases: Block[];
   errorMessage: string;
 }
 
 export enum ProjectTicketCreationResponseModule {
   USECASE_TO_TICKET = 0,
+  IMAGE = 1,
   UNRECOGNIZED = -1,
 }
 
@@ -30,6 +32,9 @@ export function projectTicketCreationResponseModuleFromJSON(object: any): Projec
     case 0:
     case "USECASE_TO_TICKET":
       return ProjectTicketCreationResponseModule.USECASE_TO_TICKET;
+    case 1:
+    case "IMAGE":
+      return ProjectTicketCreationResponseModule.IMAGE;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -41,6 +46,8 @@ export function projectTicketCreationResponseModuleToJSON(object: ProjectTicketC
   switch (object) {
     case ProjectTicketCreationResponseModule.USECASE_TO_TICKET:
       return "USECASE_TO_TICKET";
+    case ProjectTicketCreationResponseModule.IMAGE:
+      return "IMAGE";
     case ProjectTicketCreationResponseModule.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -276,6 +283,7 @@ function createBaseProjectTicketCreationResponse(): ProjectTicketCreationRespons
     status: 0,
     tokenUsage: 0,
     tickets: [],
+    useCases: [],
     errorMessage: "",
   };
 }
@@ -300,8 +308,11 @@ export const ProjectTicketCreationResponseData = {
     for (const v of message.tickets) {
       BlockData.encode(v!, writer.uint32(50).fork()).ldelim();
     }
+    for (const v of message.useCases) {
+      BlockData.encode(v!, writer.uint32(58).fork()).ldelim();
+    }
     if (message.errorMessage !== "") {
-      writer.uint32(58).string(message.errorMessage);
+      writer.uint32(66).string(message.errorMessage);
     }
     return writer;
   },
@@ -332,6 +343,9 @@ export const ProjectTicketCreationResponseData = {
           message.tickets.push(BlockData.decode(reader, reader.uint32()));
           break;
         case 7:
+          message.useCases.push(BlockData.decode(reader, reader.uint32()));
+          break;
+        case 8:
           message.errorMessage = reader.string();
           break;
         default:
@@ -350,6 +364,7 @@ export const ProjectTicketCreationResponseData = {
       status: isSet(object.status) ? projectTicketCreationResponseStatusFromJSON(object.status) : 0,
       tokenUsage: isSet(object.tokenUsage) ? Number(object.tokenUsage) : 0,
       tickets: Array.isArray(object?.tickets) ? object.tickets.map((e: any) => BlockData.fromJSON(e)) : [],
+      useCases: Array.isArray(object?.useCases) ? object.useCases.map((e: any) => BlockData.fromJSON(e)) : [],
       errorMessage: isSet(object.errorMessage) ? String(object.errorMessage) : "",
     };
   },
@@ -367,6 +382,11 @@ export const ProjectTicketCreationResponseData = {
     } else {
       obj.tickets = [];
     }
+    if (message.useCases) {
+      obj.useCases = message.useCases.map((e) => e ? BlockData.toJSON(e) : undefined);
+    } else {
+      obj.useCases = [];
+    }
     message.errorMessage !== undefined && (obj.errorMessage = message.errorMessage);
     return obj;
   },
@@ -379,6 +399,7 @@ export const ProjectTicketCreationResponseData = {
     message.status = object.status ?? 0;
     message.tokenUsage = object.tokenUsage ?? 0;
     message.tickets = object.tickets?.map((e) => BlockData.fromPartial(e)) || [];
+    message.useCases = object.useCases?.map((e) => BlockData.fromPartial(e)) || [];
     message.errorMessage = object.errorMessage ?? "";
     return message;
   },
