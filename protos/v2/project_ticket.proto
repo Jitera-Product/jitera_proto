@@ -18,10 +18,12 @@ message ProjectTicketCreationResponse {
   Status status = 4;
   int32 token_usage = 5;
   repeated core.Block tickets = 6;
-  string error_message = 7;
+  repeated core.Block useCases = 7;
+  string error_message = 8;
 
   enum Module {
     USECASE_TO_TICKET = 0;
+    IMAGE = 1;
   }
 
   enum Status {
