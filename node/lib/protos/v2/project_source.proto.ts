@@ -415,6 +415,7 @@ export class BusinessLogicChanges {
   git?: Git;
   importBy?: ImportBy | undefined;
   generateSource?: GenerateSource | undefined;
+  usersPrompt?: string | undefined;
 }
 
 export class BlockDiff {
@@ -464,6 +465,7 @@ export class ApiChanges {
   git?: Git;
   importBy?: ImportBy | undefined;
   generateSource?: GenerateSource | undefined;
+  usersPrompt?: string | undefined;
 }
 
 export class ProjectSourceReport {
@@ -1515,6 +1517,9 @@ export const BusinessLogicChangesData = {
     if (message.generateSource !== undefined) {
       GenerateSourceData.encode(message.generateSource, writer.uint32(66).fork()).ldelim();
     }
+    if (message.usersPrompt !== undefined) {
+      writer.uint32(74).string(message.usersPrompt);
+    }
     return writer;
   },
 
@@ -1549,6 +1554,9 @@ export const BusinessLogicChangesData = {
         case 8:
           message.generateSource = GenerateSourceData.decode(reader, reader.uint32());
           break;
+        case 9:
+          message.usersPrompt = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1569,6 +1577,7 @@ export const BusinessLogicChangesData = {
       git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
       importBy: isSet(object.importBy) ? importByFromJSON(object.importBy) : undefined,
       generateSource: isSet(object.generateSource) ? GenerateSourceData.fromJSON(object.generateSource) : undefined,
+      usersPrompt: isSet(object.usersPrompt) ? String(object.usersPrompt) : undefined,
     };
   },
 
@@ -1595,6 +1604,7 @@ export const BusinessLogicChangesData = {
       (obj.importBy = message.importBy !== undefined ? importByToJSON(message.importBy) : undefined);
     message.generateSource !== undefined &&
       (obj.generateSource = message.generateSource ? GenerateSourceData.toJSON(message.generateSource) : undefined);
+    message.usersPrompt !== undefined && (obj.usersPrompt = message.usersPrompt);
     return obj;
   },
 
@@ -1614,6 +1624,7 @@ export const BusinessLogicChangesData = {
     message.generateSource = (object.generateSource !== undefined && object.generateSource !== null)
       ? GenerateSourceData.fromPartial(object.generateSource)
       : undefined;
+    message.usersPrompt = object.usersPrompt ?? undefined;
     return message;
   },
 };
@@ -2104,6 +2115,9 @@ export const ApiChangesData = {
     if (message.generateSource !== undefined) {
       GenerateSourceData.encode(message.generateSource, writer.uint32(66).fork()).ldelim();
     }
+    if (message.usersPrompt !== undefined) {
+      writer.uint32(74).string(message.usersPrompt);
+    }
     return writer;
   },
 
@@ -2138,6 +2152,9 @@ export const ApiChangesData = {
         case 8:
           message.generateSource = GenerateSourceData.decode(reader, reader.uint32());
           break;
+        case 9:
+          message.usersPrompt = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2158,6 +2175,7 @@ export const ApiChangesData = {
       git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
       importBy: isSet(object.importBy) ? importByFromJSON(object.importBy) : undefined,
       generateSource: isSet(object.generateSource) ? GenerateSourceData.fromJSON(object.generateSource) : undefined,
+      usersPrompt: isSet(object.usersPrompt) ? String(object.usersPrompt) : undefined,
     };
   },
 
@@ -2184,6 +2202,7 @@ export const ApiChangesData = {
       (obj.importBy = message.importBy !== undefined ? importByToJSON(message.importBy) : undefined);
     message.generateSource !== undefined &&
       (obj.generateSource = message.generateSource ? GenerateSourceData.toJSON(message.generateSource) : undefined);
+    message.usersPrompt !== undefined && (obj.usersPrompt = message.usersPrompt);
     return obj;
   },
 
@@ -2203,6 +2222,7 @@ export const ApiChangesData = {
     message.generateSource = (object.generateSource !== undefined && object.generateSource !== null)
       ? GenerateSourceData.fromPartial(object.generateSource)
       : undefined;
+    message.usersPrompt = object.usersPrompt ?? undefined;
     return message;
   },
 };

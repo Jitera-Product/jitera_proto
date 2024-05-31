@@ -18,6 +18,7 @@ message FrontendUIChanges {
 		HtmlInfo html = 9;
 		FigmaInfo figma = 10;
 	}
+	optional string users_prompt = 11;
 
   message HtmlScreen {
     int32 id = 1;

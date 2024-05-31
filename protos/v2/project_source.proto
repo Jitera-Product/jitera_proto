@@ -154,6 +154,7 @@ message BusinessLogicChanges {
 	Git git = 6;
 	optional ImportBy import_by = 7;
 	optional GenerateSource generate_source = 8;
+	optional string users_prompt = 9;
 }
 
 message BlockDiff {
@@ -206,6 +207,7 @@ message ApiChanges {
 	Git git = 6;
 	optional ImportBy import_by = 7;
 	optional GenerateSource generate_source = 8;
+	optional string users_prompt = 9;
 }
 
 message ProjectSourceReport {
