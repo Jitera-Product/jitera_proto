@@ -19,6 +19,7 @@ message FrontendUIChanges {
 		FigmaInfo figma = 10;
 	}
 	optional string users_prompt = 11;
+	string is_non_failed_regeneration = 12;
 
   message HtmlScreen {
     int32 id = 1;
