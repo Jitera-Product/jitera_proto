@@ -155,7 +155,7 @@ message BusinessLogicChanges {
 	optional ImportBy import_by = 7;
 	optional GenerateSource generate_source = 8;
 	optional string users_prompt = 9;
-	string is_non_failed_regeneration = 10;
+	bool is_non_failed_regeneration = 11;
 }
 
 message BlockDiff {
@@ -209,7 +209,7 @@ message ApiChanges {
 	optional ImportBy import_by = 7;
 	optional GenerateSource generate_source = 8;
 	optional string users_prompt = 9;
-	string is_non_failed_regeneration = 10;
+	bool is_non_failed_regeneration = 11;
 }
 
 message ProjectSourceReport {

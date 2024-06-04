@@ -32,7 +32,7 @@ export class FrontendUIChanges {
   html?: FrontendUIChangesHtmlInfo | undefined;
   figma?: FrontendUIChangesFigmaInfo | undefined;
   usersPrompt?: string | undefined;
-  isNonFailedRegeneration: string;
+  isNonFailedRegeneration: boolean;
 }
 
 export class FrontendUIChangesHtmlScreen {
@@ -85,7 +85,7 @@ export class ProjectSourceFrontendReportComplete {
 }
 
 function createBaseFrontendUIChanges(): FrontendUIChanges {
-  return { projectGenerateQueueId: 0, tables: [], relations: [], isNonFailedRegeneration: "" };
+  return { projectGenerateQueueId: 0, tables: [], relations: [], isNonFailedRegeneration: false };
 }
 
 export const FrontendUIChangesData = {
@@ -123,8 +123,8 @@ export const FrontendUIChangesData = {
     if (message.usersPrompt !== undefined) {
       writer.uint32(90).string(message.usersPrompt);
     }
-    if (message.isNonFailedRegeneration !== "") {
-      writer.uint32(98).string(message.isNonFailedRegeneration);
+    if (message.isNonFailedRegeneration === true) {
+      writer.uint32(104).bool(message.isNonFailedRegeneration);
     }
     return writer;
   },
@@ -169,8 +169,8 @@ export const FrontendUIChangesData = {
         case 11:
           message.usersPrompt = reader.string();
           break;
-        case 12:
-          message.isNonFailedRegeneration = reader.string();
+        case 13:
+          message.isNonFailedRegeneration = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -195,7 +195,7 @@ export const FrontendUIChangesData = {
       html: isSet(object.html) ? FrontendUIChangesHtmlInfoData.fromJSON(object.html) : undefined,
       figma: isSet(object.figma) ? FrontendUIChangesFigmaInfoData.fromJSON(object.figma) : undefined,
       usersPrompt: isSet(object.usersPrompt) ? String(object.usersPrompt) : undefined,
-      isNonFailedRegeneration: isSet(object.isNonFailedRegeneration) ? String(object.isNonFailedRegeneration) : "",
+      isNonFailedRegeneration: isSet(object.isNonFailedRegeneration) ? Boolean(object.isNonFailedRegeneration) : false,
     };
   },
 
@@ -254,7 +254,7 @@ export const FrontendUIChangesData = {
       ? FrontendUIChangesFigmaInfoData.fromPartial(object.figma)
       : undefined;
     message.usersPrompt = object.usersPrompt ?? undefined;
-    message.isNonFailedRegeneration = object.isNonFailedRegeneration ?? "";
+    message.isNonFailedRegeneration = object.isNonFailedRegeneration ?? false;
     return message;
   },
 };
