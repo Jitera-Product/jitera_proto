@@ -31,6 +31,8 @@ export class FrontendUIChanges {
   generateSource?: GenerateSource | undefined;
   html?: FrontendUIChangesHtmlInfo | undefined;
   figma?: FrontendUIChangesFigmaInfo | undefined;
+  usersPrompt?: string | undefined;
+  isNonFailedRegeneration: string;
 }
 
 export class FrontendUIChangesHtmlScreen {
@@ -83,7 +85,7 @@ export class ProjectSourceFrontendReportComplete {
 }
 
 function createBaseFrontendUIChanges(): FrontendUIChanges {
-  return { projectGenerateQueueId: 0, tables: [], relations: [] };
+  return { projectGenerateQueueId: 0, tables: [], relations: [], isNonFailedRegeneration: "" };
 }
 
 export const FrontendUIChangesData = {
@@ -117,6 +119,12 @@ export const FrontendUIChangesData = {
     }
     if (message.figma !== undefined) {
       FrontendUIChangesFigmaInfoData.encode(message.figma, writer.uint32(82).fork()).ldelim();
+    }
+    if (message.usersPrompt !== undefined) {
+      writer.uint32(90).string(message.usersPrompt);
+    }
+    if (message.isNonFailedRegeneration !== "") {
+      writer.uint32(98).string(message.isNonFailedRegeneration);
     }
     return writer;
   },
@@ -158,6 +166,12 @@ export const FrontendUIChangesData = {
         case 10:
           message.figma = FrontendUIChangesFigmaInfoData.decode(reader, reader.uint32());
           break;
+        case 11:
+          message.usersPrompt = reader.string();
+          break;
+        case 12:
+          message.isNonFailedRegeneration = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -180,6 +194,8 @@ export const FrontendUIChangesData = {
       generateSource: isSet(object.generateSource) ? GenerateSourceData.fromJSON(object.generateSource) : undefined,
       html: isSet(object.html) ? FrontendUIChangesHtmlInfoData.fromJSON(object.html) : undefined,
       figma: isSet(object.figma) ? FrontendUIChangesFigmaInfoData.fromJSON(object.figma) : undefined,
+      usersPrompt: isSet(object.usersPrompt) ? String(object.usersPrompt) : undefined,
+      isNonFailedRegeneration: isSet(object.isNonFailedRegeneration) ? String(object.isNonFailedRegeneration) : "",
     };
   },
 
@@ -210,6 +226,8 @@ export const FrontendUIChangesData = {
       (obj.html = message.html ? FrontendUIChangesHtmlInfoData.toJSON(message.html) : undefined);
     message.figma !== undefined &&
       (obj.figma = message.figma ? FrontendUIChangesFigmaInfoData.toJSON(message.figma) : undefined);
+    message.usersPrompt !== undefined && (obj.usersPrompt = message.usersPrompt);
+    message.isNonFailedRegeneration !== undefined && (obj.isNonFailedRegeneration = message.isNonFailedRegeneration);
     return obj;
   },
 
@@ -235,6 +253,8 @@ export const FrontendUIChangesData = {
     message.figma = (object.figma !== undefined && object.figma !== null)
       ? FrontendUIChangesFigmaInfoData.fromPartial(object.figma)
       : undefined;
+    message.usersPrompt = object.usersPrompt ?? undefined;
+    message.isNonFailedRegeneration = object.isNonFailedRegeneration ?? "";
     return message;
   },
 };

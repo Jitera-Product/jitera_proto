@@ -415,6 +415,8 @@ export class BusinessLogicChanges {
   git?: Git;
   importBy?: ImportBy | undefined;
   generateSource?: GenerateSource | undefined;
+  usersPrompt?: string | undefined;
+  isNonFailedRegeneration: string;
 }
 
 export class BlockDiff {
@@ -464,6 +466,8 @@ export class ApiChanges {
   git?: Git;
   importBy?: ImportBy | undefined;
   generateSource?: GenerateSource | undefined;
+  usersPrompt?: string | undefined;
+  isNonFailedRegeneration: string;
 }
 
 export class ProjectSourceReport {
@@ -1486,7 +1490,7 @@ export const ERDConfigTableChangedData = {
 };
 
 function createBaseBusinessLogicChanges(): BusinessLogicChanges {
-  return { projectGenerateQueueId: 0, tables: [], relations: [] };
+  return { projectGenerateQueueId: 0, tables: [], relations: [], isNonFailedRegeneration: "" };
 }
 
 export const BusinessLogicChangesData = {
@@ -1514,6 +1518,12 @@ export const BusinessLogicChangesData = {
     }
     if (message.generateSource !== undefined) {
       GenerateSourceData.encode(message.generateSource, writer.uint32(66).fork()).ldelim();
+    }
+    if (message.usersPrompt !== undefined) {
+      writer.uint32(74).string(message.usersPrompt);
+    }
+    if (message.isNonFailedRegeneration !== "") {
+      writer.uint32(82).string(message.isNonFailedRegeneration);
     }
     return writer;
   },
@@ -1549,6 +1559,12 @@ export const BusinessLogicChangesData = {
         case 8:
           message.generateSource = GenerateSourceData.decode(reader, reader.uint32());
           break;
+        case 9:
+          message.usersPrompt = reader.string();
+          break;
+        case 10:
+          message.isNonFailedRegeneration = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1569,6 +1585,8 @@ export const BusinessLogicChangesData = {
       git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
       importBy: isSet(object.importBy) ? importByFromJSON(object.importBy) : undefined,
       generateSource: isSet(object.generateSource) ? GenerateSourceData.fromJSON(object.generateSource) : undefined,
+      usersPrompt: isSet(object.usersPrompt) ? String(object.usersPrompt) : undefined,
+      isNonFailedRegeneration: isSet(object.isNonFailedRegeneration) ? String(object.isNonFailedRegeneration) : "",
     };
   },
 
@@ -1595,6 +1613,8 @@ export const BusinessLogicChangesData = {
       (obj.importBy = message.importBy !== undefined ? importByToJSON(message.importBy) : undefined);
     message.generateSource !== undefined &&
       (obj.generateSource = message.generateSource ? GenerateSourceData.toJSON(message.generateSource) : undefined);
+    message.usersPrompt !== undefined && (obj.usersPrompt = message.usersPrompt);
+    message.isNonFailedRegeneration !== undefined && (obj.isNonFailedRegeneration = message.isNonFailedRegeneration);
     return obj;
   },
 
@@ -1614,6 +1634,8 @@ export const BusinessLogicChangesData = {
     message.generateSource = (object.generateSource !== undefined && object.generateSource !== null)
       ? GenerateSourceData.fromPartial(object.generateSource)
       : undefined;
+    message.usersPrompt = object.usersPrompt ?? undefined;
+    message.isNonFailedRegeneration = object.isNonFailedRegeneration ?? "";
     return message;
   },
 };
@@ -2075,7 +2097,7 @@ export const BlockDiffBlockBodyData = {
 };
 
 function createBaseApiChanges(): ApiChanges {
-  return { tables: [], relations: [], projectGenerateQueueId: 0 };
+  return { tables: [], relations: [], projectGenerateQueueId: 0, isNonFailedRegeneration: "" };
 }
 
 export const ApiChangesData = {
@@ -2103,6 +2125,12 @@ export const ApiChangesData = {
     }
     if (message.generateSource !== undefined) {
       GenerateSourceData.encode(message.generateSource, writer.uint32(66).fork()).ldelim();
+    }
+    if (message.usersPrompt !== undefined) {
+      writer.uint32(74).string(message.usersPrompt);
+    }
+    if (message.isNonFailedRegeneration !== "") {
+      writer.uint32(82).string(message.isNonFailedRegeneration);
     }
     return writer;
   },
@@ -2138,6 +2166,12 @@ export const ApiChangesData = {
         case 8:
           message.generateSource = GenerateSourceData.decode(reader, reader.uint32());
           break;
+        case 9:
+          message.usersPrompt = reader.string();
+          break;
+        case 10:
+          message.isNonFailedRegeneration = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2158,6 +2192,8 @@ export const ApiChangesData = {
       git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
       importBy: isSet(object.importBy) ? importByFromJSON(object.importBy) : undefined,
       generateSource: isSet(object.generateSource) ? GenerateSourceData.fromJSON(object.generateSource) : undefined,
+      usersPrompt: isSet(object.usersPrompt) ? String(object.usersPrompt) : undefined,
+      isNonFailedRegeneration: isSet(object.isNonFailedRegeneration) ? String(object.isNonFailedRegeneration) : "",
     };
   },
 
@@ -2184,6 +2220,8 @@ export const ApiChangesData = {
       (obj.importBy = message.importBy !== undefined ? importByToJSON(message.importBy) : undefined);
     message.generateSource !== undefined &&
       (obj.generateSource = message.generateSource ? GenerateSourceData.toJSON(message.generateSource) : undefined);
+    message.usersPrompt !== undefined && (obj.usersPrompt = message.usersPrompt);
+    message.isNonFailedRegeneration !== undefined && (obj.isNonFailedRegeneration = message.isNonFailedRegeneration);
     return obj;
   },
 
@@ -2203,6 +2241,8 @@ export const ApiChangesData = {
     message.generateSource = (object.generateSource !== undefined && object.generateSource !== null)
       ? GenerateSourceData.fromPartial(object.generateSource)
       : undefined;
+    message.usersPrompt = object.usersPrompt ?? undefined;
+    message.isNonFailedRegeneration = object.isNonFailedRegeneration ?? "";
     return message;
   },
 };
