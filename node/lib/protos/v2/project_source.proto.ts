@@ -8,6 +8,7 @@ export enum ImportBy {
   notion = 1,
   google_docs = 2,
   figma = 3,
+  gitlab = 4,
   UNRECOGNIZED = -1,
 }
 
@@ -25,6 +26,9 @@ export function importByFromJSON(object: any): ImportBy {
     case 3:
     case "figma":
       return ImportBy.figma;
+    case 4:
+    case "gitlab":
+      return ImportBy.gitlab;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -42,6 +46,8 @@ export function importByToJSON(object: ImportBy): string {
       return "google_docs";
     case ImportBy.figma:
       return "figma";
+    case ImportBy.gitlab:
+      return "gitlab";
     case ImportBy.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -263,6 +269,41 @@ export class Git {
   jiteraBranch: string;
   targetBranch: string;
   pullRequest?: PullRequest;
+  provider?: GitProvider | undefined;
+  providerHostUrl?: string | undefined;
+}
+
+export enum GitProvider {
+  github = 0,
+  gitlab = 1,
+  UNRECOGNIZED = -1,
+}
+
+export function gitProviderFromJSON(object: any): GitProvider {
+  switch (object) {
+    case 0:
+    case "github":
+      return GitProvider.github;
+    case 1:
+    case "gitlab":
+      return GitProvider.gitlab;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return GitProvider.UNRECOGNIZED;
+  }
+}
+
+export function gitProviderToJSON(object: GitProvider): string {
+  switch (object) {
+    case GitProvider.github:
+      return "github";
+    case GitProvider.gitlab:
+      return "gitlab";
+    case GitProvider.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
 }
 
 export class ProjectSourceCreation {
@@ -1016,6 +1057,12 @@ export const GitData = {
     if (message.pullRequest !== undefined) {
       PullRequestData.encode(message.pullRequest, writer.uint32(74).fork()).ldelim();
     }
+    if (message.provider !== undefined) {
+      writer.uint32(80).int32(message.provider);
+    }
+    if (message.providerHostUrl !== undefined) {
+      writer.uint32(90).string(message.providerHostUrl);
+    }
     return writer;
   },
 
@@ -1047,6 +1094,12 @@ export const GitData = {
         case 9:
           message.pullRequest = PullRequestData.decode(reader, reader.uint32());
           break;
+        case 10:
+          message.provider = reader.int32() as any;
+          break;
+        case 11:
+          message.providerHostUrl = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1064,6 +1117,8 @@ export const GitData = {
       jiteraBranch: isSet(object.jiteraBranch) ? String(object.jiteraBranch) : "",
       targetBranch: isSet(object.targetBranch) ? String(object.targetBranch) : "",
       pullRequest: isSet(object.pullRequest) ? PullRequestData.fromJSON(object.pullRequest) : undefined,
+      provider: isSet(object.provider) ? gitProviderFromJSON(object.provider) : undefined,
+      providerHostUrl: isSet(object.providerHostUrl) ? String(object.providerHostUrl) : undefined,
     };
   },
 
@@ -1077,6 +1132,9 @@ export const GitData = {
     message.targetBranch !== undefined && (obj.targetBranch = message.targetBranch);
     message.pullRequest !== undefined &&
       (obj.pullRequest = message.pullRequest ? PullRequestData.toJSON(message.pullRequest) : undefined);
+    message.provider !== undefined &&
+      (obj.provider = message.provider !== undefined ? gitProviderToJSON(message.provider) : undefined);
+    message.providerHostUrl !== undefined && (obj.providerHostUrl = message.providerHostUrl);
     return obj;
   },
 
@@ -1091,6 +1149,8 @@ export const GitData = {
     message.pullRequest = (object.pullRequest !== undefined && object.pullRequest !== null)
       ? PullRequestData.fromPartial(object.pullRequest)
       : undefined;
+    message.provider = object.provider ?? undefined;
+    message.providerHostUrl = object.providerHostUrl ?? undefined;
     return message;
   },
 };

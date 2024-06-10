@@ -80,6 +80,13 @@ message Git {
 	string jitera_branch = 7;
 	string target_branch = 8;
 	PullRequest pull_request = 9;
+	optional Provider provider = 10;
+	optional string provider_host_url = 11;
+
+	enum Provider {
+		github = 0;
+		gitlab = 1;
+	}
 }
 
 enum ImportBy {
@@ -87,6 +94,7 @@ enum ImportBy {
 	notion = 1;
 	google_docs = 2;
 	figma = 3;
+	gitlab = 4;
 }
 
 message ProjectSourceCreation {
