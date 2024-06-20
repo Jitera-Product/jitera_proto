@@ -22,5 +22,6 @@ message Block {
     string value = 2;
     optional string href = 3;
     google.protobuf.Struct styles = 4;
+    google.protobuf.Struct reference = 5;
   }
 }
