@@ -232,6 +232,7 @@ export class ProjectSourceTable {
   id: number;
   name: string;
   columns: ProjectSourceTableColumn[];
+  locked?: boolean | undefined;
 }
 
 export class ProjectSourceTableColumn {
@@ -703,6 +704,9 @@ export const ProjectSourceTableData = {
     for (const v of message.columns) {
       ProjectSourceTableColumnData.encode(v!, writer.uint32(26).fork()).ldelim();
     }
+    if (message.locked !== undefined) {
+      writer.uint32(32).bool(message.locked);
+    }
     return writer;
   },
 
@@ -722,6 +726,9 @@ export const ProjectSourceTableData = {
         case 3:
           message.columns.push(ProjectSourceTableColumnData.decode(reader, reader.uint32()));
           break;
+        case 4:
+          message.locked = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -737,6 +744,7 @@ export const ProjectSourceTableData = {
       columns: Array.isArray(object?.columns)
         ? object.columns.map((e: any) => ProjectSourceTableColumnData.fromJSON(e))
         : [],
+      locked: isSet(object.locked) ? Boolean(object.locked) : undefined,
     };
   },
 
@@ -749,6 +757,7 @@ export const ProjectSourceTableData = {
     } else {
       obj.columns = [];
     }
+    message.locked !== undefined && (obj.locked = message.locked);
     return obj;
   },
 
@@ -757,6 +766,7 @@ export const ProjectSourceTableData = {
     message.id = object.id ?? 0;
     message.name = object.name ?? "";
     message.columns = object.columns?.map((e) => ProjectSourceTableColumnData.fromPartial(e)) || [];
+    message.locked = object.locked ?? undefined;
     return message;
   },
 };
