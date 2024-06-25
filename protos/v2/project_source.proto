@@ -48,6 +48,7 @@ message ProjectSource {
 		int32 id = 1;
 		string name = 2;
 		repeated Column columns = 3;
+		optional bool locked = 4;
 
 		message Column {
 			int32 id = 1;

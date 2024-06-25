@@ -500,6 +500,7 @@ message Table {
 	repeated Relation relations = 3;
 	repeated Index indexes = 4;
 	int32 id = 5;
+	optional bool locked = 6;
 
 	message Column {
 		string name = 1;
