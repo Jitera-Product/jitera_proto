@@ -7,6 +7,13 @@ message ProjectAnalysis {
   string owner = 3;
   string branch = 4;
   string token = 5;
+	optional Provider provider = 6;
+	optional string provider_host_url = 7;
+
+	enum Provider {
+		github = 0;
+		gitlab = 1;
+	}
 }
 
 message ProjectAnalysisReport {

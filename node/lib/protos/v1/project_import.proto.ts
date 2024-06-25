@@ -7,6 +7,41 @@ export class ProjectAnalysis {
   owner: string;
   branch: string;
   token: string;
+  provider?: ProjectAnalysisProvider | undefined;
+  providerHostUrl?: string | undefined;
+}
+
+export enum ProjectAnalysisProvider {
+  github = 0,
+  gitlab = 1,
+  UNRECOGNIZED = -1,
+}
+
+export function projectAnalysisProviderFromJSON(object: any): ProjectAnalysisProvider {
+  switch (object) {
+    case 0:
+    case "github":
+      return ProjectAnalysisProvider.github;
+    case 1:
+    case "gitlab":
+      return ProjectAnalysisProvider.gitlab;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ProjectAnalysisProvider.UNRECOGNIZED;
+  }
+}
+
+export function projectAnalysisProviderToJSON(object: ProjectAnalysisProvider): string {
+  switch (object) {
+    case ProjectAnalysisProvider.github:
+      return "github";
+    case ProjectAnalysisProvider.gitlab:
+      return "gitlab";
+    case ProjectAnalysisProvider.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
 }
 
 export class ProjectAnalysisReport {
@@ -51,6 +86,12 @@ export const ProjectAnalysisData = {
     if (message.token !== "") {
       writer.uint32(42).string(message.token);
     }
+    if (message.provider !== undefined) {
+      writer.uint32(48).int32(message.provider);
+    }
+    if (message.providerHostUrl !== undefined) {
+      writer.uint32(58).string(message.providerHostUrl);
+    }
     return writer;
   },
 
@@ -76,6 +117,12 @@ export const ProjectAnalysisData = {
         case 5:
           message.token = reader.string();
           break;
+        case 6:
+          message.provider = reader.int32() as any;
+          break;
+        case 7:
+          message.providerHostUrl = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -91,6 +138,8 @@ export const ProjectAnalysisData = {
       owner: isSet(object.owner) ? String(object.owner) : "",
       branch: isSet(object.branch) ? String(object.branch) : "",
       token: isSet(object.token) ? String(object.token) : "",
+      provider: isSet(object.provider) ? projectAnalysisProviderFromJSON(object.provider) : undefined,
+      providerHostUrl: isSet(object.providerHostUrl) ? String(object.providerHostUrl) : undefined,
     };
   },
 
@@ -101,6 +150,9 @@ export const ProjectAnalysisData = {
     message.owner !== undefined && (obj.owner = message.owner);
     message.branch !== undefined && (obj.branch = message.branch);
     message.token !== undefined && (obj.token = message.token);
+    message.provider !== undefined &&
+      (obj.provider = message.provider !== undefined ? projectAnalysisProviderToJSON(message.provider) : undefined);
+    message.providerHostUrl !== undefined && (obj.providerHostUrl = message.providerHostUrl);
     return obj;
   },
 
@@ -111,6 +163,8 @@ export const ProjectAnalysisData = {
     message.owner = object.owner ?? "";
     message.branch = object.branch ?? "";
     message.token = object.token ?? "";
+    message.provider = object.provider ?? undefined;
+    message.providerHostUrl = object.providerHostUrl ?? undefined;
     return message;
   },
 };

@@ -47,6 +47,7 @@ module Schema
     ProjectSource::Platform = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.ProjectSource.Platform").enummodule
     PullRequest = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.PullRequest").msgclass
     Git = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.Git").msgclass
+    Git::Provider = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.Git.Provider").enummodule
     ProjectSourceCreation = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.ProjectSourceCreation").msgclass
     ProjectSourceCreation::Action = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.ProjectSourceCreation.Action").enummodule
     ERDConfig = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.ERDConfig").msgclass

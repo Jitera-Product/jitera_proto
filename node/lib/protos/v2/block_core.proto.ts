@@ -22,6 +22,7 @@ export class BlockContent {
   value: string;
   href?: string | undefined;
   styles?: { [key: string]: any };
+  reference?: { [key: string]: any };
 }
 
 function createBaseBlock(): Block {
@@ -215,6 +216,9 @@ export const BlockContentData = {
     if (message.styles !== undefined) {
       StructData.encode(StructData.wrap(message.styles), writer.uint32(34).fork()).ldelim();
     }
+    if (message.reference !== undefined) {
+      StructData.encode(StructData.wrap(message.reference), writer.uint32(42).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -237,6 +241,9 @@ export const BlockContentData = {
         case 4:
           message.styles = StructData.unwrap(StructData.decode(reader, reader.uint32()));
           break;
+        case 5:
+          message.reference = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -251,6 +258,7 @@ export const BlockContentData = {
       value: isSet(object.value) ? String(object.value) : "",
       href: isSet(object.href) ? String(object.href) : undefined,
       styles: isObject(object.styles) ? object.styles : undefined,
+      reference: isObject(object.reference) ? object.reference : undefined,
     };
   },
 
@@ -260,6 +268,7 @@ export const BlockContentData = {
     message.value !== undefined && (obj.value = message.value);
     message.href !== undefined && (obj.href = message.href);
     message.styles !== undefined && (obj.styles = message.styles);
+    message.reference !== undefined && (obj.reference = message.reference);
     return obj;
   },
 
@@ -269,6 +278,7 @@ export const BlockContentData = {
     message.value = object.value ?? "";
     message.href = object.href ?? undefined;
     message.styles = object.styles ?? undefined;
+    message.reference = object.reference ?? undefined;
     return message;
   },
 };
