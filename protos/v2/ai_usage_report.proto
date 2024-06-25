@@ -1,0 +1,23 @@
+syntax = "proto3";
+package schema.v2;
+
+import "google/protobuf/struct.proto";
+
+message AIUsageReport {
+	int32 project_id = 1;
+	google.protobuf.Struct metadata = 2;
+	repeated string tags = 3;
+	string provider = 4;
+	repeated DetailUsage detail_usages = 5;
+
+	message DetailUsage {
+    Type type = 1;
+    string model = 2;
+    int32 total = 3;
+  }
+
+	enum Type {
+		input = 0;
+		output = 1;
+	}
+}
