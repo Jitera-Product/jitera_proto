@@ -271,6 +271,7 @@ export class Git {
   pullRequest?: PullRequest;
   provider?: GitProvider | undefined;
   providerHostUrl?: string | undefined;
+  headers?: { [key: string]: any };
 }
 
 export enum GitProvider {
@@ -1063,6 +1064,9 @@ export const GitData = {
     if (message.providerHostUrl !== undefined) {
       writer.uint32(90).string(message.providerHostUrl);
     }
+    if (message.headers !== undefined) {
+      StructData.encode(StructData.wrap(message.headers), writer.uint32(98).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -1100,6 +1104,9 @@ export const GitData = {
         case 11:
           message.providerHostUrl = reader.string();
           break;
+        case 12:
+          message.headers = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1119,6 +1126,7 @@ export const GitData = {
       pullRequest: isSet(object.pullRequest) ? PullRequestData.fromJSON(object.pullRequest) : undefined,
       provider: isSet(object.provider) ? gitProviderFromJSON(object.provider) : undefined,
       providerHostUrl: isSet(object.providerHostUrl) ? String(object.providerHostUrl) : undefined,
+      headers: isObject(object.headers) ? object.headers : undefined,
     };
   },
 
@@ -1135,6 +1143,7 @@ export const GitData = {
     message.provider !== undefined &&
       (obj.provider = message.provider !== undefined ? gitProviderToJSON(message.provider) : undefined);
     message.providerHostUrl !== undefined && (obj.providerHostUrl = message.providerHostUrl);
+    message.headers !== undefined && (obj.headers = message.headers);
     return obj;
   },
 
@@ -1151,6 +1160,7 @@ export const GitData = {
       : undefined;
     message.provider = object.provider ?? undefined;
     message.providerHostUrl = object.providerHostUrl ?? undefined;
+    message.headers = object.headers ?? undefined;
     return message;
   },
 };
