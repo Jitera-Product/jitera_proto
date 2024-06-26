@@ -8,6 +8,8 @@ export class AIUsageReport {
   tags: string[];
   provider: string;
   detailUsages: AIUsageReportDetailUsage[];
+  model: string;
+  status: AIUsageReportStatus;
 }
 
 export enum AIUsageReportType {
@@ -43,14 +45,46 @@ export function aIUsageReportTypeToJSON(object: AIUsageReportType): string {
   }
 }
 
+export enum AIUsageReportStatus {
+  success = 0,
+  failed = 1,
+  UNRECOGNIZED = -1,
+}
+
+export function aIUsageReportStatusFromJSON(object: any): AIUsageReportStatus {
+  switch (object) {
+    case 0:
+    case "success":
+      return AIUsageReportStatus.success;
+    case 1:
+    case "failed":
+      return AIUsageReportStatus.failed;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return AIUsageReportStatus.UNRECOGNIZED;
+  }
+}
+
+export function aIUsageReportStatusToJSON(object: AIUsageReportStatus): string {
+  switch (object) {
+    case AIUsageReportStatus.success:
+      return "success";
+    case AIUsageReportStatus.failed:
+      return "failed";
+    case AIUsageReportStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 export class AIUsageReportDetailUsage {
   type: AIUsageReportType;
-  model: string;
   total: number;
 }
 
 function createBaseAIUsageReport(): AIUsageReport {
-  return { projectId: 0, tags: [], provider: "", detailUsages: [] };
+  return { projectId: 0, tags: [], provider: "", detailUsages: [], model: "", status: 0 };
 }
 
 export const AIUsageReportData = {
@@ -69,6 +103,12 @@ export const AIUsageReportData = {
     }
     for (const v of message.detailUsages) {
       AIUsageReportDetailUsageData.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
+    if (message.model !== "") {
+      writer.uint32(50).string(message.model);
+    }
+    if (message.status !== 0) {
+      writer.uint32(56).int32(message.status);
     }
     return writer;
   },
@@ -95,6 +135,12 @@ export const AIUsageReportData = {
         case 5:
           message.detailUsages.push(AIUsageReportDetailUsageData.decode(reader, reader.uint32()));
           break;
+        case 6:
+          message.model = reader.string();
+          break;
+        case 7:
+          message.status = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -112,6 +158,8 @@ export const AIUsageReportData = {
       detailUsages: Array.isArray(object?.detailUsages)
         ? object.detailUsages.map((e: any) => AIUsageReportDetailUsageData.fromJSON(e))
         : [],
+      model: isSet(object.model) ? String(object.model) : "",
+      status: isSet(object.status) ? aIUsageReportStatusFromJSON(object.status) : 0,
     };
   },
 
@@ -130,6 +178,8 @@ export const AIUsageReportData = {
     } else {
       obj.detailUsages = [];
     }
+    message.model !== undefined && (obj.model = message.model);
+    message.status !== undefined && (obj.status = aIUsageReportStatusToJSON(message.status));
     return obj;
   },
 
@@ -140,21 +190,20 @@ export const AIUsageReportData = {
     message.tags = object.tags?.map((e) => e) || [];
     message.provider = object.provider ?? "";
     message.detailUsages = object.detailUsages?.map((e) => AIUsageReportDetailUsageData.fromPartial(e)) || [];
+    message.model = object.model ?? "";
+    message.status = object.status ?? 0;
     return message;
   },
 };
 
 function createBaseAIUsageReportDetailUsage(): AIUsageReportDetailUsage {
-  return { type: 0, model: "", total: 0 };
+  return { type: 0, total: 0 };
 }
 
 export const AIUsageReportDetailUsageData = {
   encode(message: AIUsageReportDetailUsage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.type !== 0) {
       writer.uint32(8).int32(message.type);
-    }
-    if (message.model !== "") {
-      writer.uint32(18).string(message.model);
     }
     if (message.total !== 0) {
       writer.uint32(24).int32(message.total);
@@ -172,9 +221,6 @@ export const AIUsageReportDetailUsageData = {
         case 1:
           message.type = reader.int32() as any;
           break;
-        case 2:
-          message.model = reader.string();
-          break;
         case 3:
           message.total = reader.int32();
           break;
@@ -189,7 +235,6 @@ export const AIUsageReportDetailUsageData = {
   fromJSON(object: any): AIUsageReportDetailUsage {
     return {
       type: isSet(object.type) ? aIUsageReportTypeFromJSON(object.type) : 0,
-      model: isSet(object.model) ? String(object.model) : "",
       total: isSet(object.total) ? Number(object.total) : 0,
     };
   },
@@ -197,7 +242,6 @@ export const AIUsageReportDetailUsageData = {
   toJSON(message: AIUsageReportDetailUsage): unknown {
     const obj: any = {};
     message.type !== undefined && (obj.type = aIUsageReportTypeToJSON(message.type));
-    message.model !== undefined && (obj.model = message.model);
     message.total !== undefined && (obj.total = Math.round(message.total));
     return obj;
   },
@@ -205,7 +249,6 @@ export const AIUsageReportDetailUsageData = {
   fromPartial(object: DeepPartial<AIUsageReportDetailUsage>): AIUsageReportDetailUsage {
     const message = createBaseAIUsageReportDetailUsage();
     message.type = object.type ?? 0;
-    message.model = object.model ?? "";
     message.total = object.total ?? 0;
     return message;
   },

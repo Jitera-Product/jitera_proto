@@ -9,15 +9,21 @@ message AIUsageReport {
 	repeated string tags = 3;
 	string provider = 4;
 	repeated DetailUsage detail_usages = 5;
+	string model = 6;
+	Status status = 7;
 
 	message DetailUsage {
     Type type = 1;
-    string model = 2;
     int32 total = 3;
   }
 
 	enum Type {
 		input = 0;
 		output = 1;
+	}
+
+	enum Status {
+		success = 0;
+		failed = 1;
 	}
 }
