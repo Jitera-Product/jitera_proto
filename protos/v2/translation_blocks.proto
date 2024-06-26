@@ -5,6 +5,7 @@ message TranslationBlocks {
 	int32 project_generate_queue_id = 1;
 	LanguageConfig language_config = 2;
 	repeated TranslationBlock blocks = 3;
+	int32 project_id = 4;
 
 	message LanguageConfig {
 		string from_language = 1;

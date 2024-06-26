@@ -5,6 +5,7 @@ export class TranslationBlocks {
   projectGenerateQueueId: number;
   languageConfig?: TranslationBlocksLanguageConfig;
   blocks: TranslationBlock[];
+  projectId: number;
 }
 
 export class TranslationBlocksLanguageConfig {
@@ -32,7 +33,7 @@ export class TranslationBlocksResponseLanguageConfig {
 }
 
 function createBaseTranslationBlocks(): TranslationBlocks {
-  return { projectGenerateQueueId: 0, blocks: [] };
+  return { projectGenerateQueueId: 0, blocks: [], projectId: 0 };
 }
 
 export const TranslationBlocksData = {
@@ -45,6 +46,9 @@ export const TranslationBlocksData = {
     }
     for (const v of message.blocks) {
       TranslationBlockData.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.projectId !== 0) {
+      writer.uint32(32).int32(message.projectId);
     }
     return writer;
   },
@@ -65,6 +69,9 @@ export const TranslationBlocksData = {
         case 3:
           message.blocks.push(TranslationBlockData.decode(reader, reader.uint32()));
           break;
+        case 4:
+          message.projectId = reader.int32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -80,6 +87,7 @@ export const TranslationBlocksData = {
         ? TranslationBlocksLanguageConfigData.fromJSON(object.languageConfig)
         : undefined,
       blocks: Array.isArray(object?.blocks) ? object.blocks.map((e: any) => TranslationBlockData.fromJSON(e)) : [],
+      projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
     };
   },
 
@@ -95,6 +103,7 @@ export const TranslationBlocksData = {
     } else {
       obj.blocks = [];
     }
+    message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     return obj;
   },
 
@@ -105,6 +114,7 @@ export const TranslationBlocksData = {
       ? TranslationBlocksLanguageConfigData.fromPartial(object.languageConfig)
       : undefined;
     message.blocks = object.blocks?.map((e) => TranslationBlockData.fromPartial(e)) || [];
+    message.projectId = object.projectId ?? 0;
     return message;
   },
 };
