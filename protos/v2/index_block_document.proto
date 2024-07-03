@@ -5,7 +5,8 @@ import "v2/block_core.proto";
 
 message IndexBlockDocumentRequest {
   int32 project_generate_queue_id = 1;
-  repeated core.Block blocks = 2;
+  int32 project_id = 2;
+  repeated core.Block blocks = 3;
 }
 
 message IndexBlockDocumentResponse {

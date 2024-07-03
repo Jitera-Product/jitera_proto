@@ -4,6 +4,7 @@ import { Block, BlockData } from "./block_core.proto";
 
 export class IndexBlockDocumentRequest {
   projectGenerateQueueId: number;
+  projectId: number;
   blocks: Block[];
 }
 
@@ -53,7 +54,7 @@ export function indexBlockDocumentResponseStatusToJSON(object: IndexBlockDocumen
 }
 
 function createBaseIndexBlockDocumentRequest(): IndexBlockDocumentRequest {
-  return { projectGenerateQueueId: 0, blocks: [] };
+  return { projectGenerateQueueId: 0, projectId: 0, blocks: [] };
 }
 
 export const IndexBlockDocumentRequestData = {
@@ -61,8 +62,11 @@ export const IndexBlockDocumentRequestData = {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
     }
+    if (message.projectId !== 0) {
+      writer.uint32(16).int32(message.projectId);
+    }
     for (const v of message.blocks) {
-      BlockData.encode(v!, writer.uint32(18).fork()).ldelim();
+      BlockData.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -78,6 +82,9 @@ export const IndexBlockDocumentRequestData = {
           message.projectGenerateQueueId = reader.int32();
           break;
         case 2:
+          message.projectId = reader.int32();
+          break;
+        case 3:
           message.blocks.push(BlockData.decode(reader, reader.uint32()));
           break;
         default:
@@ -91,6 +98,7 @@ export const IndexBlockDocumentRequestData = {
   fromJSON(object: any): IndexBlockDocumentRequest {
     return {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
+      projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       blocks: Array.isArray(object?.blocks) ? object.blocks.map((e: any) => BlockData.fromJSON(e)) : [],
     };
   },
@@ -99,6 +107,7 @@ export const IndexBlockDocumentRequestData = {
     const obj: any = {};
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
+    message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     if (message.blocks) {
       obj.blocks = message.blocks.map((e) => e ? BlockData.toJSON(e) : undefined);
     } else {
@@ -110,6 +119,7 @@ export const IndexBlockDocumentRequestData = {
   fromPartial(object: DeepPartial<IndexBlockDocumentRequest>): IndexBlockDocumentRequest {
     const message = createBaseIndexBlockDocumentRequest();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
+    message.projectId = object.projectId ?? 0;
     message.blocks = object.blocks?.map((e) => BlockData.fromPartial(e)) || [];
     return message;
   },

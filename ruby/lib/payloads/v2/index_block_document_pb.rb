@@ -5,7 +5,7 @@
 require 'google/protobuf'
 
 
-descriptor_data = "\n\x1dv2/index_block_document.proto\x12\tschema.v2\x1a\x13v2/block_core.proto\"e\n\x19IndexBlockDocumentRequest\x12!\n\x19project_generate_queue_id\x18\x01 \x01(\x05\x12%\n\x06\x62locks\x18\x02 \x03(\x0b\x32\x15.schema.v2.core.Block\"\xc9\x01\n\x1aIndexBlockDocumentResponse\x12!\n\x19project_generate_queue_id\x18\x01 \x01(\x05\x12<\n\x06status\x18\x04 \x01(\x0e\x32,.schema.v2.IndexBlockDocumentResponse.Status\x12\x15\n\rerror_message\x18\x07 \x01(\t\"3\n\x06Status\x12\r\n\tSUCCEEDED\x10\x00\x12\x0e\n\nINPROGRESS\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\x62\x06proto3"
+descriptor_data = "\n\x1dv2/index_block_document.proto\x12\tschema.v2\x1a\x13v2/block_core.proto\"y\n\x19IndexBlockDocumentRequest\x12!\n\x19project_generate_queue_id\x18\x01 \x01(\x05\x12\x12\n\nproject_id\x18\x02 \x01(\x05\x12%\n\x06\x62locks\x18\x03 \x03(\x0b\x32\x15.schema.v2.core.Block\"\xc9\x01\n\x1aIndexBlockDocumentResponse\x12!\n\x19project_generate_queue_id\x18\x01 \x01(\x05\x12<\n\x06status\x18\x04 \x01(\x0e\x32,.schema.v2.IndexBlockDocumentResponse.Status\x12\x15\n\rerror_message\x18\x07 \x01(\t\"3\n\x06Status\x12\r\n\tSUCCEEDED\x10\x00\x12\x0e\n\nINPROGRESS\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\x62\x06proto3"
 
 pool = Google::Protobuf::DescriptorPool.generated_pool
 
