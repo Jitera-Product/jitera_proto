@@ -1,0 +1,21 @@
+syntax = "proto3";
+package schema.v2;
+
+import "v2/block_core.proto";
+
+message IndexBlockDocumentRequest {
+  int32 project_generate_queue_id = 1;
+  repeated core.Block blocks = 2;
+}
+
+message IndexBlockDocumentResponse {
+  int32 project_generate_queue_id = 1;
+  Status status = 4;
+  string error_message = 7;
+
+  enum Status {
+    SUCCEEDED = 0;
+    INPROGRESS = 1;
+    FAILED = 2;
+  }
+}
