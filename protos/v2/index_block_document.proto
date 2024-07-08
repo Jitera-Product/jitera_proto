@@ -25,8 +25,7 @@ message IndexBlockDocumentResponse {
 message DeleteIndexBlockDocumentRequest {
   int32 project_generate_queue_id = 1;
   int32 project_id = 2;
-  string block_type = 3;
-  google.protobuf.Struct deleted_block_node_ids = 4;
+  google.protobuf.Struct deleted_block_node_ids = 3;
 }
 
 message DeleteIndexBlockDocumentResponse {

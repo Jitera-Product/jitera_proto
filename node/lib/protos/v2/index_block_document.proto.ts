@@ -1,5 +1,6 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
+import { StructData } from "../google/protobuf/struct.proto";
 import { Block, BlockData } from "./block_core.proto";
 
 export class IndexBlockDocumentRequest {
@@ -56,8 +57,7 @@ export function indexBlockDocumentResponseStatusToJSON(object: IndexBlockDocumen
 export class DeleteIndexBlockDocumentRequest {
   projectGenerateQueueId: number;
   projectId: number;
-  blockType: string;
-  blocks: string[];
+  deletedBlockNodeIds?: { [key: string]: any };
 }
 
 export class DeleteIndexBlockDocumentResponse {
@@ -246,7 +246,7 @@ export const IndexBlockDocumentResponseData = {
 };
 
 function createBaseDeleteIndexBlockDocumentRequest(): DeleteIndexBlockDocumentRequest {
-  return { projectGenerateQueueId: 0, projectId: 0, blockType: "", blocks: [] };
+  return { projectGenerateQueueId: 0, projectId: 0 };
 }
 
 export const DeleteIndexBlockDocumentRequestData = {
@@ -257,11 +257,8 @@ export const DeleteIndexBlockDocumentRequestData = {
     if (message.projectId !== 0) {
       writer.uint32(16).int32(message.projectId);
     }
-    if (message.blockType !== "") {
-      writer.uint32(26).string(message.blockType);
-    }
-    for (const v of message.blocks) {
-      writer.uint32(34).string(v!);
+    if (message.deletedBlockNodeIds !== undefined) {
+      StructData.encode(StructData.wrap(message.deletedBlockNodeIds), writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -280,10 +277,7 @@ export const DeleteIndexBlockDocumentRequestData = {
           message.projectId = reader.int32();
           break;
         case 3:
-          message.blockType = reader.string();
-          break;
-        case 4:
-          message.blocks.push(reader.string());
+          message.deletedBlockNodeIds = StructData.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -297,8 +291,7 @@ export const DeleteIndexBlockDocumentRequestData = {
     return {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      blockType: isSet(object.blockType) ? String(object.blockType) : "",
-      blocks: Array.isArray(object?.blocks) ? object.blocks.map((e: any) => String(e)) : [],
+      deletedBlockNodeIds: isObject(object.deletedBlockNodeIds) ? object.deletedBlockNodeIds : undefined,
     };
   },
 
@@ -307,12 +300,7 @@ export const DeleteIndexBlockDocumentRequestData = {
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
-    message.blockType !== undefined && (obj.blockType = message.blockType);
-    if (message.blocks) {
-      obj.blocks = message.blocks.map((e) => e);
-    } else {
-      obj.blocks = [];
-    }
+    message.deletedBlockNodeIds !== undefined && (obj.deletedBlockNodeIds = message.deletedBlockNodeIds);
     return obj;
   },
 
@@ -320,8 +308,7 @@ export const DeleteIndexBlockDocumentRequestData = {
     const message = createBaseDeleteIndexBlockDocumentRequest();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectId = object.projectId ?? 0;
-    message.blockType = object.blockType ?? "";
-    message.blocks = object.blocks?.map((e) => e) || [];
+    message.deletedBlockNodeIds = object.deletedBlockNodeIds ?? undefined;
     return message;
   },
 };
@@ -400,6 +387,10 @@ type DeepPartial<T> = T extends Builtin ? T
   : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
+
+function isObject(value: any): boolean {
+  return typeof value === "object" && value !== null;
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;
