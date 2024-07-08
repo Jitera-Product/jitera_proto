@@ -53,6 +53,58 @@ export function indexBlockDocumentResponseStatusToJSON(object: IndexBlockDocumen
   }
 }
 
+export class DeleteIndexBlockDocumentRequest {
+  projectGenerateQueueId: number;
+  projectId: number;
+  blockType: string;
+  blocks: string[];
+}
+
+export class DeleteIndexBlockDocumentResponse {
+  projectGenerateQueueId: number;
+  status: DeleteIndexBlockDocumentResponseStatus;
+  errorMessage: string;
+}
+
+export enum DeleteIndexBlockDocumentResponseStatus {
+  SUCCEEDED = 0,
+  INPROGRESS = 1,
+  FAILED = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function deleteIndexBlockDocumentResponseStatusFromJSON(object: any): DeleteIndexBlockDocumentResponseStatus {
+  switch (object) {
+    case 0:
+    case "SUCCEEDED":
+      return DeleteIndexBlockDocumentResponseStatus.SUCCEEDED;
+    case 1:
+    case "INPROGRESS":
+      return DeleteIndexBlockDocumentResponseStatus.INPROGRESS;
+    case 2:
+    case "FAILED":
+      return DeleteIndexBlockDocumentResponseStatus.FAILED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return DeleteIndexBlockDocumentResponseStatus.UNRECOGNIZED;
+  }
+}
+
+export function deleteIndexBlockDocumentResponseStatusToJSON(object: DeleteIndexBlockDocumentResponseStatus): string {
+  switch (object) {
+    case DeleteIndexBlockDocumentResponseStatus.SUCCEEDED:
+      return "SUCCEEDED";
+    case DeleteIndexBlockDocumentResponseStatus.INPROGRESS:
+      return "INPROGRESS";
+    case DeleteIndexBlockDocumentResponseStatus.FAILED:
+      return "FAILED";
+    case DeleteIndexBlockDocumentResponseStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 function createBaseIndexBlockDocumentRequest(): IndexBlockDocumentRequest {
   return { projectGenerateQueueId: 0, projectId: 0, blocks: [] };
 }
@@ -186,6 +238,155 @@ export const IndexBlockDocumentResponseData = {
 
   fromPartial(object: DeepPartial<IndexBlockDocumentResponse>): IndexBlockDocumentResponse {
     const message = createBaseIndexBlockDocumentResponse();
+    message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
+    message.status = object.status ?? 0;
+    message.errorMessage = object.errorMessage ?? "";
+    return message;
+  },
+};
+
+function createBaseDeleteIndexBlockDocumentRequest(): DeleteIndexBlockDocumentRequest {
+  return { projectGenerateQueueId: 0, projectId: 0, blockType: "", blocks: [] };
+}
+
+export const DeleteIndexBlockDocumentRequestData = {
+  encode(message: DeleteIndexBlockDocumentRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.projectGenerateQueueId !== 0) {
+      writer.uint32(8).int32(message.projectGenerateQueueId);
+    }
+    if (message.projectId !== 0) {
+      writer.uint32(16).int32(message.projectId);
+    }
+    if (message.blockType !== "") {
+      writer.uint32(26).string(message.blockType);
+    }
+    for (const v of message.blocks) {
+      writer.uint32(34).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DeleteIndexBlockDocumentRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteIndexBlockDocumentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.projectGenerateQueueId = reader.int32();
+          break;
+        case 2:
+          message.projectId = reader.int32();
+          break;
+        case 3:
+          message.blockType = reader.string();
+          break;
+        case 4:
+          message.blocks.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteIndexBlockDocumentRequest {
+    return {
+      projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
+      projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
+      blockType: isSet(object.blockType) ? String(object.blockType) : "",
+      blocks: Array.isArray(object?.blocks) ? object.blocks.map((e: any) => String(e)) : [],
+    };
+  },
+
+  toJSON(message: DeleteIndexBlockDocumentRequest): unknown {
+    const obj: any = {};
+    message.projectGenerateQueueId !== undefined &&
+      (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
+    message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
+    message.blockType !== undefined && (obj.blockType = message.blockType);
+    if (message.blocks) {
+      obj.blocks = message.blocks.map((e) => e);
+    } else {
+      obj.blocks = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<DeleteIndexBlockDocumentRequest>): DeleteIndexBlockDocumentRequest {
+    const message = createBaseDeleteIndexBlockDocumentRequest();
+    message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
+    message.projectId = object.projectId ?? 0;
+    message.blockType = object.blockType ?? "";
+    message.blocks = object.blocks?.map((e) => e) || [];
+    return message;
+  },
+};
+
+function createBaseDeleteIndexBlockDocumentResponse(): DeleteIndexBlockDocumentResponse {
+  return { projectGenerateQueueId: 0, status: 0, errorMessage: "" };
+}
+
+export const DeleteIndexBlockDocumentResponseData = {
+  encode(message: DeleteIndexBlockDocumentResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.projectGenerateQueueId !== 0) {
+      writer.uint32(8).int32(message.projectGenerateQueueId);
+    }
+    if (message.status !== 0) {
+      writer.uint32(32).int32(message.status);
+    }
+    if (message.errorMessage !== "") {
+      writer.uint32(58).string(message.errorMessage);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DeleteIndexBlockDocumentResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteIndexBlockDocumentResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.projectGenerateQueueId = reader.int32();
+          break;
+        case 4:
+          message.status = reader.int32() as any;
+          break;
+        case 7:
+          message.errorMessage = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteIndexBlockDocumentResponse {
+    return {
+      projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
+      status: isSet(object.status) ? deleteIndexBlockDocumentResponseStatusFromJSON(object.status) : 0,
+      errorMessage: isSet(object.errorMessage) ? String(object.errorMessage) : "",
+    };
+  },
+
+  toJSON(message: DeleteIndexBlockDocumentResponse): unknown {
+    const obj: any = {};
+    message.projectGenerateQueueId !== undefined &&
+      (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
+    message.status !== undefined && (obj.status = deleteIndexBlockDocumentResponseStatusToJSON(message.status));
+    message.errorMessage !== undefined && (obj.errorMessage = message.errorMessage);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<DeleteIndexBlockDocumentResponse>): DeleteIndexBlockDocumentResponse {
+    const message = createBaseDeleteIndexBlockDocumentResponse();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.status = object.status ?? 0;
     message.errorMessage = object.errorMessage ?? "";

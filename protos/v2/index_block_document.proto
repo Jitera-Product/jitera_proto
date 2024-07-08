@@ -2,6 +2,7 @@ syntax = "proto3";
 package schema.v2;
 
 import "v2/block_core.proto";
+import "google/protobuf/struct.proto";
 
 message IndexBlockDocumentRequest {
   int32 project_generate_queue_id = 1;
@@ -10,6 +11,25 @@ message IndexBlockDocumentRequest {
 }
 
 message IndexBlockDocumentResponse {
+  int32 project_generate_queue_id = 1;
+  Status status = 4;
+  string error_message = 7;
+
+  enum Status {
+    SUCCEEDED = 0;
+    INPROGRESS = 1;
+    FAILED = 2;
+  }
+}
+
+message DeleteIndexBlockDocumentRequest {
+  int32 project_generate_queue_id = 1;
+  int32 project_id = 2;
+  string block_type = 3;
+  google.protobuf.Struct deleted_block_node_ids = 4;
+}
+
+message DeleteIndexBlockDocumentResponse {
   int32 project_generate_queue_id = 1;
   Status status = 4;
   string error_message = 7;
