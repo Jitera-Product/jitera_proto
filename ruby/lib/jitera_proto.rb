@@ -20,6 +20,7 @@ require_relative 'payloads/v2/project_source_frontend_pb'
 require_relative 'payloads/v2/project_ticket_pb'
 require_relative 'payloads/v2/image_description_pb'
 require_relative 'payloads/v2/ai_usage_report_pb'
+require_relative 'payloads/v2/index_block_document_pb'
 
 module JiteraProto
 end
