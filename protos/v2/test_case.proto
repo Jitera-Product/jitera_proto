@@ -1,0 +1,41 @@
+syntax = "proto3";
+package schema.v2;
+
+message TestCasesCreation {
+	int32 project_generate_id = 1;
+	int32 project_id = 2;
+	repeated TestCase test_cases = 3;
+	TestConfiguration test_configuration = 4;
+
+	message TestConfiguration {
+		string url = 1;
+		string username = 2;
+		string password = 3;
+	}
+
+	message TestCase {
+		int32 id = 1;
+		string name = 2;
+		int32 order = 3;
+		repeated TestCaseStep steps = 4;
+	}
+	
+	message TestCaseStep {
+		int32 id = 1;
+		int32 order = 2;
+		string description = 3;
+	}
+}
+
+message TestCasesCreationReport {
+	message TestCase {
+		int32 id = 1;
+		int32 code = 2;
+		repeated TestCaseStep steps = 3;
+	}
+	
+	message TestCaseStep {
+		int32 id = 1;
+		int32 reference = 2;
+	}
+}
