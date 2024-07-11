@@ -28,6 +28,10 @@ message TestCasesCreation {
 }
 
 message TestCasesCreationReport {
+	int32 project_generate_id = 1;
+	repeated TestCase test_cases = 3;
+	repeated string errors = 4;
+
 	message TestCase {
 		int32 id = 1;
 		int32 code = 2;
