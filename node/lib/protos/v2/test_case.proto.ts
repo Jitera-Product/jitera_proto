@@ -22,12 +22,15 @@ export class TestCasesCreationTestCase {
 }
 
 export class TestCasesCreationTestCaseStep {
-  id: number;
+  nodeId: string;
   order: number;
   description: string;
 }
 
 export class TestCasesCreationReport {
+  projectGenerateId: number;
+  testCases: TestCasesCreationReportTestCase[];
+  errors: string[];
 }
 
 export class TestCasesCreationReportTestCase {
@@ -37,8 +40,8 @@ export class TestCasesCreationReportTestCase {
 }
 
 export class TestCasesCreationReportTestCaseStep {
-  id: number;
-  reference: number;
+  nodeId: string;
+  code: number;
 }
 
 function createBaseTestCasesCreation(): TestCasesCreation {
@@ -279,13 +282,13 @@ export const TestCasesCreationTestCaseData = {
 };
 
 function createBaseTestCasesCreationTestCaseStep(): TestCasesCreationTestCaseStep {
-  return { id: 0, order: 0, description: "" };
+  return { nodeId: "", order: 0, description: "" };
 }
 
 export const TestCasesCreationTestCaseStepData = {
   encode(message: TestCasesCreationTestCaseStep, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== 0) {
-      writer.uint32(8).int32(message.id);
+    if (message.nodeId !== "") {
+      writer.uint32(10).string(message.nodeId);
     }
     if (message.order !== 0) {
       writer.uint32(16).int32(message.order);
@@ -304,7 +307,7 @@ export const TestCasesCreationTestCaseStepData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = reader.int32();
+          message.nodeId = reader.string();
           break;
         case 2:
           message.order = reader.int32();
@@ -322,7 +325,7 @@ export const TestCasesCreationTestCaseStepData = {
 
   fromJSON(object: any): TestCasesCreationTestCaseStep {
     return {
-      id: isSet(object.id) ? Number(object.id) : 0,
+      nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
       order: isSet(object.order) ? Number(object.order) : 0,
       description: isSet(object.description) ? String(object.description) : "",
     };
@@ -330,7 +333,7 @@ export const TestCasesCreationTestCaseStepData = {
 
   toJSON(message: TestCasesCreationTestCaseStep): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.nodeId !== undefined && (obj.nodeId = message.nodeId);
     message.order !== undefined && (obj.order = Math.round(message.order));
     message.description !== undefined && (obj.description = message.description);
     return obj;
@@ -338,7 +341,7 @@ export const TestCasesCreationTestCaseStepData = {
 
   fromPartial(object: DeepPartial<TestCasesCreationTestCaseStep>): TestCasesCreationTestCaseStep {
     const message = createBaseTestCasesCreationTestCaseStep();
-    message.id = object.id ?? 0;
+    message.nodeId = object.nodeId ?? "";
     message.order = object.order ?? 0;
     message.description = object.description ?? "";
     return message;
@@ -346,11 +349,20 @@ export const TestCasesCreationTestCaseStepData = {
 };
 
 function createBaseTestCasesCreationReport(): TestCasesCreationReport {
-  return {};
+  return { projectGenerateId: 0, testCases: [], errors: [] };
 }
 
 export const TestCasesCreationReportData = {
-  encode(_: TestCasesCreationReport, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: TestCasesCreationReport, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.projectGenerateId !== 0) {
+      writer.uint32(8).int32(message.projectGenerateId);
+    }
+    for (const v of message.testCases) {
+      TestCasesCreationReportTestCaseData.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    for (const v of message.errors) {
+      writer.uint32(34).string(v!);
+    }
     return writer;
   },
 
@@ -361,6 +373,15 @@ export const TestCasesCreationReportData = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.projectGenerateId = reader.int32();
+          break;
+        case 3:
+          message.testCases.push(TestCasesCreationReportTestCaseData.decode(reader, reader.uint32()));
+          break;
+        case 4:
+          message.errors.push(reader.string());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -369,17 +390,37 @@ export const TestCasesCreationReportData = {
     return message;
   },
 
-  fromJSON(_: any): TestCasesCreationReport {
-    return {};
+  fromJSON(object: any): TestCasesCreationReport {
+    return {
+      projectGenerateId: isSet(object.projectGenerateId) ? Number(object.projectGenerateId) : 0,
+      testCases: Array.isArray(object?.testCases)
+        ? object.testCases.map((e: any) => TestCasesCreationReportTestCaseData.fromJSON(e))
+        : [],
+      errors: Array.isArray(object?.errors) ? object.errors.map((e: any) => String(e)) : [],
+    };
   },
 
-  toJSON(_: TestCasesCreationReport): unknown {
+  toJSON(message: TestCasesCreationReport): unknown {
     const obj: any = {};
+    message.projectGenerateId !== undefined && (obj.projectGenerateId = Math.round(message.projectGenerateId));
+    if (message.testCases) {
+      obj.testCases = message.testCases.map((e) => e ? TestCasesCreationReportTestCaseData.toJSON(e) : undefined);
+    } else {
+      obj.testCases = [];
+    }
+    if (message.errors) {
+      obj.errors = message.errors.map((e) => e);
+    } else {
+      obj.errors = [];
+    }
     return obj;
   },
 
-  fromPartial(_: DeepPartial<TestCasesCreationReport>): TestCasesCreationReport {
+  fromPartial(object: DeepPartial<TestCasesCreationReport>): TestCasesCreationReport {
     const message = createBaseTestCasesCreationReport();
+    message.projectGenerateId = object.projectGenerateId ?? 0;
+    message.testCases = object.testCases?.map((e) => TestCasesCreationReportTestCaseData.fromPartial(e)) || [];
+    message.errors = object.errors?.map((e) => e) || [];
     return message;
   },
 };
@@ -458,16 +499,16 @@ export const TestCasesCreationReportTestCaseData = {
 };
 
 function createBaseTestCasesCreationReportTestCaseStep(): TestCasesCreationReportTestCaseStep {
-  return { id: 0, reference: 0 };
+  return { nodeId: "", code: 0 };
 }
 
 export const TestCasesCreationReportTestCaseStepData = {
   encode(message: TestCasesCreationReportTestCaseStep, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== 0) {
-      writer.uint32(8).int32(message.id);
+    if (message.nodeId !== "") {
+      writer.uint32(10).string(message.nodeId);
     }
-    if (message.reference !== 0) {
-      writer.uint32(16).int32(message.reference);
+    if (message.code !== 0) {
+      writer.uint32(16).int32(message.code);
     }
     return writer;
   },
@@ -480,10 +521,10 @@ export const TestCasesCreationReportTestCaseStepData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = reader.int32();
+          message.nodeId = reader.string();
           break;
         case 2:
-          message.reference = reader.int32();
+          message.code = reader.int32();
           break;
         default:
           reader.skipType(tag & 7);
@@ -495,22 +536,22 @@ export const TestCasesCreationReportTestCaseStepData = {
 
   fromJSON(object: any): TestCasesCreationReportTestCaseStep {
     return {
-      id: isSet(object.id) ? Number(object.id) : 0,
-      reference: isSet(object.reference) ? Number(object.reference) : 0,
+      nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
+      code: isSet(object.code) ? Number(object.code) : 0,
     };
   },
 
   toJSON(message: TestCasesCreationReportTestCaseStep): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.reference !== undefined && (obj.reference = Math.round(message.reference));
+    message.nodeId !== undefined && (obj.nodeId = message.nodeId);
+    message.code !== undefined && (obj.code = Math.round(message.code));
     return obj;
   },
 
   fromPartial(object: DeepPartial<TestCasesCreationReportTestCaseStep>): TestCasesCreationReportTestCaseStep {
     const message = createBaseTestCasesCreationReportTestCaseStep();
-    message.id = object.id ?? 0;
-    message.reference = object.reference ?? 0;
+    message.nodeId = object.nodeId ?? "";
+    message.code = object.code ?? 0;
     return message;
   },
 };

@@ -21,7 +21,7 @@ message TestCasesCreation {
 	}
 	
 	message TestCaseStep {
-		int32 id = 1;
+		string node_id = 1;
 		int32 order = 2;
 		string description = 3;
 	}
@@ -34,12 +34,12 @@ message TestCasesCreationReport {
 
 	message TestCase {
 		int32 id = 1;
-		int32 code = 2;
+		string code = 2;
 		repeated TestCaseStep steps = 3;
 	}
 	
 	message TestCaseStep {
-		int32 id = 1;
-		int32 reference = 2;
+		string node_id = 1;
+		string code = 2;
 	}
 }
