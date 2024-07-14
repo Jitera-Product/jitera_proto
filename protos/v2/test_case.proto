@@ -1,45 +1,43 @@
 syntax = "proto3";
 package schema.v2;
 
+import "v2/block_core.proto";
+
 message TestCasesCreation {
 	int32 project_generate_id = 1;
 	int32 project_id = 2;
-	repeated TestCase test_cases = 3;
-	TestConfiguration test_configuration = 4;
+	TestConfiguration test_configuration = 3;
+  repeated core.Block use_cases = 4;
 
 	message TestConfiguration {
 		string url = 1;
 		string username = 2;
 		string password = 3;
 	}
-
-	message TestCase {
-		int32 id = 1;
-		string name = 2;
-		int32 order = 3;
-		repeated TestCaseStep steps = 4;
-	}
-	
-	message TestCaseStep {
-		string node_id = 1;
-		int32 order = 2;
-		string description = 3;
-	}
 }
 
 message TestCasesCreationReport {
 	int32 project_generate_id = 1;
-	repeated TestCase test_cases = 3;
-	repeated string errors = 4;
+	repeated TestCase test_cases = 2;
+	repeated string errors = 3;
+  Status status = 4;
+
+  enum Status {
+    SUCCEEDED = 0;
+    IN_PROGRESS = 1;
+    FAILED = 2;
+  }
 
 	message TestCase {
-		int32 id = 1;
-		string code = 2;
-		repeated TestCaseStep steps = 3;
+		string name = 1;
+		int32 order = 2;
+		string code = 3;
+		repeated TestCaseStep steps = 4;
 	}
 	
 	message TestCaseStep {
-		string node_id = 1;
+		int32 order = 1;
 		string code = 2;
+		string description = 3;
 	}
 }

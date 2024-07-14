@@ -5,7 +5,7 @@
 require 'google/protobuf'
 
 
-descriptor_data = "\n\x12v2/test_case.proto\x12\tschema.v2\"\xc5\x03\n\x11TestCasesCreation\x12\x1b\n\x13project_generate_id\x18\x01 \x01(\x05\x12\x12\n\nproject_id\x18\x02 \x01(\x05\x12\x39\n\ntest_cases\x18\x03 \x03(\x0b\x32%.schema.v2.TestCasesCreation.TestCase\x12J\n\x12test_configuration\x18\x04 \x01(\x0b\x32..schema.v2.TestCasesCreation.TestConfiguration\x1a\x44\n\x11TestConfiguration\x12\x0b\n\x03url\x18\x01 \x01(\t\x12\x10\n\x08username\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\x1am\n\x08TestCase\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\r\n\x05order\x18\x03 \x01(\x05\x12\x38\n\x05steps\x18\x04 \x03(\x0b\x32).schema.v2.TestCasesCreation.TestCaseStep\x1a\x43\n\x0cTestCaseStep\x12\x0f\n\x07node_id\x18\x01 \x01(\t\x12\r\n\x05order\x18\x02 \x01(\x05\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\"\x9c\x02\n\x17TestCasesCreationReport\x12\x1b\n\x13project_generate_id\x18\x01 \x01(\x05\x12?\n\ntest_cases\x18\x03 \x03(\x0b\x32+.schema.v2.TestCasesCreationReport.TestCase\x12\x0e\n\x06\x65rrors\x18\x04 \x03(\t\x1a\x64\n\x08TestCase\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04\x63ode\x18\x02 \x01(\t\x12>\n\x05steps\x18\x03 \x03(\x0b\x32/.schema.v2.TestCasesCreationReport.TestCaseStep\x1a-\n\x0cTestCaseStep\x12\x0f\n\x07node_id\x18\x01 \x01(\t\x12\x0c\n\x04\x63ode\x18\x02 \x01(\tb\x06proto3"
+descriptor_data = "\n\x12v2/test_case.proto\x12\tschema.v2\x1a\x13v2/block_core.proto\"\x80\x02\n\x11TestCasesCreation\x12\x1b\n\x13project_generate_id\x18\x01 \x01(\x05\x12\x12\n\nproject_id\x18\x02 \x01(\x05\x12J\n\x12test_configuration\x18\x03 \x01(\x0b\x32..schema.v2.TestCasesCreation.TestConfiguration\x12(\n\tuse_cases\x18\x04 \x03(\x0b\x32\x15.schema.v2.core.Block\x1a\x44\n\x11TestConfiguration\x12\x0b\n\x03url\x18\x01 \x01(\t\x12\x10\n\x08username\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\"\xb1\x03\n\x17TestCasesCreationReport\x12\x1b\n\x13project_generate_id\x18\x01 \x01(\x05\x12?\n\ntest_cases\x18\x02 \x03(\x0b\x32+.schema.v2.TestCasesCreationReport.TestCase\x12\x0e\n\x06\x65rrors\x18\x03 \x03(\t\x12\x39\n\x06status\x18\x04 \x01(\x0e\x32).schema.v2.TestCasesCreationReport.Status\x1au\n\x08TestCase\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05order\x18\x02 \x01(\x05\x12\x0c\n\x04\x63ode\x18\x03 \x01(\t\x12>\n\x05steps\x18\x04 \x03(\x0b\x32/.schema.v2.TestCasesCreationReport.TestCaseStep\x1a@\n\x0cTestCaseStep\x12\r\n\x05order\x18\x01 \x01(\x05\x12\x0c\n\x04\x63ode\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\"4\n\x06Status\x12\r\n\tSUCCEEDED\x10\x00\x12\x0f\n\x0bIN_PROGRESS\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\x62\x06proto3"
 
 pool = Google::Protobuf::DescriptorPool.generated_pool
 
@@ -20,6 +20,7 @@ rescue TypeError => e
   file = pool.add_serialized_file(serialized)
   warn "Warning: Protobuf detected an import path issue while loading generated file #{__FILE__}"
   imports = [
+    ["schema.v2.core.Block", "v2/block_core.proto"],
   ]
   imports.each do |type_name, expected_filename|
     import_file = pool.lookup(type_name).file_descriptor
@@ -35,10 +36,9 @@ module Schema
   module V2
     TestCasesCreation = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.TestCasesCreation").msgclass
     TestCasesCreation::TestConfiguration = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.TestCasesCreation.TestConfiguration").msgclass
-    TestCasesCreation::TestCase = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.TestCasesCreation.TestCase").msgclass
-    TestCasesCreation::TestCaseStep = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.TestCasesCreation.TestCaseStep").msgclass
     TestCasesCreationReport = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.TestCasesCreationReport").msgclass
     TestCasesCreationReport::TestCase = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.TestCasesCreationReport.TestCase").msgclass
     TestCasesCreationReport::TestCaseStep = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.TestCasesCreationReport.TestCaseStep").msgclass
+    TestCasesCreationReport::Status = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.TestCasesCreationReport.Status").enummodule
   end
 end
