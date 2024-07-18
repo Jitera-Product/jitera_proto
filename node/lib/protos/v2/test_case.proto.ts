@@ -65,13 +65,15 @@ export class TestCasesCreationReportTestCase {
   name: string;
   order: number;
   code: string;
+  useCaseId: number;
   steps: TestCasesCreationReportTestCaseStep[];
 }
 
 export class TestCasesCreationReportTestCaseStep {
   order: number;
   code: string;
-  description: string;
+  step: string;
+  nodeId: string;
 }
 
 function createBaseTestCasesCreation(): TestCasesCreation {
@@ -314,7 +316,7 @@ export const TestCasesCreationReportData = {
 };
 
 function createBaseTestCasesCreationReportTestCase(): TestCasesCreationReportTestCase {
-  return { name: "", order: 0, code: "", steps: [] };
+  return { name: "", order: 0, code: "", useCaseId: 0, steps: [] };
 }
 
 export const TestCasesCreationReportTestCaseData = {
@@ -328,8 +330,11 @@ export const TestCasesCreationReportTestCaseData = {
     if (message.code !== "") {
       writer.uint32(26).string(message.code);
     }
+    if (message.useCaseId !== 0) {
+      writer.uint32(32).int32(message.useCaseId);
+    }
     for (const v of message.steps) {
-      TestCasesCreationReportTestCaseStepData.encode(v!, writer.uint32(34).fork()).ldelim();
+      TestCasesCreationReportTestCaseStepData.encode(v!, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -351,6 +356,9 @@ export const TestCasesCreationReportTestCaseData = {
           message.code = reader.string();
           break;
         case 4:
+          message.useCaseId = reader.int32();
+          break;
+        case 5:
           message.steps.push(TestCasesCreationReportTestCaseStepData.decode(reader, reader.uint32()));
           break;
         default:
@@ -366,6 +374,7 @@ export const TestCasesCreationReportTestCaseData = {
       name: isSet(object.name) ? String(object.name) : "",
       order: isSet(object.order) ? Number(object.order) : 0,
       code: isSet(object.code) ? String(object.code) : "",
+      useCaseId: isSet(object.useCaseId) ? Number(object.useCaseId) : 0,
       steps: Array.isArray(object?.steps)
         ? object.steps.map((e: any) => TestCasesCreationReportTestCaseStepData.fromJSON(e))
         : [],
@@ -377,6 +386,7 @@ export const TestCasesCreationReportTestCaseData = {
     message.name !== undefined && (obj.name = message.name);
     message.order !== undefined && (obj.order = Math.round(message.order));
     message.code !== undefined && (obj.code = message.code);
+    message.useCaseId !== undefined && (obj.useCaseId = Math.round(message.useCaseId));
     if (message.steps) {
       obj.steps = message.steps.map((e) => e ? TestCasesCreationReportTestCaseStepData.toJSON(e) : undefined);
     } else {
@@ -390,13 +400,14 @@ export const TestCasesCreationReportTestCaseData = {
     message.name = object.name ?? "";
     message.order = object.order ?? 0;
     message.code = object.code ?? "";
+    message.useCaseId = object.useCaseId ?? 0;
     message.steps = object.steps?.map((e) => TestCasesCreationReportTestCaseStepData.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseTestCasesCreationReportTestCaseStep(): TestCasesCreationReportTestCaseStep {
-  return { order: 0, code: "", description: "" };
+  return { order: 0, code: "", step: "", nodeId: "" };
 }
 
 export const TestCasesCreationReportTestCaseStepData = {
@@ -407,8 +418,11 @@ export const TestCasesCreationReportTestCaseStepData = {
     if (message.code !== "") {
       writer.uint32(18).string(message.code);
     }
-    if (message.description !== "") {
-      writer.uint32(26).string(message.description);
+    if (message.step !== "") {
+      writer.uint32(26).string(message.step);
+    }
+    if (message.nodeId !== "") {
+      writer.uint32(34).string(message.nodeId);
     }
     return writer;
   },
@@ -427,7 +441,10 @@ export const TestCasesCreationReportTestCaseStepData = {
           message.code = reader.string();
           break;
         case 3:
-          message.description = reader.string();
+          message.step = reader.string();
+          break;
+        case 4:
+          message.nodeId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -441,7 +458,8 @@ export const TestCasesCreationReportTestCaseStepData = {
     return {
       order: isSet(object.order) ? Number(object.order) : 0,
       code: isSet(object.code) ? String(object.code) : "",
-      description: isSet(object.description) ? String(object.description) : "",
+      step: isSet(object.step) ? String(object.step) : "",
+      nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
     };
   },
 
@@ -449,7 +467,8 @@ export const TestCasesCreationReportTestCaseStepData = {
     const obj: any = {};
     message.order !== undefined && (obj.order = Math.round(message.order));
     message.code !== undefined && (obj.code = message.code);
-    message.description !== undefined && (obj.description = message.description);
+    message.step !== undefined && (obj.step = message.step);
+    message.nodeId !== undefined && (obj.nodeId = message.nodeId);
     return obj;
   },
 
@@ -457,7 +476,8 @@ export const TestCasesCreationReportTestCaseStepData = {
     const message = createBaseTestCasesCreationReportTestCaseStep();
     message.order = object.order ?? 0;
     message.code = object.code ?? "";
-    message.description = object.description ?? "";
+    message.step = object.step ?? "";
+    message.nodeId = object.nodeId ?? "";
     return message;
   },
 };

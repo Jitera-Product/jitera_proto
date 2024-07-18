@@ -32,12 +32,14 @@ message TestCasesCreationReport {
 		string name = 1;
 		int32 order = 2;
 		string code = 3;
-		repeated TestCaseStep steps = 4;
+		int32 use_case_id = 4;
+		repeated TestCaseStep steps = 5;
 	}
 	
 	message TestCaseStep {
 		int32 order = 1;
 		string code = 2;
-		string description = 3;
+		string step = 3;
+		string node_id = 4;
 	}
 }
