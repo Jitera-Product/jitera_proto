@@ -66,6 +66,7 @@ export class TestCasesCreationReportTestCase {
   order: number;
   code: string;
   useCaseId: number;
+  nodeId: string;
   steps: TestCasesCreationReportTestCaseStep[];
 }
 
@@ -316,7 +317,7 @@ export const TestCasesCreationReportData = {
 };
 
 function createBaseTestCasesCreationReportTestCase(): TestCasesCreationReportTestCase {
-  return { name: "", order: 0, code: "", useCaseId: 0, steps: [] };
+  return { name: "", order: 0, code: "", useCaseId: 0, nodeId: "", steps: [] };
 }
 
 export const TestCasesCreationReportTestCaseData = {
@@ -333,8 +334,11 @@ export const TestCasesCreationReportTestCaseData = {
     if (message.useCaseId !== 0) {
       writer.uint32(32).int32(message.useCaseId);
     }
+    if (message.nodeId !== "") {
+      writer.uint32(42).string(message.nodeId);
+    }
     for (const v of message.steps) {
-      TestCasesCreationReportTestCaseStepData.encode(v!, writer.uint32(42).fork()).ldelim();
+      TestCasesCreationReportTestCaseStepData.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -359,6 +363,9 @@ export const TestCasesCreationReportTestCaseData = {
           message.useCaseId = reader.int32();
           break;
         case 5:
+          message.nodeId = reader.string();
+          break;
+        case 6:
           message.steps.push(TestCasesCreationReportTestCaseStepData.decode(reader, reader.uint32()));
           break;
         default:
@@ -375,6 +382,7 @@ export const TestCasesCreationReportTestCaseData = {
       order: isSet(object.order) ? Number(object.order) : 0,
       code: isSet(object.code) ? String(object.code) : "",
       useCaseId: isSet(object.useCaseId) ? Number(object.useCaseId) : 0,
+      nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
       steps: Array.isArray(object?.steps)
         ? object.steps.map((e: any) => TestCasesCreationReportTestCaseStepData.fromJSON(e))
         : [],
@@ -387,6 +395,7 @@ export const TestCasesCreationReportTestCaseData = {
     message.order !== undefined && (obj.order = Math.round(message.order));
     message.code !== undefined && (obj.code = message.code);
     message.useCaseId !== undefined && (obj.useCaseId = Math.round(message.useCaseId));
+    message.nodeId !== undefined && (obj.nodeId = message.nodeId);
     if (message.steps) {
       obj.steps = message.steps.map((e) => e ? TestCasesCreationReportTestCaseStepData.toJSON(e) : undefined);
     } else {
@@ -401,6 +410,7 @@ export const TestCasesCreationReportTestCaseData = {
     message.order = object.order ?? 0;
     message.code = object.code ?? "";
     message.useCaseId = object.useCaseId ?? 0;
+    message.nodeId = object.nodeId ?? "";
     message.steps = object.steps?.map((e) => TestCasesCreationReportTestCaseStepData.fromPartial(e)) || [];
     return message;
   },

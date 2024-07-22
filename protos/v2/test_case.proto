@@ -33,7 +33,8 @@ message TestCasesCreationReport {
 		int32 order = 2;
 		string code = 3;
 		int32 use_case_id = 4;
-		repeated TestCaseStep steps = 5;
+		string node_id = 5;
+		repeated TestCaseStep steps = 6;
 	}
 	
 	message TestCaseStep {
