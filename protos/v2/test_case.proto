@@ -3,6 +3,22 @@ package schema.v2;
 
 import "v2/block_core.proto";
 
+message TestCase {
+	string name = 1;
+	int32 order = 2;
+	string code = 3;
+	int32 use_case_id = 4;
+	string node_id = 5;
+	repeated TestCaseStep steps = 6;
+}
+
+message TestCaseStep {
+	int32 order = 1;
+	string code = 2;
+	string step = 3;
+	string node_id = 4;
+}
+
 message TestCasesCreation {
 	int32 project_generate_id = 1;
 	int32 project_id = 2;
@@ -27,20 +43,45 @@ message TestCasesCreationReport {
     IN_PROGRESS = 1;
     FAILED = 2;
   }
+}
 
-	message TestCase {
-		string name = 1;
-		int32 order = 2;
-		string code = 3;
-		int32 use_case_id = 4;
-		string node_id = 5;
-		repeated TestCaseStep steps = 6;
+message TestCasesRun {
+	int32 project_generate_id = 1;
+	int32 project_id = 2;
+	TestConfiguration test_configuration = 3;
+	repeated TestCase test_cases = 4;
+
+	message TestConfiguration {
+		string url = 1;
+		string username = 2;
+		string password = 3;
 	}
-	
-	message TestCaseStep {
-		int32 order = 1;
+}
+
+message TestCasesRunReport {
+	int32 project_generate_id = 1;
+  Status status = 2;
+	repeated string errors = 4;
+
+	oneof source {
+		TestCaseSource test_case = 5;
+		TestCaseStepSource test_case_step = 6;
+	}
+
+	message TestCaseStepSource {
+		string node_id = 1;
 		string code = 2;
-		string step = 3;
-		string node_id = 4;
+		Status status = 3;
 	}
+
+	message TestCaseSource {
+		string node_id = 1;
+		Status status = 2;
+	}
+
+	enum Status {
+    SUCCEEDED = 0;
+    IN_PROGRESS = 1;
+    FAILED = 2;
+  }
 }

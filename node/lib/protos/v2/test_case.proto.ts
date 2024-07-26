@@ -2,6 +2,22 @@
 import * as _m0 from "protobufjs/minimal";
 import { Block, BlockData } from "./block_core.proto";
 
+export class TestCase {
+  name: string;
+  order: number;
+  code: string;
+  useCaseId: number;
+  nodeId: string;
+  steps: TestCaseStep[];
+}
+
+export class TestCaseStep {
+  order: number;
+  code: string;
+  step: string;
+  nodeId: string;
+}
+
 export class TestCasesCreation {
   projectGenerateId: number;
   projectId: number;
@@ -17,7 +33,7 @@ export class TestCasesCreationTestConfiguration {
 
 export class TestCasesCreationReport {
   projectGenerateId: number;
-  testCases: TestCasesCreationReportTestCase[];
+  testCases: TestCase[];
   errors: string[];
   status: TestCasesCreationReportStatus;
 }
@@ -61,21 +77,249 @@ export function testCasesCreationReportStatusToJSON(object: TestCasesCreationRep
   }
 }
 
-export class TestCasesCreationReportTestCase {
-  name: string;
-  order: number;
-  code: string;
-  useCaseId: number;
-  nodeId: string;
-  steps: TestCasesCreationReportTestCaseStep[];
+export class TestCasesRun {
+  projectGenerateId: number;
+  projectId: number;
+  testConfiguration?: TestCasesRunTestConfiguration;
+  testCases: TestCase[];
 }
 
-export class TestCasesCreationReportTestCaseStep {
-  order: number;
-  code: string;
-  step: string;
-  nodeId: string;
+export class TestCasesRunTestConfiguration {
+  url: string;
+  username: string;
+  password: string;
 }
+
+export class TestCasesRunReport {
+  projectGenerateId: number;
+  status: TestCasesRunReportStatus;
+  errors: string[];
+  testCase?: TestCasesRunReportTestCaseSource | undefined;
+  testCaseStep?: TestCasesRunReportTestCaseStepSource | undefined;
+}
+
+export enum TestCasesRunReportStatus {
+  SUCCEEDED = 0,
+  IN_PROGRESS = 1,
+  FAILED = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function testCasesRunReportStatusFromJSON(object: any): TestCasesRunReportStatus {
+  switch (object) {
+    case 0:
+    case "SUCCEEDED":
+      return TestCasesRunReportStatus.SUCCEEDED;
+    case 1:
+    case "IN_PROGRESS":
+      return TestCasesRunReportStatus.IN_PROGRESS;
+    case 2:
+    case "FAILED":
+      return TestCasesRunReportStatus.FAILED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return TestCasesRunReportStatus.UNRECOGNIZED;
+  }
+}
+
+export function testCasesRunReportStatusToJSON(object: TestCasesRunReportStatus): string {
+  switch (object) {
+    case TestCasesRunReportStatus.SUCCEEDED:
+      return "SUCCEEDED";
+    case TestCasesRunReportStatus.IN_PROGRESS:
+      return "IN_PROGRESS";
+    case TestCasesRunReportStatus.FAILED:
+      return "FAILED";
+    case TestCasesRunReportStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export class TestCasesRunReportTestCaseStepSource {
+  nodeId: string;
+  status: TestCasesRunReportStatus;
+}
+
+export class TestCasesRunReportTestCaseSource {
+  nodeId: string;
+  status: TestCasesRunReportStatus;
+}
+
+function createBaseTestCase(): TestCase {
+  return { name: "", order: 0, code: "", useCaseId: 0, nodeId: "", steps: [] };
+}
+
+export const TestCaseData = {
+  encode(message: TestCase, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.order !== 0) {
+      writer.uint32(16).int32(message.order);
+    }
+    if (message.code !== "") {
+      writer.uint32(26).string(message.code);
+    }
+    if (message.useCaseId !== 0) {
+      writer.uint32(32).int32(message.useCaseId);
+    }
+    if (message.nodeId !== "") {
+      writer.uint32(42).string(message.nodeId);
+    }
+    for (const v of message.steps) {
+      TestCaseStepData.encode(v!, writer.uint32(50).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): TestCase {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTestCase();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.name = reader.string();
+          break;
+        case 2:
+          message.order = reader.int32();
+          break;
+        case 3:
+          message.code = reader.string();
+          break;
+        case 4:
+          message.useCaseId = reader.int32();
+          break;
+        case 5:
+          message.nodeId = reader.string();
+          break;
+        case 6:
+          message.steps.push(TestCaseStepData.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TestCase {
+    return {
+      name: isSet(object.name) ? String(object.name) : "",
+      order: isSet(object.order) ? Number(object.order) : 0,
+      code: isSet(object.code) ? String(object.code) : "",
+      useCaseId: isSet(object.useCaseId) ? Number(object.useCaseId) : 0,
+      nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
+      steps: Array.isArray(object?.steps) ? object.steps.map((e: any) => TestCaseStepData.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: TestCase): unknown {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
+    message.order !== undefined && (obj.order = Math.round(message.order));
+    message.code !== undefined && (obj.code = message.code);
+    message.useCaseId !== undefined && (obj.useCaseId = Math.round(message.useCaseId));
+    message.nodeId !== undefined && (obj.nodeId = message.nodeId);
+    if (message.steps) {
+      obj.steps = message.steps.map((e) => e ? TestCaseStepData.toJSON(e) : undefined);
+    } else {
+      obj.steps = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<TestCase>): TestCase {
+    const message = createBaseTestCase();
+    message.name = object.name ?? "";
+    message.order = object.order ?? 0;
+    message.code = object.code ?? "";
+    message.useCaseId = object.useCaseId ?? 0;
+    message.nodeId = object.nodeId ?? "";
+    message.steps = object.steps?.map((e) => TestCaseStepData.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseTestCaseStep(): TestCaseStep {
+  return { order: 0, code: "", step: "", nodeId: "" };
+}
+
+export const TestCaseStepData = {
+  encode(message: TestCaseStep, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.order !== 0) {
+      writer.uint32(8).int32(message.order);
+    }
+    if (message.code !== "") {
+      writer.uint32(18).string(message.code);
+    }
+    if (message.step !== "") {
+      writer.uint32(26).string(message.step);
+    }
+    if (message.nodeId !== "") {
+      writer.uint32(34).string(message.nodeId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): TestCaseStep {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTestCaseStep();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.order = reader.int32();
+          break;
+        case 2:
+          message.code = reader.string();
+          break;
+        case 3:
+          message.step = reader.string();
+          break;
+        case 4:
+          message.nodeId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TestCaseStep {
+    return {
+      order: isSet(object.order) ? Number(object.order) : 0,
+      code: isSet(object.code) ? String(object.code) : "",
+      step: isSet(object.step) ? String(object.step) : "",
+      nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
+    };
+  },
+
+  toJSON(message: TestCaseStep): unknown {
+    const obj: any = {};
+    message.order !== undefined && (obj.order = Math.round(message.order));
+    message.code !== undefined && (obj.code = message.code);
+    message.step !== undefined && (obj.step = message.step);
+    message.nodeId !== undefined && (obj.nodeId = message.nodeId);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<TestCaseStep>): TestCaseStep {
+    const message = createBaseTestCaseStep();
+    message.order = object.order ?? 0;
+    message.code = object.code ?? "";
+    message.step = object.step ?? "";
+    message.nodeId = object.nodeId ?? "";
+    return message;
+  },
+};
 
 function createBaseTestCasesCreation(): TestCasesCreation {
   return { projectGenerateId: 0, projectId: 0, useCases: [] };
@@ -240,7 +484,7 @@ export const TestCasesCreationReportData = {
       writer.uint32(8).int32(message.projectGenerateId);
     }
     for (const v of message.testCases) {
-      TestCasesCreationReportTestCaseData.encode(v!, writer.uint32(18).fork()).ldelim();
+      TestCaseData.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     for (const v of message.errors) {
       writer.uint32(26).string(v!);
@@ -262,7 +506,7 @@ export const TestCasesCreationReportData = {
           message.projectGenerateId = reader.int32();
           break;
         case 2:
-          message.testCases.push(TestCasesCreationReportTestCaseData.decode(reader, reader.uint32()));
+          message.testCases.push(TestCaseData.decode(reader, reader.uint32()));
           break;
         case 3:
           message.errors.push(reader.string());
@@ -281,9 +525,7 @@ export const TestCasesCreationReportData = {
   fromJSON(object: any): TestCasesCreationReport {
     return {
       projectGenerateId: isSet(object.projectGenerateId) ? Number(object.projectGenerateId) : 0,
-      testCases: Array.isArray(object?.testCases)
-        ? object.testCases.map((e: any) => TestCasesCreationReportTestCaseData.fromJSON(e))
-        : [],
+      testCases: Array.isArray(object?.testCases) ? object.testCases.map((e: any) => TestCaseData.fromJSON(e)) : [],
       errors: Array.isArray(object?.errors) ? object.errors.map((e: any) => String(e)) : [],
       status: isSet(object.status) ? testCasesCreationReportStatusFromJSON(object.status) : 0,
     };
@@ -293,7 +535,7 @@ export const TestCasesCreationReportData = {
     const obj: any = {};
     message.projectGenerateId !== undefined && (obj.projectGenerateId = Math.round(message.projectGenerateId));
     if (message.testCases) {
-      obj.testCases = message.testCases.map((e) => e ? TestCasesCreationReportTestCaseData.toJSON(e) : undefined);
+      obj.testCases = message.testCases.map((e) => e ? TestCaseData.toJSON(e) : undefined);
     } else {
       obj.testCases = [];
     }
@@ -309,64 +551,52 @@ export const TestCasesCreationReportData = {
   fromPartial(object: DeepPartial<TestCasesCreationReport>): TestCasesCreationReport {
     const message = createBaseTestCasesCreationReport();
     message.projectGenerateId = object.projectGenerateId ?? 0;
-    message.testCases = object.testCases?.map((e) => TestCasesCreationReportTestCaseData.fromPartial(e)) || [];
+    message.testCases = object.testCases?.map((e) => TestCaseData.fromPartial(e)) || [];
     message.errors = object.errors?.map((e) => e) || [];
     message.status = object.status ?? 0;
     return message;
   },
 };
 
-function createBaseTestCasesCreationReportTestCase(): TestCasesCreationReportTestCase {
-  return { name: "", order: 0, code: "", useCaseId: 0, nodeId: "", steps: [] };
+function createBaseTestCasesRun(): TestCasesRun {
+  return { projectGenerateId: 0, projectId: 0, testCases: [] };
 }
 
-export const TestCasesCreationReportTestCaseData = {
-  encode(message: TestCasesCreationReportTestCase, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.name !== "") {
-      writer.uint32(10).string(message.name);
+export const TestCasesRunData = {
+  encode(message: TestCasesRun, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.projectGenerateId !== 0) {
+      writer.uint32(8).int32(message.projectGenerateId);
     }
-    if (message.order !== 0) {
-      writer.uint32(16).int32(message.order);
+    if (message.projectId !== 0) {
+      writer.uint32(16).int32(message.projectId);
     }
-    if (message.code !== "") {
-      writer.uint32(26).string(message.code);
+    if (message.testConfiguration !== undefined) {
+      TestCasesRunTestConfigurationData.encode(message.testConfiguration, writer.uint32(26).fork()).ldelim();
     }
-    if (message.useCaseId !== 0) {
-      writer.uint32(32).int32(message.useCaseId);
-    }
-    if (message.nodeId !== "") {
-      writer.uint32(42).string(message.nodeId);
-    }
-    for (const v of message.steps) {
-      TestCasesCreationReportTestCaseStepData.encode(v!, writer.uint32(50).fork()).ldelim();
+    for (const v of message.testCases) {
+      TestCaseData.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): TestCasesCreationReportTestCase {
+  decode(input: _m0.Reader | Uint8Array, length?: number): TestCasesRun {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseTestCasesCreationReportTestCase();
+    const message = createBaseTestCasesRun();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.name = reader.string();
+          message.projectGenerateId = reader.int32();
           break;
         case 2:
-          message.order = reader.int32();
+          message.projectId = reader.int32();
           break;
         case 3:
-          message.code = reader.string();
+          message.testConfiguration = TestCasesRunTestConfigurationData.decode(reader, reader.uint32());
           break;
         case 4:
-          message.useCaseId = reader.int32();
-          break;
-        case 5:
-          message.nodeId = reader.string();
-          break;
-        case 6:
-          message.steps.push(TestCasesCreationReportTestCaseStepData.decode(reader, reader.uint32()));
+          message.testCases.push(TestCaseData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -376,85 +606,77 @@ export const TestCasesCreationReportTestCaseData = {
     return message;
   },
 
-  fromJSON(object: any): TestCasesCreationReportTestCase {
+  fromJSON(object: any): TestCasesRun {
     return {
-      name: isSet(object.name) ? String(object.name) : "",
-      order: isSet(object.order) ? Number(object.order) : 0,
-      code: isSet(object.code) ? String(object.code) : "",
-      useCaseId: isSet(object.useCaseId) ? Number(object.useCaseId) : 0,
-      nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
-      steps: Array.isArray(object?.steps)
-        ? object.steps.map((e: any) => TestCasesCreationReportTestCaseStepData.fromJSON(e))
-        : [],
+      projectGenerateId: isSet(object.projectGenerateId) ? Number(object.projectGenerateId) : 0,
+      projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
+      testConfiguration: isSet(object.testConfiguration)
+        ? TestCasesRunTestConfigurationData.fromJSON(object.testConfiguration)
+        : undefined,
+      testCases: Array.isArray(object?.testCases) ? object.testCases.map((e: any) => TestCaseData.fromJSON(e)) : [],
     };
   },
 
-  toJSON(message: TestCasesCreationReportTestCase): unknown {
+  toJSON(message: TestCasesRun): unknown {
     const obj: any = {};
-    message.name !== undefined && (obj.name = message.name);
-    message.order !== undefined && (obj.order = Math.round(message.order));
-    message.code !== undefined && (obj.code = message.code);
-    message.useCaseId !== undefined && (obj.useCaseId = Math.round(message.useCaseId));
-    message.nodeId !== undefined && (obj.nodeId = message.nodeId);
-    if (message.steps) {
-      obj.steps = message.steps.map((e) => e ? TestCasesCreationReportTestCaseStepData.toJSON(e) : undefined);
+    message.projectGenerateId !== undefined && (obj.projectGenerateId = Math.round(message.projectGenerateId));
+    message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
+    message.testConfiguration !== undefined && (obj.testConfiguration = message.testConfiguration
+      ? TestCasesRunTestConfigurationData.toJSON(message.testConfiguration)
+      : undefined);
+    if (message.testCases) {
+      obj.testCases = message.testCases.map((e) => e ? TestCaseData.toJSON(e) : undefined);
     } else {
-      obj.steps = [];
+      obj.testCases = [];
     }
     return obj;
   },
 
-  fromPartial(object: DeepPartial<TestCasesCreationReportTestCase>): TestCasesCreationReportTestCase {
-    const message = createBaseTestCasesCreationReportTestCase();
-    message.name = object.name ?? "";
-    message.order = object.order ?? 0;
-    message.code = object.code ?? "";
-    message.useCaseId = object.useCaseId ?? 0;
-    message.nodeId = object.nodeId ?? "";
-    message.steps = object.steps?.map((e) => TestCasesCreationReportTestCaseStepData.fromPartial(e)) || [];
+  fromPartial(object: DeepPartial<TestCasesRun>): TestCasesRun {
+    const message = createBaseTestCasesRun();
+    message.projectGenerateId = object.projectGenerateId ?? 0;
+    message.projectId = object.projectId ?? 0;
+    message.testConfiguration = (object.testConfiguration !== undefined && object.testConfiguration !== null)
+      ? TestCasesRunTestConfigurationData.fromPartial(object.testConfiguration)
+      : undefined;
+    message.testCases = object.testCases?.map((e) => TestCaseData.fromPartial(e)) || [];
     return message;
   },
 };
 
-function createBaseTestCasesCreationReportTestCaseStep(): TestCasesCreationReportTestCaseStep {
-  return { order: 0, code: "", step: "", nodeId: "" };
+function createBaseTestCasesRunTestConfiguration(): TestCasesRunTestConfiguration {
+  return { url: "", username: "", password: "" };
 }
 
-export const TestCasesCreationReportTestCaseStepData = {
-  encode(message: TestCasesCreationReportTestCaseStep, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.order !== 0) {
-      writer.uint32(8).int32(message.order);
+export const TestCasesRunTestConfigurationData = {
+  encode(message: TestCasesRunTestConfiguration, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.url !== "") {
+      writer.uint32(10).string(message.url);
     }
-    if (message.code !== "") {
-      writer.uint32(18).string(message.code);
+    if (message.username !== "") {
+      writer.uint32(18).string(message.username);
     }
-    if (message.step !== "") {
-      writer.uint32(26).string(message.step);
-    }
-    if (message.nodeId !== "") {
-      writer.uint32(34).string(message.nodeId);
+    if (message.password !== "") {
+      writer.uint32(26).string(message.password);
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): TestCasesCreationReportTestCaseStep {
+  decode(input: _m0.Reader | Uint8Array, length?: number): TestCasesRunTestConfiguration {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseTestCasesCreationReportTestCaseStep();
+    const message = createBaseTestCasesRunTestConfiguration();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.order = reader.int32();
+          message.url = reader.string();
           break;
         case 2:
-          message.code = reader.string();
+          message.username = reader.string();
           break;
         case 3:
-          message.step = reader.string();
-          break;
-        case 4:
-          message.nodeId = reader.string();
+          message.password = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -464,30 +686,241 @@ export const TestCasesCreationReportTestCaseStepData = {
     return message;
   },
 
-  fromJSON(object: any): TestCasesCreationReportTestCaseStep {
+  fromJSON(object: any): TestCasesRunTestConfiguration {
     return {
-      order: isSet(object.order) ? Number(object.order) : 0,
-      code: isSet(object.code) ? String(object.code) : "",
-      step: isSet(object.step) ? String(object.step) : "",
-      nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
+      url: isSet(object.url) ? String(object.url) : "",
+      username: isSet(object.username) ? String(object.username) : "",
+      password: isSet(object.password) ? String(object.password) : "",
     };
   },
 
-  toJSON(message: TestCasesCreationReportTestCaseStep): unknown {
+  toJSON(message: TestCasesRunTestConfiguration): unknown {
     const obj: any = {};
-    message.order !== undefined && (obj.order = Math.round(message.order));
-    message.code !== undefined && (obj.code = message.code);
-    message.step !== undefined && (obj.step = message.step);
-    message.nodeId !== undefined && (obj.nodeId = message.nodeId);
+    message.url !== undefined && (obj.url = message.url);
+    message.username !== undefined && (obj.username = message.username);
+    message.password !== undefined && (obj.password = message.password);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<TestCasesCreationReportTestCaseStep>): TestCasesCreationReportTestCaseStep {
-    const message = createBaseTestCasesCreationReportTestCaseStep();
-    message.order = object.order ?? 0;
-    message.code = object.code ?? "";
-    message.step = object.step ?? "";
+  fromPartial(object: DeepPartial<TestCasesRunTestConfiguration>): TestCasesRunTestConfiguration {
+    const message = createBaseTestCasesRunTestConfiguration();
+    message.url = object.url ?? "";
+    message.username = object.username ?? "";
+    message.password = object.password ?? "";
+    return message;
+  },
+};
+
+function createBaseTestCasesRunReport(): TestCasesRunReport {
+  return { projectGenerateId: 0, status: 0, errors: [] };
+}
+
+export const TestCasesRunReportData = {
+  encode(message: TestCasesRunReport, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.projectGenerateId !== 0) {
+      writer.uint32(8).int32(message.projectGenerateId);
+    }
+    if (message.status !== 0) {
+      writer.uint32(16).int32(message.status);
+    }
+    for (const v of message.errors) {
+      writer.uint32(34).string(v!);
+    }
+    if (message.testCase !== undefined) {
+      TestCasesRunReportTestCaseSourceData.encode(message.testCase, writer.uint32(42).fork()).ldelim();
+    }
+    if (message.testCaseStep !== undefined) {
+      TestCasesRunReportTestCaseStepSourceData.encode(message.testCaseStep, writer.uint32(50).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): TestCasesRunReport {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTestCasesRunReport();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.projectGenerateId = reader.int32();
+          break;
+        case 2:
+          message.status = reader.int32() as any;
+          break;
+        case 4:
+          message.errors.push(reader.string());
+          break;
+        case 5:
+          message.testCase = TestCasesRunReportTestCaseSourceData.decode(reader, reader.uint32());
+          break;
+        case 6:
+          message.testCaseStep = TestCasesRunReportTestCaseStepSourceData.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TestCasesRunReport {
+    return {
+      projectGenerateId: isSet(object.projectGenerateId) ? Number(object.projectGenerateId) : 0,
+      status: isSet(object.status) ? testCasesRunReportStatusFromJSON(object.status) : 0,
+      errors: Array.isArray(object?.errors) ? object.errors.map((e: any) => String(e)) : [],
+      testCase: isSet(object.testCase) ? TestCasesRunReportTestCaseSourceData.fromJSON(object.testCase) : undefined,
+      testCaseStep: isSet(object.testCaseStep)
+        ? TestCasesRunReportTestCaseStepSourceData.fromJSON(object.testCaseStep)
+        : undefined,
+    };
+  },
+
+  toJSON(message: TestCasesRunReport): unknown {
+    const obj: any = {};
+    message.projectGenerateId !== undefined && (obj.projectGenerateId = Math.round(message.projectGenerateId));
+    message.status !== undefined && (obj.status = testCasesRunReportStatusToJSON(message.status));
+    if (message.errors) {
+      obj.errors = message.errors.map((e) => e);
+    } else {
+      obj.errors = [];
+    }
+    message.testCase !== undefined &&
+      (obj.testCase = message.testCase ? TestCasesRunReportTestCaseSourceData.toJSON(message.testCase) : undefined);
+    message.testCaseStep !== undefined && (obj.testCaseStep = message.testCaseStep
+      ? TestCasesRunReportTestCaseStepSourceData.toJSON(message.testCaseStep)
+      : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<TestCasesRunReport>): TestCasesRunReport {
+    const message = createBaseTestCasesRunReport();
+    message.projectGenerateId = object.projectGenerateId ?? 0;
+    message.status = object.status ?? 0;
+    message.errors = object.errors?.map((e) => e) || [];
+    message.testCase = (object.testCase !== undefined && object.testCase !== null)
+      ? TestCasesRunReportTestCaseSourceData.fromPartial(object.testCase)
+      : undefined;
+    message.testCaseStep = (object.testCaseStep !== undefined && object.testCaseStep !== null)
+      ? TestCasesRunReportTestCaseStepSourceData.fromPartial(object.testCaseStep)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseTestCasesRunReportTestCaseStepSource(): TestCasesRunReportTestCaseStepSource {
+  return { nodeId: "", status: 0 };
+}
+
+export const TestCasesRunReportTestCaseStepSourceData = {
+  encode(message: TestCasesRunReportTestCaseStepSource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.nodeId !== "") {
+      writer.uint32(10).string(message.nodeId);
+    }
+    if (message.status !== 0) {
+      writer.uint32(16).int32(message.status);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): TestCasesRunReportTestCaseStepSource {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTestCasesRunReportTestCaseStepSource();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.nodeId = reader.string();
+          break;
+        case 2:
+          message.status = reader.int32() as any;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TestCasesRunReportTestCaseStepSource {
+    return {
+      nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
+      status: isSet(object.status) ? testCasesRunReportStatusFromJSON(object.status) : 0,
+    };
+  },
+
+  toJSON(message: TestCasesRunReportTestCaseStepSource): unknown {
+    const obj: any = {};
+    message.nodeId !== undefined && (obj.nodeId = message.nodeId);
+    message.status !== undefined && (obj.status = testCasesRunReportStatusToJSON(message.status));
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<TestCasesRunReportTestCaseStepSource>): TestCasesRunReportTestCaseStepSource {
+    const message = createBaseTestCasesRunReportTestCaseStepSource();
     message.nodeId = object.nodeId ?? "";
+    message.status = object.status ?? 0;
+    return message;
+  },
+};
+
+function createBaseTestCasesRunReportTestCaseSource(): TestCasesRunReportTestCaseSource {
+  return { nodeId: "", status: 0 };
+}
+
+export const TestCasesRunReportTestCaseSourceData = {
+  encode(message: TestCasesRunReportTestCaseSource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.nodeId !== "") {
+      writer.uint32(10).string(message.nodeId);
+    }
+    if (message.status !== 0) {
+      writer.uint32(16).int32(message.status);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): TestCasesRunReportTestCaseSource {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTestCasesRunReportTestCaseSource();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.nodeId = reader.string();
+          break;
+        case 2:
+          message.status = reader.int32() as any;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TestCasesRunReportTestCaseSource {
+    return {
+      nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
+      status: isSet(object.status) ? testCasesRunReportStatusFromJSON(object.status) : 0,
+    };
+  },
+
+  toJSON(message: TestCasesRunReportTestCaseSource): unknown {
+    const obj: any = {};
+    message.nodeId !== undefined && (obj.nodeId = message.nodeId);
+    message.status !== undefined && (obj.status = testCasesRunReportStatusToJSON(message.status));
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<TestCasesRunReportTestCaseSource>): TestCasesRunReportTestCaseSource {
+    const message = createBaseTestCasesRunReportTestCaseSource();
+    message.nodeId = object.nodeId ?? "";
+    message.status = object.status ?? 0;
     return message;
   },
 };
