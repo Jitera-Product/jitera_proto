@@ -139,6 +139,9 @@ export function testCasesRunReportStatusToJSON(object: TestCasesRunReportStatus)
 
 export class TestCasesRunReportTestCaseStepSource {
   nodeId: string;
+  code?: string | undefined;
+  screenshot?: string | undefined;
+  message?: string | undefined;
   status: TestCasesRunReportStatus;
 }
 
@@ -818,8 +821,17 @@ export const TestCasesRunReportTestCaseStepSourceData = {
     if (message.nodeId !== "") {
       writer.uint32(10).string(message.nodeId);
     }
+    if (message.code !== undefined) {
+      writer.uint32(18).string(message.code);
+    }
+    if (message.screenshot !== undefined) {
+      writer.uint32(26).string(message.screenshot);
+    }
+    if (message.message !== undefined) {
+      writer.uint32(34).string(message.message);
+    }
     if (message.status !== 0) {
-      writer.uint32(16).int32(message.status);
+      writer.uint32(40).int32(message.status);
     }
     return writer;
   },
@@ -835,6 +847,15 @@ export const TestCasesRunReportTestCaseStepSourceData = {
           message.nodeId = reader.string();
           break;
         case 2:
+          message.code = reader.string();
+          break;
+        case 3:
+          message.screenshot = reader.string();
+          break;
+        case 4:
+          message.message = reader.string();
+          break;
+        case 5:
           message.status = reader.int32() as any;
           break;
         default:
@@ -848,6 +869,9 @@ export const TestCasesRunReportTestCaseStepSourceData = {
   fromJSON(object: any): TestCasesRunReportTestCaseStepSource {
     return {
       nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
+      code: isSet(object.code) ? String(object.code) : undefined,
+      screenshot: isSet(object.screenshot) ? String(object.screenshot) : undefined,
+      message: isSet(object.message) ? String(object.message) : undefined,
       status: isSet(object.status) ? testCasesRunReportStatusFromJSON(object.status) : 0,
     };
   },
@@ -855,6 +879,9 @@ export const TestCasesRunReportTestCaseStepSourceData = {
   toJSON(message: TestCasesRunReportTestCaseStepSource): unknown {
     const obj: any = {};
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
+    message.code !== undefined && (obj.code = message.code);
+    message.screenshot !== undefined && (obj.screenshot = message.screenshot);
+    message.message !== undefined && (obj.message = message.message);
     message.status !== undefined && (obj.status = testCasesRunReportStatusToJSON(message.status));
     return obj;
   },
@@ -862,6 +889,9 @@ export const TestCasesRunReportTestCaseStepSourceData = {
   fromPartial(object: DeepPartial<TestCasesRunReportTestCaseStepSource>): TestCasesRunReportTestCaseStepSource {
     const message = createBaseTestCasesRunReportTestCaseStepSource();
     message.nodeId = object.nodeId ?? "";
+    message.code = object.code ?? undefined;
+    message.screenshot = object.screenshot ?? undefined;
+    message.message = object.message ?? undefined;
     message.status = object.status ?? 0;
     return message;
   },
