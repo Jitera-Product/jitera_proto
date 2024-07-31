@@ -19,3 +19,4 @@ export * from "./protos/v2/image_description.proto";
 export * from "./protos/v2/ai_usage_report.proto";
 export * from "./protos/v2/index_block_document.proto";
 export * from "./protos/v2/test_case.proto";
+export * from "./protos/v2/ai_review.proto";
