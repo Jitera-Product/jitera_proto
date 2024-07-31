@@ -1,0 +1,11 @@
+syntax = "proto3";
+package schema.v2;
+
+import "v2/project_source.proto";
+
+message ProjectAiReviewRequest {
+  int32 project_generate_queue_id = 1;
+  int32 project_id = 2;
+  Git git = 3;
+  ProjectSource project_source = 4;
+}
