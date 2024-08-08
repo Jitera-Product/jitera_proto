@@ -2,52 +2,51 @@ syntax = "proto3";
 package schema.v2;
 
 message Chat {
-  int32 project_id = 2;
-  Status status = 3;
+  int32 project_id = 1;
+  Status status = 2;
 
   enum Status {
-    STARTED = 0;
-    INPROGRESS = 1;
-    DONE = 2;
+    started = 0;
+    inprogress = 1;
+    done = 2;
   }
 
   enum CreatedFrom {
-    ASSISTANT = 0;
-    PLUGIN = 1;
+    assistant = 0;
+    plugin = 1;
   }
 }
 
 message Message {
-  int32 project_id = 0;
-  Status status = 1;
-  Assitant assitant = 2;
-  From from = 3;
-  string content = 4;
-  bool hidden = 5;
-  map<string, string> metadata = 6;
+  int32 project_id = 1;
+  Status status = 2;
+  Assitant assitant = 3;
+  From from = 4;
+  string content = 5;
+  bool hidden = 6;
+  map<string, string> metadata = 7;
 
   enum Status {
-    SUCCESS = 0;
-    INPROGRESS = 1;
-    FAILED = 2;
+    success = 0;
+    inprogress = 1;
+    failed = 2;
   }
 
   enum Assitant {
-    BACKEND = 0;
-    FRONTEND = 1;
-    PO = 2;
-    TM = 3;
-    DEVELOPER = 4;
-    MONOREPO = 5;
-    FULLSTACK_DEVELOPER = 6;
-    ASSISTANT = 7;
+    backend = 0;
+    frontend = 1;
+    po = 2;
+    tm = 3;
+    developer = 4;
+    monorepo = 5;
+    fullstack_developer = 6;
   }
 
   enum From {
-    SYSTEM = 0;
-    AI = 1;
-    HUMAN = 2;
-    ASSISTANT = 3;
+    system = 0;
+    ai = 1;
+    human = 2;
+    assistant = 3;
   }
 }
 
@@ -60,17 +59,17 @@ message Resource {
   map<string, string> metadata = 6;
 
   enum Status {
-    DRAFT = 0;
-    READY = 1;
-    INPROGRESS = 2;
-    ERROR = 3;
-    SUCCESS = 4;
+    draft = 0;
+    ready = 1;
+    inprogress = 2;
+    error = 3;
+    success = 4;
   }
 
   enum ResourceType {
-    CODE = 0;
-    DOCUMENT = 1;
-    IMAGE = 2;
+    code = 0;
+    document = 1;
+    image = 2;
   }
 }
 
