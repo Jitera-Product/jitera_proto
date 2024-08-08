@@ -1,6 +1,5 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-import { Timestamp } from "../google/protobuf/timestamp.proto";
 import { Asset } from "./asset.proto";
 import { Session } from "./session.proto";
 
@@ -94,7 +93,7 @@ export class Message {
   assets: Asset[];
   resources: Resource[];
   references: Reference[];
-  createdAt?: Date;
+  createdAt: string;
 }
 
 export enum MessageStatus {
@@ -524,6 +523,7 @@ function createBaseMessage(): Message {
     assets: [],
     resources: [],
     references: [],
+    createdAt: "",
   };
 }
 
@@ -559,8 +559,8 @@ export const MessageData = {
     for (const v of message.references) {
       ReferenceData.encode(v!, writer.uint32(82).fork()).ldelim();
     }
-    if (message.createdAt !== undefined) {
-      TimestampData.encode(toTimestamp(message.createdAt), writer.uint32(90).fork()).ldelim();
+    if (message.createdAt !== "") {
+      writer.uint32(90).string(message.createdAt);
     }
     return writer;
   },
@@ -606,7 +606,7 @@ export const MessageData = {
           message.references.push(ReferenceData.decode(reader, reader.uint32()));
           break;
         case 11:
-          message.createdAt = fromTimestamp(TimestampData.decode(reader, reader.uint32()));
+          message.createdAt = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -633,7 +633,7 @@ export const MessageData = {
       assets: Array.isArray(object?.assets) ? object.assets.map((e: any) => AssetData.fromJSON(e)) : [],
       resources: Array.isArray(object?.resources) ? object.resources.map((e: any) => ResourceData.fromJSON(e)) : [],
       references: Array.isArray(object?.references) ? object.references.map((e: any) => ReferenceData.fromJSON(e)) : [],
-      createdAt: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
+      createdAt: isSet(object.createdAt) ? String(object.createdAt) : "",
     };
   },
 
@@ -666,7 +666,7 @@ export const MessageData = {
     } else {
       obj.references = [];
     }
-    message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
+    message.createdAt !== undefined && (obj.createdAt = message.createdAt);
     return obj;
   },
 
@@ -687,7 +687,7 @@ export const MessageData = {
     message.assets = object.assets?.map((e) => AssetData.fromPartial(e)) || [];
     message.resources = object.resources?.map((e) => ResourceData.fromPartial(e)) || [];
     message.references = object.references?.map((e) => ReferenceData.fromPartial(e)) || [];
-    message.createdAt = object.createdAt ?? undefined;
+    message.createdAt = object.createdAt ?? "";
     return message;
   },
 };
@@ -1087,28 +1087,6 @@ type DeepPartial<T> = T extends Builtin ? T
   : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
-
-function toTimestamp(date: Date): Timestamp {
-  const seconds = date.getTime() / 1_000;
-  const nanos = (date.getTime() % 1_000) * 1_000_000;
-  return { seconds, nanos };
-}
-
-function fromTimestamp(t: Timestamp): Date {
-  let millis = t.seconds * 1_000;
-  millis += t.nanos / 1_000_000;
-  return new Date(millis);
-}
-
-function fromJsonTimestamp(o: any): Date {
-  if (o instanceof Date) {
-    return o;
-  } else if (typeof o === "string") {
-    return new Date(o);
-  } else {
-    return fromTimestamp(Timestamp.fromJSON(o));
-  }
-}
 
 function isObject(value: any): boolean {
   return typeof value === "object" && value !== null;

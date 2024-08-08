@@ -1,7 +1,6 @@
 syntax = "proto3";
 package schema.v2;
 
-import "google/protobuf/timestamp.proto";
 import "v2/session.proto";
 import "v2/asset.proto";
 
@@ -34,7 +33,7 @@ message Message {
   repeated Asset assets = 8;
   repeated Resource resources = 9;
   repeated Reference references = 10;
-  google.protobuf.Timestamp created_at = 11;
+  string created_at = 11;
 
   enum Status {
     success = 0;
