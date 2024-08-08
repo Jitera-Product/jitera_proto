@@ -1,82 +1,80 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-import { Asset } from "./asset.proto";
-import { Session } from "./session.proto";
 
-export class Chat {
+export class ChatRequest {
   user?: Session;
   projectId: number;
-  status: ChatStatus;
+  status: ChatRequestStatus;
   messages: Message[];
 }
 
-export enum ChatStatus {
+export enum ChatRequestStatus {
   started = 0,
   inprogress = 1,
   done = 2,
   UNRECOGNIZED = -1,
 }
 
-export function chatStatusFromJSON(object: any): ChatStatus {
+export function chatRequestStatusFromJSON(object: any): ChatRequestStatus {
   switch (object) {
     case 0:
     case "started":
-      return ChatStatus.started;
+      return ChatRequestStatus.started;
     case 1:
     case "inprogress":
-      return ChatStatus.inprogress;
+      return ChatRequestStatus.inprogress;
     case 2:
     case "done":
-      return ChatStatus.done;
+      return ChatRequestStatus.done;
     case -1:
     case "UNRECOGNIZED":
     default:
-      return ChatStatus.UNRECOGNIZED;
+      return ChatRequestStatus.UNRECOGNIZED;
   }
 }
 
-export function chatStatusToJSON(object: ChatStatus): string {
+export function chatRequestStatusToJSON(object: ChatRequestStatus): string {
   switch (object) {
-    case ChatStatus.started:
+    case ChatRequestStatus.started:
       return "started";
-    case ChatStatus.inprogress:
+    case ChatRequestStatus.inprogress:
       return "inprogress";
-    case ChatStatus.done:
+    case ChatRequestStatus.done:
       return "done";
-    case ChatStatus.UNRECOGNIZED:
+    case ChatRequestStatus.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
 }
 
-export enum ChatCreatedFrom {
+export enum ChatRequestCreatedFrom {
   assistant = 0,
   plugin = 1,
   UNRECOGNIZED = -1,
 }
 
-export function chatCreatedFromFromJSON(object: any): ChatCreatedFrom {
+export function chatRequestCreatedFromFromJSON(object: any): ChatRequestCreatedFrom {
   switch (object) {
     case 0:
     case "assistant":
-      return ChatCreatedFrom.assistant;
+      return ChatRequestCreatedFrom.assistant;
     case 1:
     case "plugin":
-      return ChatCreatedFrom.plugin;
+      return ChatRequestCreatedFrom.plugin;
     case -1:
     case "UNRECOGNIZED":
     default:
-      return ChatCreatedFrom.UNRECOGNIZED;
+      return ChatRequestCreatedFrom.UNRECOGNIZED;
   }
 }
 
-export function chatCreatedFromToJSON(object: ChatCreatedFrom): string {
+export function chatRequestCreatedFromToJSON(object: ChatRequestCreatedFrom): string {
   switch (object) {
-    case ChatCreatedFrom.assistant:
+    case ChatRequestCreatedFrom.assistant:
       return "assistant";
-    case ChatCreatedFrom.plugin:
+    case ChatRequestCreatedFrom.plugin:
       return "plugin";
-    case ChatCreatedFrom.UNRECOGNIZED:
+    case ChatRequestCreatedFrom.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
@@ -90,7 +88,7 @@ export class Message {
   content: string;
   hidden: boolean;
   metadata: { [key: string]: string };
-  assets: Asset[];
+  assets: MessageAsset[];
   resources: Resource[];
   references: Reference[];
   createdAt: string;
@@ -429,12 +427,20 @@ export class ReferenceMetadataEntry {
   value: string;
 }
 
-function createBaseChat(): Chat {
+export class MessageAsset {
+  base64Content: string;
+}
+
+export class Session {
+  accessToken: string;
+}
+
+function createBaseChatRequest(): ChatRequest {
   return { projectId: 0, status: 0, messages: [] };
 }
 
-export const ChatData = {
-  encode(message: Chat, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const ChatRequestData = {
+  encode(message: ChatRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.user !== undefined) {
       SessionData.encode(message.user, writer.uint32(10).fork()).ldelim();
     }
@@ -450,10 +456,10 @@ export const ChatData = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): Chat {
+  decode(input: _m0.Reader | Uint8Array, length?: number): ChatRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseChat();
+    const message = createBaseChatRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -477,20 +483,20 @@ export const ChatData = {
     return message;
   },
 
-  fromJSON(object: any): Chat {
+  fromJSON(object: any): ChatRequest {
     return {
       user: isSet(object.user) ? SessionData.fromJSON(object.user) : undefined,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      status: isSet(object.status) ? chatStatusFromJSON(object.status) : 0,
+      status: isSet(object.status) ? chatRequestStatusFromJSON(object.status) : 0,
       messages: Array.isArray(object?.messages) ? object.messages.map((e: any) => MessageData.fromJSON(e)) : [],
     };
   },
 
-  toJSON(message: Chat): unknown {
+  toJSON(message: ChatRequest): unknown {
     const obj: any = {};
     message.user !== undefined && (obj.user = message.user ? SessionData.toJSON(message.user) : undefined);
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
-    message.status !== undefined && (obj.status = chatStatusToJSON(message.status));
+    message.status !== undefined && (obj.status = chatRequestStatusToJSON(message.status));
     if (message.messages) {
       obj.messages = message.messages.map((e) => e ? MessageData.toJSON(e) : undefined);
     } else {
@@ -499,8 +505,8 @@ export const ChatData = {
     return obj;
   },
 
-  fromPartial(object: DeepPartial<Chat>): Chat {
-    const message = createBaseChat();
+  fromPartial(object: DeepPartial<ChatRequest>): ChatRequest {
+    const message = createBaseChatRequest();
     message.user = (object.user !== undefined && object.user !== null)
       ? SessionData.fromPartial(object.user)
       : undefined;
@@ -551,7 +557,7 @@ export const MessageData = {
       MessageMetadataEntryData.encode({ key: key as any, value }, writer.uint32(58).fork()).ldelim();
     });
     for (const v of message.assets) {
-      AssetData.encode(v!, writer.uint32(66).fork()).ldelim();
+      MessageAssetData.encode(v!, writer.uint32(66).fork()).ldelim();
     }
     for (const v of message.resources) {
       ResourceData.encode(v!, writer.uint32(74).fork()).ldelim();
@@ -597,7 +603,7 @@ export const MessageData = {
           }
           break;
         case 8:
-          message.assets.push(AssetData.decode(reader, reader.uint32()));
+          message.assets.push(MessageAssetData.decode(reader, reader.uint32()));
           break;
         case 9:
           message.resources.push(ResourceData.decode(reader, reader.uint32()));
@@ -630,7 +636,7 @@ export const MessageData = {
           return acc;
         }, {})
         : {},
-      assets: Array.isArray(object?.assets) ? object.assets.map((e: any) => AssetData.fromJSON(e)) : [],
+      assets: Array.isArray(object?.assets) ? object.assets.map((e: any) => MessageAssetData.fromJSON(e)) : [],
       resources: Array.isArray(object?.resources) ? object.resources.map((e: any) => ResourceData.fromJSON(e)) : [],
       references: Array.isArray(object?.references) ? object.references.map((e: any) => ReferenceData.fromJSON(e)) : [],
       createdAt: isSet(object.createdAt) ? String(object.createdAt) : "",
@@ -652,7 +658,7 @@ export const MessageData = {
       });
     }
     if (message.assets) {
-      obj.assets = message.assets.map((e) => e ? AssetData.toJSON(e) : undefined);
+      obj.assets = message.assets.map((e) => e ? MessageAssetData.toJSON(e) : undefined);
     } else {
       obj.assets = [];
     }
@@ -684,7 +690,7 @@ export const MessageData = {
       }
       return acc;
     }, {});
-    message.assets = object.assets?.map((e) => AssetData.fromPartial(e)) || [];
+    message.assets = object.assets?.map((e) => MessageAssetData.fromPartial(e)) || [];
     message.resources = object.resources?.map((e) => ResourceData.fromPartial(e)) || [];
     message.references = object.references?.map((e) => ReferenceData.fromPartial(e)) || [];
     message.createdAt = object.createdAt ?? "";
@@ -1077,6 +1083,100 @@ export const ReferenceMetadataEntryData = {
     const message = createBaseReferenceMetadataEntry();
     message.key = object.key ?? "";
     message.value = object.value ?? "";
+    return message;
+  },
+};
+
+function createBaseMessageAsset(): MessageAsset {
+  return { base64Content: "" };
+}
+
+export const MessageAssetData = {
+  encode(message: MessageAsset, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.base64Content !== "") {
+      writer.uint32(10).string(message.base64Content);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MessageAsset {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMessageAsset();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.base64Content = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MessageAsset {
+    return { base64Content: isSet(object.base64Content) ? String(object.base64Content) : "" };
+  },
+
+  toJSON(message: MessageAsset): unknown {
+    const obj: any = {};
+    message.base64Content !== undefined && (obj.base64Content = message.base64Content);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MessageAsset>): MessageAsset {
+    const message = createBaseMessageAsset();
+    message.base64Content = object.base64Content ?? "";
+    return message;
+  },
+};
+
+function createBaseSession(): Session {
+  return { accessToken: "" };
+}
+
+export const SessionData = {
+  encode(message: Session, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.accessToken !== "") {
+      writer.uint32(10).string(message.accessToken);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Session {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSession();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.accessToken = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Session {
+    return { accessToken: isSet(object.accessToken) ? String(object.accessToken) : "" };
+  },
+
+  toJSON(message: Session): unknown {
+    const obj: any = {};
+    message.accessToken !== undefined && (obj.accessToken = message.accessToken);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<Session>): Session {
+    const message = createBaseSession();
+    message.accessToken = object.accessToken ?? "";
     return message;
   },
 };
