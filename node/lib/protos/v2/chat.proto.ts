@@ -1,9 +1,14 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
+import { Timestamp } from "../google/protobuf/timestamp.proto";
+import { Asset } from "./asset.proto";
+import { Session } from "./session.proto";
 
 export class Chat {
+  user?: Session;
   projectId: number;
   status: ChatStatus;
+  messages: Message[];
 }
 
 export enum ChatStatus {
@@ -81,11 +86,15 @@ export function chatCreatedFromToJSON(object: ChatCreatedFrom): string {
 export class Message {
   projectId: number;
   status: MessageStatus;
-  assitant: MessageAssitant;
-  from: MessageFrom;
+  assistant: MessageMessageAssistant;
+  from: MessageMessageFrom;
   content: string;
   hidden: boolean;
   metadata: { [key: string]: string };
+  assets: Asset[];
+  resources: Resource[];
+  references: Reference[];
+  createdAt?: Date;
 }
 
 export enum MessageStatus {
@@ -127,7 +136,7 @@ export function messageStatusToJSON(object: MessageStatus): string {
   }
 }
 
-export enum MessageAssitant {
+export enum MessageMessageAssistant {
   backend = 0,
   frontend = 1,
   po = 2,
@@ -135,101 +144,107 @@ export enum MessageAssitant {
   developer = 4,
   monorepo = 5,
   fullstack_developer = 6,
+  assistant_role = 7,
   UNRECOGNIZED = -1,
 }
 
-export function messageAssitantFromJSON(object: any): MessageAssitant {
+export function messageMessageAssistantFromJSON(object: any): MessageMessageAssistant {
   switch (object) {
     case 0:
     case "backend":
-      return MessageAssitant.backend;
+      return MessageMessageAssistant.backend;
     case 1:
     case "frontend":
-      return MessageAssitant.frontend;
+      return MessageMessageAssistant.frontend;
     case 2:
     case "po":
-      return MessageAssitant.po;
+      return MessageMessageAssistant.po;
     case 3:
     case "tm":
-      return MessageAssitant.tm;
+      return MessageMessageAssistant.tm;
     case 4:
     case "developer":
-      return MessageAssitant.developer;
+      return MessageMessageAssistant.developer;
     case 5:
     case "monorepo":
-      return MessageAssitant.monorepo;
+      return MessageMessageAssistant.monorepo;
     case 6:
     case "fullstack_developer":
-      return MessageAssitant.fullstack_developer;
+      return MessageMessageAssistant.fullstack_developer;
+    case 7:
+    case "assistant_role":
+      return MessageMessageAssistant.assistant_role;
     case -1:
     case "UNRECOGNIZED":
     default:
-      return MessageAssitant.UNRECOGNIZED;
+      return MessageMessageAssistant.UNRECOGNIZED;
   }
 }
 
-export function messageAssitantToJSON(object: MessageAssitant): string {
+export function messageMessageAssistantToJSON(object: MessageMessageAssistant): string {
   switch (object) {
-    case MessageAssitant.backend:
+    case MessageMessageAssistant.backend:
       return "backend";
-    case MessageAssitant.frontend:
+    case MessageMessageAssistant.frontend:
       return "frontend";
-    case MessageAssitant.po:
+    case MessageMessageAssistant.po:
       return "po";
-    case MessageAssitant.tm:
+    case MessageMessageAssistant.tm:
       return "tm";
-    case MessageAssitant.developer:
+    case MessageMessageAssistant.developer:
       return "developer";
-    case MessageAssitant.monorepo:
+    case MessageMessageAssistant.monorepo:
       return "monorepo";
-    case MessageAssitant.fullstack_developer:
+    case MessageMessageAssistant.fullstack_developer:
       return "fullstack_developer";
-    case MessageAssitant.UNRECOGNIZED:
+    case MessageMessageAssistant.assistant_role:
+      return "assistant_role";
+    case MessageMessageAssistant.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
 }
 
-export enum MessageFrom {
+export enum MessageMessageFrom {
   system = 0,
   ai = 1,
   human = 2,
-  assistant = 3,
+  from_assistant = 3,
   UNRECOGNIZED = -1,
 }
 
-export function messageFromFromJSON(object: any): MessageFrom {
+export function messageMessageFromFromJSON(object: any): MessageMessageFrom {
   switch (object) {
     case 0:
     case "system":
-      return MessageFrom.system;
+      return MessageMessageFrom.system;
     case 1:
     case "ai":
-      return MessageFrom.ai;
+      return MessageMessageFrom.ai;
     case 2:
     case "human":
-      return MessageFrom.human;
+      return MessageMessageFrom.human;
     case 3:
-    case "assistant":
-      return MessageFrom.assistant;
+    case "from_assistant":
+      return MessageMessageFrom.from_assistant;
     case -1:
     case "UNRECOGNIZED":
     default:
-      return MessageFrom.UNRECOGNIZED;
+      return MessageMessageFrom.UNRECOGNIZED;
   }
 }
 
-export function messageFromToJSON(object: MessageFrom): string {
+export function messageMessageFromToJSON(object: MessageMessageFrom): string {
   switch (object) {
-    case MessageFrom.system:
+    case MessageMessageFrom.system:
       return "system";
-    case MessageFrom.ai:
+    case MessageMessageFrom.ai:
       return "ai";
-    case MessageFrom.human:
+    case MessageMessageFrom.human:
       return "human";
-    case MessageFrom.assistant:
-      return "assistant";
-    case MessageFrom.UNRECOGNIZED:
+    case MessageMessageFrom.from_assistant:
+      return "from_assistant";
+    case MessageMessageFrom.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
@@ -354,35 +369,35 @@ export class Reference {
 }
 
 export enum ReferenceReferenceType {
-  CODE = 0,
-  USECASE = 1,
-  BUSINESS_LOGIC = 2,
-  API = 3,
-  TICKET = 4,
-  IMAGE = 5,
+  code = 0,
+  usecase = 1,
+  business_logic = 2,
+  api = 3,
+  ticket = 4,
+  image = 5,
   UNRECOGNIZED = -1,
 }
 
 export function referenceReferenceTypeFromJSON(object: any): ReferenceReferenceType {
   switch (object) {
     case 0:
-    case "CODE":
-      return ReferenceReferenceType.CODE;
+    case "code":
+      return ReferenceReferenceType.code;
     case 1:
-    case "USECASE":
-      return ReferenceReferenceType.USECASE;
+    case "usecase":
+      return ReferenceReferenceType.usecase;
     case 2:
-    case "BUSINESS_LOGIC":
-      return ReferenceReferenceType.BUSINESS_LOGIC;
+    case "business_logic":
+      return ReferenceReferenceType.business_logic;
     case 3:
-    case "API":
-      return ReferenceReferenceType.API;
+    case "api":
+      return ReferenceReferenceType.api;
     case 4:
-    case "TICKET":
-      return ReferenceReferenceType.TICKET;
+    case "ticket":
+      return ReferenceReferenceType.ticket;
     case 5:
-    case "IMAGE":
-      return ReferenceReferenceType.IMAGE;
+    case "image":
+      return ReferenceReferenceType.image;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -392,18 +407,18 @@ export function referenceReferenceTypeFromJSON(object: any): ReferenceReferenceT
 
 export function referenceReferenceTypeToJSON(object: ReferenceReferenceType): string {
   switch (object) {
-    case ReferenceReferenceType.CODE:
-      return "CODE";
-    case ReferenceReferenceType.USECASE:
-      return "USECASE";
-    case ReferenceReferenceType.BUSINESS_LOGIC:
-      return "BUSINESS_LOGIC";
-    case ReferenceReferenceType.API:
-      return "API";
-    case ReferenceReferenceType.TICKET:
-      return "TICKET";
-    case ReferenceReferenceType.IMAGE:
-      return "IMAGE";
+    case ReferenceReferenceType.code:
+      return "code";
+    case ReferenceReferenceType.usecase:
+      return "usecase";
+    case ReferenceReferenceType.business_logic:
+      return "business_logic";
+    case ReferenceReferenceType.api:
+      return "api";
+    case ReferenceReferenceType.ticket:
+      return "ticket";
+    case ReferenceReferenceType.image:
+      return "image";
     case ReferenceReferenceType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -416,16 +431,22 @@ export class ReferenceMetadataEntry {
 }
 
 function createBaseChat(): Chat {
-  return { projectId: 0, status: 0 };
+  return { projectId: 0, status: 0, messages: [] };
 }
 
 export const ChatData = {
   encode(message: Chat, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.user !== undefined) {
+      SessionData.encode(message.user, writer.uint32(10).fork()).ldelim();
+    }
     if (message.projectId !== 0) {
-      writer.uint32(8).int32(message.projectId);
+      writer.uint32(16).int32(message.projectId);
     }
     if (message.status !== 0) {
-      writer.uint32(16).int32(message.status);
+      writer.uint32(24).int32(message.status);
+    }
+    for (const v of message.messages) {
+      MessageData.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -438,10 +459,16 @@ export const ChatData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.projectId = reader.int32();
+          message.user = SessionData.decode(reader, reader.uint32());
           break;
         case 2:
+          message.projectId = reader.int32();
+          break;
+        case 3:
           message.status = reader.int32() as any;
+          break;
+        case 4:
+          message.messages.push(MessageData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -453,28 +480,51 @@ export const ChatData = {
 
   fromJSON(object: any): Chat {
     return {
+      user: isSet(object.user) ? SessionData.fromJSON(object.user) : undefined,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       status: isSet(object.status) ? chatStatusFromJSON(object.status) : 0,
+      messages: Array.isArray(object?.messages) ? object.messages.map((e: any) => MessageData.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: Chat): unknown {
     const obj: any = {};
+    message.user !== undefined && (obj.user = message.user ? SessionData.toJSON(message.user) : undefined);
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     message.status !== undefined && (obj.status = chatStatusToJSON(message.status));
+    if (message.messages) {
+      obj.messages = message.messages.map((e) => e ? MessageData.toJSON(e) : undefined);
+    } else {
+      obj.messages = [];
+    }
     return obj;
   },
 
   fromPartial(object: DeepPartial<Chat>): Chat {
     const message = createBaseChat();
+    message.user = (object.user !== undefined && object.user !== null)
+      ? SessionData.fromPartial(object.user)
+      : undefined;
     message.projectId = object.projectId ?? 0;
     message.status = object.status ?? 0;
+    message.messages = object.messages?.map((e) => MessageData.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseMessage(): Message {
-  return { projectId: 0, status: 0, assitant: 0, from: 0, content: "", hidden: false, metadata: {} };
+  return {
+    projectId: 0,
+    status: 0,
+    assistant: 0,
+    from: 0,
+    content: "",
+    hidden: false,
+    metadata: {},
+    assets: [],
+    resources: [],
+    references: [],
+  };
 }
 
 export const MessageData = {
@@ -485,8 +535,8 @@ export const MessageData = {
     if (message.status !== 0) {
       writer.uint32(16).int32(message.status);
     }
-    if (message.assitant !== 0) {
-      writer.uint32(24).int32(message.assitant);
+    if (message.assistant !== 0) {
+      writer.uint32(24).int32(message.assistant);
     }
     if (message.from !== 0) {
       writer.uint32(32).int32(message.from);
@@ -500,6 +550,18 @@ export const MessageData = {
     Object.entries(message.metadata).forEach(([key, value]) => {
       MessageMetadataEntryData.encode({ key: key as any, value }, writer.uint32(58).fork()).ldelim();
     });
+    for (const v of message.assets) {
+      AssetData.encode(v!, writer.uint32(66).fork()).ldelim();
+    }
+    for (const v of message.resources) {
+      ResourceData.encode(v!, writer.uint32(74).fork()).ldelim();
+    }
+    for (const v of message.references) {
+      ReferenceData.encode(v!, writer.uint32(82).fork()).ldelim();
+    }
+    if (message.createdAt !== undefined) {
+      TimestampData.encode(toTimestamp(message.createdAt), writer.uint32(90).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -517,7 +579,7 @@ export const MessageData = {
           message.status = reader.int32() as any;
           break;
         case 3:
-          message.assitant = reader.int32() as any;
+          message.assistant = reader.int32() as any;
           break;
         case 4:
           message.from = reader.int32() as any;
@@ -534,6 +596,18 @@ export const MessageData = {
             message.metadata[entry7.key] = entry7.value;
           }
           break;
+        case 8:
+          message.assets.push(AssetData.decode(reader, reader.uint32()));
+          break;
+        case 9:
+          message.resources.push(ResourceData.decode(reader, reader.uint32()));
+          break;
+        case 10:
+          message.references.push(ReferenceData.decode(reader, reader.uint32()));
+          break;
+        case 11:
+          message.createdAt = fromTimestamp(TimestampData.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -546,8 +620,8 @@ export const MessageData = {
     return {
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       status: isSet(object.status) ? messageStatusFromJSON(object.status) : 0,
-      assitant: isSet(object.assitant) ? messageAssitantFromJSON(object.assitant) : 0,
-      from: isSet(object.from) ? messageFromFromJSON(object.from) : 0,
+      assistant: isSet(object.assistant) ? messageMessageAssistantFromJSON(object.assistant) : 0,
+      from: isSet(object.from) ? messageMessageFromFromJSON(object.from) : 0,
       content: isSet(object.content) ? String(object.content) : "",
       hidden: isSet(object.hidden) ? Boolean(object.hidden) : false,
       metadata: isObject(object.metadata)
@@ -556,6 +630,10 @@ export const MessageData = {
           return acc;
         }, {})
         : {},
+      assets: Array.isArray(object?.assets) ? object.assets.map((e: any) => AssetData.fromJSON(e)) : [],
+      resources: Array.isArray(object?.resources) ? object.resources.map((e: any) => ResourceData.fromJSON(e)) : [],
+      references: Array.isArray(object?.references) ? object.references.map((e: any) => ReferenceData.fromJSON(e)) : [],
+      createdAt: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
     };
   },
 
@@ -563,8 +641,8 @@ export const MessageData = {
     const obj: any = {};
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     message.status !== undefined && (obj.status = messageStatusToJSON(message.status));
-    message.assitant !== undefined && (obj.assitant = messageAssitantToJSON(message.assitant));
-    message.from !== undefined && (obj.from = messageFromToJSON(message.from));
+    message.assistant !== undefined && (obj.assistant = messageMessageAssistantToJSON(message.assistant));
+    message.from !== undefined && (obj.from = messageMessageFromToJSON(message.from));
     message.content !== undefined && (obj.content = message.content);
     message.hidden !== undefined && (obj.hidden = message.hidden);
     obj.metadata = {};
@@ -573,6 +651,22 @@ export const MessageData = {
         obj.metadata[k] = v;
       });
     }
+    if (message.assets) {
+      obj.assets = message.assets.map((e) => e ? AssetData.toJSON(e) : undefined);
+    } else {
+      obj.assets = [];
+    }
+    if (message.resources) {
+      obj.resources = message.resources.map((e) => e ? ResourceData.toJSON(e) : undefined);
+    } else {
+      obj.resources = [];
+    }
+    if (message.references) {
+      obj.references = message.references.map((e) => e ? ReferenceData.toJSON(e) : undefined);
+    } else {
+      obj.references = [];
+    }
+    message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
     return obj;
   },
 
@@ -580,7 +674,7 @@ export const MessageData = {
     const message = createBaseMessage();
     message.projectId = object.projectId ?? 0;
     message.status = object.status ?? 0;
-    message.assitant = object.assitant ?? 0;
+    message.assistant = object.assistant ?? 0;
     message.from = object.from ?? 0;
     message.content = object.content ?? "";
     message.hidden = object.hidden ?? false;
@@ -590,6 +684,10 @@ export const MessageData = {
       }
       return acc;
     }, {});
+    message.assets = object.assets?.map((e) => AssetData.fromPartial(e)) || [];
+    message.resources = object.resources?.map((e) => ResourceData.fromPartial(e)) || [];
+    message.references = object.references?.map((e) => ReferenceData.fromPartial(e)) || [];
+    message.createdAt = object.createdAt ?? undefined;
     return message;
   },
 };
@@ -989,6 +1087,28 @@ type DeepPartial<T> = T extends Builtin ? T
   : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = date.getTime() / 1_000;
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = t.seconds * 1_000;
+  millis += t.nanos / 1_000_000;
+  return new Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
 
 function isObject(value: any): boolean {
   return typeof value === "object" && value !== null;

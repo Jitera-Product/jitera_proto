@@ -1,9 +1,15 @@
 syntax = "proto3";
 package schema.v2;
 
+import "google/protobuf/timestamp.proto";
+import "v2/session.proto";
+import "v2/asset.proto";
+
 message Chat {
-  int32 project_id = 1;
-  Status status = 2;
+  Session user = 1;
+  int32 project_id = 2;
+  Status status = 3;
+  repeated Message messages = 4;
 
   enum Status {
     started = 0;
@@ -20,11 +26,15 @@ message Chat {
 message Message {
   int32 project_id = 1;
   Status status = 2;
-  Assitant assitant = 3;
-  From from = 4;
+  MessageAssistant assistant = 3;
+  MessageFrom from = 4;
   string content = 5;
   bool hidden = 6;
   map<string, string> metadata = 7;
+  repeated Asset assets = 8;
+  repeated Resource resources = 9;
+  repeated Reference references = 10;
+  google.protobuf.Timestamp created_at = 11;
 
   enum Status {
     success = 0;
@@ -32,7 +42,7 @@ message Message {
     failed = 2;
   }
 
-  enum Assitant {
+  enum MessageAssistant {
     backend = 0;
     frontend = 1;
     po = 2;
@@ -40,13 +50,14 @@ message Message {
     developer = 4;
     monorepo = 5;
     fullstack_developer = 6;
+    assistant_role = 7;
   }
 
-  enum From {
+  enum MessageFrom {
     system = 0;
     ai = 1;
     human = 2;
-    assistant = 3;
+    from_assistant = 3;
   }
 }
 
@@ -82,12 +93,12 @@ message Reference {
   map<string, string> metadata = 6;
 
   enum ReferenceType {
-    CODE = 0;
-    USECASE = 1;
-    BUSINESS_LOGIC = 2;
-    API = 3;
-    TICKET = 4;
-    IMAGE = 5;
+    code = 0;
+    usecase = 1;
+    business_logic = 2;
+    api = 3;
+    ticket = 4;
+    image = 5;
   }
 }
 
