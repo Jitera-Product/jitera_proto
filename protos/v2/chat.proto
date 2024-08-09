@@ -5,8 +5,8 @@ import "google/protobuf/timestamp.proto";
 
 message ChatRequest {
   Session session = 1;
-  int32 project_id = 2;
-  Status status = 3;
+  string chat_id = 2;
+  optional Status status = 3;
   repeated Message messages = 4;
 
   enum Status {
@@ -23,11 +23,11 @@ message ChatRequest {
 
 message Message {
   int32 project_id = 1;
-  Status status = 2;
-  MessageAssistant assistant = 3;
-  MessageFrom from = 4;
-  string content = 5;
-  bool hidden = 6;
+  optional Status status = 2;
+  optional MessageAssistant assistant = 3;
+  optional MessageFrom from = 4;
+  optional string content = 5;
+  optional bool hidden = 6;
   map<string, string> metadata = 7;
   repeated MessageAsset assets = 8;
   repeated Resource resources = 9;
@@ -60,11 +60,11 @@ message Message {
 }
 
 message Resource {
-  string name = 1;
-  string content = 2;
-  ResourceType resource_type = 3;
-  Status status = 4;
-  string category = 5;
+  optional string name = 1;
+  optional string content = 2;
+  optional ResourceType resource_type = 3;
+  optional Status status = 4;
+  optional string category = 5;
   map<string, string> metadata = 6;
 
   enum Status {
@@ -83,11 +83,11 @@ message Resource {
 }
 
 message Reference {
-  string name = 1;
-  string origin = 2;
-  ReferenceType reference_type = 3;
-  string category = 4;
-  string content = 5;
+  optional string name = 1;
+  optional string origin = 2;
+  optional ReferenceType reference_type = 3;
+  optional string category = 4;
+  optional string content = 5;
   map<string, string> metadata = 6;
 
   enum ReferenceType {
