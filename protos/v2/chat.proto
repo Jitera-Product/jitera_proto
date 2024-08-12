@@ -1,13 +1,14 @@
 syntax = "proto3";
 package schema.v2;
 
-import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
 
 message ChatRequest {
   Session session = 1;
   string chat_id = 2;
   optional Status status = 3;
   repeated Message messages = 4;
+  optional CreatedFrom created_from = 5;
 
   enum Status {
     started = 0;
@@ -28,11 +29,11 @@ message Message {
   optional MessageFrom from = 4;
   optional string content = 5;
   optional bool hidden = 6;
-  map<string, string> metadata = 7;
+  optional google.protobuf.Struct metadata = 7;
   repeated MessageAsset assets = 8;
   repeated Resource resources = 9;
   repeated Reference references = 10;
-  google.protobuf.Timestamp created_at = 11;
+  int32 created_at = 11;
 
   enum Status {
     success = 0;
@@ -65,7 +66,7 @@ message Resource {
   optional ResourceType resource_type = 3;
   optional Status status = 4;
   optional string category = 5;
-  map<string, string> metadata = 6;
+  optional google.protobuf.Struct metadata = 6;
 
   enum Status {
     draft = 0;
@@ -88,7 +89,7 @@ message Reference {
   optional ReferenceType reference_type = 3;
   optional string category = 4;
   optional string content = 5;
-  map<string, string> metadata = 6;
+  optional google.protobuf.Struct metadata = 6;
 
   enum ReferenceType {
     code = 0;

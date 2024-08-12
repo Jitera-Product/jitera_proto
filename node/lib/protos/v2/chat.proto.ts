@@ -1,12 +1,13 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-import { Timestamp } from "../google/protobuf/timestamp.proto";
+import { Struct } from "../google/protobuf/struct.proto";
 
 export class ChatRequest {
   session?: Session;
   chatId: string;
   status?: ChatRequestStatus | undefined;
   messages: Message[];
+  createdFrom?: ChatRequestCreatedFrom | undefined;
 }
 
 export enum ChatRequestStatus {
@@ -88,11 +89,11 @@ export class Message {
   from?: MessageMessageFrom | undefined;
   content?: string | undefined;
   hidden?: boolean | undefined;
-  metadata: { [key: string]: string };
+  metadata?: { [key: string]: any };
   assets: MessageAsset[];
   resources: Resource[];
   references: Reference[];
-  createdAt?: Date;
+  createdAt: number;
 }
 
 export enum MessageStatus {
@@ -248,18 +249,13 @@ export function messageMessageFromToJSON(object: MessageMessageFrom): string {
   }
 }
 
-export class MessageMetadataEntry {
-  key: string;
-  value: string;
-}
-
 export class Resource {
   name?: string | undefined;
   content?: string | undefined;
   resourceType?: ResourceResourceType | undefined;
   status?: ResourceStatus | undefined;
   category?: string | undefined;
-  metadata: { [key: string]: string };
+  metadata?: { [key: string]: any };
 }
 
 export enum ResourceStatus {
@@ -352,18 +348,13 @@ export function resourceResourceTypeToJSON(object: ResourceResourceType): string
   }
 }
 
-export class ResourceMetadataEntry {
-  key: string;
-  value: string;
-}
-
 export class Reference {
   name?: string | undefined;
   origin?: string | undefined;
   referenceType?: ReferenceReferenceType | undefined;
   category?: string | undefined;
   content?: string | undefined;
-  metadata: { [key: string]: string };
+  metadata?: { [key: string]: any };
 }
 
 export enum ReferenceReferenceType {
@@ -423,11 +414,6 @@ export function referenceReferenceTypeToJSON(object: ReferenceReferenceType): st
   }
 }
 
-export class ReferenceMetadataEntry {
-  key: string;
-  value: string;
-}
-
 export class MessageAsset {
   base64Content: string;
 }
@@ -454,6 +440,9 @@ export const ChatRequestData = {
     for (const v of message.messages) {
       MessageData.encode(v!, writer.uint32(34).fork()).ldelim();
     }
+    if (message.createdFrom !== undefined) {
+      writer.uint32(40).int32(message.createdFrom);
+    }
     return writer;
   },
 
@@ -476,6 +465,9 @@ export const ChatRequestData = {
         case 4:
           message.messages.push(MessageData.decode(reader, reader.uint32()));
           break;
+        case 5:
+          message.createdFrom = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -490,6 +482,7 @@ export const ChatRequestData = {
       chatId: isSet(object.chatId) ? String(object.chatId) : "",
       status: isSet(object.status) ? chatRequestStatusFromJSON(object.status) : undefined,
       messages: Array.isArray(object?.messages) ? object.messages.map((e: any) => MessageData.fromJSON(e)) : [],
+      createdFrom: isSet(object.createdFrom) ? chatRequestCreatedFromFromJSON(object.createdFrom) : undefined,
     };
   },
 
@@ -504,6 +497,9 @@ export const ChatRequestData = {
     } else {
       obj.messages = [];
     }
+    message.createdFrom !== undefined && (obj.createdFrom = message.createdFrom !== undefined
+      ? chatRequestCreatedFromToJSON(message.createdFrom)
+      : undefined);
     return obj;
   },
 
@@ -515,12 +511,13 @@ export const ChatRequestData = {
     message.chatId = object.chatId ?? "";
     message.status = object.status ?? undefined;
     message.messages = object.messages?.map((e) => MessageData.fromPartial(e)) || [];
+    message.createdFrom = object.createdFrom ?? undefined;
     return message;
   },
 };
 
 function createBaseMessage(): Message {
-  return { projectId: 0, metadata: {}, assets: [], resources: [], references: [] };
+  return { projectId: 0, assets: [], resources: [], references: [], createdAt: 0 };
 }
 
 export const MessageData = {
@@ -543,9 +540,9 @@ export const MessageData = {
     if (message.hidden !== undefined) {
       writer.uint32(48).bool(message.hidden);
     }
-    Object.entries(message.metadata).forEach(([key, value]) => {
-      MessageMetadataEntryData.encode({ key: key as any, value }, writer.uint32(58).fork()).ldelim();
-    });
+    if (message.metadata !== undefined) {
+      StructData.encode(Struct.wrap(message.metadata), writer.uint32(58).fork()).ldelim();
+    }
     for (const v of message.assets) {
       MessageAssetData.encode(v!, writer.uint32(66).fork()).ldelim();
     }
@@ -555,8 +552,8 @@ export const MessageData = {
     for (const v of message.references) {
       ReferenceData.encode(v!, writer.uint32(82).fork()).ldelim();
     }
-    if (message.createdAt !== undefined) {
-      TimestampData.encode(toTimestamp(message.createdAt), writer.uint32(90).fork()).ldelim();
+    if (message.createdAt !== 0) {
+      writer.uint32(88).int32(message.createdAt);
     }
     return writer;
   },
@@ -587,10 +584,7 @@ export const MessageData = {
           message.hidden = reader.bool();
           break;
         case 7:
-          const entry7 = MessageMetadataEntryData.decode(reader, reader.uint32());
-          if (entry7.value !== undefined) {
-            message.metadata[entry7.key] = entry7.value;
-          }
+          message.metadata = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 8:
           message.assets.push(MessageAssetData.decode(reader, reader.uint32()));
@@ -602,7 +596,7 @@ export const MessageData = {
           message.references.push(ReferenceData.decode(reader, reader.uint32()));
           break;
         case 11:
-          message.createdAt = fromTimestamp(TimestampData.decode(reader, reader.uint32()));
+          message.createdAt = reader.int32();
           break;
         default:
           reader.skipType(tag & 7);
@@ -620,16 +614,11 @@ export const MessageData = {
       from: isSet(object.from) ? messageMessageFromFromJSON(object.from) : undefined,
       content: isSet(object.content) ? String(object.content) : undefined,
       hidden: isSet(object.hidden) ? Boolean(object.hidden) : undefined,
-      metadata: isObject(object.metadata)
-        ? Object.entries(object.metadata).reduce<{ [key: string]: string }>((acc, [key, value]) => {
-          acc[key] = String(value);
-          return acc;
-        }, {})
-        : {},
+      metadata: isObject(object.metadata) ? object.metadata : undefined,
       assets: Array.isArray(object?.assets) ? object.assets.map((e: any) => MessageAssetData.fromJSON(e)) : [],
       resources: Array.isArray(object?.resources) ? object.resources.map((e: any) => ResourceData.fromJSON(e)) : [],
       references: Array.isArray(object?.references) ? object.references.map((e: any) => ReferenceData.fromJSON(e)) : [],
-      createdAt: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
+      createdAt: isSet(object.createdAt) ? Number(object.createdAt) : 0,
     };
   },
 
@@ -644,12 +633,7 @@ export const MessageData = {
       (obj.from = message.from !== undefined ? messageMessageFromToJSON(message.from) : undefined);
     message.content !== undefined && (obj.content = message.content);
     message.hidden !== undefined && (obj.hidden = message.hidden);
-    obj.metadata = {};
-    if (message.metadata) {
-      Object.entries(message.metadata).forEach(([k, v]) => {
-        obj.metadata[k] = v;
-      });
-    }
+    message.metadata !== undefined && (obj.metadata = message.metadata);
     if (message.assets) {
       obj.assets = message.assets.map((e) => e ? MessageAssetData.toJSON(e) : undefined);
     } else {
@@ -665,7 +649,7 @@ export const MessageData = {
     } else {
       obj.references = [];
     }
-    message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
+    message.createdAt !== undefined && (obj.createdAt = Math.round(message.createdAt));
     return obj;
   },
 
@@ -677,77 +661,17 @@ export const MessageData = {
     message.from = object.from ?? undefined;
     message.content = object.content ?? undefined;
     message.hidden = object.hidden ?? undefined;
-    message.metadata = Object.entries(object.metadata ?? {}).reduce<{ [key: string]: string }>((acc, [key, value]) => {
-      if (value !== undefined) {
-        acc[key] = String(value);
-      }
-      return acc;
-    }, {});
+    message.metadata = object.metadata ?? undefined;
     message.assets = object.assets?.map((e) => MessageAssetData.fromPartial(e)) || [];
     message.resources = object.resources?.map((e) => ResourceData.fromPartial(e)) || [];
     message.references = object.references?.map((e) => ReferenceData.fromPartial(e)) || [];
-    message.createdAt = object.createdAt ?? undefined;
-    return message;
-  },
-};
-
-function createBaseMessageMetadataEntry(): MessageMetadataEntry {
-  return { key: "", value: "" };
-}
-
-export const MessageMetadataEntryData = {
-  encode(message: MessageMetadataEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.key !== "") {
-      writer.uint32(10).string(message.key);
-    }
-    if (message.value !== "") {
-      writer.uint32(18).string(message.value);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): MessageMetadataEntry {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMessageMetadataEntry();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.key = reader.string();
-          break;
-        case 2:
-          message.value = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): MessageMetadataEntry {
-    return { key: isSet(object.key) ? String(object.key) : "", value: isSet(object.value) ? String(object.value) : "" };
-  },
-
-  toJSON(message: MessageMetadataEntry): unknown {
-    const obj: any = {};
-    message.key !== undefined && (obj.key = message.key);
-    message.value !== undefined && (obj.value = message.value);
-    return obj;
-  },
-
-  fromPartial(object: DeepPartial<MessageMetadataEntry>): MessageMetadataEntry {
-    const message = createBaseMessageMetadataEntry();
-    message.key = object.key ?? "";
-    message.value = object.value ?? "";
+    message.createdAt = object.createdAt ?? 0;
     return message;
   },
 };
 
 function createBaseResource(): Resource {
-  return { metadata: {} };
+  return {};
 }
 
 export const ResourceData = {
@@ -767,9 +691,9 @@ export const ResourceData = {
     if (message.category !== undefined) {
       writer.uint32(42).string(message.category);
     }
-    Object.entries(message.metadata).forEach(([key, value]) => {
-      ResourceMetadataEntryData.encode({ key: key as any, value }, writer.uint32(50).fork()).ldelim();
-    });
+    if (message.metadata !== undefined) {
+      StructData.encode(Struct.wrap(message.metadata), writer.uint32(50).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -796,10 +720,7 @@ export const ResourceData = {
           message.category = reader.string();
           break;
         case 6:
-          const entry6 = ResourceMetadataEntryData.decode(reader, reader.uint32());
-          if (entry6.value !== undefined) {
-            message.metadata[entry6.key] = entry6.value;
-          }
+          message.metadata = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -816,12 +737,7 @@ export const ResourceData = {
       resourceType: isSet(object.resourceType) ? resourceResourceTypeFromJSON(object.resourceType) : undefined,
       status: isSet(object.status) ? resourceStatusFromJSON(object.status) : undefined,
       category: isSet(object.category) ? String(object.category) : undefined,
-      metadata: isObject(object.metadata)
-        ? Object.entries(object.metadata).reduce<{ [key: string]: string }>((acc, [key, value]) => {
-          acc[key] = String(value);
-          return acc;
-        }, {})
-        : {},
+      metadata: isObject(object.metadata) ? object.metadata : undefined,
     };
   },
 
@@ -835,12 +751,7 @@ export const ResourceData = {
     message.status !== undefined &&
       (obj.status = message.status !== undefined ? resourceStatusToJSON(message.status) : undefined);
     message.category !== undefined && (obj.category = message.category);
-    obj.metadata = {};
-    if (message.metadata) {
-      Object.entries(message.metadata).forEach(([k, v]) => {
-        obj.metadata[k] = v;
-      });
-    }
+    message.metadata !== undefined && (obj.metadata = message.metadata);
     return obj;
   },
 
@@ -851,73 +762,13 @@ export const ResourceData = {
     message.resourceType = object.resourceType ?? undefined;
     message.status = object.status ?? undefined;
     message.category = object.category ?? undefined;
-    message.metadata = Object.entries(object.metadata ?? {}).reduce<{ [key: string]: string }>((acc, [key, value]) => {
-      if (value !== undefined) {
-        acc[key] = String(value);
-      }
-      return acc;
-    }, {});
-    return message;
-  },
-};
-
-function createBaseResourceMetadataEntry(): ResourceMetadataEntry {
-  return { key: "", value: "" };
-}
-
-export const ResourceMetadataEntryData = {
-  encode(message: ResourceMetadataEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.key !== "") {
-      writer.uint32(10).string(message.key);
-    }
-    if (message.value !== "") {
-      writer.uint32(18).string(message.value);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ResourceMetadataEntry {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseResourceMetadataEntry();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.key = reader.string();
-          break;
-        case 2:
-          message.value = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): ResourceMetadataEntry {
-    return { key: isSet(object.key) ? String(object.key) : "", value: isSet(object.value) ? String(object.value) : "" };
-  },
-
-  toJSON(message: ResourceMetadataEntry): unknown {
-    const obj: any = {};
-    message.key !== undefined && (obj.key = message.key);
-    message.value !== undefined && (obj.value = message.value);
-    return obj;
-  },
-
-  fromPartial(object: DeepPartial<ResourceMetadataEntry>): ResourceMetadataEntry {
-    const message = createBaseResourceMetadataEntry();
-    message.key = object.key ?? "";
-    message.value = object.value ?? "";
+    message.metadata = object.metadata ?? undefined;
     return message;
   },
 };
 
 function createBaseReference(): Reference {
-  return { metadata: {} };
+  return {};
 }
 
 export const ReferenceData = {
@@ -937,9 +788,9 @@ export const ReferenceData = {
     if (message.content !== undefined) {
       writer.uint32(42).string(message.content);
     }
-    Object.entries(message.metadata).forEach(([key, value]) => {
-      ReferenceMetadataEntryData.encode({ key: key as any, value }, writer.uint32(50).fork()).ldelim();
-    });
+    if (message.metadata !== undefined) {
+      StructData.encode(Struct.wrap(message.metadata), writer.uint32(50).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -966,10 +817,7 @@ export const ReferenceData = {
           message.content = reader.string();
           break;
         case 6:
-          const entry6 = ReferenceMetadataEntryData.decode(reader, reader.uint32());
-          if (entry6.value !== undefined) {
-            message.metadata[entry6.key] = entry6.value;
-          }
+          message.metadata = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -986,12 +834,7 @@ export const ReferenceData = {
       referenceType: isSet(object.referenceType) ? referenceReferenceTypeFromJSON(object.referenceType) : undefined,
       category: isSet(object.category) ? String(object.category) : undefined,
       content: isSet(object.content) ? String(object.content) : undefined,
-      metadata: isObject(object.metadata)
-        ? Object.entries(object.metadata).reduce<{ [key: string]: string }>((acc, [key, value]) => {
-          acc[key] = String(value);
-          return acc;
-        }, {})
-        : {},
+      metadata: isObject(object.metadata) ? object.metadata : undefined,
     };
   },
 
@@ -1004,12 +847,7 @@ export const ReferenceData = {
       : undefined);
     message.category !== undefined && (obj.category = message.category);
     message.content !== undefined && (obj.content = message.content);
-    obj.metadata = {};
-    if (message.metadata) {
-      Object.entries(message.metadata).forEach(([k, v]) => {
-        obj.metadata[k] = v;
-      });
-    }
+    message.metadata !== undefined && (obj.metadata = message.metadata);
     return obj;
   },
 
@@ -1020,67 +858,7 @@ export const ReferenceData = {
     message.referenceType = object.referenceType ?? undefined;
     message.category = object.category ?? undefined;
     message.content = object.content ?? undefined;
-    message.metadata = Object.entries(object.metadata ?? {}).reduce<{ [key: string]: string }>((acc, [key, value]) => {
-      if (value !== undefined) {
-        acc[key] = String(value);
-      }
-      return acc;
-    }, {});
-    return message;
-  },
-};
-
-function createBaseReferenceMetadataEntry(): ReferenceMetadataEntry {
-  return { key: "", value: "" };
-}
-
-export const ReferenceMetadataEntryData = {
-  encode(message: ReferenceMetadataEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.key !== "") {
-      writer.uint32(10).string(message.key);
-    }
-    if (message.value !== "") {
-      writer.uint32(18).string(message.value);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ReferenceMetadataEntry {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseReferenceMetadataEntry();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.key = reader.string();
-          break;
-        case 2:
-          message.value = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): ReferenceMetadataEntry {
-    return { key: isSet(object.key) ? String(object.key) : "", value: isSet(object.value) ? String(object.value) : "" };
-  },
-
-  toJSON(message: ReferenceMetadataEntry): unknown {
-    const obj: any = {};
-    message.key !== undefined && (obj.key = message.key);
-    message.value !== undefined && (obj.value = message.value);
-    return obj;
-  },
-
-  fromPartial(object: DeepPartial<ReferenceMetadataEntry>): ReferenceMetadataEntry {
-    const message = createBaseReferenceMetadataEntry();
-    message.key = object.key ?? "";
-    message.value = object.value ?? "";
+    message.metadata = object.metadata ?? undefined;
     return message;
   },
 };
@@ -1185,28 +963,6 @@ type DeepPartial<T> = T extends Builtin ? T
   : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
-
-function toTimestamp(date: Date): Timestamp {
-  const seconds = date.getTime() / 1_000;
-  const nanos = (date.getTime() % 1_000) * 1_000_000;
-  return { seconds, nanos };
-}
-
-function fromTimestamp(t: Timestamp): Date {
-  let millis = t.seconds * 1_000;
-  millis += t.nanos / 1_000_000;
-  return new Date(millis);
-}
-
-function fromJsonTimestamp(o: any): Date {
-  if (o instanceof Date) {
-    return o;
-  } else if (typeof o === "string") {
-    return new Date(o);
-  } else {
-    return fromTimestamp(Timestamp.fromJSON(o));
-  }
-}
 
 function isObject(value: any): boolean {
   return typeof value === "object" && value !== null;
