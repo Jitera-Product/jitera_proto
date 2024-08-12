@@ -308,11 +308,62 @@ export function gitProviderToJSON(object: GitProvider): string {
   }
 }
 
+export class ActionSteps {
+  steps: ActionStepsKey[];
+}
+
+export enum ActionStepsKey {
+  INDEX_CODE = 0,
+  ANALYZE_CODE = 1,
+  CODE_TO_ERD = 2,
+  CODE_TO_NATURAL_LANGUAGE = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function actionStepsKeyFromJSON(object: any): ActionStepsKey {
+  switch (object) {
+    case 0:
+    case "INDEX_CODE":
+      return ActionStepsKey.INDEX_CODE;
+    case 1:
+    case "ANALYZE_CODE":
+      return ActionStepsKey.ANALYZE_CODE;
+    case 2:
+    case "CODE_TO_ERD":
+      return ActionStepsKey.CODE_TO_ERD;
+    case 3:
+    case "CODE_TO_NATURAL_LANGUAGE":
+      return ActionStepsKey.CODE_TO_NATURAL_LANGUAGE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ActionStepsKey.UNRECOGNIZED;
+  }
+}
+
+export function actionStepsKeyToJSON(object: ActionStepsKey): string {
+  switch (object) {
+    case ActionStepsKey.INDEX_CODE:
+      return "INDEX_CODE";
+    case ActionStepsKey.ANALYZE_CODE:
+      return "ANALYZE_CODE";
+    case ActionStepsKey.CODE_TO_ERD:
+      return "CODE_TO_ERD";
+    case ActionStepsKey.CODE_TO_NATURAL_LANGUAGE:
+      return "CODE_TO_NATURAL_LANGUAGE";
+    case ActionStepsKey.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 export class ProjectSourceCreation {
   projectGenerateQueueId: number;
   projectSource?: ProjectSource;
   importBy?: ImportBy | undefined;
   action?: ProjectSourceCreationAction | undefined;
+  steps?: ActionSteps | undefined;
+  metadata?: { [key: string]: any };
   sourcePath?: string | undefined;
   git?: Git | undefined;
 }
@@ -325,6 +376,7 @@ export enum ProjectSourceCreationAction {
   FORCE_INDEX = 4,
   RE_INDEX = 5,
   MERGE_UC_ERD_INDEX = 6,
+  CODE_TO_NATURAL_LANGUAGE = 7,
   UNRECOGNIZED = -1,
 }
 
@@ -351,6 +403,9 @@ export function projectSourceCreationActionFromJSON(object: any): ProjectSourceC
     case 6:
     case "MERGE_UC_ERD_INDEX":
       return ProjectSourceCreationAction.MERGE_UC_ERD_INDEX;
+    case 7:
+    case "CODE_TO_NATURAL_LANGUAGE":
+      return ProjectSourceCreationAction.CODE_TO_NATURAL_LANGUAGE;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -374,6 +429,8 @@ export function projectSourceCreationActionToJSON(object: ProjectSourceCreationA
       return "RE_INDEX";
     case ProjectSourceCreationAction.MERGE_UC_ERD_INDEX:
       return "MERGE_UC_ERD_INDEX";
+    case ProjectSourceCreationAction.CODE_TO_NATURAL_LANGUAGE:
+      return "CODE_TO_NATURAL_LANGUAGE";
     case ProjectSourceCreationAction.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -1175,6 +1232,66 @@ export const GitData = {
   },
 };
 
+function createBaseActionSteps(): ActionSteps {
+  return { steps: [] };
+}
+
+export const ActionStepsData = {
+  encode(message: ActionSteps, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    writer.uint32(10).fork();
+    for (const v of message.steps) {
+      writer.int32(v);
+    }
+    writer.ldelim();
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ActionSteps {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseActionSteps();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.steps.push(reader.int32() as any);
+            }
+          } else {
+            message.steps.push(reader.int32() as any);
+          }
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ActionSteps {
+    return { steps: Array.isArray(object?.steps) ? object.steps.map((e: any) => actionStepsKeyFromJSON(e)) : [] };
+  },
+
+  toJSON(message: ActionSteps): unknown {
+    const obj: any = {};
+    if (message.steps) {
+      obj.steps = message.steps.map((e) => actionStepsKeyToJSON(e));
+    } else {
+      obj.steps = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ActionSteps>): ActionSteps {
+    const message = createBaseActionSteps();
+    message.steps = object.steps?.map((e) => e) || [];
+    return message;
+  },
+};
+
 function createBaseProjectSourceCreation(): ProjectSourceCreation {
   return { projectGenerateQueueId: 0 };
 }
@@ -1192,6 +1309,12 @@ export const ProjectSourceCreationData = {
     }
     if (message.action !== undefined) {
       writer.uint32(48).int32(message.action);
+    }
+    if (message.steps !== undefined) {
+      ActionStepsData.encode(message.steps, writer.uint32(58).fork()).ldelim();
+    }
+    if (message.metadata !== undefined) {
+      StructData.encode(StructData.wrap(message.metadata), writer.uint32(66).fork()).ldelim();
     }
     if (message.sourcePath !== undefined) {
       writer.uint32(26).string(message.sourcePath);
@@ -1221,6 +1344,12 @@ export const ProjectSourceCreationData = {
         case 6:
           message.action = reader.int32() as any;
           break;
+        case 7:
+          message.steps = ActionStepsData.decode(reader, reader.uint32());
+          break;
+        case 8:
+          message.metadata = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          break;
         case 3:
           message.sourcePath = reader.string();
           break;
@@ -1241,6 +1370,8 @@ export const ProjectSourceCreationData = {
       projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
       importBy: isSet(object.importBy) ? importByFromJSON(object.importBy) : undefined,
       action: isSet(object.action) ? projectSourceCreationActionFromJSON(object.action) : undefined,
+      steps: isSet(object.steps) ? ActionStepsData.fromJSON(object.steps) : undefined,
+      metadata: isObject(object.metadata) ? object.metadata : undefined,
       sourcePath: isSet(object.sourcePath) ? String(object.sourcePath) : undefined,
       git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
     };
@@ -1256,6 +1387,8 @@ export const ProjectSourceCreationData = {
       (obj.importBy = message.importBy !== undefined ? importByToJSON(message.importBy) : undefined);
     message.action !== undefined &&
       (obj.action = message.action !== undefined ? projectSourceCreationActionToJSON(message.action) : undefined);
+    message.steps !== undefined && (obj.steps = message.steps ? ActionStepsData.toJSON(message.steps) : undefined);
+    message.metadata !== undefined && (obj.metadata = message.metadata);
     message.sourcePath !== undefined && (obj.sourcePath = message.sourcePath);
     message.git !== undefined && (obj.git = message.git ? GitData.toJSON(message.git) : undefined);
     return obj;
@@ -1269,6 +1402,10 @@ export const ProjectSourceCreationData = {
       : undefined;
     message.importBy = object.importBy ?? undefined;
     message.action = object.action ?? undefined;
+    message.steps = (object.steps !== undefined && object.steps !== null)
+      ? ActionStepsData.fromPartial(object.steps)
+      : undefined;
+    message.metadata = object.metadata ?? undefined;
     message.sourcePath = object.sourcePath ?? undefined;
     message.git = (object.git !== undefined && object.git !== null) ? GitData.fromPartial(object.git) : undefined;
     return message;

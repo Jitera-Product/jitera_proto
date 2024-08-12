@@ -99,11 +99,24 @@ enum ImportBy {
 	gitlab = 4;
 }
 
+message ActionSteps {
+  repeated Key steps = 1;
+
+	enum Key {
+		INDEX_CODE = 0;
+		ANALYZE_CODE = 1;
+		CODE_TO_ERD = 2;
+		CODE_TO_NATURAL_LANGUAGE = 3;
+	}
+}
+
 message ProjectSourceCreation {
 	int32 project_generate_queue_id = 1;
 	ProjectSource project_source = 2;
 	optional ImportBy import_by = 5;
 	optional Action action = 6;
+	optional ActionSteps steps = 7;
+	optional google.protobuf.Struct metadata = 8;
 
 	enum Action {
 		INDEX_CODE = 0;
@@ -113,6 +126,7 @@ message ProjectSourceCreation {
 		FORCE_INDEX = 4;
 		RE_INDEX = 5;
 		MERGE_UC_ERD_INDEX = 6;
+		CODE_TO_NATURAL_LANGUAGE = 7;
 	}
 
 	oneof source {
