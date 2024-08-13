@@ -1,6 +1,6 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-import { Struct } from "../google/protobuf/struct.proto";
+import { StructData } from "../google/protobuf/struct.proto";
 
 export class ChatRequest {
   session?: Session;
@@ -541,7 +541,7 @@ export const MessageData = {
       writer.uint32(48).bool(message.hidden);
     }
     if (message.metadata !== undefined) {
-      StructData.encode(Struct.wrap(message.metadata), writer.uint32(58).fork()).ldelim();
+      StructData.encode(StructData.wrap(message.metadata), writer.uint32(58).fork()).ldelim();
     }
     for (const v of message.assets) {
       MessageAssetData.encode(v!, writer.uint32(66).fork()).ldelim();
@@ -584,7 +584,7 @@ export const MessageData = {
           message.hidden = reader.bool();
           break;
         case 7:
-          message.metadata = Struct.unwrap(StructData.decode(reader, reader.uint32()));
+          message.metadata = StructData.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 8:
           message.assets.push(MessageAssetData.decode(reader, reader.uint32()));
@@ -692,7 +692,7 @@ export const ResourceData = {
       writer.uint32(42).string(message.category);
     }
     if (message.metadata !== undefined) {
-      StructData.encode(Struct.wrap(message.metadata), writer.uint32(50).fork()).ldelim();
+      StructData.encode(StructData.wrap(message.metadata), writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -720,7 +720,7 @@ export const ResourceData = {
           message.category = reader.string();
           break;
         case 6:
-          message.metadata = Struct.unwrap(StructData.decode(reader, reader.uint32()));
+          message.metadata = StructData.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -789,7 +789,7 @@ export const ReferenceData = {
       writer.uint32(42).string(message.content);
     }
     if (message.metadata !== undefined) {
-      StructData.encode(Struct.wrap(message.metadata), writer.uint32(50).fork()).ldelim();
+      StructData.encode(StructData.wrap(message.metadata), writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -817,7 +817,7 @@ export const ReferenceData = {
           message.content = reader.string();
           break;
         case 6:
-          message.metadata = Struct.unwrap(StructData.decode(reader, reader.uint32()));
+          message.metadata = StructData.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
