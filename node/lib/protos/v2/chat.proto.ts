@@ -83,7 +83,6 @@ export function chatRequestCreatedFromToJSON(object: ChatRequestCreatedFrom): st
 }
 
 export class Message {
-  projectId: number;
   status?: MessageStatus | undefined;
   assistant?: MessageMessageAssistant | undefined;
   from?: MessageMessageFrom | undefined;
@@ -419,7 +418,7 @@ export class MessageAsset {
 }
 
 export class Session {
-  accessToken: string;
+  userId: string;
 }
 
 function createBaseChatRequest(): ChatRequest {
@@ -517,43 +516,40 @@ export const ChatRequestData = {
 };
 
 function createBaseMessage(): Message {
-  return { projectId: 0, assets: [], resources: [], references: [], createdAt: 0 };
+  return { assets: [], resources: [], references: [], createdAt: 0 };
 }
 
 export const MessageData = {
   encode(message: Message, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.projectId !== 0) {
-      writer.uint32(8).int32(message.projectId);
-    }
     if (message.status !== undefined) {
-      writer.uint32(16).int32(message.status);
+      writer.uint32(8).int32(message.status);
     }
     if (message.assistant !== undefined) {
-      writer.uint32(24).int32(message.assistant);
+      writer.uint32(16).int32(message.assistant);
     }
     if (message.from !== undefined) {
-      writer.uint32(32).int32(message.from);
+      writer.uint32(24).int32(message.from);
     }
     if (message.content !== undefined) {
-      writer.uint32(42).string(message.content);
+      writer.uint32(34).string(message.content);
     }
     if (message.hidden !== undefined) {
-      writer.uint32(48).bool(message.hidden);
+      writer.uint32(40).bool(message.hidden);
     }
     if (message.metadata !== undefined) {
-      StructData.encode(StructData.wrap(message.metadata), writer.uint32(58).fork()).ldelim();
+      StructData.encode(StructData.wrap(message.metadata), writer.uint32(50).fork()).ldelim();
     }
     for (const v of message.assets) {
-      MessageAssetData.encode(v!, writer.uint32(66).fork()).ldelim();
+      MessageAssetData.encode(v!, writer.uint32(58).fork()).ldelim();
     }
     for (const v of message.resources) {
-      ResourceData.encode(v!, writer.uint32(74).fork()).ldelim();
+      ResourceData.encode(v!, writer.uint32(66).fork()).ldelim();
     }
     for (const v of message.references) {
-      ReferenceData.encode(v!, writer.uint32(82).fork()).ldelim();
+      ReferenceData.encode(v!, writer.uint32(74).fork()).ldelim();
     }
     if (message.createdAt !== 0) {
-      writer.uint32(88).int32(message.createdAt);
+      writer.uint32(80).int32(message.createdAt);
     }
     return writer;
   },
@@ -566,36 +562,33 @@ export const MessageData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.projectId = reader.int32();
-          break;
-        case 2:
           message.status = reader.int32() as any;
           break;
-        case 3:
+        case 2:
           message.assistant = reader.int32() as any;
           break;
-        case 4:
+        case 3:
           message.from = reader.int32() as any;
           break;
-        case 5:
+        case 4:
           message.content = reader.string();
           break;
-        case 6:
+        case 5:
           message.hidden = reader.bool();
           break;
-        case 7:
+        case 6:
           message.metadata = StructData.unwrap(StructData.decode(reader, reader.uint32()));
           break;
-        case 8:
+        case 7:
           message.assets.push(MessageAssetData.decode(reader, reader.uint32()));
           break;
-        case 9:
+        case 8:
           message.resources.push(ResourceData.decode(reader, reader.uint32()));
           break;
-        case 10:
+        case 9:
           message.references.push(ReferenceData.decode(reader, reader.uint32()));
           break;
-        case 11:
+        case 10:
           message.createdAt = reader.int32();
           break;
         default:
@@ -608,7 +601,6 @@ export const MessageData = {
 
   fromJSON(object: any): Message {
     return {
-      projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       status: isSet(object.status) ? messageStatusFromJSON(object.status) : undefined,
       assistant: isSet(object.assistant) ? messageMessageAssistantFromJSON(object.assistant) : undefined,
       from: isSet(object.from) ? messageMessageFromFromJSON(object.from) : undefined,
@@ -624,7 +616,6 @@ export const MessageData = {
 
   toJSON(message: Message): unknown {
     const obj: any = {};
-    message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     message.status !== undefined &&
       (obj.status = message.status !== undefined ? messageStatusToJSON(message.status) : undefined);
     message.assistant !== undefined &&
@@ -655,7 +646,6 @@ export const MessageData = {
 
   fromPartial(object: DeepPartial<Message>): Message {
     const message = createBaseMessage();
-    message.projectId = object.projectId ?? 0;
     message.status = object.status ?? undefined;
     message.assistant = object.assistant ?? undefined;
     message.from = object.from ?? undefined;
@@ -911,13 +901,13 @@ export const MessageAssetData = {
 };
 
 function createBaseSession(): Session {
-  return { accessToken: "" };
+  return { userId: "" };
 }
 
 export const SessionData = {
   encode(message: Session, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.accessToken !== "") {
-      writer.uint32(10).string(message.accessToken);
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
     }
     return writer;
   },
@@ -930,7 +920,7 @@ export const SessionData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.accessToken = reader.string();
+          message.userId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -941,18 +931,18 @@ export const SessionData = {
   },
 
   fromJSON(object: any): Session {
-    return { accessToken: isSet(object.accessToken) ? String(object.accessToken) : "" };
+    return { userId: isSet(object.userId) ? String(object.userId) : "" };
   },
 
   toJSON(message: Session): unknown {
     const obj: any = {};
-    message.accessToken !== undefined && (obj.accessToken = message.accessToken);
+    message.userId !== undefined && (obj.userId = message.userId);
     return obj;
   },
 
   fromPartial(object: DeepPartial<Session>): Session {
     const message = createBaseSession();
-    message.accessToken = object.accessToken ?? "";
+    message.userId = object.userId ?? "";
     return message;
   },
 };
