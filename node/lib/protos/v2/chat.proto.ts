@@ -418,7 +418,7 @@ export class MessageAsset {
 }
 
 export class Session {
-  userId: string;
+  userId: number;
 }
 
 function createBaseChatRequest(): ChatRequest {
@@ -901,13 +901,13 @@ export const MessageAssetData = {
 };
 
 function createBaseSession(): Session {
-  return { userId: "" };
+  return { userId: 0 };
 }
 
 export const SessionData = {
   encode(message: Session, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.userId !== "") {
-      writer.uint32(10).string(message.userId);
+    if (message.userId !== 0) {
+      writer.uint32(8).int32(message.userId);
     }
     return writer;
   },
@@ -920,7 +920,7 @@ export const SessionData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.userId = reader.string();
+          message.userId = reader.int32();
           break;
         default:
           reader.skipType(tag & 7);
@@ -931,18 +931,18 @@ export const SessionData = {
   },
 
   fromJSON(object: any): Session {
-    return { userId: isSet(object.userId) ? String(object.userId) : "" };
+    return { userId: isSet(object.userId) ? Number(object.userId) : 0 };
   },
 
   toJSON(message: Session): unknown {
     const obj: any = {};
-    message.userId !== undefined && (obj.userId = message.userId);
+    message.userId !== undefined && (obj.userId = Math.round(message.userId));
     return obj;
   },
 
   fromPartial(object: DeepPartial<Session>): Session {
     const message = createBaseSession();
-    message.userId = object.userId ?? "";
+    message.userId = object.userId ?? 0;
     return message;
   },
 };
