@@ -1,0 +1,110 @@
+syntax = "proto3";
+package schema.v2;
+
+import "google/protobuf/struct.proto";
+
+message ChatRequest {
+  Session session = 1;
+  string chat_id = 2;
+  optional Status status = 3;
+  repeated Message messages = 4;
+  optional CreatedFrom created_from = 5;
+
+  enum Status {
+    started = 0;
+    inprogress = 1;
+    done = 2;
+  }
+
+  enum CreatedFrom {
+    assistant = 0;
+    plugin = 1;
+  }
+}
+
+message Message {
+  optional Status status = 1;
+  optional MessageAssistant assistant = 2;
+  optional MessageFrom from = 3;
+  optional string content = 4;
+  optional bool hidden = 5;
+  optional google.protobuf.Struct metadata = 6;
+  repeated MessageAsset assets = 7;
+  repeated Resource resources = 8;
+  repeated Reference references = 9;
+  int32 created_at = 10;
+
+  enum Status {
+    success = 0;
+    inprogress = 1;
+    failed = 2;
+  }
+
+  enum MessageAssistant {
+    backend = 0;
+    frontend = 1;
+    po = 2;
+    tm = 3;
+    developer = 4;
+    monorepo = 5;
+    fullstack_developer = 6;
+    assistant_role = 7;
+  }
+
+  enum MessageFrom {
+    system = 0;
+    ai = 1;
+    human = 2;
+    from_assistant = 3;
+  }
+}
+
+message Resource {
+  optional string name = 1;
+  optional string content = 2;
+  optional ResourceType resource_type = 3;
+  optional Status status = 4;
+  optional string category = 5;
+  optional google.protobuf.Struct metadata = 6;
+
+  enum Status {
+    draft = 0;
+    ready = 1;
+    inprogress = 2;
+    error = 3;
+    success = 4;
+  }
+
+  enum ResourceType {
+    code = 0;
+    document = 1;
+    image = 2;
+  }
+}
+
+message Reference {
+  optional string name = 1;
+  optional string origin = 2;
+  optional ReferenceType reference_type = 3;
+  optional string category = 4;
+  optional string content = 5;
+  optional google.protobuf.Struct metadata = 6;
+
+  enum ReferenceType {
+    code = 0;
+    usecase = 1;
+    business_logic = 2;
+    api = 3;
+    ticket = 4;
+    image = 5;
+  }
+}
+
+message MessageAsset {
+  string base64_content = 1;
+}
+
+message Session {
+  int32 user_id = 1;
+}
+

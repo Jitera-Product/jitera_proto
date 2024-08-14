@@ -16,7 +16,7 @@ npm publish
 Know issues:
 ```
 Struct.wrap -> StructData.wrap
-Struct.unwarp -> StructData.unwarp
+Struct.unwrap -> StructData.unwrap
 ... (other data type)
 ```
 ### PHP
