@@ -90,7 +90,7 @@ message TestCasesRunReport {
   }
 }
 
-message TestCaseStepCodeSync {
+message TestCaseStepSync {
 	int32 project_generate_id = 1;
 	int32 project_id = 2;
 	TestConfiguration test_configuration = 3;
@@ -102,4 +102,17 @@ message TestCaseStepCodeSync {
 		string username = 2;
 		string password = 3;
 	}
+}
+
+message TestCaseStepSyncReport {
+	int32 project_generate_id = 1;
+	repeated TestCaseStep test_case_steps = 2;
+	repeated string errors = 3;
+  Status status = 4;
+
+  enum Status {
+    SUCCEEDED = 0;
+    IN_PROGRESS = 1;
+    FAILED = 2;
+  }
 }
