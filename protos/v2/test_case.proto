@@ -10,6 +10,7 @@ message TestCase {
 	int32 use_case_id = 4;
 	string node_id = 5;
 	repeated TestCaseStep steps = 6;
+	optional core.Block use_case = 7;
 }
 
 message TestCaseStep {
@@ -17,6 +18,7 @@ message TestCaseStep {
 	string code = 2;
 	string step = 3;
 	string node_id = 4;
+	optional string test_case_node_id = 5;
 }
 
 message TestCasesCreation {
@@ -86,4 +88,18 @@ message TestCasesRunReport {
     IN_PROGRESS = 1;
     FAILED = 2;
   }
+}
+
+message TestCaseStepCodeSync {
+	int32 project_generate_id = 1;
+	int32 project_id = 2;
+	TestConfiguration test_configuration = 3;
+  repeated TestCase test_cases = 4;
+	repeated TestCaseStep regenerate_test_case_steps = 5;
+
+	message TestConfiguration {
+		string url = 1;
+		string username = 2;
+		string password = 3;
+	}
 }
