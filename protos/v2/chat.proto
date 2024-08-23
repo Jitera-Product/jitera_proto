@@ -33,6 +33,7 @@ message Message {
   repeated Resource resources = 8;
   repeated Reference references = 9;
   int32 created_at = 10;
+  optional string uuid = 11;
 
   enum Status {
     success = 0;
