@@ -93,6 +93,7 @@ export class Message {
   resources: Resource[];
   references: Reference[];
   createdAt: number;
+  uuid?: string | undefined;
 }
 
 export enum MessageStatus {
@@ -551,6 +552,9 @@ export const MessageData = {
     if (message.createdAt !== 0) {
       writer.uint32(80).int32(message.createdAt);
     }
+    if (message.uuid !== undefined) {
+      writer.uint32(90).string(message.uuid);
+    }
     return writer;
   },
 
@@ -591,6 +595,9 @@ export const MessageData = {
         case 10:
           message.createdAt = reader.int32();
           break;
+        case 11:
+          message.uuid = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -611,6 +618,7 @@ export const MessageData = {
       resources: Array.isArray(object?.resources) ? object.resources.map((e: any) => ResourceData.fromJSON(e)) : [],
       references: Array.isArray(object?.references) ? object.references.map((e: any) => ReferenceData.fromJSON(e)) : [],
       createdAt: isSet(object.createdAt) ? Number(object.createdAt) : 0,
+      uuid: isSet(object.uuid) ? String(object.uuid) : undefined,
     };
   },
 
@@ -641,6 +649,7 @@ export const MessageData = {
       obj.references = [];
     }
     message.createdAt !== undefined && (obj.createdAt = Math.round(message.createdAt));
+    message.uuid !== undefined && (obj.uuid = message.uuid);
     return obj;
   },
 
@@ -656,6 +665,7 @@ export const MessageData = {
     message.resources = object.resources?.map((e) => ResourceData.fromPartial(e)) || [];
     message.references = object.references?.map((e) => ReferenceData.fromPartial(e)) || [];
     message.createdAt = object.createdAt ?? 0;
+    message.uuid = object.uuid ?? undefined;
     return message;
   },
 };
