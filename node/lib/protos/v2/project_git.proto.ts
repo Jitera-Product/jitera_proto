@@ -9,7 +9,7 @@ export class ProjectGitSyncRequest {
   git?: Git;
   projectSource?: ProjectSource;
   changedFiles: string[];
-  action: ProjectGitSyncRequestAction;
+  actionType?: ProjectGitSyncRequestAction | undefined;
 }
 
 export enum ProjectGitSyncRequestAction {
@@ -129,7 +129,7 @@ export function projectGitSyncResponseStatusToJSON(object: ProjectGitSyncRespons
 }
 
 function createBaseProjectGitSyncRequest(): ProjectGitSyncRequest {
-  return { projectGenerateQueueId: 0, projectId: 0, changedFiles: [], action: 0 };
+  return { projectGenerateQueueId: 0, projectId: 0, changedFiles: [] };
 }
 
 export const ProjectGitSyncRequestData = {
@@ -149,8 +149,8 @@ export const ProjectGitSyncRequestData = {
     for (const v of message.changedFiles) {
       writer.uint32(42).string(v!);
     }
-    if (message.action !== 0) {
-      writer.uint32(48).int32(message.action);
+    if (message.actionType !== undefined) {
+      writer.uint32(48).int32(message.actionType);
     }
     return writer;
   },
@@ -178,7 +178,7 @@ export const ProjectGitSyncRequestData = {
           message.changedFiles.push(reader.string());
           break;
         case 6:
-          message.action = reader.int32() as any;
+          message.actionType = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -195,7 +195,7 @@ export const ProjectGitSyncRequestData = {
       git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
       projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
       changedFiles: Array.isArray(object?.changedFiles) ? object.changedFiles.map((e: any) => String(e)) : [],
-      action: isSet(object.action) ? projectGitSyncRequestActionFromJSON(object.action) : 0,
+      actionType: isSet(object.actionType) ? projectGitSyncRequestActionFromJSON(object.actionType) : undefined,
     };
   },
 
@@ -212,7 +212,9 @@ export const ProjectGitSyncRequestData = {
     } else {
       obj.changedFiles = [];
     }
-    message.action !== undefined && (obj.action = projectGitSyncRequestActionToJSON(message.action));
+    message.actionType !== undefined && (obj.actionType = message.actionType !== undefined
+      ? projectGitSyncRequestActionToJSON(message.actionType)
+      : undefined);
     return obj;
   },
 
@@ -225,7 +227,7 @@ export const ProjectGitSyncRequestData = {
       ? ProjectSourceData.fromPartial(object.projectSource)
       : undefined;
     message.changedFiles = object.changedFiles?.map((e) => e) || [];
-    message.action = object.action ?? 0;
+    message.actionType = object.actionType ?? undefined;
     return message;
   },
 };

@@ -10,7 +10,7 @@ message ProjectGitSyncRequest {
   Git git = 3;
   ProjectSource project_source = 4;
   repeated string changed_files = 5;
-  Action action = 6;
+  optional Action action_type = 6;
 
   enum Action {
 		CODE_TO_ERD = 0;
