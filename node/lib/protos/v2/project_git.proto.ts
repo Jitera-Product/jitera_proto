@@ -9,6 +9,40 @@ export class ProjectGitSyncRequest {
   git?: Git;
   projectSource?: ProjectSource;
   changedFiles: string[];
+  actionType?: ProjectGitSyncRequestAction | undefined;
+}
+
+export enum ProjectGitSyncRequestAction {
+  CODE_TO_ERD = 0,
+  CODE_TO_NATURAL_LANGUAGE = 1,
+  UNRECOGNIZED = -1,
+}
+
+export function projectGitSyncRequestActionFromJSON(object: any): ProjectGitSyncRequestAction {
+  switch (object) {
+    case 0:
+    case "CODE_TO_ERD":
+      return ProjectGitSyncRequestAction.CODE_TO_ERD;
+    case 1:
+    case "CODE_TO_NATURAL_LANGUAGE":
+      return ProjectGitSyncRequestAction.CODE_TO_NATURAL_LANGUAGE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ProjectGitSyncRequestAction.UNRECOGNIZED;
+  }
+}
+
+export function projectGitSyncRequestActionToJSON(object: ProjectGitSyncRequestAction): string {
+  switch (object) {
+    case ProjectGitSyncRequestAction.CODE_TO_ERD:
+      return "CODE_TO_ERD";
+    case ProjectGitSyncRequestAction.CODE_TO_NATURAL_LANGUAGE:
+      return "CODE_TO_NATURAL_LANGUAGE";
+    case ProjectGitSyncRequestAction.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
 }
 
 export class ProjectGitSyncResponse {
@@ -115,6 +149,9 @@ export const ProjectGitSyncRequestData = {
     for (const v of message.changedFiles) {
       writer.uint32(42).string(v!);
     }
+    if (message.actionType !== undefined) {
+      writer.uint32(48).int32(message.actionType);
+    }
     return writer;
   },
 
@@ -140,6 +177,9 @@ export const ProjectGitSyncRequestData = {
         case 5:
           message.changedFiles.push(reader.string());
           break;
+        case 6:
+          message.actionType = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -155,6 +195,7 @@ export const ProjectGitSyncRequestData = {
       git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
       projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
       changedFiles: Array.isArray(object?.changedFiles) ? object.changedFiles.map((e: any) => String(e)) : [],
+      actionType: isSet(object.actionType) ? projectGitSyncRequestActionFromJSON(object.actionType) : undefined,
     };
   },
 
@@ -171,6 +212,9 @@ export const ProjectGitSyncRequestData = {
     } else {
       obj.changedFiles = [];
     }
+    message.actionType !== undefined && (obj.actionType = message.actionType !== undefined
+      ? projectGitSyncRequestActionToJSON(message.actionType)
+      : undefined);
     return obj;
   },
 
@@ -183,6 +227,7 @@ export const ProjectGitSyncRequestData = {
       ? ProjectSourceData.fromPartial(object.projectSource)
       : undefined;
     message.changedFiles = object.changedFiles?.map((e) => e) || [];
+    message.actionType = object.actionType ?? undefined;
     return message;
   },
 };
