@@ -1,0 +1,16 @@
+syntax = "proto3";
+package schema.v2;
+
+import "google/protobuf/struct.proto";
+
+message InlinePromptResponse {
+  string uuid = 1;
+	string user_uuid = 2;
+	string project_uuid = 3;
+  InlinePrompt inline_prompt = 4;
+}
+
+message InlinePrompt {
+  string prompt = 1;
+  optional google.protobuf.Struct properties = 2;
+}
