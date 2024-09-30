@@ -5,7 +5,7 @@ message BrowserCookie {
   string name = 1;
   string value = 2;
   string domain = 3;
-  int64 expires = 4;
+  int32 expires = 4;
   string path = 5;
   bool httpOnly = 6;
   bool secure = 7;
