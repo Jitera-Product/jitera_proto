@@ -19,7 +19,7 @@ rescue TypeError => e
   file = pool.add_serialized_file(serialized)
   warn "Warning: Protobuf detected an import path issue while loading generated file #{__FILE__}"
   imports = [
-    ["schema.v2.core.Block", "v2/block_core.proto"]
+    ["schema.v2.core.Block", "v2/block_core.proto"],
   ]
   imports.each do |type_name, expected_filename|
     import_file = pool.lookup(type_name).file_descriptor
