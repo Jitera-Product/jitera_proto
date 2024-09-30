@@ -90,6 +90,16 @@ export class TestCasesRunTestConfiguration {
   password: string;
 }
 
+export class TestCasesRunTestConfiguration {
+  url: string;
+  username: string;
+  password: string;
+  loginPath: string;
+  projectGenerateId: number;
+  projectId: number;
+  tokenExpirationSeconds: number;
+}
+
 export class TestCasesRunReport {
   projectGenerateId: number;
   status: TestCasesRunReportStatus;
@@ -710,6 +720,118 @@ export const TestCasesRunTestConfigurationData = {
     message.url = object.url ?? "";
     message.username = object.username ?? "";
     message.password = object.password ?? "";
+    return message;
+  },
+};
+
+function createBaseTestCasesRunTestConfiguration(): TestCasesRunTestConfiguration {
+  return {
+    url: "",
+    username: "",
+    password: "",
+    loginPath: "",
+    projectGenerateId: 0,
+    projectId: 0,
+    tokenExpirationSeconds: 0,
+  };
+}
+
+export const TestCasesRunTestConfigurationData = {
+  encode(message: TestCasesRunTestConfiguration, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.url !== "") {
+      writer.uint32(10).string(message.url);
+    }
+    if (message.username !== "") {
+      writer.uint32(18).string(message.username);
+    }
+    if (message.password !== "") {
+      writer.uint32(26).string(message.password);
+    }
+    if (message.loginPath !== "") {
+      writer.uint32(34).string(message.loginPath);
+    }
+    if (message.projectGenerateId !== 0) {
+      writer.uint32(40).int32(message.projectGenerateId);
+    }
+    if (message.projectId !== 0) {
+      writer.uint32(48).int32(message.projectId);
+    }
+    if (message.tokenExpirationSeconds !== 0) {
+      writer.uint32(56).int32(message.tokenExpirationSeconds);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): TestCasesRunTestConfiguration {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTestCasesRunTestConfiguration();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.url = reader.string();
+          break;
+        case 2:
+          message.username = reader.string();
+          break;
+        case 3:
+          message.password = reader.string();
+          break;
+        case 4:
+          message.loginPath = reader.string();
+          break;
+        case 5:
+          message.projectGenerateId = reader.int32();
+          break;
+        case 6:
+          message.projectId = reader.int32();
+          break;
+        case 7:
+          message.tokenExpirationSeconds = reader.int32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TestCasesRunTestConfiguration {
+    return {
+      url: isSet(object.url) ? String(object.url) : "",
+      username: isSet(object.username) ? String(object.username) : "",
+      password: isSet(object.password) ? String(object.password) : "",
+      loginPath: isSet(object.loginPath) ? String(object.loginPath) : "",
+      projectGenerateId: isSet(object.projectGenerateId) ? Number(object.projectGenerateId) : 0,
+      projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
+      tokenExpirationSeconds: isSet(object.tokenExpirationSeconds) ? Number(object.tokenExpirationSeconds) : 0,
+    };
+  },
+
+  toJSON(message: TestCasesRunTestConfiguration): unknown {
+    const obj: any = {};
+    message.url !== undefined && (obj.url = message.url);
+    message.username !== undefined && (obj.username = message.username);
+    message.password !== undefined && (obj.password = message.password);
+    message.loginPath !== undefined && (obj.loginPath = message.loginPath);
+    message.projectGenerateId !== undefined && (obj.projectGenerateId = Math.round(message.projectGenerateId));
+    message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
+    message.tokenExpirationSeconds !== undefined &&
+      (obj.tokenExpirationSeconds = Math.round(message.tokenExpirationSeconds));
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<TestCasesRunTestConfiguration>): TestCasesRunTestConfiguration {
+    const message = createBaseTestCasesRunTestConfiguration();
+    message.url = object.url ?? "";
+    message.username = object.username ?? "";
+    message.password = object.password ?? "";
+    message.loginPath = object.loginPath ?? "";
+    message.projectGenerateId = object.projectGenerateId ?? 0;
+    message.projectId = object.projectId ?? 0;
+    message.tokenExpirationSeconds = object.tokenExpirationSeconds ?? 0;
     return message;
   },
 };
