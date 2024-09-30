@@ -1,0 +1,25 @@
+syntax = "proto3";
+package schema.v2;
+
+message BrowserCookie {
+  string name = 1;
+  string value = 2;
+  string domain = 3;
+  int64 expires = 4;
+  string path = 5;
+  bool httpOnly = 6;
+  bool secure = 7;
+  string sameSite = 8;
+}
+message BrowserLocalStorage  {
+  string name = 1;
+  string value = 2;
+}
+message BrowserOrigin {
+  string origin = 1;
+  repeated BrowserLocalStorage localStorage = 2;
+}
+message BrowserStorageState {
+  repeated BrowserCookie cookies = 1;
+  repeated BrowserOrigin origins = 2;
+}
