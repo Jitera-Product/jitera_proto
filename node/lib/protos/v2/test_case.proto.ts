@@ -97,7 +97,7 @@ export class TestCasesRunTestConfiguration {
   loginPath: string;
   projectGenerateId: number;
   projectId: number;
-  tokenExpirationSeconds: number;
+  tokenExpirationSeconds?: number | undefined;
 }
 
 export class TestCasesRunReport {
@@ -725,15 +725,7 @@ export const TestCasesRunTestConfigurationData = {
 };
 
 function createBaseTestCasesRunTestConfiguration(): TestCasesRunTestConfiguration {
-  return {
-    url: "",
-    username: "",
-    password: "",
-    loginPath: "",
-    projectGenerateId: 0,
-    projectId: 0,
-    tokenExpirationSeconds: 0,
-  };
+  return { url: "", username: "", password: "", loginPath: "", projectGenerateId: 0, projectId: 0 };
 }
 
 export const TestCasesRunTestConfigurationData = {
@@ -756,7 +748,7 @@ export const TestCasesRunTestConfigurationData = {
     if (message.projectId !== 0) {
       writer.uint32(48).int32(message.projectId);
     }
-    if (message.tokenExpirationSeconds !== 0) {
+    if (message.tokenExpirationSeconds !== undefined) {
       writer.uint32(56).int32(message.tokenExpirationSeconds);
     }
     return writer;
@@ -806,7 +798,7 @@ export const TestCasesRunTestConfigurationData = {
       loginPath: isSet(object.loginPath) ? String(object.loginPath) : "",
       projectGenerateId: isSet(object.projectGenerateId) ? Number(object.projectGenerateId) : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      tokenExpirationSeconds: isSet(object.tokenExpirationSeconds) ? Number(object.tokenExpirationSeconds) : 0,
+      tokenExpirationSeconds: isSet(object.tokenExpirationSeconds) ? Number(object.tokenExpirationSeconds) : undefined,
     };
   },
 
@@ -831,7 +823,7 @@ export const TestCasesRunTestConfigurationData = {
     message.loginPath = object.loginPath ?? "";
     message.projectGenerateId = object.projectGenerateId ?? 0;
     message.projectId = object.projectId ?? 0;
-    message.tokenExpirationSeconds = object.tokenExpirationSeconds ?? 0;
+    message.tokenExpirationSeconds = object.tokenExpirationSeconds ?? undefined;
     return message;
   },
 };
