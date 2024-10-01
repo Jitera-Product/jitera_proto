@@ -5,9 +5,6 @@
 require 'google/protobuf'
 
 require 'google/protobuf/struct_pb'
-require 'v2/project_source_pb'
-require 'v2/browser_pb'
-
 
 descriptor_data = "\n\x1cv2/project_page_import.proto\x12\tschema.v2\x1a\x1cgoogle/protobuf/struct.proto\x1a\x17v2/project_source.proto\x1a\x10v2/browser.proto\"\xd4\x01\n\x11ProjectPageImport\x12!\n\x19project_generate_queue_id\x18\x01 \x01(\x05\x12\x12\n\nproject_id\x18\x02 \x01(\x05\x12/\n\rprojectSource\x18\x03 \x01(\x0b\x32\x18.schema.v2.ProjectSource\x12\x0b\n\x03url\x18\x04 \x01(\t\x12\x34\n\x0cstorageState\x18\x05 \x01(\x0b\x32\x1e.schema.v2.BrowserStorageState\x12\x14\n\x0chandled_urls\x18\x06 \x03(\t\"\xee\x01\n\x19ProjectPageImportResponse\x12!\n\x19project_generate_queue_id\x18\x01 \x01(\x05\x12\x12\n\nproject_id\x18\x02 \x01(\x05\x12;\n\x06status\x18\x03 \x01(\x0e\x32+.schema.v2.ProjectPageImportResponse.Status\x12(\n\x07payload\x18\x04 \x01(\x0b\x32\x17.google.protobuf.Struct\"3\n\x06Status\x12\r\n\tSUCCEEDED\x10\x00\x12\x0e\n\nINPROGRESS\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\x62\x06proto3"
 

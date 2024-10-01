@@ -25,8 +25,9 @@ message ProjectPageImportResponse {
   google.protobuf.Struct payload = 4;
 
   enum Status {
-    SUCCEEDED = 0;
-    INPROGRESS = 1;
-    FAILED = 2;
+    STARTED = 0;
+    SUCCEEDED = 2;
+    INPROGRESS = 3;
+    FAILED = 4;
   }
 }
