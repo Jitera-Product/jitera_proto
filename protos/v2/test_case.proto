@@ -65,7 +65,7 @@ message TestCasesRunTestConfiguration {
 	string login_path = 4;
 	int32 project_generate_id = 5;
 	int32 project_id = 6;
-	int32 token_expiration_seconds = 7;
+	optional int32 token_expiration_seconds = 7;
 }
 
 message TestCasesRunReport {
