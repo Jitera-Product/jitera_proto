@@ -7,9 +7,10 @@ import { ProjectSource, ProjectSourceData } from "./project_source.proto";
 export class ProjectPageImport {
   projectGenerateQueueId: number;
   projectId: number;
-  url: string;
   projectSource?: ProjectSource;
+  url: string;
   storageState?: BrowserStorageState;
+  handledUrls: string[];
 }
 
 export class ProjectPageImportResponse {
@@ -59,7 +60,7 @@ export function projectPageImportResponseStatusToJSON(object: ProjectPageImportR
 }
 
 function createBaseProjectPageImport(): ProjectPageImport {
-  return { projectGenerateQueueId: 0, projectId: 0, url: "" };
+  return { projectGenerateQueueId: 0, projectId: 0, url: "", handledUrls: [] };
 }
 
 export const ProjectPageImportData = {
@@ -70,14 +71,17 @@ export const ProjectPageImportData = {
     if (message.projectId !== 0) {
       writer.uint32(16).int32(message.projectId);
     }
-    if (message.url !== "") {
-      writer.uint32(26).string(message.url);
-    }
     if (message.projectSource !== undefined) {
-      ProjectSourceData.encode(message.projectSource, writer.uint32(34).fork()).ldelim();
+      ProjectSourceData.encode(message.projectSource, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.url !== "") {
+      writer.uint32(34).string(message.url);
     }
     if (message.storageState !== undefined) {
       BrowserStorageStateData.encode(message.storageState, writer.uint32(42).fork()).ldelim();
+    }
+    for (const v of message.handledUrls) {
+      writer.uint32(50).string(v!);
     }
     return writer;
   },
@@ -96,13 +100,16 @@ export const ProjectPageImportData = {
           message.projectId = reader.int32();
           break;
         case 3:
-          message.url = reader.string();
+          message.projectSource = ProjectSourceData.decode(reader, reader.uint32());
           break;
         case 4:
-          message.projectSource = ProjectSourceData.decode(reader, reader.uint32());
+          message.url = reader.string();
           break;
         case 5:
           message.storageState = BrowserStorageStateData.decode(reader, reader.uint32());
+          break;
+        case 6:
+          message.handledUrls.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -116,9 +123,10 @@ export const ProjectPageImportData = {
     return {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      url: isSet(object.url) ? String(object.url) : "",
       projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
+      url: isSet(object.url) ? String(object.url) : "",
       storageState: isSet(object.storageState) ? BrowserStorageStateData.fromJSON(object.storageState) : undefined,
+      handledUrls: Array.isArray(object?.handledUrls) ? object.handledUrls.map((e: any) => String(e)) : [],
     };
   },
 
@@ -127,11 +135,16 @@ export const ProjectPageImportData = {
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
-    message.url !== undefined && (obj.url = message.url);
     message.projectSource !== undefined &&
       (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
+    message.url !== undefined && (obj.url = message.url);
     message.storageState !== undefined &&
       (obj.storageState = message.storageState ? BrowserStorageStateData.toJSON(message.storageState) : undefined);
+    if (message.handledUrls) {
+      obj.handledUrls = message.handledUrls.map((e) => e);
+    } else {
+      obj.handledUrls = [];
+    }
     return obj;
   },
 
@@ -139,13 +152,14 @@ export const ProjectPageImportData = {
     const message = createBaseProjectPageImport();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectId = object.projectId ?? 0;
-    message.url = object.url ?? "";
     message.projectSource = (object.projectSource !== undefined && object.projectSource !== null)
       ? ProjectSourceData.fromPartial(object.projectSource)
       : undefined;
+    message.url = object.url ?? "";
     message.storageState = (object.storageState !== undefined && object.storageState !== null)
       ? BrowserStorageStateData.fromPartial(object.storageState)
       : undefined;
+    message.handledUrls = object.handledUrls?.map((e) => e) || [];
     return message;
   },
 };
