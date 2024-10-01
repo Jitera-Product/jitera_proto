@@ -23,16 +23,9 @@ message TestCaseStep {
 message TestCasesCreation {
 	int32 project_generate_id = 1;
 	int32 project_id = 2;
-	TestConfiguration test_configuration = 3;
+	TestCasesRunTestConfiguration test_configuration = 3;
   	repeated core.Block use_cases = 4;
-	string code = 5;
-	optional google.protobuf.Struct storage_state = 6;
 
-	message TestConfiguration {
-		string url = 1;
-		string username = 2;
-		string password = 3;
-	}
 }
 
 message TestCasesCreationReport {
@@ -51,16 +44,8 @@ message TestCasesCreationReport {
 message TestCasesRun {
 	int32 project_generate_id = 1;
 	int32 project_id = 2;
-	TestConfiguration test_configuration = 3;
+	TestCasesRunTestConfiguration test_configuration = 3;
 	repeated TestCase test_cases = 4;
-	string code = 5;
-	optional google.protobuf.Struct storage_state = 6;
-
-	message TestConfiguration {
-		string url = 1;
-		string username = 2;
-		string password = 3;
-	}
 }
 
 message TestCasesRunTestConfiguration {
