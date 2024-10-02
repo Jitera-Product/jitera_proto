@@ -1,7 +1,7 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { Block, BlockData } from "./block_core.proto";
-import { Struct, StructData } from "../google/protobuf/struct.proto";
+import { BrowserStorageState } from "./browser.proto";
 
 export class TestCase {
   name: string;
@@ -88,14 +88,14 @@ export class TestCasesRunTestConfiguration {
   projectId: number;
   tokenExpirationSeconds?: number | undefined;
   code?: string | undefined;
-  storageState?: { [key: string]: any };
+  storageState: BrowserStorageState[];
 }
 
 export class TestCaseAuthorisationCreationReport {
   projectGenerateId: number;
   projectId: number;
   code: string;
-  storageState?: { [key: string]: any };
+  storageState: BrowserStorageState[];
   errors: string[];
   status: TestCaseAuthorisationCreationReportStatus;
 }
@@ -634,7 +634,7 @@ export const TestCasesRunData = {
 };
 
 function createBaseTestCasesRunTestConfiguration(): TestCasesRunTestConfiguration {
-  return { url: "", username: "", password: "", projectGenerateId: 0, projectId: 0 };
+  return { url: "", username: "", password: "", projectGenerateId: 0, projectId: 0, storageState: [] };
 }
 
 export const TestCasesRunTestConfigurationData = {
@@ -663,8 +663,8 @@ export const TestCasesRunTestConfigurationData = {
     if (message.code !== undefined) {
       writer.uint32(66).string(message.code);
     }
-    if (message.storageState !== undefined) {
-      StructData.encode(StructData.wrap(message.storageState), writer.uint32(74).fork()).ldelim();
+    for (const v of message.storageState) {
+      BrowserStorageStateData.encode(v!, writer.uint32(74).fork()).ldelim();
     }
     return writer;
   },
@@ -701,7 +701,7 @@ export const TestCasesRunTestConfigurationData = {
           message.code = reader.string();
           break;
         case 9:
-          message.storageState = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.storageState.push(BrowserStorageStateData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -721,7 +721,9 @@ export const TestCasesRunTestConfigurationData = {
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       tokenExpirationSeconds: isSet(object.tokenExpirationSeconds) ? Number(object.tokenExpirationSeconds) : undefined,
       code: isSet(object.code) ? String(object.code) : undefined,
-      storageState: isObject(object.storageState) ? object.storageState : undefined,
+      storageState: Array.isArray(object?.storageState)
+        ? object.storageState.map((e: any) => BrowserStorageStateData.fromJSON(e))
+        : [],
     };
   },
 
@@ -736,7 +738,11 @@ export const TestCasesRunTestConfigurationData = {
     message.tokenExpirationSeconds !== undefined &&
       (obj.tokenExpirationSeconds = Math.round(message.tokenExpirationSeconds));
     message.code !== undefined && (obj.code = message.code);
-    message.storageState !== undefined && (obj.storageState = message.storageState);
+    if (message.storageState) {
+      obj.storageState = message.storageState.map((e) => e ? BrowserStorageStateData.toJSON(e) : undefined);
+    } else {
+      obj.storageState = [];
+    }
     return obj;
   },
 
@@ -750,13 +756,13 @@ export const TestCasesRunTestConfigurationData = {
     message.projectId = object.projectId ?? 0;
     message.tokenExpirationSeconds = object.tokenExpirationSeconds ?? undefined;
     message.code = object.code ?? undefined;
-    message.storageState = object.storageState ?? undefined;
+    message.storageState = object.storageState?.map((e) => BrowserStorageStateData.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseTestCaseAuthorisationCreationReport(): TestCaseAuthorisationCreationReport {
-  return { projectGenerateId: 0, projectId: 0, code: "", errors: [], status: 0 };
+  return { projectGenerateId: 0, projectId: 0, code: "", storageState: [], errors: [], status: 0 };
 }
 
 export const TestCaseAuthorisationCreationReportData = {
@@ -770,8 +776,8 @@ export const TestCaseAuthorisationCreationReportData = {
     if (message.code !== "") {
       writer.uint32(26).string(message.code);
     }
-    if (message.storageState !== undefined) {
-      StructData.encode(StructData.wrap(message.storageState), writer.uint32(34).fork()).ldelim();
+    for (const v of message.storageState) {
+      BrowserStorageStateData.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     for (const v of message.errors) {
       writer.uint32(42).string(v!);
@@ -799,7 +805,7 @@ export const TestCaseAuthorisationCreationReportData = {
           message.code = reader.string();
           break;
         case 4:
-          message.storageState = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.storageState.push(BrowserStorageStateData.decode(reader, reader.uint32()));
           break;
         case 5:
           message.errors.push(reader.string());
@@ -820,7 +826,9 @@ export const TestCaseAuthorisationCreationReportData = {
       projectGenerateId: isSet(object.projectGenerateId) ? Number(object.projectGenerateId) : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       code: isSet(object.code) ? String(object.code) : "",
-      storageState: isObject(object.storageState) ? object.storageState : undefined,
+      storageState: Array.isArray(object?.storageState)
+        ? object.storageState.map((e: any) => BrowserStorageStateData.fromJSON(e))
+        : [],
       errors: Array.isArray(object?.errors) ? object.errors.map((e: any) => String(e)) : [],
       status: isSet(object.status) ? testCaseAuthorisationCreationReportStatusFromJSON(object.status) : 0,
     };
@@ -831,7 +839,11 @@ export const TestCaseAuthorisationCreationReportData = {
     message.projectGenerateId !== undefined && (obj.projectGenerateId = Math.round(message.projectGenerateId));
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     message.code !== undefined && (obj.code = message.code);
-    message.storageState !== undefined && (obj.storageState = message.storageState);
+    if (message.storageState) {
+      obj.storageState = message.storageState.map((e) => e ? BrowserStorageStateData.toJSON(e) : undefined);
+    } else {
+      obj.storageState = [];
+    }
     if (message.errors) {
       obj.errors = message.errors.map((e) => e);
     } else {
@@ -846,7 +858,7 @@ export const TestCaseAuthorisationCreationReportData = {
     message.projectGenerateId = object.projectGenerateId ?? 0;
     message.projectId = object.projectId ?? 0;
     message.code = object.code ?? "";
-    message.storageState = object.storageState ?? undefined;
+    message.storageState = object.storageState?.map((e) => BrowserStorageStateData.fromPartial(e)) || [];
     message.errors = object.errors?.map((e) => e) || [];
     message.status = object.status ?? 0;
     return message;
@@ -1100,10 +1112,6 @@ type DeepPartial<T> = T extends Builtin ? T
   : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
-
-function isObject(value: any): boolean {
-  return typeof value === "object" && value !== null;
-}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;
