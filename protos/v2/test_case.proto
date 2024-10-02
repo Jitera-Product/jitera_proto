@@ -1,8 +1,8 @@
 syntax = "proto3";
 package schema.v2;
 
+import "v2/browser.proto";
 import "v2/block_core.proto";
-import "google/protobuf/struct.proto";
 
 message TestCase {
 	string name = 1;
@@ -57,14 +57,14 @@ message TestCasesRunTestConfiguration {
 	int32 project_id = 6;
 	optional int32 token_expiration_seconds = 7;
 	optional string code = 8;
-	optional google.protobuf.Struct storage_state = 9;
+	repeated browser.BrowserStorageState storage_state = 9;
 }
 
 message TestCaseAuthorisationCreationReport {
 	int32 project_generate_id = 1;
 	int32 project_id = 2;
 	string code = 3;
-	optional google.protobuf.Struct storage_state = 4;
+	repeated browser.BrowserStorageState storage_state = 4;
 	repeated string errors = 5;
 	Status status = 6;
 
