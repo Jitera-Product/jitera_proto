@@ -1,7 +1,7 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { Block, BlockData } from "./block_core.proto";
-import { BrowserStorageState } from "./browser.proto";
+import { BrowserStorageState, BrowserStorageStateData } from "./browser.proto";
 
 export class TestCase {
   name: string;
