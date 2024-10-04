@@ -94,6 +94,7 @@ export class Message {
   references: Reference[];
   createdAt: number;
   uuid?: string | undefined;
+  resourcesCount: number;
 }
 
 export enum MessageStatus {
@@ -517,7 +518,7 @@ export const ChatRequestData = {
 };
 
 function createBaseMessage(): Message {
-  return { assets: [], resources: [], references: [], createdAt: 0 };
+  return { assets: [], resources: [], references: [], createdAt: 0, resourcesCount: 0 };
 }
 
 export const MessageData = {
@@ -554,6 +555,9 @@ export const MessageData = {
     }
     if (message.uuid !== undefined) {
       writer.uint32(90).string(message.uuid);
+    }
+    if (message.resourcesCount !== 0) {
+      writer.uint32(96).int32(message.resourcesCount);
     }
     return writer;
   },
@@ -598,6 +602,9 @@ export const MessageData = {
         case 11:
           message.uuid = reader.string();
           break;
+        case 12:
+          message.resourcesCount = reader.int32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -619,6 +626,7 @@ export const MessageData = {
       references: Array.isArray(object?.references) ? object.references.map((e: any) => ReferenceData.fromJSON(e)) : [],
       createdAt: isSet(object.createdAt) ? Number(object.createdAt) : 0,
       uuid: isSet(object.uuid) ? String(object.uuid) : undefined,
+      resourcesCount: isSet(object.resourcesCount) ? Number(object.resourcesCount) : 0,
     };
   },
 
@@ -650,6 +658,7 @@ export const MessageData = {
     }
     message.createdAt !== undefined && (obj.createdAt = Math.round(message.createdAt));
     message.uuid !== undefined && (obj.uuid = message.uuid);
+    message.resourcesCount !== undefined && (obj.resourcesCount = Math.round(message.resourcesCount));
     return obj;
   },
 
@@ -666,6 +675,7 @@ export const MessageData = {
     message.references = object.references?.map((e) => ReferenceData.fromPartial(e)) || [];
     message.createdAt = object.createdAt ?? 0;
     message.uuid = object.uuid ?? undefined;
+    message.resourcesCount = object.resourcesCount ?? 0;
     return message;
   },
 };
