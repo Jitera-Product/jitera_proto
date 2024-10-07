@@ -1,6 +1,7 @@
 syntax = "proto3";
 package schema.v2;
 
+import "v2/browser.proto";
 import "v2/block_core.proto";
 
 message TestCase {
@@ -22,14 +23,9 @@ message TestCaseStep {
 message TestCasesCreation {
 	int32 project_generate_id = 1;
 	int32 project_id = 2;
-	TestConfiguration test_configuration = 3;
-  repeated core.Block use_cases = 4;
+	TestCasesRunTestConfiguration test_configuration = 3;
+  	repeated core.Block use_cases = 4;
 
-	message TestConfiguration {
-		string url = 1;
-		string username = 2;
-		string password = 3;
-	}
 }
 
 message TestCasesCreationReport {
@@ -48,14 +44,35 @@ message TestCasesCreationReport {
 message TestCasesRun {
 	int32 project_generate_id = 1;
 	int32 project_id = 2;
-	TestConfiguration test_configuration = 3;
+	TestCasesRunTestConfiguration test_configuration = 3;
 	repeated TestCase test_cases = 4;
+}
 
-	message TestConfiguration {
-		string url = 1;
-		string username = 2;
-		string password = 3;
-	}
+message TestCasesRunTestConfiguration {
+	string url = 1;
+	string username = 2;
+	string password = 3;
+	optional string login_path = 4;
+	int32 project_generate_id = 5;
+	int32 project_id = 6;
+	optional int32 token_expiration_seconds = 7;
+	optional string code = 8;
+	browser.BrowserStorageState storage_state = 9;
+}
+
+message TestCaseAuthorisationCreationReport {
+	int32 project_generate_id = 1;
+	int32 project_id = 2;
+	optional string code = 3;
+	browser.BrowserStorageState storage_state = 4;
+	repeated string errors = 5;
+	Status status = 6;
+
+	enum Status {
+    SUCCEEDED = 0;
+    IN_PROGRESS = 1;
+    FAILED = 2;
+  }
 }
 
 message TestCasesRunReport {

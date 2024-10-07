@@ -4,7 +4,6 @@
 
 require 'google/protobuf'
 
-
 descriptor_data = "\n\x12v2/ai_review.proto\x12\tschema.v2\x1a\x17v2/project_source.proto\"\x9e\x01\n\x16ProjectAiReviewRequest\x12!\n\x19project_generate_queue_id\x18\x01 \x01(\x05\x12\x12\n\nproject_id\x18\x02 \x01(\x05\x12\x1b\n\x03git\x18\x03 \x01(\x0b\x32\x0e.schema.v2.Git\x12\x30\n\x0eproject_source\x18\x04 \x01(\x0b\x32\x18.schema.v2.ProjectSourceb\x06proto3"
 
 pool = Google::Protobuf::DescriptorPool.generated_pool
