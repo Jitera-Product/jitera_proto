@@ -12,7 +12,7 @@ message ProjectPageImport {
   ProjectSource projectSource = 3;
 
   string url = 4;
-  BrowserStorageState storageState = 5;
+  browser.BrowserStorageState storageState = 5;
 
   repeated string handled_urls = 6;
 }

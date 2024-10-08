@@ -6,7 +6,8 @@ require 'google/protobuf'
 
 require 'google/protobuf/struct_pb'
 
-descriptor_data = "\n\x1cv2/project_page_import.proto\x12\tschema.v2\x1a\x1cgoogle/protobuf/struct.proto\x1a\x17v2/project_source.proto\x1a\x10v2/browser.proto\"\xd4\x01\n\x11ProjectPageImport\x12!\n\x19project_generate_queue_id\x18\x01 \x01(\x05\x12\x12\n\nproject_id\x18\x02 \x01(\x05\x12/\n\rprojectSource\x18\x03 \x01(\x0b\x32\x18.schema.v2.ProjectSource\x12\x0b\n\x03url\x18\x04 \x01(\t\x12\x34\n\x0cstorageState\x18\x05 \x01(\x0b\x32\x1e.schema.v2.BrowserStorageState\x12\x14\n\x0chandled_urls\x18\x06 \x03(\t\"\xee\x01\n\x19ProjectPageImportResponse\x12!\n\x19project_generate_queue_id\x18\x01 \x01(\x05\x12\x12\n\nproject_id\x18\x02 \x01(\x05\x12;\n\x06status\x18\x03 \x01(\x0e\x32+.schema.v2.ProjectPageImportResponse.Status\x12(\n\x07payload\x18\x04 \x01(\x0b\x32\x17.google.protobuf.Struct\"3\n\x06Status\x12\r\n\tSUCCEEDED\x10\x00\x12\x0e\n\nINPROGRESS\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\x62\x06proto3"
+
+descriptor_data = "\n\x1cv2/project_page_import.proto\x12\tschema.v2\x1a\x1cgoogle/protobuf/struct.proto\x1a\x17v2/project_source.proto\x1a\x10v2/browser.proto\"\xdc\x01\n\x11ProjectPageImport\x12!\n\x19project_generate_queue_id\x18\x01 \x01(\x05\x12\x12\n\nproject_id\x18\x02 \x01(\x05\x12/\n\rprojectSource\x18\x03 \x01(\x0b\x32\x18.schema.v2.ProjectSource\x12\x0b\n\x03url\x18\x04 \x01(\t\x12<\n\x0cstorageState\x18\x05 \x01(\x0b\x32&.schema.v2.browser.BrowserStorageState\x12\x14\n\x0chandled_urls\x18\x06 \x03(\t\"\xfb\x01\n\x19ProjectPageImportResponse\x12!\n\x19project_generate_queue_id\x18\x01 \x01(\x05\x12\x12\n\nproject_id\x18\x02 \x01(\x05\x12;\n\x06status\x18\x03 \x01(\x0e\x32+.schema.v2.ProjectPageImportResponse.Status\x12(\n\x07payload\x18\x04 \x01(\x0b\x32\x17.google.protobuf.Struct\"@\n\x06Status\x12\x0b\n\x07STARTED\x10\x00\x12\r\n\tSUCCEEDED\x10\x02\x12\x0e\n\nINPROGRESS\x10\x03\x12\n\n\x06\x46\x41ILED\x10\x04\x62\x06proto3"
 
 pool = Google::Protobuf::DescriptorPool.generated_pool
 
@@ -22,7 +23,7 @@ rescue TypeError => e
   warn "Warning: Protobuf detected an import path issue while loading generated file #{__FILE__}"
   imports = [
     ["schema.v2.ProjectSource", "v2/project_source.proto"],
-    ["schema.v2.BrowserStorageState", "v2/browser.proto"],
+    ["schema.v2.browser.BrowserStorageState", "v2/browser.proto"],
     ["google.protobuf.Struct", "google/protobuf/struct.proto"],
   ]
   imports.each do |type_name, expected_filename|

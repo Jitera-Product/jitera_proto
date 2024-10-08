@@ -21,21 +21,25 @@ export class ProjectPageImportResponse {
 }
 
 export enum ProjectPageImportResponseStatus {
-  SUCCEEDED = 0,
-  INPROGRESS = 1,
-  FAILED = 2,
+  STARTED = 0,
+  SUCCEEDED = 2,
+  INPROGRESS = 3,
+  FAILED = 4,
   UNRECOGNIZED = -1,
 }
 
 export function projectPageImportResponseStatusFromJSON(object: any): ProjectPageImportResponseStatus {
   switch (object) {
     case 0:
+    case "STARTED":
+      return ProjectPageImportResponseStatus.STARTED;
+    case 2:
     case "SUCCEEDED":
       return ProjectPageImportResponseStatus.SUCCEEDED;
-    case 1:
+    case 3:
     case "INPROGRESS":
       return ProjectPageImportResponseStatus.INPROGRESS;
-    case 2:
+    case 4:
     case "FAILED":
       return ProjectPageImportResponseStatus.FAILED;
     case -1:
@@ -47,6 +51,8 @@ export function projectPageImportResponseStatusFromJSON(object: any): ProjectPag
 
 export function projectPageImportResponseStatusToJSON(object: ProjectPageImportResponseStatus): string {
   switch (object) {
+    case ProjectPageImportResponseStatus.STARTED:
+      return "STARTED";
     case ProjectPageImportResponseStatus.SUCCEEDED:
       return "SUCCEEDED";
     case ProjectPageImportResponseStatus.INPROGRESS:
