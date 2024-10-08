@@ -5,7 +5,7 @@
 require 'google/protobuf'
 
 
-descriptor_data = "\n\x10v2/browser.proto\x12\tschema.v2\"\x8f\x01\n\rBrowserCookie\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\x12\x0e\n\x06\x64omain\x18\x03 \x01(\t\x12\x0f\n\x07\x65xpires\x18\x04 \x01(\x05\x12\x0c\n\x04path\x18\x05 \x01(\t\x12\x10\n\x08httpOnly\x18\x06 \x01(\x08\x12\x0e\n\x06secure\x18\x07 \x01(\x08\x12\x10\n\x08sameSite\x18\x08 \x01(\t\"2\n\x13\x42rowserLocalStorage\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"U\n\rBrowserOrigin\x12\x0e\n\x06origin\x18\x01 \x01(\t\x12\x34\n\x0clocalStorage\x18\x02 \x03(\x0b\x32\x1e.schema.v2.BrowserLocalStorage\"k\n\x13\x42rowserStorageState\x12)\n\x07\x63ookies\x18\x01 \x03(\x0b\x32\x18.schema.v2.BrowserCookie\x12)\n\x07origins\x18\x02 \x03(\x0b\x32\x18.schema.v2.BrowserOriginb\x06proto3"
+descriptor_data = "\n\x10v2/browser.proto\x12\x11schema.v2.browser\"\x8f\x01\n\rBrowserCookie\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\x12\x0e\n\x06\x64omain\x18\x03 \x01(\t\x12\x0f\n\x07\x65xpires\x18\x04 \x01(\x05\x12\x0c\n\x04path\x18\x05 \x01(\t\x12\x10\n\x08httpOnly\x18\x06 \x01(\x08\x12\x0e\n\x06secure\x18\x07 \x01(\x08\x12\x10\n\x08sameSite\x18\x08 \x01(\t\"2\n\x13\x42rowserLocalStorage\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"]\n\rBrowserOrigin\x12\x0e\n\x06origin\x18\x01 \x01(\t\x12<\n\x0clocalStorage\x18\x02 \x03(\x0b\x32&.schema.v2.browser.BrowserLocalStorage\"{\n\x13\x42rowserStorageState\x12\x31\n\x07\x63ookies\x18\x01 \x03(\x0b\x32 .schema.v2.browser.BrowserCookie\x12\x31\n\x07origins\x18\x02 \x03(\x0b\x32 .schema.v2.browser.BrowserOriginb\x06proto3"
 
 pool = Google::Protobuf::DescriptorPool.generated_pool
 
@@ -33,9 +33,11 @@ end
 
 module Schema
   module V2
-    BrowserCookie = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.BrowserCookie").msgclass
-    BrowserLocalStorage = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.BrowserLocalStorage").msgclass
-    BrowserOrigin = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.BrowserOrigin").msgclass
-    BrowserStorageState = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.BrowserStorageState").msgclass
+    module Browser
+      BrowserCookie = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.browser.BrowserCookie").msgclass
+      BrowserLocalStorage = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.browser.BrowserLocalStorage").msgclass
+      BrowserOrigin = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.browser.BrowserOrigin").msgclass
+      BrowserStorageState = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.browser.BrowserStorageState").msgclass
+    end
   end
 end

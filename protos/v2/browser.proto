@@ -1,5 +1,5 @@
 syntax = "proto3";
-package schema.v2;
+package schema.v2.browser;
 
 message BrowserCookie {
   string name = 1;
