@@ -21,3 +21,5 @@ export * from "./protos/v2/test_case.proto";
 export * from "./protos/v2/ai_review.proto";
 export * from "./protos/v2/project_pdf.proto";
 export * from "./protos/v2/chat.proto";
+export * from "./protos/v2/browser.proto";
+export * from "./protos/v2/project_page_import.proto";
