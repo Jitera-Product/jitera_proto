@@ -14,7 +14,7 @@ export class ProjectPageImport {
 }
 
 export class ProjectPageImportResponse {
-  projectGenerateQueueId: number;
+  projectGenerateId: number;
   projectId: number;
   status: ProjectPageImportResponseStatus;
   payload?: { [key: string]: any };
@@ -170,13 +170,13 @@ export const ProjectPageImportData = {
 };
 
 function createBaseProjectPageImportResponse(): ProjectPageImportResponse {
-  return { projectGenerateQueueId: 0, projectId: 0, status: 0 };
+  return { projectGenerateId: 0, projectId: 0, status: 0 };
 }
 
 export const ProjectPageImportResponseData = {
   encode(message: ProjectPageImportResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.projectGenerateQueueId !== 0) {
-      writer.uint32(8).int32(message.projectGenerateQueueId);
+    if (message.projectGenerateId !== 0) {
+      writer.uint32(8).int32(message.projectGenerateId);
     }
     if (message.projectId !== 0) {
       writer.uint32(16).int32(message.projectId);
@@ -198,7 +198,7 @@ export const ProjectPageImportResponseData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.projectGenerateQueueId = reader.int32();
+          message.projectGenerateId = reader.int32();
           break;
         case 2:
           message.projectId = reader.int32();
@@ -219,7 +219,7 @@ export const ProjectPageImportResponseData = {
 
   fromJSON(object: any): ProjectPageImportResponse {
     return {
-      projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
+      projectGenerateId: isSet(object.projectGenerateId) ? Number(object.projectGenerateId) : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       status: isSet(object.status) ? projectPageImportResponseStatusFromJSON(object.status) : 0,
       payload: isObject(object.payload) ? object.payload : undefined,
@@ -228,8 +228,7 @@ export const ProjectPageImportResponseData = {
 
   toJSON(message: ProjectPageImportResponse): unknown {
     const obj: any = {};
-    message.projectGenerateQueueId !== undefined &&
-      (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
+    message.projectGenerateId !== undefined && (obj.projectGenerateId = Math.round(message.projectGenerateId));
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     message.status !== undefined && (obj.status = projectPageImportResponseStatusToJSON(message.status));
     message.payload !== undefined && (obj.payload = message.payload);
@@ -238,7 +237,7 @@ export const ProjectPageImportResponseData = {
 
   fromPartial(object: DeepPartial<ProjectPageImportResponse>): ProjectPageImportResponse {
     const message = createBaseProjectPageImportResponse();
-    message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
+    message.projectGenerateId = object.projectGenerateId ?? 0;
     message.projectId = object.projectId ?? 0;
     message.status = object.status ?? 0;
     message.payload = object.payload ?? undefined;
