@@ -1,7 +1,7 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { StructData } from "../google/protobuf/struct.proto";
-import { TableData } from "../v1/payloads.proto";
+import { Table, TableData } from "../v1/payloads.proto";
 
 export enum ImportBy {
   github = 0,
