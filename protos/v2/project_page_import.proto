@@ -1,0 +1,33 @@
+syntax = "proto3";
+package schema.v2;
+
+import "google/protobuf/struct.proto";
+import "v2/project_source.proto";
+import "v2/browser.proto";
+
+message ProjectPageImport {
+  int32 project_generate_id = 1;
+  int32 project_id = 2;
+
+  ProjectSource project_source = 3;
+
+  string url = 4;
+  browser.BrowserStorageState storage_state = 5;
+
+  repeated string handled_urls = 6;
+}
+
+message ProjectPageImportResponse {
+  int32 project_generate_id = 1;
+  int32 project_id = 2;
+
+  Status status = 3;
+  google.protobuf.Struct payload = 4;
+
+  enum Status {
+    STARTED = 0;
+    SUCCEEDED = 2;
+    INPROGRESS = 3;
+    FAILED = 4;
+  }
+}
