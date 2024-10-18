@@ -17,6 +17,61 @@ message ProjectPageImport {
   repeated string handled_urls = 6;
 }
 
+message ProjectImportPageAction {
+  string uuid = 1;
+  string actionable_type = 2;
+  int32 actionable_id = 3;
+  string name = 4;
+  string script = 5;
+  string action_type = 6;
+  string url = 7;
+  string dynamic_path = 8;
+  string selector = 9;
+  google.protobuf.Struct inputs = 10;
+  repeated string files = 11;
+  string description = 12;
+  string logic_description = 13;
+  google.protobuf.Struct metadata = 14;
+}
+
+message ProjectImportPageComponent {
+  string uuid = 1;
+  int32 project_import_page_id = 2;
+  string name = 3;
+  string html = 4;
+  string script = 5;
+  string parent = 6;
+  string screenshot = 7;
+  string description = 8;
+  string logic_description = 9;
+  google.protobuf.Struct size = 10;
+  google.protobuf.Struct position = 11;
+  google.protobuf.Struct elements = 12;
+  repeated string files = 13;
+  google.protobuf.Struct metadata = 14;
+
+  repeated ProjectImportPageAction actions = 15;
+}
+
+message ProjectImportPage {
+  string uuid = 1;
+  int32 project_id = 2;
+  int32 project_source_id = 3;
+  string url = 4;
+  string name = 5;
+  string path = 6;
+  string parent_url = 7;
+  string dynamic_path = 8;
+  string html = 9;
+  google.protobuf.Struct size = 10;
+  repeated string files = 11;
+  string description = 12;
+  google.protobuf.Struct metadata = 13;
+
+  repeated ProjectImportPageAction actions = 14;
+  repeated ProjectImportPageComponent components = 15;
+}
+
 message ProjectPageImportResponse {
   int32 project_generate_id = 1;
   int32 project_id = 2;
