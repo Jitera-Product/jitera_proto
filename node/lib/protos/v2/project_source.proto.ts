@@ -9,6 +9,7 @@ export enum ImportBy {
   google_docs = 2,
   figma = 3,
   gitlab = 4,
+  dsl = 5,
   UNRECOGNIZED = -1,
 }
 
@@ -29,6 +30,9 @@ export function importByFromJSON(object: any): ImportBy {
     case 4:
     case "gitlab":
       return ImportBy.gitlab;
+    case 5:
+    case "dsl":
+      return ImportBy.dsl;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -48,6 +52,8 @@ export function importByToJSON(object: ImportBy): string {
       return "figma";
     case ImportBy.gitlab:
       return "gitlab";
+    case ImportBy.dsl:
+      return "dsl";
     case ImportBy.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
