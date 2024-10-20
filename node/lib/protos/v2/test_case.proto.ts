@@ -25,7 +25,6 @@ export class TestCasesCreation {
   projectId: number;
   testConfiguration?: TestCasesRunTestConfiguration;
   useCases: Block[];
-  projectImportPages: ProjectImportPage[];
 }
 
 export class ProjectImportPageTestCasesCreation {
@@ -33,6 +32,7 @@ export class ProjectImportPageTestCasesCreation {
   projectId: number;
   testConfiguration?: TestCasesRunTestConfiguration;
   useCases: Block[];
+  projectImportPages: ProjectImportPage[];
 }
 
 export class TestCasesCreationReport {
@@ -387,11 +387,97 @@ export const TestCaseStepData = {
 };
 
 function createBaseTestCasesCreation(): TestCasesCreation {
-  return { projectGenerateId: 0, projectId: 0, useCases: [], projectImportPages: [] };
+  return { projectGenerateId: 0, projectId: 0, useCases: [] };
 }
 
 export const TestCasesCreationData = {
   encode(message: TestCasesCreation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.projectGenerateId !== 0) {
+      writer.uint32(8).int32(message.projectGenerateId);
+    }
+    if (message.projectId !== 0) {
+      writer.uint32(16).int32(message.projectId);
+    }
+    if (message.testConfiguration !== undefined) {
+      TestCasesRunTestConfigurationData.encode(message.testConfiguration, writer.uint32(26).fork()).ldelim();
+    }
+    for (const v of message.useCases) {
+      BlockData.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): TestCasesCreation {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTestCasesCreation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.projectGenerateId = reader.int32();
+          break;
+        case 2:
+          message.projectId = reader.int32();
+          break;
+        case 3:
+          message.testConfiguration = TestCasesRunTestConfigurationData.decode(reader, reader.uint32());
+          break;
+        case 4:
+          message.useCases.push(BlockData.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TestCasesCreation {
+    return {
+      projectGenerateId: isSet(object.projectGenerateId) ? Number(object.projectGenerateId) : 0,
+      projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
+      testConfiguration: isSet(object.testConfiguration)
+        ? TestCasesRunTestConfigurationData.fromJSON(object.testConfiguration)
+        : undefined,
+      useCases: Array.isArray(object?.useCases) ? object.useCases.map((e: any) => BlockData.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: TestCasesCreation): unknown {
+    const obj: any = {};
+    message.projectGenerateId !== undefined && (obj.projectGenerateId = Math.round(message.projectGenerateId));
+    message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
+    message.testConfiguration !== undefined && (obj.testConfiguration = message.testConfiguration
+      ? TestCasesRunTestConfigurationData.toJSON(message.testConfiguration)
+      : undefined);
+    if (message.useCases) {
+      obj.useCases = message.useCases.map((e) => e ? BlockData.toJSON(e) : undefined);
+    } else {
+      obj.useCases = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<TestCasesCreation>): TestCasesCreation {
+    const message = createBaseTestCasesCreation();
+    message.projectGenerateId = object.projectGenerateId ?? 0;
+    message.projectId = object.projectId ?? 0;
+    message.testConfiguration = (object.testConfiguration !== undefined && object.testConfiguration !== null)
+      ? TestCasesRunTestConfigurationData.fromPartial(object.testConfiguration)
+      : undefined;
+    message.useCases = object.useCases?.map((e) => BlockData.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseProjectImportPageTestCasesCreation(): ProjectImportPageTestCasesCreation {
+  return { projectGenerateId: 0, projectId: 0, useCases: [], projectImportPages: [] };
+}
+
+export const ProjectImportPageTestCasesCreationData = {
+  encode(message: ProjectImportPageTestCasesCreation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectGenerateId !== 0) {
       writer.uint32(8).int32(message.projectGenerateId);
     }
@@ -410,10 +496,10 @@ export const TestCasesCreationData = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): TestCasesCreation {
+  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectImportPageTestCasesCreation {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseTestCasesCreation();
+    const message = createBaseProjectImportPageTestCasesCreation();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -440,7 +526,7 @@ export const TestCasesCreationData = {
     return message;
   },
 
-  fromJSON(object: any): TestCasesCreation {
+  fromJSON(object: any): ProjectImportPageTestCasesCreation {
     return {
       projectGenerateId: isSet(object.projectGenerateId) ? Number(object.projectGenerateId) : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
@@ -454,7 +540,7 @@ export const TestCasesCreationData = {
     };
   },
 
-  toJSON(message: TestCasesCreation): unknown {
+  toJSON(message: ProjectImportPageTestCasesCreation): unknown {
     const obj: any = {};
     message.projectGenerateId !== undefined && (obj.projectGenerateId = Math.round(message.projectGenerateId));
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
@@ -474,93 +560,6 @@ export const TestCasesCreationData = {
     return obj;
   },
 
-  fromPartial(object: DeepPartial<TestCasesCreation>): TestCasesCreation {
-    const message = createBaseTestCasesCreation();
-    message.projectGenerateId = object.projectGenerateId ?? 0;
-    message.projectId = object.projectId ?? 0;
-    message.testConfiguration = (object.testConfiguration !== undefined && object.testConfiguration !== null)
-      ? TestCasesRunTestConfigurationData.fromPartial(object.testConfiguration)
-      : undefined;
-    message.useCases = object.useCases?.map((e) => BlockData.fromPartial(e)) || [];
-    message.projectImportPages = object.projectImportPages?.map((e) => ProjectImportPageData.fromPartial(e)) || [];
-    return message;
-  },
-};
-
-function createBaseProjectImportPageTestCasesCreation(): ProjectImportPageTestCasesCreation {
-  return { projectGenerateId: 0, projectId: 0, useCases: [] };
-}
-
-export const ProjectImportPageTestCasesCreationData = {
-  encode(message: ProjectImportPageTestCasesCreation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.projectGenerateId !== 0) {
-      writer.uint32(8).int32(message.projectGenerateId);
-    }
-    if (message.projectId !== 0) {
-      writer.uint32(16).int32(message.projectId);
-    }
-    if (message.testConfiguration !== undefined) {
-      TestCasesRunTestConfigurationData.encode(message.testConfiguration, writer.uint32(26).fork()).ldelim();
-    }
-    for (const v of message.useCases) {
-      BlockData.encode(v!, writer.uint32(34).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectImportPageTestCasesCreation {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseProjectImportPageTestCasesCreation();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.projectGenerateId = reader.int32();
-          break;
-        case 2:
-          message.projectId = reader.int32();
-          break;
-        case 3:
-          message.testConfiguration = TestCasesRunTestConfigurationData.decode(reader, reader.uint32());
-          break;
-        case 4:
-          message.useCases.push(BlockData.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): ProjectImportPageTestCasesCreation {
-    return {
-      projectGenerateId: isSet(object.projectGenerateId) ? Number(object.projectGenerateId) : 0,
-      projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      testConfiguration: isSet(object.testConfiguration)
-        ? TestCasesRunTestConfigurationData.fromJSON(object.testConfiguration)
-        : undefined,
-      useCases: Array.isArray(object?.useCases) ? object.useCases.map((e: any) => BlockData.fromJSON(e)) : [],
-    };
-  },
-
-  toJSON(message: ProjectImportPageTestCasesCreation): unknown {
-    const obj: any = {};
-    message.projectGenerateId !== undefined && (obj.projectGenerateId = Math.round(message.projectGenerateId));
-    message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
-    message.testConfiguration !== undefined && (obj.testConfiguration = message.testConfiguration
-      ? TestCasesRunTestConfigurationData.toJSON(message.testConfiguration)
-      : undefined);
-    if (message.useCases) {
-      obj.useCases = message.useCases.map((e) => e ? BlockData.toJSON(e) : undefined);
-    } else {
-      obj.useCases = [];
-    }
-    return obj;
-  },
-
   fromPartial(object: DeepPartial<ProjectImportPageTestCasesCreation>): ProjectImportPageTestCasesCreation {
     const message = createBaseProjectImportPageTestCasesCreation();
     message.projectGenerateId = object.projectGenerateId ?? 0;
@@ -569,6 +568,7 @@ export const ProjectImportPageTestCasesCreationData = {
       ? TestCasesRunTestConfigurationData.fromPartial(object.testConfiguration)
       : undefined;
     message.useCases = object.useCases?.map((e) => BlockData.fromPartial(e)) || [];
+    message.projectImportPages = object.projectImportPages?.map((e) => ProjectImportPageData.fromPartial(e)) || [];
     return message;
   },
 };

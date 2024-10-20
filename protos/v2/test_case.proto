@@ -26,7 +26,6 @@ message TestCasesCreation {
 	int32 project_id = 2;
 	TestCasesRunTestConfiguration test_configuration = 3;
   repeated core.Block use_cases = 4;
-	repeated ProjectImportPage project_import_pages = 5;
 }
 
 message ProjectImportPageTestCasesCreation {
@@ -34,7 +33,7 @@ message ProjectImportPageTestCasesCreation {
 	int32 project_id = 2;
 	TestCasesRunTestConfiguration test_configuration = 3;
   repeated core.Block use_cases = 4;
-
+	repeated ProjectImportPage project_import_pages = 5;
 }
 
 
