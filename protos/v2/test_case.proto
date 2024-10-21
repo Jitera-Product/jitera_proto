@@ -32,7 +32,9 @@ message TestCasesCreationReport {
 	int32 project_generate_id = 1;
 	repeated TestCase test_cases = 2;
 	repeated string errors = 3;
-  Status status = 4;
+    Status status = 4;
+	TestCasesRunTestConfiguration test_configuration = 5;
+
 
   enum Status {
     SUCCEEDED = 0;
@@ -77,9 +79,9 @@ message TestCaseAuthorisationCreationReport {
 
 message TestCasesRunReport {
 	int32 project_generate_id = 1;
-  Status status = 2;
+  	Status status = 2;
+	TestCasesRunTestConfiguration test_configuration = 3;
 	repeated string errors = 4;
-
 	oneof source {
 		TestCaseSource test_case = 5;
 		TestCaseStepSource test_case_step = 6;
