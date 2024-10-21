@@ -32,7 +32,7 @@ export class TestCasesCreationReport {
   errors: string[];
   status: TestCasesCreationReportStatus;
   code?: string | undefined;
-  storageState?: BrowserStorageState;
+  storageState?: BrowserStorageState | undefined;
 }
 
 export enum TestCasesCreationReportStatus {
@@ -77,9 +77,8 @@ export function testCasesCreationReportStatusToJSON(object: TestCasesCreationRep
 export class TestCasesRun {
   projectGenerateId: number;
   projectId: number;
+  testConfiguration?: TestCasesRunTestConfiguration;
   testCases: TestCase[];
-  code?: string | undefined;
-  storageState?: BrowserStorageState;
 }
 
 export class TestCasesRunTestConfiguration {
@@ -149,10 +148,11 @@ export function testCaseAuthorisationCreationReportStatusToJSON(
 export class TestCasesRunReport {
   projectGenerateId: number;
   status: TestCasesRunReportStatus;
-  testConfiguration?: TestCasesRunTestConfiguration;
   errors: string[];
   testCase?: TestCasesRunReportTestCaseSource | undefined;
   testCaseStep?: TestCasesRunReportTestCaseStepSource | undefined;
+  code?: string | undefined;
+  storageState?: BrowserStorageState | undefined;
 }
 
 export enum TestCasesRunReportStatus {
@@ -584,14 +584,11 @@ export const TestCasesRunData = {
     if (message.projectId !== 0) {
       writer.uint32(16).int32(message.projectId);
     }
+    if (message.testConfiguration !== undefined) {
+      TestCasesRunTestConfigurationData.encode(message.testConfiguration, writer.uint32(26).fork()).ldelim();
+    }
     for (const v of message.testCases) {
       TestCaseData.encode(v!, writer.uint32(34).fork()).ldelim();
-    }
-    if (message.code !== undefined) {
-      writer.uint32(42).string(message.code);
-    }
-    if (message.storageState !== undefined) {
-      BrowserStorageStateData.encode(message.storageState, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -609,14 +606,11 @@ export const TestCasesRunData = {
         case 2:
           message.projectId = reader.int32();
           break;
+        case 3:
+          message.testConfiguration = TestCasesRunTestConfigurationData.decode(reader, reader.uint32());
+          break;
         case 4:
           message.testCases.push(TestCaseData.decode(reader, reader.uint32()));
-          break;
-        case 5:
-          message.code = reader.string();
-          break;
-        case 6:
-          message.storageState = BrowserStorageStateData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -630,9 +624,10 @@ export const TestCasesRunData = {
     return {
       projectGenerateId: isSet(object.projectGenerateId) ? Number(object.projectGenerateId) : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
+      testConfiguration: isSet(object.testConfiguration)
+        ? TestCasesRunTestConfigurationData.fromJSON(object.testConfiguration)
+        : undefined,
       testCases: Array.isArray(object?.testCases) ? object.testCases.map((e: any) => TestCaseData.fromJSON(e)) : [],
-      code: isSet(object.code) ? String(object.code) : undefined,
-      storageState: isSet(object.storageState) ? BrowserStorageStateData.fromJSON(object.storageState) : undefined,
     };
   },
 
@@ -640,14 +635,14 @@ export const TestCasesRunData = {
     const obj: any = {};
     message.projectGenerateId !== undefined && (obj.projectGenerateId = Math.round(message.projectGenerateId));
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
+    message.testConfiguration !== undefined && (obj.testConfiguration = message.testConfiguration
+      ? TestCasesRunTestConfigurationData.toJSON(message.testConfiguration)
+      : undefined);
     if (message.testCases) {
       obj.testCases = message.testCases.map((e) => e ? TestCaseData.toJSON(e) : undefined);
     } else {
       obj.testCases = [];
     }
-    message.code !== undefined && (obj.code = message.code);
-    message.storageState !== undefined &&
-      (obj.storageState = message.storageState ? BrowserStorageStateData.toJSON(message.storageState) : undefined);
     return obj;
   },
 
@@ -655,11 +650,10 @@ export const TestCasesRunData = {
     const message = createBaseTestCasesRun();
     message.projectGenerateId = object.projectGenerateId ?? 0;
     message.projectId = object.projectId ?? 0;
-    message.testCases = object.testCases?.map((e) => TestCaseData.fromPartial(e)) || [];
-    message.code = object.code ?? undefined;
-    message.storageState = (object.storageState !== undefined && object.storageState !== null)
-      ? BrowserStorageStateData.fromPartial(object.storageState)
+    message.testConfiguration = (object.testConfiguration !== undefined && object.testConfiguration !== null)
+      ? TestCasesRunTestConfigurationData.fromPartial(object.testConfiguration)
       : undefined;
+    message.testCases = object.testCases?.map((e) => TestCaseData.fromPartial(e)) || [];
     return message;
   },
 };
@@ -902,9 +896,6 @@ export const TestCasesRunReportData = {
     if (message.status !== 0) {
       writer.uint32(16).int32(message.status);
     }
-    if (message.testConfiguration !== undefined) {
-      TestCasesRunTestConfigurationData.encode(message.testConfiguration, writer.uint32(26).fork()).ldelim();
-    }
     for (const v of message.errors) {
       writer.uint32(34).string(v!);
     }
@@ -913,6 +904,12 @@ export const TestCasesRunReportData = {
     }
     if (message.testCaseStep !== undefined) {
       TestCasesRunReportTestCaseStepSourceData.encode(message.testCaseStep, writer.uint32(50).fork()).ldelim();
+    }
+    if (message.code !== undefined) {
+      writer.uint32(58).string(message.code);
+    }
+    if (message.storageState !== undefined) {
+      BrowserStorageStateData.encode(message.storageState, writer.uint32(66).fork()).ldelim();
     }
     return writer;
   },
@@ -930,9 +927,6 @@ export const TestCasesRunReportData = {
         case 2:
           message.status = reader.int32() as any;
           break;
-        case 3:
-          message.testConfiguration = TestCasesRunTestConfigurationData.decode(reader, reader.uint32());
-          break;
         case 4:
           message.errors.push(reader.string());
           break;
@@ -941,6 +935,12 @@ export const TestCasesRunReportData = {
           break;
         case 6:
           message.testCaseStep = TestCasesRunReportTestCaseStepSourceData.decode(reader, reader.uint32());
+          break;
+        case 7:
+          message.code = reader.string();
+          break;
+        case 8:
+          message.storageState = BrowserStorageStateData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -954,14 +954,13 @@ export const TestCasesRunReportData = {
     return {
       projectGenerateId: isSet(object.projectGenerateId) ? Number(object.projectGenerateId) : 0,
       status: isSet(object.status) ? testCasesRunReportStatusFromJSON(object.status) : 0,
-      testConfiguration: isSet(object.testConfiguration)
-        ? TestCasesRunTestConfigurationData.fromJSON(object.testConfiguration)
-        : undefined,
       errors: Array.isArray(object?.errors) ? object.errors.map((e: any) => String(e)) : [],
       testCase: isSet(object.testCase) ? TestCasesRunReportTestCaseSourceData.fromJSON(object.testCase) : undefined,
       testCaseStep: isSet(object.testCaseStep)
         ? TestCasesRunReportTestCaseStepSourceData.fromJSON(object.testCaseStep)
         : undefined,
+      code: isSet(object.code) ? String(object.code) : undefined,
+      storageState: isSet(object.storageState) ? BrowserStorageStateData.fromJSON(object.storageState) : undefined,
     };
   },
 
@@ -969,9 +968,6 @@ export const TestCasesRunReportData = {
     const obj: any = {};
     message.projectGenerateId !== undefined && (obj.projectGenerateId = Math.round(message.projectGenerateId));
     message.status !== undefined && (obj.status = testCasesRunReportStatusToJSON(message.status));
-    message.testConfiguration !== undefined && (obj.testConfiguration = message.testConfiguration
-      ? TestCasesRunTestConfigurationData.toJSON(message.testConfiguration)
-      : undefined);
     if (message.errors) {
       obj.errors = message.errors.map((e) => e);
     } else {
@@ -982,6 +978,9 @@ export const TestCasesRunReportData = {
     message.testCaseStep !== undefined && (obj.testCaseStep = message.testCaseStep
       ? TestCasesRunReportTestCaseStepSourceData.toJSON(message.testCaseStep)
       : undefined);
+    message.code !== undefined && (obj.code = message.code);
+    message.storageState !== undefined &&
+      (obj.storageState = message.storageState ? BrowserStorageStateData.toJSON(message.storageState) : undefined);
     return obj;
   },
 
@@ -989,15 +988,16 @@ export const TestCasesRunReportData = {
     const message = createBaseTestCasesRunReport();
     message.projectGenerateId = object.projectGenerateId ?? 0;
     message.status = object.status ?? 0;
-    message.testConfiguration = (object.testConfiguration !== undefined && object.testConfiguration !== null)
-      ? TestCasesRunTestConfigurationData.fromPartial(object.testConfiguration)
-      : undefined;
     message.errors = object.errors?.map((e) => e) || [];
     message.testCase = (object.testCase !== undefined && object.testCase !== null)
       ? TestCasesRunReportTestCaseSourceData.fromPartial(object.testCase)
       : undefined;
     message.testCaseStep = (object.testCaseStep !== undefined && object.testCaseStep !== null)
       ? TestCasesRunReportTestCaseStepSourceData.fromPartial(object.testCaseStep)
+      : undefined;
+    message.code = object.code ?? undefined;
+    message.storageState = (object.storageState !== undefined && object.storageState !== null)
+      ? BrowserStorageStateData.fromPartial(object.storageState)
       : undefined;
     return message;
   },
