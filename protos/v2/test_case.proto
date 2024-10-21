@@ -60,14 +60,13 @@ message TestCasesRunTestConfiguration {
 	int32 project_id = 6;
 	optional int32 token_expiration_seconds = 7;
 	optional string code = 8;
-	browser.BrowserStorageState storage_state = 9;
+	optional browser.BrowserStorageState storage_state = 9;
 }
 
 message TestCaseAuthorisationCreationReport {
 	int32 project_generate_id = 1;
 	int32 project_id = 2;
-	optional string code = 3;
-	browser.BrowserStorageState storage_state = 4;
+	TestCasesRunTestConfiguration test_configuration = 3;
 	repeated string errors = 5;
 	Status status = 6;
 
@@ -81,12 +80,13 @@ message TestCaseAuthorisationCreationReport {
 message TestCasesRunReport {
 	int32 project_generate_id = 1;
   	Status status = 2;
-	TestCasesRunTestConfiguration test_configuration = 3;
 	repeated string errors = 4;
 	oneof source {
 		TestCaseSource test_case = 5;
 		TestCaseStepSource test_case_step = 6;
 	}
+	optional string code = 7;
+	optional browser.BrowserStorageState storage_state = 8;
 
 	message TestCaseStepSource {
 		string node_id = 1;
