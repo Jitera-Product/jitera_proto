@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in proto.gemspec
 gemspec
 
-gem 'google-protobuf', '~> 3.23.4'
-gem 'grpc', '~> 1.56.2'
-gem 'grpc-tools', '~> 1.56.2'
+gem 'google-protobuf', '~> 3.25'
+gem 'grpc', '~> 1.62'
+gem 'grpc-tools', '~> 1.62'
 gem 'rake', '~> 13.0'
