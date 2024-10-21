@@ -1,7 +1,7 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { StructData } from "../google/protobuf/struct.proto";
-import { Table, TableData } from "../v1/payloads.proto";
+import { Table } from "../v1/payloads.proto";
 
 export enum ImportBy {
   github = 0,
@@ -73,6 +73,7 @@ export class ProjectSource {
   layer: ProjectSourceLayer;
   files: string;
   platform: ProjectSourcePlatform;
+  masterLanguageCode: string;
 }
 
 export enum ProjectSourceFramework {
@@ -665,7 +666,7 @@ export const GenerateSourceData = {
           message.type = reader.string();
           break;
         case 3:
-          message.data = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.data = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -701,7 +702,7 @@ export const GenerateSourceData = {
 };
 
 function createBaseProjectSource(): ProjectSource {
-  return { id: 0, projectId: 0, framework: 0, layer: 0, files: "", platform: 0 };
+  return { id: 0, projectId: 0, framework: 0, layer: 0, files: "", platform: 0, masterLanguageCode: "" };
 }
 
 export const ProjectSourceData = {
@@ -723,6 +724,9 @@ export const ProjectSourceData = {
     }
     if (message.platform !== 0) {
       writer.uint32(48).int32(message.platform);
+    }
+    if (message.masterLanguageCode !== "") {
+      writer.uint32(58).string(message.masterLanguageCode);
     }
     return writer;
   },
@@ -752,6 +756,9 @@ export const ProjectSourceData = {
         case 6:
           message.platform = reader.int32() as any;
           break;
+        case 7:
+          message.masterLanguageCode = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -768,6 +775,7 @@ export const ProjectSourceData = {
       layer: isSet(object.layer) ? projectSourceLayerFromJSON(object.layer) : 0,
       files: isSet(object.files) ? String(object.files) : "",
       platform: isSet(object.platform) ? projectSourcePlatformFromJSON(object.platform) : 0,
+      masterLanguageCode: isSet(object.masterLanguageCode) ? String(object.masterLanguageCode) : "",
     };
   },
 
@@ -779,6 +787,7 @@ export const ProjectSourceData = {
     message.layer !== undefined && (obj.layer = projectSourceLayerToJSON(message.layer));
     message.files !== undefined && (obj.files = message.files);
     message.platform !== undefined && (obj.platform = projectSourcePlatformToJSON(message.platform));
+    message.masterLanguageCode !== undefined && (obj.masterLanguageCode = message.masterLanguageCode);
     return obj;
   },
 
@@ -790,6 +799,7 @@ export const ProjectSourceData = {
     message.layer = object.layer ?? 0;
     message.files = object.files ?? "";
     message.platform = object.platform ?? 0;
+    message.masterLanguageCode = object.masterLanguageCode ?? "";
     return message;
   },
 };
@@ -1178,7 +1188,7 @@ export const GitData = {
           message.providerHostUrl = reader.string();
           break;
         case 12:
-          message.headers = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.headers = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -1354,7 +1364,7 @@ export const ProjectSourceCreationData = {
           message.steps = ActionStepsData.decode(reader, reader.uint32());
           break;
         case 8:
-          message.metadata = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.metadata = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 3:
           message.sourcePath = reader.string();
@@ -2261,10 +2271,10 @@ export const BlockDiffBlockBodyData = {
           message.parentNodeId = reader.string();
           break;
         case 4:
-          message.content.push(StructData.unwrap(StructData.decode(reader, reader.uint32())));
+          message.content.push(Struct.unwrap(StructData.decode(reader, reader.uint32())));
           break;
         case 5:
-          message.properties = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.properties = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 6:
           message.children.push(reader.string());
@@ -2523,7 +2533,7 @@ export const ProjectSourceReportData = {
           message.tokenUsage = reader.int32();
           break;
         case 8:
-          message.payload = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.payload = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 5:
           message.progress = ProjectSourceReportProgressData.decode(reader, reader.uint32());
@@ -2934,7 +2944,7 @@ export const UseCaseRemovalBlockData = {
           message.parentNodeId = reader.string();
           break;
         case 6:
-          message.properties = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.properties = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 7:
           message.children.push(reader.string());

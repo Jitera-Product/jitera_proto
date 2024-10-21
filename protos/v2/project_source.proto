@@ -17,6 +17,7 @@ message ProjectSource {
 	Layer layer = 4;
 	string files = 5;
 	Platform platform = 6;
+	string master_language_code = 7;
 
 	enum Framework {
 		FRAMEWORK_UNSPECIFIED = 0;
