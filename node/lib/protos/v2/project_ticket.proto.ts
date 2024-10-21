@@ -8,6 +8,7 @@ export class ProjectTicketCreationRequest {
   projectId: number;
   figma?: Figma | undefined;
   useCases: Block[];
+  masterLanguageCode: string;
 }
 
 export class ProjectTicketCreationResponse {
@@ -99,6 +100,7 @@ export class ProjectTicketCreationByApiRequest {
   apis: Block[];
   tickets: Block[];
   pullRequests: ProjectTicketCreationByApiRequestPullRequest[];
+  masterLanguageCode: string;
 }
 
 export class ProjectTicketCreationByApiRequestPullRequest {
@@ -193,7 +195,7 @@ export function projectTicketCreationByApiResponseStatusToJSON(
 }
 
 function createBaseProjectTicketCreationRequest(): ProjectTicketCreationRequest {
-  return { projectGenerateQueueId: 0, projectId: 0, useCases: [] };
+  return { projectGenerateQueueId: 0, projectId: 0, useCases: [], masterLanguageCode: "" };
 }
 
 export const ProjectTicketCreationRequestData = {
@@ -209,6 +211,9 @@ export const ProjectTicketCreationRequestData = {
     }
     for (const v of message.useCases) {
       BlockData.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.masterLanguageCode !== "") {
+      writer.uint32(42).string(message.masterLanguageCode);
     }
     return writer;
   },
@@ -232,6 +237,9 @@ export const ProjectTicketCreationRequestData = {
         case 4:
           message.useCases.push(BlockData.decode(reader, reader.uint32()));
           break;
+        case 5:
+          message.masterLanguageCode = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -246,6 +254,7 @@ export const ProjectTicketCreationRequestData = {
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       figma: isSet(object.figma) ? FigmaData.fromJSON(object.figma) : undefined,
       useCases: Array.isArray(object?.useCases) ? object.useCases.map((e: any) => BlockData.fromJSON(e)) : [],
+      masterLanguageCode: isSet(object.masterLanguageCode) ? String(object.masterLanguageCode) : "",
     };
   },
 
@@ -260,6 +269,7 @@ export const ProjectTicketCreationRequestData = {
     } else {
       obj.useCases = [];
     }
+    message.masterLanguageCode !== undefined && (obj.masterLanguageCode = message.masterLanguageCode);
     return obj;
   },
 
@@ -271,6 +281,7 @@ export const ProjectTicketCreationRequestData = {
       ? FigmaData.fromPartial(object.figma)
       : undefined;
     message.useCases = object.useCases?.map((e) => BlockData.fromPartial(e)) || [];
+    message.masterLanguageCode = object.masterLanguageCode ?? "";
     return message;
   },
 };
@@ -406,7 +417,7 @@ export const ProjectTicketCreationResponseData = {
 };
 
 function createBaseProjectTicketCreationByApiRequest(): ProjectTicketCreationByApiRequest {
-  return { projectGenerateQueueId: 0, projectId: 0, apis: [], tickets: [], pullRequests: [] };
+  return { projectGenerateQueueId: 0, projectId: 0, apis: [], tickets: [], pullRequests: [], masterLanguageCode: "" };
 }
 
 export const ProjectTicketCreationByApiRequestData = {
@@ -425,6 +436,9 @@ export const ProjectTicketCreationByApiRequestData = {
     }
     for (const v of message.pullRequests) {
       ProjectTicketCreationByApiRequestPullRequestData.encode(v!, writer.uint32(50).fork()).ldelim();
+    }
+    if (message.masterLanguageCode !== "") {
+      writer.uint32(58).string(message.masterLanguageCode);
     }
     return writer;
   },
@@ -451,6 +465,9 @@ export const ProjectTicketCreationByApiRequestData = {
         case 6:
           message.pullRequests.push(ProjectTicketCreationByApiRequestPullRequestData.decode(reader, reader.uint32()));
           break;
+        case 7:
+          message.masterLanguageCode = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -468,6 +485,7 @@ export const ProjectTicketCreationByApiRequestData = {
       pullRequests: Array.isArray(object?.pullRequests)
         ? object.pullRequests.map((e: any) => ProjectTicketCreationByApiRequestPullRequestData.fromJSON(e))
         : [],
+      masterLanguageCode: isSet(object.masterLanguageCode) ? String(object.masterLanguageCode) : "",
     };
   },
 
@@ -493,6 +511,7 @@ export const ProjectTicketCreationByApiRequestData = {
     } else {
       obj.pullRequests = [];
     }
+    message.masterLanguageCode !== undefined && (obj.masterLanguageCode = message.masterLanguageCode);
     return obj;
   },
 
@@ -504,6 +523,7 @@ export const ProjectTicketCreationByApiRequestData = {
     message.tickets = object.tickets?.map((e) => BlockData.fromPartial(e)) || [];
     message.pullRequests =
       object.pullRequests?.map((e) => ProjectTicketCreationByApiRequestPullRequestData.fromPartial(e)) || [];
+    message.masterLanguageCode = object.masterLanguageCode ?? "";
     return message;
   },
 };
