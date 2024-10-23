@@ -35,6 +35,21 @@ message TestCasesRegneration {
 	repeated TestCase test_cases = 4;
 }
 
+message TestCasesRegnerationReport {
+	int32 project_generate_id = 1;
+	int32 project_id = 2;
+	repeated TestCase test_cases = 3;
+	Status status = 4;
+	repeated string errors = 5;
+	enum Status {
+		SUCCEEDED = 0;
+		IN_PROGRESS = 1;
+		FAILED = 2;
+	}
+		optional string code = 6;
+	optional browser.BrowserStorageState storage_state = 7;
+}
+
 message TestCasesCreationReport {
 	int32 project_generate_id = 1;
 	repeated TestCase test_cases = 2;
@@ -42,11 +57,11 @@ message TestCasesCreationReport {
  	Status status = 4;
 	optional string code = 5;
 	optional browser.BrowserStorageState storage_state = 6;
-  enum Status {
-    SUCCEEDED = 0;
-    IN_PROGRESS = 1;
-    FAILED = 2;
-  }
+	enum Status {
+		SUCCEEDED = 0;
+		IN_PROGRESS = 1;
+		FAILED = 2;
+	}
 }
 
 message TestCasesRun {
