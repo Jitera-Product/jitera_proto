@@ -11,6 +11,7 @@ message TestCase {
 	int32 use_case_id = 4;
 	string node_id = 5;
 	repeated TestCaseStep steps = 6;
+	optional bool updateRequired = 7;
 }
 
 message TestCaseStep {
@@ -18,6 +19,7 @@ message TestCaseStep {
 	string code = 2;
 	string step = 3;
 	string node_id = 4;
+	optional bool updateRequired = 5;
 }
 
 message TestCasesCreation {
@@ -25,7 +27,6 @@ message TestCasesCreation {
 	int32 project_id = 2;
 	TestCasesRunTestConfiguration test_configuration = 3;
   	repeated core.Block use_cases = 4;
-
 }
 
 message TestCasesRegeneration {
