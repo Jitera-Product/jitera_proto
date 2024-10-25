@@ -2,6 +2,8 @@
 import * as _m0 from "protobufjs/minimal";
 import { Block, BlockData } from "./block_core.proto";
 import { BrowserStorageState, BrowserStorageStateData } from "./browser.proto";
+import { ProjectImportPage, ProjectImportPageData } from "./project_page_import.proto";
+
 export class TestCase {
   name: string;
   order: number;
@@ -81,6 +83,14 @@ export function testCasesRegenerationReportStatusToJSON(object: TestCasesRegener
     default:
       return "UNRECOGNIZED";
   }
+}
+
+export class ProjectImportPageTestCasesCreation {
+  projectGenerateId: number;
+  projectId: number;
+  testConfiguration?: TestCasesRunTestConfiguration;
+  useCases: Block[];
+  projectImportPages: ProjectImportPage[];
 }
 
 export class TestCasesCreationReport {
@@ -738,6 +748,107 @@ export const TestCasesRegenerationReportData = {
     message.storageState = (object.storageState !== undefined && object.storageState !== null)
       ? BrowserStorageStateData.fromPartial(object.storageState)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseProjectImportPageTestCasesCreation(): ProjectImportPageTestCasesCreation {
+  return { projectGenerateId: 0, projectId: 0, useCases: [], projectImportPages: [] };
+}
+
+export const ProjectImportPageTestCasesCreationData = {
+  encode(message: ProjectImportPageTestCasesCreation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.projectGenerateId !== 0) {
+      writer.uint32(8).int32(message.projectGenerateId);
+    }
+    if (message.projectId !== 0) {
+      writer.uint32(16).int32(message.projectId);
+    }
+    if (message.testConfiguration !== undefined) {
+      TestCasesRunTestConfigurationData.encode(message.testConfiguration, writer.uint32(26).fork()).ldelim();
+    }
+    for (const v of message.useCases) {
+      BlockData.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+    for (const v of message.projectImportPages) {
+      ProjectImportPageData.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectImportPageTestCasesCreation {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseProjectImportPageTestCasesCreation();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.projectGenerateId = reader.int32();
+          break;
+        case 2:
+          message.projectId = reader.int32();
+          break;
+        case 3:
+          message.testConfiguration = TestCasesRunTestConfigurationData.decode(reader, reader.uint32());
+          break;
+        case 4:
+          message.useCases.push(BlockData.decode(reader, reader.uint32()));
+          break;
+        case 5:
+          message.projectImportPages.push(ProjectImportPageData.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ProjectImportPageTestCasesCreation {
+    return {
+      projectGenerateId: isSet(object.projectGenerateId) ? Number(object.projectGenerateId) : 0,
+      projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
+      testConfiguration: isSet(object.testConfiguration)
+        ? TestCasesRunTestConfigurationData.fromJSON(object.testConfiguration)
+        : undefined,
+      useCases: Array.isArray(object?.useCases) ? object.useCases.map((e: any) => BlockData.fromJSON(e)) : [],
+      projectImportPages: Array.isArray(object?.projectImportPages)
+        ? object.projectImportPages.map((e: any) => ProjectImportPageData.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: ProjectImportPageTestCasesCreation): unknown {
+    const obj: any = {};
+    message.projectGenerateId !== undefined && (obj.projectGenerateId = Math.round(message.projectGenerateId));
+    message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
+    message.testConfiguration !== undefined && (obj.testConfiguration = message.testConfiguration
+      ? TestCasesRunTestConfigurationData.toJSON(message.testConfiguration)
+      : undefined);
+    if (message.useCases) {
+      obj.useCases = message.useCases.map((e) => e ? BlockData.toJSON(e) : undefined);
+    } else {
+      obj.useCases = [];
+    }
+    if (message.projectImportPages) {
+      obj.projectImportPages = message.projectImportPages.map((e) => e ? ProjectImportPageData.toJSON(e) : undefined);
+    } else {
+      obj.projectImportPages = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ProjectImportPageTestCasesCreation>): ProjectImportPageTestCasesCreation {
+    const message = createBaseProjectImportPageTestCasesCreation();
+    message.projectGenerateId = object.projectGenerateId ?? 0;
+    message.projectId = object.projectId ?? 0;
+    message.testConfiguration = (object.testConfiguration !== undefined && object.testConfiguration !== null)
+      ? TestCasesRunTestConfigurationData.fromPartial(object.testConfiguration)
+      : undefined;
+    message.useCases = object.useCases?.map((e) => BlockData.fromPartial(e)) || [];
+    message.projectImportPages = object.projectImportPages?.map((e) => ProjectImportPageData.fromPartial(e)) || [];
     return message;
   },
 };
