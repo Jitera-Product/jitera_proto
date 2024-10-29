@@ -13,6 +13,7 @@ message TestCase {
 	string node_id = 5;
 	repeated TestCaseStep steps = 6;
 	optional bool updateRequired = 7;
+	bool authenticationRequired = 8;
 }
 
 message TestCaseStep {
