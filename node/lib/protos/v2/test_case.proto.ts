@@ -12,6 +12,7 @@ export class TestCase {
   nodeId: string;
   steps: TestCaseStep[];
   updateRequired?: boolean | undefined;
+  authenticationRequired: boolean;
 }
 
 export class TestCaseStep {
@@ -275,7 +276,7 @@ export class TestCasesRunReportTestCaseSource {
 }
 
 function createBaseTestCase(): TestCase {
-  return { name: "", order: 0, code: "", useCaseId: 0, nodeId: "", steps: [] };
+  return { name: "", order: 0, code: "", useCaseId: 0, nodeId: "", steps: [], authenticationRequired: false };
 }
 
 export const TestCaseData = {
@@ -300,6 +301,9 @@ export const TestCaseData = {
     }
     if (message.updateRequired !== undefined) {
       writer.uint32(56).bool(message.updateRequired);
+    }
+    if (message.authenticationRequired === true) {
+      writer.uint32(64).bool(message.authenticationRequired);
     }
     return writer;
   },
@@ -332,6 +336,9 @@ export const TestCaseData = {
         case 7:
           message.updateRequired = reader.bool();
           break;
+        case 8:
+          message.authenticationRequired = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -349,6 +356,7 @@ export const TestCaseData = {
       nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
       steps: Array.isArray(object?.steps) ? object.steps.map((e: any) => TestCaseStepData.fromJSON(e)) : [],
       updateRequired: isSet(object.updateRequired) ? Boolean(object.updateRequired) : undefined,
+      authenticationRequired: isSet(object.authenticationRequired) ? Boolean(object.authenticationRequired) : false,
     };
   },
 
@@ -365,6 +373,7 @@ export const TestCaseData = {
       obj.steps = [];
     }
     message.updateRequired !== undefined && (obj.updateRequired = message.updateRequired);
+    message.authenticationRequired !== undefined && (obj.authenticationRequired = message.authenticationRequired);
     return obj;
   },
 
@@ -377,6 +386,7 @@ export const TestCaseData = {
     message.nodeId = object.nodeId ?? "";
     message.steps = object.steps?.map((e) => TestCaseStepData.fromPartial(e)) || [];
     message.updateRequired = object.updateRequired ?? undefined;
+    message.authenticationRequired = object.authenticationRequired ?? false;
     return message;
   },
 };
