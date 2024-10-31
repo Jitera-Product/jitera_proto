@@ -12,7 +12,7 @@ export class TestCase {
   nodeId: string;
   steps: TestCaseStep[];
   updateRequired?: boolean | undefined;
-  authenticationState: TestCaseAuthenticationState;
+  authenticationState?: TestCaseAuthenticationState | undefined;
 }
 
 export enum TestCaseAuthenticationState {
@@ -315,7 +315,7 @@ export class TestCasesRunReportTestCaseSource {
 }
 
 function createBaseTestCase(): TestCase {
-  return { name: "", order: 0, code: "", useCaseId: 0, nodeId: "", steps: [], authenticationState: 0 };
+  return { name: "", order: 0, code: "", useCaseId: 0, nodeId: "", steps: [] };
 }
 
 export const TestCaseData = {
@@ -341,7 +341,7 @@ export const TestCaseData = {
     if (message.updateRequired !== undefined) {
       writer.uint32(56).bool(message.updateRequired);
     }
-    if (message.authenticationState !== 0) {
+    if (message.authenticationState !== undefined) {
       writer.uint32(64).int32(message.authenticationState);
     }
     return writer;
@@ -397,7 +397,7 @@ export const TestCaseData = {
       updateRequired: isSet(object.updateRequired) ? Boolean(object.updateRequired) : undefined,
       authenticationState: isSet(object.authenticationState)
         ? testCaseAuthenticationStateFromJSON(object.authenticationState)
-        : 0,
+        : undefined,
     };
   },
 
@@ -414,8 +414,9 @@ export const TestCaseData = {
       obj.steps = [];
     }
     message.updateRequired !== undefined && (obj.updateRequired = message.updateRequired);
-    message.authenticationState !== undefined &&
-      (obj.authenticationState = testCaseAuthenticationStateToJSON(message.authenticationState));
+    message.authenticationState !== undefined && (obj.authenticationState = message.authenticationState !== undefined
+      ? testCaseAuthenticationStateToJSON(message.authenticationState)
+      : undefined);
     return obj;
   },
 
@@ -428,7 +429,7 @@ export const TestCaseData = {
     message.nodeId = object.nodeId ?? "";
     message.steps = object.steps?.map((e) => TestCaseStepData.fromPartial(e)) || [];
     message.updateRequired = object.updateRequired ?? undefined;
-    message.authenticationState = object.authenticationState ?? 0;
+    message.authenticationState = object.authenticationState ?? undefined;
     return message;
   },
 };
