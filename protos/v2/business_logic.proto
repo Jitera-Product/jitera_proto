@@ -15,7 +15,7 @@ message BusinessLogicResponseWithCategory {
 
 message BusinessLogicWithCategory {
   string category = 1;
-  BusinessLogic business_logics = 2;
+  repeated BusinessLogic business_logics = 2;
 }
 
 message BusinessLogic {
