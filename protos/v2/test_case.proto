@@ -56,7 +56,7 @@ message TestCasesRegenerationReport {
 		IN_PROGRESS = 1;
 		FAILED = 2;
 	}
-    optional string code = 6;
+	optional string code = 6;
 	optional browser.BrowserStorageState storage_state = 7;
 }
 
@@ -77,6 +77,8 @@ message TestCasesCreationReport {
  	Status status = 4;
 	optional string code = 5;
 	optional browser.BrowserStorageState storage_state = 6;
+	optional string tracing_path = 7;
+
 	enum Status {
 		SUCCEEDED = 0;
 		IN_PROGRESS = 1;
@@ -129,6 +131,8 @@ message TestCasesRunReport {
 	}
 	optional string code = 7;
 	optional browser.BrowserStorageState storage_state = 8;
+	optional string tracing_path = 9;
+
 	message TestCaseStepSource {
 		string node_id = 1;
 		optional string code = 2;
