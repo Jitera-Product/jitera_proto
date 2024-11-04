@@ -15,6 +15,7 @@ export class UseCaseCreation {
   projectTables?: UseCaseCreationProjectTable | undefined;
   relatedTables?: UseCaseCreationProjectTable | undefined;
   masterLanguageCode: string;
+  repositoryLanguageCode?: string | undefined;
 }
 
 export class UseCaseCreationProgress {
@@ -205,6 +206,9 @@ export const UseCaseCreationData = {
     if (message.masterLanguageCode !== "") {
       writer.uint32(82).string(message.masterLanguageCode);
     }
+    if (message.repositoryLanguageCode !== undefined) {
+      writer.uint32(90).string(message.repositoryLanguageCode);
+    }
     return writer;
   },
 
@@ -245,6 +249,9 @@ export const UseCaseCreationData = {
         case 10:
           message.masterLanguageCode = reader.string();
           break;
+        case 11:
+          message.repositoryLanguageCode = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -271,6 +278,7 @@ export const UseCaseCreationData = {
         ? UseCaseCreationProjectTableData.fromJSON(object.relatedTables)
         : undefined,
       masterLanguageCode: isSet(object.masterLanguageCode) ? String(object.masterLanguageCode) : "",
+      repositoryLanguageCode: isSet(object.repositoryLanguageCode) ? String(object.repositoryLanguageCode) : undefined,
     };
   },
 
@@ -307,6 +315,7 @@ export const UseCaseCreationData = {
       ? UseCaseCreationProjectTableData.toJSON(message.relatedTables)
       : undefined);
     message.masterLanguageCode !== undefined && (obj.masterLanguageCode = message.masterLanguageCode);
+    message.repositoryLanguageCode !== undefined && (obj.repositoryLanguageCode = message.repositoryLanguageCode);
     return obj;
   },
 
@@ -330,6 +339,7 @@ export const UseCaseCreationData = {
       ? UseCaseCreationProjectTableData.fromPartial(object.relatedTables)
       : undefined;
     message.masterLanguageCode = object.masterLanguageCode ?? "";
+    message.repositoryLanguageCode = object.repositoryLanguageCode ?? undefined;
     return message;
   },
 };

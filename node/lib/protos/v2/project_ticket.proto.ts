@@ -9,6 +9,7 @@ export class ProjectTicketCreationRequest {
   figma?: Figma | undefined;
   useCases: Block[];
   masterLanguageCode: string;
+  repositoryLanguageCode?: string | undefined;
 }
 
 export class ProjectTicketCreationResponse {
@@ -101,6 +102,7 @@ export class ProjectTicketCreationByApiRequest {
   tickets: Block[];
   pullRequests: ProjectTicketCreationByApiRequestPullRequest[];
   masterLanguageCode: string;
+  repositoryLanguageCode?: string | undefined;
 }
 
 export class ProjectTicketCreationByApiRequestPullRequest {
@@ -215,6 +217,9 @@ export const ProjectTicketCreationRequestData = {
     if (message.masterLanguageCode !== "") {
       writer.uint32(42).string(message.masterLanguageCode);
     }
+    if (message.repositoryLanguageCode !== undefined) {
+      writer.uint32(50).string(message.repositoryLanguageCode);
+    }
     return writer;
   },
 
@@ -240,6 +245,9 @@ export const ProjectTicketCreationRequestData = {
         case 5:
           message.masterLanguageCode = reader.string();
           break;
+        case 6:
+          message.repositoryLanguageCode = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -255,6 +263,7 @@ export const ProjectTicketCreationRequestData = {
       figma: isSet(object.figma) ? FigmaData.fromJSON(object.figma) : undefined,
       useCases: Array.isArray(object?.useCases) ? object.useCases.map((e: any) => BlockData.fromJSON(e)) : [],
       masterLanguageCode: isSet(object.masterLanguageCode) ? String(object.masterLanguageCode) : "",
+      repositoryLanguageCode: isSet(object.repositoryLanguageCode) ? String(object.repositoryLanguageCode) : undefined,
     };
   },
 
@@ -270,6 +279,7 @@ export const ProjectTicketCreationRequestData = {
       obj.useCases = [];
     }
     message.masterLanguageCode !== undefined && (obj.masterLanguageCode = message.masterLanguageCode);
+    message.repositoryLanguageCode !== undefined && (obj.repositoryLanguageCode = message.repositoryLanguageCode);
     return obj;
   },
 
@@ -282,6 +292,7 @@ export const ProjectTicketCreationRequestData = {
       : undefined;
     message.useCases = object.useCases?.map((e) => BlockData.fromPartial(e)) || [];
     message.masterLanguageCode = object.masterLanguageCode ?? "";
+    message.repositoryLanguageCode = object.repositoryLanguageCode ?? undefined;
     return message;
   },
 };
@@ -440,6 +451,9 @@ export const ProjectTicketCreationByApiRequestData = {
     if (message.masterLanguageCode !== "") {
       writer.uint32(58).string(message.masterLanguageCode);
     }
+    if (message.repositoryLanguageCode !== undefined) {
+      writer.uint32(66).string(message.repositoryLanguageCode);
+    }
     return writer;
   },
 
@@ -468,6 +482,9 @@ export const ProjectTicketCreationByApiRequestData = {
         case 7:
           message.masterLanguageCode = reader.string();
           break;
+        case 8:
+          message.repositoryLanguageCode = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -486,6 +503,7 @@ export const ProjectTicketCreationByApiRequestData = {
         ? object.pullRequests.map((e: any) => ProjectTicketCreationByApiRequestPullRequestData.fromJSON(e))
         : [],
       masterLanguageCode: isSet(object.masterLanguageCode) ? String(object.masterLanguageCode) : "",
+      repositoryLanguageCode: isSet(object.repositoryLanguageCode) ? String(object.repositoryLanguageCode) : undefined,
     };
   },
 
@@ -512,6 +530,7 @@ export const ProjectTicketCreationByApiRequestData = {
       obj.pullRequests = [];
     }
     message.masterLanguageCode !== undefined && (obj.masterLanguageCode = message.masterLanguageCode);
+    message.repositoryLanguageCode !== undefined && (obj.repositoryLanguageCode = message.repositoryLanguageCode);
     return obj;
   },
 
@@ -524,6 +543,7 @@ export const ProjectTicketCreationByApiRequestData = {
     message.pullRequests =
       object.pullRequests?.map((e) => ProjectTicketCreationByApiRequestPullRequestData.fromPartial(e)) || [];
     message.masterLanguageCode = object.masterLanguageCode ?? "";
+    message.repositoryLanguageCode = object.repositoryLanguageCode ?? undefined;
     return message;
   },
 };

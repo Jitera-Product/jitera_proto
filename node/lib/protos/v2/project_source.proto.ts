@@ -74,6 +74,7 @@ export class ProjectSource {
   files: string;
   platform: ProjectSourcePlatform;
   masterLanguageCode: string;
+  repositoryLanguageCode?: string | undefined;
 }
 
 export enum ProjectSourceFramework {
@@ -583,6 +584,7 @@ export class ProjectSourceReport {
   projectSourceId: number;
   tokenUsage: number;
   payload?: { [key: string]: any };
+  repositoryLanguageCode?: string | undefined;
   progress?: ProjectSourceReportProgress | undefined;
   complete?: ProjectSourceReportComplete | undefined;
   error?: ProjectSourceReportError | undefined;
@@ -728,6 +730,9 @@ export const ProjectSourceData = {
     if (message.masterLanguageCode !== "") {
       writer.uint32(58).string(message.masterLanguageCode);
     }
+    if (message.repositoryLanguageCode !== undefined) {
+      writer.uint32(66).string(message.repositoryLanguageCode);
+    }
     return writer;
   },
 
@@ -759,6 +764,9 @@ export const ProjectSourceData = {
         case 7:
           message.masterLanguageCode = reader.string();
           break;
+        case 8:
+          message.repositoryLanguageCode = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -776,6 +784,7 @@ export const ProjectSourceData = {
       files: isSet(object.files) ? String(object.files) : "",
       platform: isSet(object.platform) ? projectSourcePlatformFromJSON(object.platform) : 0,
       masterLanguageCode: isSet(object.masterLanguageCode) ? String(object.masterLanguageCode) : "",
+      repositoryLanguageCode: isSet(object.repositoryLanguageCode) ? String(object.repositoryLanguageCode) : undefined,
     };
   },
 
@@ -788,6 +797,7 @@ export const ProjectSourceData = {
     message.files !== undefined && (obj.files = message.files);
     message.platform !== undefined && (obj.platform = projectSourcePlatformToJSON(message.platform));
     message.masterLanguageCode !== undefined && (obj.masterLanguageCode = message.masterLanguageCode);
+    message.repositoryLanguageCode !== undefined && (obj.repositoryLanguageCode = message.repositoryLanguageCode);
     return obj;
   },
 
@@ -800,6 +810,7 @@ export const ProjectSourceData = {
     message.files = object.files ?? "";
     message.platform = object.platform ?? 0;
     message.masterLanguageCode = object.masterLanguageCode ?? "";
+    message.repositoryLanguageCode = object.repositoryLanguageCode ?? undefined;
     return message;
   },
 };
@@ -2501,6 +2512,9 @@ export const ProjectSourceReportData = {
     if (message.payload !== undefined) {
       StructData.encode(StructData.wrap(message.payload), writer.uint32(66).fork()).ldelim();
     }
+    if (message.repositoryLanguageCode !== undefined) {
+      writer.uint32(74).string(message.repositoryLanguageCode);
+    }
     if (message.progress !== undefined) {
       ProjectSourceReportProgressData.encode(message.progress, writer.uint32(42).fork()).ldelim();
     }
@@ -2535,6 +2549,9 @@ export const ProjectSourceReportData = {
         case 8:
           message.payload = StructData.unwrap(StructData.decode(reader, reader.uint32()));
           break;
+        case 9:
+          message.repositoryLanguageCode = reader.string();
+          break;
         case 5:
           message.progress = ProjectSourceReportProgressData.decode(reader, reader.uint32());
           break;
@@ -2559,6 +2576,7 @@ export const ProjectSourceReportData = {
       projectSourceId: isSet(object.projectSourceId) ? Number(object.projectSourceId) : 0,
       tokenUsage: isSet(object.tokenUsage) ? Number(object.tokenUsage) : 0,
       payload: isObject(object.payload) ? object.payload : undefined,
+      repositoryLanguageCode: isSet(object.repositoryLanguageCode) ? String(object.repositoryLanguageCode) : undefined,
       progress: isSet(object.progress) ? ProjectSourceReportProgressData.fromJSON(object.progress) : undefined,
       complete: isSet(object.complete) ? ProjectSourceReportCompleteData.fromJSON(object.complete) : undefined,
       error: isSet(object.error) ? ProjectSourceReportErrorData.fromJSON(object.error) : undefined,
@@ -2573,6 +2591,7 @@ export const ProjectSourceReportData = {
     message.projectSourceId !== undefined && (obj.projectSourceId = Math.round(message.projectSourceId));
     message.tokenUsage !== undefined && (obj.tokenUsage = Math.round(message.tokenUsage));
     message.payload !== undefined && (obj.payload = message.payload);
+    message.repositoryLanguageCode !== undefined && (obj.repositoryLanguageCode = message.repositoryLanguageCode);
     message.progress !== undefined &&
       (obj.progress = message.progress ? ProjectSourceReportProgressData.toJSON(message.progress) : undefined);
     message.complete !== undefined &&
@@ -2589,6 +2608,7 @@ export const ProjectSourceReportData = {
     message.projectSourceId = object.projectSourceId ?? 0;
     message.tokenUsage = object.tokenUsage ?? 0;
     message.payload = object.payload ?? undefined;
+    message.repositoryLanguageCode = object.repositoryLanguageCode ?? undefined;
     message.progress = (object.progress !== undefined && object.progress !== null)
       ? ProjectSourceReportProgressData.fromPartial(object.progress)
       : undefined;
