@@ -20,6 +20,7 @@ message UseCaseCreation {
 	optional ProjectTable project_tables = 6;
 	optional ProjectTable related_tables = 8;
 	string master_language_code = 10;
+	optional string repository_language_code = 11;
 
 	message Progress {
 		string message = 1;
