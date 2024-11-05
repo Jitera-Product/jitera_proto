@@ -7,17 +7,6 @@ message BusinessLogicResponse {
   repeated BusinessLogic business_logics = 3;
 }
 
-message BusinessLogicResponseWithCategory {
-  int32 project_generate_queue_id = 1;
-  int32 project_id = 2;
-  repeated BusinessLogicWithCategory business_logics_with_category = 3;
-}
-
-message BusinessLogicWithCategory {
-  string category = 1;
-  repeated BusinessLogic business_logics = 2;
-}
-
 message BusinessLogic {
   string node_id = 1;
   string parent_node_id = 2;
