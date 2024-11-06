@@ -12,6 +12,46 @@ export class TestCase {
   nodeId: string;
   steps: TestCaseStep[];
   updateRequired?: boolean | undefined;
+  authenticationState?: TestCaseAuthenticationState | undefined;
+}
+
+export enum TestCaseAuthenticationState {
+  UNDEFINED = 0,
+  NOT_AUTHENTICATED = 1,
+  AUTHENTICATED = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function testCaseAuthenticationStateFromJSON(object: any): TestCaseAuthenticationState {
+  switch (object) {
+    case 0:
+    case "UNDEFINED":
+      return TestCaseAuthenticationState.UNDEFINED;
+    case 1:
+    case "NOT_AUTHENTICATED":
+      return TestCaseAuthenticationState.NOT_AUTHENTICATED;
+    case 2:
+    case "AUTHENTICATED":
+      return TestCaseAuthenticationState.AUTHENTICATED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return TestCaseAuthenticationState.UNRECOGNIZED;
+  }
+}
+
+export function testCaseAuthenticationStateToJSON(object: TestCaseAuthenticationState): string {
+  switch (object) {
+    case TestCaseAuthenticationState.UNDEFINED:
+      return "UNDEFINED";
+    case TestCaseAuthenticationState.NOT_AUTHENTICATED:
+      return "NOT_AUTHENTICATED";
+    case TestCaseAuthenticationState.AUTHENTICATED:
+      return "AUTHENTICATED";
+    case TestCaseAuthenticationState.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
 }
 
 export class TestCaseStep {
@@ -301,6 +341,9 @@ export const TestCaseData = {
     if (message.updateRequired !== undefined) {
       writer.uint32(56).bool(message.updateRequired);
     }
+    if (message.authenticationState !== undefined) {
+      writer.uint32(64).int32(message.authenticationState);
+    }
     return writer;
   },
 
@@ -332,6 +375,9 @@ export const TestCaseData = {
         case 7:
           message.updateRequired = reader.bool();
           break;
+        case 8:
+          message.authenticationState = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -349,6 +395,9 @@ export const TestCaseData = {
       nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
       steps: Array.isArray(object?.steps) ? object.steps.map((e: any) => TestCaseStepData.fromJSON(e)) : [],
       updateRequired: isSet(object.updateRequired) ? Boolean(object.updateRequired) : undefined,
+      authenticationState: isSet(object.authenticationState)
+        ? testCaseAuthenticationStateFromJSON(object.authenticationState)
+        : undefined,
     };
   },
 
@@ -365,6 +414,9 @@ export const TestCaseData = {
       obj.steps = [];
     }
     message.updateRequired !== undefined && (obj.updateRequired = message.updateRequired);
+    message.authenticationState !== undefined && (obj.authenticationState = message.authenticationState !== undefined
+      ? testCaseAuthenticationStateToJSON(message.authenticationState)
+      : undefined);
     return obj;
   },
 
@@ -377,6 +429,7 @@ export const TestCaseData = {
     message.nodeId = object.nodeId ?? "";
     message.steps = object.steps?.map((e) => TestCaseStepData.fromPartial(e)) || [];
     message.updateRequired = object.updateRequired ?? undefined;
+    message.authenticationState = object.authenticationState ?? undefined;
     return message;
   },
 };

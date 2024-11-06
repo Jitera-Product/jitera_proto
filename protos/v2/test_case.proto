@@ -13,6 +13,12 @@ message TestCase {
 	string node_id = 5;
 	repeated TestCaseStep steps = 6;
 	optional bool updateRequired = 7;
+	optional AuthenticationState authentication_state = 8;
+	enum AuthenticationState {
+		UNDEFINED = 0;
+		NOT_AUTHENTICATED = 1;
+		AUTHENTICATED = 2;
+	}
 }
 
 message TestCaseStep {

@@ -1,12 +1,12 @@
 {
   "name": "@jitera/proto",
-  "version": "0.0.2-beta.233",
+  "version": "0.0.2-beta.235",
   "description": "",
   "main": "./build/cjs/index.js",
   "module": "./build/esm/index.js",
   "typings": "./build/types/index.d.ts",
   "scripts": {
-    "protobuf:generate": "grpc_tools_node_protoc --plugin=protoc-gen-ts_proto=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./lib/protos --ts_proto_opt=outputServices=nice-grpc,outputServices=generic-definitions,useExactTypes=false,fileSuffix=.proto,useSnakeTypeName=false,exportCommonSymbols=false,initializeFieldsAsUndefined=false,useOptionals=messages --proto_path=../protos ../protos/**/*.proto",
+    "protobuf:generate": "grpc_tools_node_protoc --plugin=protoc-gen-ts_proto=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./lib/protos --ts_proto_opt=esModuleInterop=true,outputServices=nice-grpc,outputServices=generic-definitions,useExactTypes=false,fileSuffix=.proto,useSnakeTypeName=false,exportCommonSymbols=false,initializeFieldsAsUndefined=false,useOptionals=messages --proto_path=../protos ../protos/**/*.proto",
     "build": "npm run build:esm && npm run build:cjs && npm run build:types",
     "build:clean": "rimraf build",
     "build:esm": "tsc --project tsconfig.prod.esm.json",
