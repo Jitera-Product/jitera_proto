@@ -9,6 +9,7 @@ message ProjectTicketCreationRequest {
   int32 project_id = 2;
   optional Figma figma = 3;
   repeated core.Block use_cases = 4;
+  string master_language_code = 5;
 }
 
 message ProjectTicketCreationResponse {
@@ -39,6 +40,7 @@ message ProjectTicketCreationByApiRequest {
   repeated core.Block apis = 4;
   repeated core.Block tickets = 5;
   repeated PullRequest pull_requests = 6;
+  string master_language_code = 7;
 
   message PullRequest {
     int32 number = 1;

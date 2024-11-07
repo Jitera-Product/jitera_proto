@@ -14,6 +14,7 @@ export class UseCaseCreation {
   error?: UseCaseCreationError | undefined;
   projectTables?: UseCaseCreationProjectTable | undefined;
   relatedTables?: UseCaseCreationProjectTable | undefined;
+  masterLanguageCode: string;
 }
 
 export class UseCaseCreationProgress {
@@ -162,7 +163,14 @@ export function useCaseCreationResponseStatusToJSON(object: UseCaseCreationRespo
 }
 
 function createBaseUseCaseCreation(): UseCaseCreation {
-  return { projectGenerateQueueId: 0, projectId: 0, useCases: [], tickets: [], htmlWireframes: [] };
+  return {
+    projectGenerateQueueId: 0,
+    projectId: 0,
+    useCases: [],
+    tickets: [],
+    htmlWireframes: [],
+    masterLanguageCode: "",
+  };
 }
 
 export const UseCaseCreationData = {
@@ -193,6 +201,9 @@ export const UseCaseCreationData = {
     }
     if (message.relatedTables !== undefined) {
       UseCaseCreationProjectTableData.encode(message.relatedTables, writer.uint32(66).fork()).ldelim();
+    }
+    if (message.masterLanguageCode !== "") {
+      writer.uint32(82).string(message.masterLanguageCode);
     }
     return writer;
   },
@@ -231,6 +242,9 @@ export const UseCaseCreationData = {
         case 8:
           message.relatedTables = UseCaseCreationProjectTableData.decode(reader, reader.uint32());
           break;
+        case 10:
+          message.masterLanguageCode = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -256,6 +270,7 @@ export const UseCaseCreationData = {
       relatedTables: isSet(object.relatedTables)
         ? UseCaseCreationProjectTableData.fromJSON(object.relatedTables)
         : undefined,
+      masterLanguageCode: isSet(object.masterLanguageCode) ? String(object.masterLanguageCode) : "",
     };
   },
 
@@ -291,6 +306,7 @@ export const UseCaseCreationData = {
     message.relatedTables !== undefined && (obj.relatedTables = message.relatedTables
       ? UseCaseCreationProjectTableData.toJSON(message.relatedTables)
       : undefined);
+    message.masterLanguageCode !== undefined && (obj.masterLanguageCode = message.masterLanguageCode);
     return obj;
   },
 
@@ -313,6 +329,7 @@ export const UseCaseCreationData = {
     message.relatedTables = (object.relatedTables !== undefined && object.relatedTables !== null)
       ? UseCaseCreationProjectTableData.fromPartial(object.relatedTables)
       : undefined;
+    message.masterLanguageCode = object.masterLanguageCode ?? "";
     return message;
   },
 };

@@ -74,6 +74,7 @@ export class ProjectSource {
   layer: ProjectSourceLayer;
   files: string;
   platform: ProjectSourcePlatform;
+  masterLanguageCode: string;
 }
 
 export enum ProjectSourceFramework {
@@ -702,7 +703,7 @@ export const GenerateSourceData = {
 };
 
 function createBaseProjectSource(): ProjectSource {
-  return { id: 0, projectId: 0, framework: 0, layer: 0, files: "", platform: 0 };
+  return { id: 0, projectId: 0, framework: 0, layer: 0, files: "", platform: 0, masterLanguageCode: "" };
 }
 
 export const ProjectSourceData = {
@@ -724,6 +725,9 @@ export const ProjectSourceData = {
     }
     if (message.platform !== 0) {
       writer.uint32(48).int32(message.platform);
+    }
+    if (message.masterLanguageCode !== "") {
+      writer.uint32(58).string(message.masterLanguageCode);
     }
     return writer;
   },
@@ -753,6 +757,9 @@ export const ProjectSourceData = {
         case 6:
           message.platform = reader.int32() as any;
           break;
+        case 7:
+          message.masterLanguageCode = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -769,6 +776,7 @@ export const ProjectSourceData = {
       layer: isSet(object.layer) ? projectSourceLayerFromJSON(object.layer) : 0,
       files: isSet(object.files) ? String(object.files) : "",
       platform: isSet(object.platform) ? projectSourcePlatformFromJSON(object.platform) : 0,
+      masterLanguageCode: isSet(object.masterLanguageCode) ? String(object.masterLanguageCode) : "",
     };
   },
 
@@ -780,6 +788,7 @@ export const ProjectSourceData = {
     message.layer !== undefined && (obj.layer = projectSourceLayerToJSON(message.layer));
     message.files !== undefined && (obj.files = message.files);
     message.platform !== undefined && (obj.platform = projectSourcePlatformToJSON(message.platform));
+    message.masterLanguageCode !== undefined && (obj.masterLanguageCode = message.masterLanguageCode);
     return obj;
   },
 
@@ -791,6 +800,7 @@ export const ProjectSourceData = {
     message.layer = object.layer ?? 0;
     message.files = object.files ?? "";
     message.platform = object.platform ?? 0;
+    message.masterLanguageCode = object.masterLanguageCode ?? "";
     return message;
   },
 };
