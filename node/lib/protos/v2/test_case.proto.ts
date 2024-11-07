@@ -1,5 +1,5 @@
 /* eslint-disable */
-import _m0 from "protobufjs/minimal";
+import * as _m0 from "protobufjs/minimal";
 import { Block, BlockData } from "./block_core.proto";
 import { BrowserStorageState, BrowserStorageStateData } from "./browser.proto";
 import {
