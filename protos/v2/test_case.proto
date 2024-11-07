@@ -66,7 +66,7 @@ message ProjectImportPageTestCasesCreation {
 	TestCasesRunTestConfiguration test_configuration = 3;
 	repeated core.Block use_cases = 4;
 	repeated ProjectImportPage project_import_pages = 5;
-	string master_language_code = 6;
+	optional string master_language_code = 6;
 }
 
 
