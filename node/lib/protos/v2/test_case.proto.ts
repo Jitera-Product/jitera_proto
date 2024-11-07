@@ -74,7 +74,7 @@ export class TestCasesCreation {
   projectId: number;
   testConfiguration?: TestCasesRunTestConfiguration;
   useCases: Block[];
-  masterLanguageCode: string;
+  masterLanguageCode?: string | undefined;
 }
 
 export class TestCasesRegeneration {
@@ -82,7 +82,7 @@ export class TestCasesRegeneration {
   projectId: number;
   testConfiguration?: TestCasesRunTestConfiguration;
   testCases: TestCase[];
-  masterLanguageCode: string;
+  masterLanguageCode?: string | undefined;
 }
 
 export class TestCasesRegenerationReport {
@@ -562,12 +562,7 @@ export const TestCaseStepData = {
 };
 
 function createBaseTestCasesCreation(): TestCasesCreation {
-  return {
-    projectGenerateId: 0,
-    projectId: 0,
-    useCases: [],
-    masterLanguageCode: "",
-  };
+  return { projectGenerateId: 0, projectId: 0, useCases: [] };
 }
 
 export const TestCasesCreationData = {
@@ -590,7 +585,7 @@ export const TestCasesCreationData = {
     for (const v of message.useCases) {
       BlockData.encode(v!, writer.uint32(34).fork()).ldelim();
     }
-    if (message.masterLanguageCode !== "") {
+    if (message.masterLanguageCode !== undefined) {
       writer.uint32(42).string(message.masterLanguageCode);
     }
     return writer;
@@ -643,7 +638,7 @@ export const TestCasesCreationData = {
         : [],
       masterLanguageCode: isSet(object.masterLanguageCode)
         ? String(object.masterLanguageCode)
-        : "",
+        : undefined,
     };
   },
 
@@ -682,18 +677,13 @@ export const TestCasesCreationData = {
         : undefined;
     message.useCases =
       object.useCases?.map((e) => BlockData.fromPartial(e)) || [];
-    message.masterLanguageCode = object.masterLanguageCode ?? "";
+    message.masterLanguageCode = object.masterLanguageCode ?? undefined;
     return message;
   },
 };
 
 function createBaseTestCasesRegeneration(): TestCasesRegeneration {
-  return {
-    projectGenerateId: 0,
-    projectId: 0,
-    testCases: [],
-    masterLanguageCode: "",
-  };
+  return { projectGenerateId: 0, projectId: 0, testCases: [] };
 }
 
 export const TestCasesRegenerationData = {
@@ -716,7 +706,7 @@ export const TestCasesRegenerationData = {
     for (const v of message.testCases) {
       TestCaseData.encode(v!, writer.uint32(34).fork()).ldelim();
     }
-    if (message.masterLanguageCode !== "") {
+    if (message.masterLanguageCode !== undefined) {
       writer.uint32(42).string(message.masterLanguageCode);
     }
     return writer;
@@ -772,7 +762,7 @@ export const TestCasesRegenerationData = {
         : [],
       masterLanguageCode: isSet(object.masterLanguageCode)
         ? String(object.masterLanguageCode)
-        : "",
+        : undefined,
     };
   },
 
@@ -813,7 +803,7 @@ export const TestCasesRegenerationData = {
         : undefined;
     message.testCases =
       object.testCases?.map((e) => TestCaseData.fromPartial(e)) || [];
-    message.masterLanguageCode = object.masterLanguageCode ?? "";
+    message.masterLanguageCode = object.masterLanguageCode ?? undefined;
     return message;
   },
 };
