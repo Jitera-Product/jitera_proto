@@ -144,7 +144,7 @@ export class ProjectImportPageTestCasesCreation {
   testConfiguration?: TestCasesRunTestConfiguration;
   useCases: Block[];
   projectImportPages: ProjectImportPage[];
-  masterLanguageCode?: string;
+  masterLanguageCode: string;
 }
 
 export class TestCasesCreationReport {
