@@ -74,7 +74,7 @@ export class TestCasesCreation {
   projectId: number;
   testConfiguration?: TestCasesRunTestConfiguration;
   useCases: Block[];
-  masterLanguageCode?: string | undefined;
+  masterLanguageCode: string | undefined;
 }
 
 export class TestCasesRegeneration {
@@ -82,7 +82,7 @@ export class TestCasesRegeneration {
   projectId: number;
   testConfiguration?: TestCasesRunTestConfiguration;
   testCases: TestCase[];
-  masterLanguageCode?: string | undefined;
+  masterLanguageCode: string | undefined;
 }
 
 export class TestCasesRegenerationReport {
@@ -562,7 +562,12 @@ export const TestCaseStepData = {
 };
 
 function createBaseTestCasesCreation(): TestCasesCreation {
-  return { projectGenerateId: 0, projectId: 0, useCases: [] };
+  return {
+    projectGenerateId: 0,
+    projectId: 0,
+    useCases: [],
+    masterLanguageCode: "",
+  };
 }
 
 export const TestCasesCreationData = {
@@ -683,7 +688,12 @@ export const TestCasesCreationData = {
 };
 
 function createBaseTestCasesRegeneration(): TestCasesRegeneration {
-  return { projectGenerateId: 0, projectId: 0, testCases: [] };
+  return {
+    projectGenerateId: 0,
+    projectId: 0,
+    testCases: [],
+    masterLanguageCode: "",
+  };
 }
 
 export const TestCasesRegenerationData = {
