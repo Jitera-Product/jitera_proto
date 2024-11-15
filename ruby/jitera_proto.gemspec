@@ -26,8 +26,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   # Uncomment to register a new dependency of your gem
-  spec.add_dependency 'google-protobuf', '~> 3.23.4'
-  spec.add_dependency 'grpc', '~> 1.56.2'
+  spec.add_dependency 'google-protobuf', '~> 3.25'
+  spec.add_dependency 'grpc', '~> 1.62'
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html
