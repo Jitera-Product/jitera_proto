@@ -67,6 +67,7 @@ export class TestCasesCreation {
   projectId: number;
   testConfiguration?: TestCasesRunTestConfiguration;
   useCases: Block[];
+  masterLanguageCode: string;
 }
 
 export class TestCasesRegeneration {
@@ -74,6 +75,7 @@ export class TestCasesRegeneration {
   projectId: number;
   testConfiguration?: TestCasesRunTestConfiguration;
   testCases: TestCase[];
+  masterLanguageCode: string;
 }
 
 export class TestCasesRegenerationReport {
@@ -131,6 +133,7 @@ export class ProjectImportPageTestCasesCreation {
   testConfiguration?: TestCasesRunTestConfiguration;
   useCases: Block[];
   projectImportPages: ProjectImportPage[];
+  masterLanguageCode: string;
 }
 
 export class TestCasesCreationReport {
@@ -140,6 +143,7 @@ export class TestCasesCreationReport {
   status: TestCasesCreationReportStatus;
   code?: string | undefined;
   storageState?: BrowserStorageState | undefined;
+  tracingPath?: string | undefined;
 }
 
 export enum TestCasesCreationReportStatus {
@@ -260,6 +264,7 @@ export class TestCasesRunReport {
   testCaseStep?: TestCasesRunReportTestCaseStepSource | undefined;
   code?: string | undefined;
   storageState?: BrowserStorageState | undefined;
+  tracingPath?: string | undefined;
 }
 
 export enum TestCasesRunReportStatus {
@@ -520,7 +525,7 @@ export const TestCaseStepData = {
 };
 
 function createBaseTestCasesCreation(): TestCasesCreation {
-  return { projectGenerateId: 0, projectId: 0, useCases: [] };
+  return { projectGenerateId: 0, projectId: 0, useCases: [], masterLanguageCode: "" };
 }
 
 export const TestCasesCreationData = {
@@ -536,6 +541,9 @@ export const TestCasesCreationData = {
     }
     for (const v of message.useCases) {
       BlockData.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.masterLanguageCode !== "") {
+      writer.uint32(42).string(message.masterLanguageCode);
     }
     return writer;
   },
@@ -559,6 +567,9 @@ export const TestCasesCreationData = {
         case 4:
           message.useCases.push(BlockData.decode(reader, reader.uint32()));
           break;
+        case 5:
+          message.masterLanguageCode = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -575,6 +586,7 @@ export const TestCasesCreationData = {
         ? TestCasesRunTestConfigurationData.fromJSON(object.testConfiguration)
         : undefined,
       useCases: Array.isArray(object?.useCases) ? object.useCases.map((e: any) => BlockData.fromJSON(e)) : [],
+      masterLanguageCode: isSet(object.masterLanguageCode) ? String(object.masterLanguageCode) : "",
     };
   },
 
@@ -590,6 +602,7 @@ export const TestCasesCreationData = {
     } else {
       obj.useCases = [];
     }
+    message.masterLanguageCode !== undefined && (obj.masterLanguageCode = message.masterLanguageCode);
     return obj;
   },
 
@@ -601,12 +614,13 @@ export const TestCasesCreationData = {
       ? TestCasesRunTestConfigurationData.fromPartial(object.testConfiguration)
       : undefined;
     message.useCases = object.useCases?.map((e) => BlockData.fromPartial(e)) || [];
+    message.masterLanguageCode = object.masterLanguageCode ?? "";
     return message;
   },
 };
 
 function createBaseTestCasesRegeneration(): TestCasesRegeneration {
-  return { projectGenerateId: 0, projectId: 0, testCases: [] };
+  return { projectGenerateId: 0, projectId: 0, testCases: [], masterLanguageCode: "" };
 }
 
 export const TestCasesRegenerationData = {
@@ -622,6 +636,9 @@ export const TestCasesRegenerationData = {
     }
     for (const v of message.testCases) {
       TestCaseData.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.masterLanguageCode !== "") {
+      writer.uint32(42).string(message.masterLanguageCode);
     }
     return writer;
   },
@@ -645,6 +662,9 @@ export const TestCasesRegenerationData = {
         case 4:
           message.testCases.push(TestCaseData.decode(reader, reader.uint32()));
           break;
+        case 5:
+          message.masterLanguageCode = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -661,6 +681,7 @@ export const TestCasesRegenerationData = {
         ? TestCasesRunTestConfigurationData.fromJSON(object.testConfiguration)
         : undefined,
       testCases: Array.isArray(object?.testCases) ? object.testCases.map((e: any) => TestCaseData.fromJSON(e)) : [],
+      masterLanguageCode: isSet(object.masterLanguageCode) ? String(object.masterLanguageCode) : "",
     };
   },
 
@@ -676,6 +697,7 @@ export const TestCasesRegenerationData = {
     } else {
       obj.testCases = [];
     }
+    message.masterLanguageCode !== undefined && (obj.masterLanguageCode = message.masterLanguageCode);
     return obj;
   },
 
@@ -687,6 +709,7 @@ export const TestCasesRegenerationData = {
       ? TestCasesRunTestConfigurationData.fromPartial(object.testConfiguration)
       : undefined;
     message.testCases = object.testCases?.map((e) => TestCaseData.fromPartial(e)) || [];
+    message.masterLanguageCode = object.masterLanguageCode ?? "";
     return message;
   },
 };
@@ -806,7 +829,7 @@ export const TestCasesRegenerationReportData = {
 };
 
 function createBaseProjectImportPageTestCasesCreation(): ProjectImportPageTestCasesCreation {
-  return { projectGenerateId: 0, projectId: 0, useCases: [], projectImportPages: [] };
+  return { projectGenerateId: 0, projectId: 0, useCases: [], projectImportPages: [], masterLanguageCode: "" };
 }
 
 export const ProjectImportPageTestCasesCreationData = {
@@ -825,6 +848,9 @@ export const ProjectImportPageTestCasesCreationData = {
     }
     for (const v of message.projectImportPages) {
       ProjectImportPageData.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
+    if (message.masterLanguageCode !== "") {
+      writer.uint32(50).string(message.masterLanguageCode);
     }
     return writer;
   },
@@ -851,6 +877,9 @@ export const ProjectImportPageTestCasesCreationData = {
         case 5:
           message.projectImportPages.push(ProjectImportPageData.decode(reader, reader.uint32()));
           break;
+        case 6:
+          message.masterLanguageCode = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -870,6 +899,7 @@ export const ProjectImportPageTestCasesCreationData = {
       projectImportPages: Array.isArray(object?.projectImportPages)
         ? object.projectImportPages.map((e: any) => ProjectImportPageData.fromJSON(e))
         : [],
+      masterLanguageCode: isSet(object.masterLanguageCode) ? String(object.masterLanguageCode) : "",
     };
   },
 
@@ -890,6 +920,7 @@ export const ProjectImportPageTestCasesCreationData = {
     } else {
       obj.projectImportPages = [];
     }
+    message.masterLanguageCode !== undefined && (obj.masterLanguageCode = message.masterLanguageCode);
     return obj;
   },
 
@@ -902,6 +933,7 @@ export const ProjectImportPageTestCasesCreationData = {
       : undefined;
     message.useCases = object.useCases?.map((e) => BlockData.fromPartial(e)) || [];
     message.projectImportPages = object.projectImportPages?.map((e) => ProjectImportPageData.fromPartial(e)) || [];
+    message.masterLanguageCode = object.masterLanguageCode ?? "";
     return message;
   },
 };
@@ -929,6 +961,9 @@ export const TestCasesCreationReportData = {
     }
     if (message.storageState !== undefined) {
       BrowserStorageStateData.encode(message.storageState, writer.uint32(50).fork()).ldelim();
+    }
+    if (message.tracingPath !== undefined) {
+      writer.uint32(58).string(message.tracingPath);
     }
     return writer;
   },
@@ -958,6 +993,9 @@ export const TestCasesCreationReportData = {
         case 6:
           message.storageState = BrowserStorageStateData.decode(reader, reader.uint32());
           break;
+        case 7:
+          message.tracingPath = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -974,6 +1012,7 @@ export const TestCasesCreationReportData = {
       status: isSet(object.status) ? testCasesCreationReportStatusFromJSON(object.status) : 0,
       code: isSet(object.code) ? String(object.code) : undefined,
       storageState: isSet(object.storageState) ? BrowserStorageStateData.fromJSON(object.storageState) : undefined,
+      tracingPath: isSet(object.tracingPath) ? String(object.tracingPath) : undefined,
     };
   },
 
@@ -994,6 +1033,7 @@ export const TestCasesCreationReportData = {
     message.code !== undefined && (obj.code = message.code);
     message.storageState !== undefined &&
       (obj.storageState = message.storageState ? BrowserStorageStateData.toJSON(message.storageState) : undefined);
+    message.tracingPath !== undefined && (obj.tracingPath = message.tracingPath);
     return obj;
   },
 
@@ -1007,6 +1047,7 @@ export const TestCasesCreationReportData = {
     message.storageState = (object.storageState !== undefined && object.storageState !== null)
       ? BrowserStorageStateData.fromPartial(object.storageState)
       : undefined;
+    message.tracingPath = object.tracingPath ?? undefined;
     return message;
   },
 };
@@ -1350,6 +1391,9 @@ export const TestCasesRunReportData = {
     if (message.storageState !== undefined) {
       BrowserStorageStateData.encode(message.storageState, writer.uint32(66).fork()).ldelim();
     }
+    if (message.tracingPath !== undefined) {
+      writer.uint32(74).string(message.tracingPath);
+    }
     return writer;
   },
 
@@ -1381,6 +1425,9 @@ export const TestCasesRunReportData = {
         case 8:
           message.storageState = BrowserStorageStateData.decode(reader, reader.uint32());
           break;
+        case 9:
+          message.tracingPath = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1400,6 +1447,7 @@ export const TestCasesRunReportData = {
         : undefined,
       code: isSet(object.code) ? String(object.code) : undefined,
       storageState: isSet(object.storageState) ? BrowserStorageStateData.fromJSON(object.storageState) : undefined,
+      tracingPath: isSet(object.tracingPath) ? String(object.tracingPath) : undefined,
     };
   },
 
@@ -1420,6 +1468,7 @@ export const TestCasesRunReportData = {
     message.code !== undefined && (obj.code = message.code);
     message.storageState !== undefined &&
       (obj.storageState = message.storageState ? BrowserStorageStateData.toJSON(message.storageState) : undefined);
+    message.tracingPath !== undefined && (obj.tracingPath = message.tracingPath);
     return obj;
   },
 
@@ -1438,6 +1487,7 @@ export const TestCasesRunReportData = {
     message.storageState = (object.storageState !== undefined && object.storageState !== null)
       ? BrowserStorageStateData.fromPartial(object.storageState)
       : undefined;
+    message.tracingPath = object.tracingPath ?? undefined;
     return message;
   },
 };

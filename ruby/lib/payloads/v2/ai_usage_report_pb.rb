@@ -10,29 +10,7 @@ require 'google/protobuf/struct_pb'
 descriptor_data = "\n\x18v2/ai_usage_report.proto\x12\tschema.v2\x1a\x1cgoogle/protobuf/struct.proto\"\xf8\x02\n\rAIUsageReport\x12\x12\n\nproject_id\x18\x01 \x01(\x05\x12)\n\x08metadata\x18\x02 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x0c\n\x04tags\x18\x03 \x03(\t\x12\x10\n\x08provider\x18\x04 \x01(\t\x12;\n\rdetail_usages\x18\x05 \x03(\x0b\x32$.schema.v2.AIUsageReport.DetailUsage\x12\r\n\x05model\x18\x06 \x01(\t\x12/\n\x06status\x18\x07 \x01(\x0e\x32\x1f.schema.v2.AIUsageReport.Status\x1aI\n\x0b\x44\x65tailUsage\x12+\n\x04type\x18\x01 \x01(\x0e\x32\x1d.schema.v2.AIUsageReport.Type\x12\r\n\x05total\x18\x03 \x01(\x05\"\x1d\n\x04Type\x12\t\n\x05input\x10\x00\x12\n\n\x06output\x10\x01\"!\n\x06Status\x12\x0b\n\x07success\x10\x00\x12\n\n\x06\x66\x61iled\x10\x01\x62\x06proto3"
 
 pool = Google::Protobuf::DescriptorPool.generated_pool
-
-begin
-  pool.add_serialized_file(descriptor_data)
-rescue TypeError => e
-  # Compatibility code: will be removed in the next major version.
-  require 'google/protobuf/descriptor_pb'
-  parsed = Google::Protobuf::FileDescriptorProto.decode(descriptor_data)
-  parsed.clear_dependency
-  serialized = parsed.class.encode(parsed)
-  file = pool.add_serialized_file(serialized)
-  warn "Warning: Protobuf detected an import path issue while loading generated file #{__FILE__}"
-  imports = [
-    ["google.protobuf.Struct", "google/protobuf/struct.proto"],
-  ]
-  imports.each do |type_name, expected_filename|
-    import_file = pool.lookup(type_name).file_descriptor
-    if import_file.name != expected_filename
-      warn "- #{file.name} imports #{expected_filename}, but that import was loaded as #{import_file.name}"
-    end
-  end
-  warn "Each proto file must use a consistent fully-qualified name."
-  warn "This will become an error in the next major version."
-end
+pool.add_serialized_file(descriptor_data)
 
 module Schema
   module V2
