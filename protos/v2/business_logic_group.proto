@@ -1,0 +1,29 @@
+syntax = "proto3";
+package schema.v2;
+import "v2/block_core.proto";
+
+message BusinessLogicGroupSyncResponse {
+	int32 project_generate_queue_id = 1;
+	string message = 2;
+	Status status = 3;
+	int32 token_usage = 4;
+  	repeated BusinessLogicGroup business_logic_groups = 5;
+	enum Status {
+		STATUS_UNSPECIFIED = 0;
+		STARTED = 1;
+		SUCCEEDED = 2;
+		FAILED = 3;
+	}
+}
+
+message BusinessLogicGroup {
+  string category = 1;
+  repeated string node_ids = 2;
+}
+
+message BusinessLogicGroupSync {
+  int32 project_generate_queue_id = 1;
+  int32 project_id = 2;
+  core.Block use_case = 3;
+  repeated core.Block business_logics = 4;
+}
