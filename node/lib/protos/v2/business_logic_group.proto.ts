@@ -1,6 +1,5 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-import { Block, BlockData } from "./block_core.proto";
 
 export class BusinessLogicGroupSyncResponse {
   projectGenerateQueueId: number;
@@ -63,8 +62,12 @@ export class BusinessLogicGroup {
 export class BusinessLogicGroupSync {
   projectGenerateQueueId: number;
   projectId: number;
-  useCase?: Block;
-  businessLogics: Block[];
+  businessLogics: BusinessLogicNames[];
+}
+
+export class BusinessLogicNames {
+  name: string;
+  nodeId: string;
 }
 
 function createBaseBusinessLogicGroupSyncResponse(): BusinessLogicGroupSyncResponse {
@@ -235,11 +238,8 @@ export const BusinessLogicGroupSyncData = {
     if (message.projectId !== 0) {
       writer.uint32(16).int32(message.projectId);
     }
-    if (message.useCase !== undefined) {
-      BlockData.encode(message.useCase, writer.uint32(26).fork()).ldelim();
-    }
     for (const v of message.businessLogics) {
-      BlockData.encode(v!, writer.uint32(34).fork()).ldelim();
+      BusinessLogicNamesData.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -258,10 +258,7 @@ export const BusinessLogicGroupSyncData = {
           message.projectId = reader.int32();
           break;
         case 3:
-          message.useCase = BlockData.decode(reader, reader.uint32());
-          break;
-        case 4:
-          message.businessLogics.push(BlockData.decode(reader, reader.uint32()));
+          message.businessLogics.push(BusinessLogicNamesData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -275,9 +272,8 @@ export const BusinessLogicGroupSyncData = {
     return {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      useCase: isSet(object.useCase) ? BlockData.fromJSON(object.useCase) : undefined,
       businessLogics: Array.isArray(object?.businessLogics)
-        ? object.businessLogics.map((e: any) => BlockData.fromJSON(e))
+        ? object.businessLogics.map((e: any) => BusinessLogicNamesData.fromJSON(e))
         : [],
     };
   },
@@ -287,9 +283,8 @@ export const BusinessLogicGroupSyncData = {
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
-    message.useCase !== undefined && (obj.useCase = message.useCase ? BlockData.toJSON(message.useCase) : undefined);
     if (message.businessLogics) {
-      obj.businessLogics = message.businessLogics.map((e) => e ? BlockData.toJSON(e) : undefined);
+      obj.businessLogics = message.businessLogics.map((e) => e ? BusinessLogicNamesData.toJSON(e) : undefined);
     } else {
       obj.businessLogics = [];
     }
@@ -300,10 +295,65 @@ export const BusinessLogicGroupSyncData = {
     const message = createBaseBusinessLogicGroupSync();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectId = object.projectId ?? 0;
-    message.useCase = (object.useCase !== undefined && object.useCase !== null)
-      ? BlockData.fromPartial(object.useCase)
-      : undefined;
-    message.businessLogics = object.businessLogics?.map((e) => BlockData.fromPartial(e)) || [];
+    message.businessLogics = object.businessLogics?.map((e) => BusinessLogicNamesData.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseBusinessLogicNames(): BusinessLogicNames {
+  return { name: "", nodeId: "" };
+}
+
+export const BusinessLogicNamesData = {
+  encode(message: BusinessLogicNames, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.nodeId !== "") {
+      writer.uint32(18).string(message.nodeId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): BusinessLogicNames {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBusinessLogicNames();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.name = reader.string();
+          break;
+        case 2:
+          message.nodeId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BusinessLogicNames {
+    return {
+      name: isSet(object.name) ? String(object.name) : "",
+      nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
+    };
+  },
+
+  toJSON(message: BusinessLogicNames): unknown {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
+    message.nodeId !== undefined && (obj.nodeId = message.nodeId);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<BusinessLogicNames>): BusinessLogicNames {
+    const message = createBaseBusinessLogicNames();
+    message.name = object.name ?? "";
+    message.nodeId = object.nodeId ?? "";
     return message;
   },
 };
