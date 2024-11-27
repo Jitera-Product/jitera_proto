@@ -1,6 +1,5 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-
 export class BusinessLogicGroupSyncResponse {
   projectGenerateQueueId: number;
   message: string;
@@ -63,6 +62,7 @@ export class BusinessLogicGroupSync {
   projectGenerateQueueId: number;
   projectId: number;
   businessLogics: BusinessLogicNames[];
+  masterLanguageCode: string;
 }
 
 export class BusinessLogicNames {
@@ -227,7 +227,7 @@ export const BusinessLogicGroupData = {
 };
 
 function createBaseBusinessLogicGroupSync(): BusinessLogicGroupSync {
-  return { projectGenerateQueueId: 0, projectId: 0, businessLogics: [] };
+  return { projectGenerateQueueId: 0, projectId: 0, businessLogics: [], masterLanguageCode: "" };
 }
 
 export const BusinessLogicGroupSyncData = {
@@ -240,6 +240,9 @@ export const BusinessLogicGroupSyncData = {
     }
     for (const v of message.businessLogics) {
       BusinessLogicNamesData.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.masterLanguageCode !== "") {
+      writer.uint32(42).string(message.masterLanguageCode);
     }
     return writer;
   },
@@ -260,6 +263,9 @@ export const BusinessLogicGroupSyncData = {
         case 3:
           message.businessLogics.push(BusinessLogicNamesData.decode(reader, reader.uint32()));
           break;
+        case 5:
+          message.masterLanguageCode = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -275,6 +281,7 @@ export const BusinessLogicGroupSyncData = {
       businessLogics: Array.isArray(object?.businessLogics)
         ? object.businessLogics.map((e: any) => BusinessLogicNamesData.fromJSON(e))
         : [],
+      masterLanguageCode: isSet(object.masterLanguageCode) ? String(object.masterLanguageCode) : "",
     };
   },
 
@@ -288,6 +295,7 @@ export const BusinessLogicGroupSyncData = {
     } else {
       obj.businessLogics = [];
     }
+    message.masterLanguageCode !== undefined && (obj.masterLanguageCode = message.masterLanguageCode);
     return obj;
   },
 
@@ -296,6 +304,7 @@ export const BusinessLogicGroupSyncData = {
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectId = object.projectId ?? 0;
     message.businessLogics = object.businessLogics?.map((e) => BusinessLogicNamesData.fromPartial(e)) || [];
+    message.masterLanguageCode = object.masterLanguageCode ?? "";
     return message;
   },
 };
