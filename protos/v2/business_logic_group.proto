@@ -7,6 +7,7 @@ message BusinessLogicGroupSyncResponse {
 	Status status = 3;
 	int32 token_usage = 4;
   	repeated BusinessLogicGroup business_logic_groups = 5;
+	repeated string existing_categories = 6;
 	enum Status {
 		STATUS_UNSPECIFIED = 0;
 		STARTED = 1;
