@@ -6,7 +6,6 @@ export class BusinessLogicGroupSyncResponse {
   status: BusinessLogicGroupSyncResponseStatus;
   tokenUsage: number;
   businessLogicGroups: BusinessLogicGroup[];
-  existingCategories: string[];
 }
 
 export enum BusinessLogicGroupSyncResponseStatus {
@@ -64,6 +63,7 @@ export class BusinessLogicGroupSync {
   projectId: number;
   businessLogics: BusinessLogicNames[];
   masterLanguageCode: string;
+  existingCategories: string[];
 }
 
 export class BusinessLogicNames {
@@ -72,14 +72,7 @@ export class BusinessLogicNames {
 }
 
 function createBaseBusinessLogicGroupSyncResponse(): BusinessLogicGroupSyncResponse {
-  return {
-    projectGenerateQueueId: 0,
-    message: "",
-    status: 0,
-    tokenUsage: 0,
-    businessLogicGroups: [],
-    existingCategories: [],
-  };
+  return { projectGenerateQueueId: 0, message: "", status: 0, tokenUsage: 0, businessLogicGroups: [] };
 }
 
 export const BusinessLogicGroupSyncResponseData = {
@@ -98,9 +91,6 @@ export const BusinessLogicGroupSyncResponseData = {
     }
     for (const v of message.businessLogicGroups) {
       BusinessLogicGroupData.encode(v!, writer.uint32(42).fork()).ldelim();
-    }
-    for (const v of message.existingCategories) {
-      writer.uint32(50).string(v!);
     }
     return writer;
   },
@@ -127,9 +117,6 @@ export const BusinessLogicGroupSyncResponseData = {
         case 5:
           message.businessLogicGroups.push(BusinessLogicGroupData.decode(reader, reader.uint32()));
           break;
-        case 6:
-          message.existingCategories.push(reader.string());
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -146,9 +133,6 @@ export const BusinessLogicGroupSyncResponseData = {
       tokenUsage: isSet(object.tokenUsage) ? Number(object.tokenUsage) : 0,
       businessLogicGroups: Array.isArray(object?.businessLogicGroups)
         ? object.businessLogicGroups.map((e: any) => BusinessLogicGroupData.fromJSON(e))
-        : [],
-      existingCategories: Array.isArray(object?.existingCategories)
-        ? object.existingCategories.map((e: any) => String(e))
         : [],
     };
   },
@@ -167,11 +151,6 @@ export const BusinessLogicGroupSyncResponseData = {
     } else {
       obj.businessLogicGroups = [];
     }
-    if (message.existingCategories) {
-      obj.existingCategories = message.existingCategories.map((e) => e);
-    } else {
-      obj.existingCategories = [];
-    }
     return obj;
   },
 
@@ -182,7 +161,6 @@ export const BusinessLogicGroupSyncResponseData = {
     message.status = object.status ?? 0;
     message.tokenUsage = object.tokenUsage ?? 0;
     message.businessLogicGroups = object.businessLogicGroups?.map((e) => BusinessLogicGroupData.fromPartial(e)) || [];
-    message.existingCategories = object.existingCategories?.map((e) => e) || [];
     return message;
   },
 };
@@ -250,7 +228,13 @@ export const BusinessLogicGroupData = {
 };
 
 function createBaseBusinessLogicGroupSync(): BusinessLogicGroupSync {
-  return { projectGenerateQueueId: 0, projectId: 0, businessLogics: [], masterLanguageCode: "" };
+  return {
+    projectGenerateQueueId: 0,
+    projectId: 0,
+    businessLogics: [],
+    masterLanguageCode: "",
+    existingCategories: [],
+  };
 }
 
 export const BusinessLogicGroupSyncData = {
@@ -266,6 +250,9 @@ export const BusinessLogicGroupSyncData = {
     }
     if (message.masterLanguageCode !== "") {
       writer.uint32(42).string(message.masterLanguageCode);
+    }
+    for (const v of message.existingCategories) {
+      writer.uint32(50).string(v!);
     }
     return writer;
   },
@@ -289,6 +276,9 @@ export const BusinessLogicGroupSyncData = {
         case 5:
           message.masterLanguageCode = reader.string();
           break;
+        case 6:
+          message.existingCategories.push(reader.string());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -305,6 +295,9 @@ export const BusinessLogicGroupSyncData = {
         ? object.businessLogics.map((e: any) => BusinessLogicNamesData.fromJSON(e))
         : [],
       masterLanguageCode: isSet(object.masterLanguageCode) ? String(object.masterLanguageCode) : "",
+      existingCategories: Array.isArray(object?.existingCategories)
+        ? object.existingCategories.map((e: any) => String(e))
+        : [],
     };
   },
 
@@ -319,6 +312,11 @@ export const BusinessLogicGroupSyncData = {
       obj.businessLogics = [];
     }
     message.masterLanguageCode !== undefined && (obj.masterLanguageCode = message.masterLanguageCode);
+    if (message.existingCategories) {
+      obj.existingCategories = message.existingCategories.map((e) => e);
+    } else {
+      obj.existingCategories = [];
+    }
     return obj;
   },
 
@@ -328,6 +326,7 @@ export const BusinessLogicGroupSyncData = {
     message.projectId = object.projectId ?? 0;
     message.businessLogics = object.businessLogics?.map((e) => BusinessLogicNamesData.fromPartial(e)) || [];
     message.masterLanguageCode = object.masterLanguageCode ?? "";
+    message.existingCategories = object.existingCategories?.map((e) => e) || [];
     return message;
   },
 };
