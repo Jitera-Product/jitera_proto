@@ -1,6 +1,9 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-
+/**
+ * NOTE: Try block_core.proto
+ * This structure has less support in utils of
+ */
 export class BusinessLogicSync {
   projectGenerateQueueId: number;
   projectId: number;
