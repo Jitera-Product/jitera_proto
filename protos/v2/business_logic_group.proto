@@ -25,6 +25,7 @@ message BusinessLogicGroupSync {
   int32 project_id = 2;
   repeated BusinessLogicNames business_logics = 3;
   string master_language_code = 5;
+  repeated string existing_categories = 6;
 }
 
 message BusinessLogicNames {
