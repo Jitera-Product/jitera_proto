@@ -99,6 +99,7 @@ enum ImportBy {
 	figma = 3;
 	gitlab = 4;
 	dsl = 5;
+	local = 6;
 }
 
 message ActionSteps {
@@ -119,6 +120,7 @@ message ProjectSourceCreation {
 	optional Action action = 6;
 	optional ActionSteps steps = 7;
 	optional google.protobuf.Struct metadata = 8;
+	optional string source_url = 9;
 
 	enum Action {
 		INDEX_CODE = 0;
