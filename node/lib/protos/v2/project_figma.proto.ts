@@ -1,7 +1,10 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { Block, BlockData } from "./block_core.proto";
-import { ComponentSpecification, ComponentSpecificationData } from "./component_specification.proto";
+import {
+  ComponentSpecification,
+  ComponentSpecificationData,
+} from "./component_specification.proto";
 
 export class ProjectFigmaImportRequest {
   projectGenerateQueueId: number;
@@ -9,6 +12,7 @@ export class ProjectFigmaImportRequest {
   accessToken: string;
   nodeIds: string;
   fileKey: string;
+  masterLanguageCode: string;
 }
 
 export class ProjectFigmaSyncRequest {
@@ -16,6 +20,7 @@ export class ProjectFigmaSyncRequest {
   projectId: number;
   accessToken: string;
   useCaseBlocks: Block[];
+  masterLanguageCode: string;
 }
 
 export class ProjectFigmaImportResponse {
@@ -35,7 +40,9 @@ export enum ProjectFigmaImportResponseModule {
   UNRECOGNIZED = -1,
 }
 
-export function projectFigmaImportResponseModuleFromJSON(object: any): ProjectFigmaImportResponseModule {
+export function projectFigmaImportResponseModuleFromJSON(
+  object: any
+): ProjectFigmaImportResponseModule {
   switch (object) {
     case 0:
     case "FIGMA_TO_NATURAL_LANGUAGE":
@@ -50,7 +57,9 @@ export function projectFigmaImportResponseModuleFromJSON(object: any): ProjectFi
   }
 }
 
-export function projectFigmaImportResponseModuleToJSON(object: ProjectFigmaImportResponseModule): string {
+export function projectFigmaImportResponseModuleToJSON(
+  object: ProjectFigmaImportResponseModule
+): string {
   switch (object) {
     case ProjectFigmaImportResponseModule.FIGMA_TO_NATURAL_LANGUAGE:
       return "FIGMA_TO_NATURAL_LANGUAGE";
@@ -69,7 +78,9 @@ export enum ProjectFigmaImportResponseStatus {
   UNRECOGNIZED = -1,
 }
 
-export function projectFigmaImportResponseStatusFromJSON(object: any): ProjectFigmaImportResponseStatus {
+export function projectFigmaImportResponseStatusFromJSON(
+  object: any
+): ProjectFigmaImportResponseStatus {
   switch (object) {
     case 0:
     case "SUCCEEDED":
@@ -87,7 +98,9 @@ export function projectFigmaImportResponseStatusFromJSON(object: any): ProjectFi
   }
 }
 
-export function projectFigmaImportResponseStatusToJSON(object: ProjectFigmaImportResponseStatus): string {
+export function projectFigmaImportResponseStatusToJSON(
+  object: ProjectFigmaImportResponseStatus
+): string {
   switch (object) {
     case ProjectFigmaImportResponseStatus.SUCCEEDED:
       return "SUCCEEDED";
@@ -106,11 +119,21 @@ export class Figma {
 }
 
 function createBaseProjectFigmaImportRequest(): ProjectFigmaImportRequest {
-  return { projectGenerateQueueId: 0, projectId: 0, accessToken: "", nodeIds: "", fileKey: "" };
+  return {
+    projectGenerateQueueId: 0,
+    projectId: 0,
+    accessToken: "",
+    nodeIds: "",
+    fileKey: "",
+    masterLanguageCode: "",
+  };
 }
 
 export const ProjectFigmaImportRequestData = {
-  encode(message: ProjectFigmaImportRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    message: ProjectFigmaImportRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
     }
@@ -126,10 +149,16 @@ export const ProjectFigmaImportRequestData = {
     if (message.fileKey !== "") {
       writer.uint32(42).string(message.fileKey);
     }
+    if (message.masterLanguageCode !== "") {
+      writer.uint32(50).string(message.masterLanguageCode);
+    }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectFigmaImportRequest {
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ProjectFigmaImportRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseProjectFigmaImportRequest();
@@ -151,6 +180,9 @@ export const ProjectFigmaImportRequestData = {
         case 5:
           message.fileKey = reader.string();
           break;
+        case 6:
+          message.masterLanguageCode = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -161,11 +193,16 @@ export const ProjectFigmaImportRequestData = {
 
   fromJSON(object: any): ProjectFigmaImportRequest {
     return {
-      projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
+      projectGenerateQueueId: isSet(object.projectGenerateQueueId)
+        ? Number(object.projectGenerateQueueId)
+        : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       accessToken: isSet(object.accessToken) ? String(object.accessToken) : "",
       nodeIds: isSet(object.nodeIds) ? String(object.nodeIds) : "",
       fileKey: isSet(object.fileKey) ? String(object.fileKey) : "",
+      masterLanguageCode: isSet(object.masterLanguageCode)
+        ? String(object.masterLanguageCode)
+        : "",
     };
   },
 
@@ -173,30 +210,46 @@ export const ProjectFigmaImportRequestData = {
     const obj: any = {};
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
-    message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
-    message.accessToken !== undefined && (obj.accessToken = message.accessToken);
+    message.projectId !== undefined &&
+      (obj.projectId = Math.round(message.projectId));
+    message.accessToken !== undefined &&
+      (obj.accessToken = message.accessToken);
     message.nodeIds !== undefined && (obj.nodeIds = message.nodeIds);
     message.fileKey !== undefined && (obj.fileKey = message.fileKey);
+    message.masterLanguageCode !== undefined &&
+      (obj.masterLanguageCode = message.masterLanguageCode);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<ProjectFigmaImportRequest>): ProjectFigmaImportRequest {
+  fromPartial(
+    object: DeepPartial<ProjectFigmaImportRequest>
+  ): ProjectFigmaImportRequest {
     const message = createBaseProjectFigmaImportRequest();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectId = object.projectId ?? 0;
     message.accessToken = object.accessToken ?? "";
     message.nodeIds = object.nodeIds ?? "";
     message.fileKey = object.fileKey ?? "";
+    message.masterLanguageCode = object.masterLanguageCode ?? "";
     return message;
   },
 };
 
 function createBaseProjectFigmaSyncRequest(): ProjectFigmaSyncRequest {
-  return { projectGenerateQueueId: 0, projectId: 0, accessToken: "", useCaseBlocks: [] };
+  return {
+    projectGenerateQueueId: 0,
+    projectId: 0,
+    accessToken: "",
+    useCaseBlocks: [],
+    masterLanguageCode: "",
+  };
 }
 
 export const ProjectFigmaSyncRequestData = {
-  encode(message: ProjectFigmaSyncRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    message: ProjectFigmaSyncRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
     }
@@ -209,10 +262,16 @@ export const ProjectFigmaSyncRequestData = {
     for (const v of message.useCaseBlocks) {
       BlockData.encode(v!, writer.uint32(34).fork()).ldelim();
     }
+    if (message.masterLanguageCode !== "") {
+      writer.uint32(42).string(message.masterLanguageCode);
+    }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectFigmaSyncRequest {
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ProjectFigmaSyncRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseProjectFigmaSyncRequest();
@@ -231,6 +290,9 @@ export const ProjectFigmaSyncRequestData = {
         case 4:
           message.useCaseBlocks.push(BlockData.decode(reader, reader.uint32()));
           break;
+        case 5:
+          message.masterLanguageCode = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -241,12 +303,17 @@ export const ProjectFigmaSyncRequestData = {
 
   fromJSON(object: any): ProjectFigmaSyncRequest {
     return {
-      projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
+      projectGenerateQueueId: isSet(object.projectGenerateQueueId)
+        ? Number(object.projectGenerateQueueId)
+        : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       accessToken: isSet(object.accessToken) ? String(object.accessToken) : "",
       useCaseBlocks: Array.isArray(object?.useCaseBlocks)
         ? object.useCaseBlocks.map((e: any) => BlockData.fromJSON(e))
         : [],
+      masterLanguageCode: isSet(object.masterLanguageCode)
+        ? String(object.masterLanguageCode)
+        : "",
     };
   },
 
@@ -254,22 +321,32 @@ export const ProjectFigmaSyncRequestData = {
     const obj: any = {};
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
-    message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
-    message.accessToken !== undefined && (obj.accessToken = message.accessToken);
+    message.projectId !== undefined &&
+      (obj.projectId = Math.round(message.projectId));
+    message.accessToken !== undefined &&
+      (obj.accessToken = message.accessToken);
     if (message.useCaseBlocks) {
-      obj.useCaseBlocks = message.useCaseBlocks.map((e) => e ? BlockData.toJSON(e) : undefined);
+      obj.useCaseBlocks = message.useCaseBlocks.map((e) =>
+        e ? BlockData.toJSON(e) : undefined
+      );
     } else {
       obj.useCaseBlocks = [];
     }
+    message.masterLanguageCode !== undefined &&
+      (obj.masterLanguageCode = message.masterLanguageCode);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<ProjectFigmaSyncRequest>): ProjectFigmaSyncRequest {
+  fromPartial(
+    object: DeepPartial<ProjectFigmaSyncRequest>
+  ): ProjectFigmaSyncRequest {
     const message = createBaseProjectFigmaSyncRequest();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectId = object.projectId ?? 0;
     message.accessToken = object.accessToken ?? "";
-    message.useCaseBlocks = object.useCaseBlocks?.map((e) => BlockData.fromPartial(e)) || [];
+    message.useCaseBlocks =
+      object.useCaseBlocks?.map((e) => BlockData.fromPartial(e)) || [];
+    message.masterLanguageCode = object.masterLanguageCode ?? "";
     return message;
   },
 };
@@ -288,7 +365,10 @@ function createBaseProjectFigmaImportResponse(): ProjectFigmaImportResponse {
 }
 
 export const ProjectFigmaImportResponseData = {
-  encode(message: ProjectFigmaImportResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    message: ProjectFigmaImportResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
     }
@@ -316,7 +396,10 @@ export const ProjectFigmaImportResponseData = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectFigmaImportResponse {
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ProjectFigmaImportResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseProjectFigmaImportResponse();
@@ -345,7 +428,9 @@ export const ProjectFigmaImportResponseData = {
           message.errorMessage = reader.string();
           break;
         case 8:
-          message.componentSpecifications.push(ComponentSpecificationData.decode(reader, reader.uint32()));
+          message.componentSpecifications.push(
+            ComponentSpecificationData.decode(reader, reader.uint32())
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -357,17 +442,27 @@ export const ProjectFigmaImportResponseData = {
 
   fromJSON(object: any): ProjectFigmaImportResponse {
     return {
-      projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
+      projectGenerateQueueId: isSet(object.projectGenerateQueueId)
+        ? Number(object.projectGenerateQueueId)
+        : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      module: isSet(object.module) ? projectFigmaImportResponseModuleFromJSON(object.module) : 0,
-      status: isSet(object.status) ? projectFigmaImportResponseStatusFromJSON(object.status) : 0,
+      module: isSet(object.module)
+        ? projectFigmaImportResponseModuleFromJSON(object.module)
+        : 0,
+      status: isSet(object.status)
+        ? projectFigmaImportResponseStatusFromJSON(object.status)
+        : 0,
       tokenUsage: isSet(object.tokenUsage) ? Number(object.tokenUsage) : 0,
       useCaseBlocks: Array.isArray(object?.useCaseBlocks)
         ? object.useCaseBlocks.map((e: any) => BlockData.fromJSON(e))
         : [],
-      errorMessage: isSet(object.errorMessage) ? String(object.errorMessage) : "",
+      errorMessage: isSet(object.errorMessage)
+        ? String(object.errorMessage)
+        : "",
       componentSpecifications: Array.isArray(object?.componentSpecifications)
-        ? object.componentSpecifications.map((e: any) => ComponentSpecificationData.fromJSON(e))
+        ? object.componentSpecifications.map((e: any) =>
+            ComponentSpecificationData.fromJSON(e)
+          )
         : [],
     };
   },
@@ -376,16 +471,23 @@ export const ProjectFigmaImportResponseData = {
     const obj: any = {};
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
-    message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
-    message.module !== undefined && (obj.module = projectFigmaImportResponseModuleToJSON(message.module));
-    message.status !== undefined && (obj.status = projectFigmaImportResponseStatusToJSON(message.status));
-    message.tokenUsage !== undefined && (obj.tokenUsage = Math.round(message.tokenUsage));
+    message.projectId !== undefined &&
+      (obj.projectId = Math.round(message.projectId));
+    message.module !== undefined &&
+      (obj.module = projectFigmaImportResponseModuleToJSON(message.module));
+    message.status !== undefined &&
+      (obj.status = projectFigmaImportResponseStatusToJSON(message.status));
+    message.tokenUsage !== undefined &&
+      (obj.tokenUsage = Math.round(message.tokenUsage));
     if (message.useCaseBlocks) {
-      obj.useCaseBlocks = message.useCaseBlocks.map((e) => e ? BlockData.toJSON(e) : undefined);
+      obj.useCaseBlocks = message.useCaseBlocks.map((e) =>
+        e ? BlockData.toJSON(e) : undefined
+      );
     } else {
       obj.useCaseBlocks = [];
     }
-    message.errorMessage !== undefined && (obj.errorMessage = message.errorMessage);
+    message.errorMessage !== undefined &&
+      (obj.errorMessage = message.errorMessage);
     if (message.componentSpecifications) {
       obj.componentSpecifications = message.componentSpecifications.map((e) =>
         e ? ComponentSpecificationData.toJSON(e) : undefined
@@ -396,17 +498,22 @@ export const ProjectFigmaImportResponseData = {
     return obj;
   },
 
-  fromPartial(object: DeepPartial<ProjectFigmaImportResponse>): ProjectFigmaImportResponse {
+  fromPartial(
+    object: DeepPartial<ProjectFigmaImportResponse>
+  ): ProjectFigmaImportResponse {
     const message = createBaseProjectFigmaImportResponse();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectId = object.projectId ?? 0;
     message.module = object.module ?? 0;
     message.status = object.status ?? 0;
     message.tokenUsage = object.tokenUsage ?? 0;
-    message.useCaseBlocks = object.useCaseBlocks?.map((e) => BlockData.fromPartial(e)) || [];
+    message.useCaseBlocks =
+      object.useCaseBlocks?.map((e) => BlockData.fromPartial(e)) || [];
     message.errorMessage = object.errorMessage ?? "";
     message.componentSpecifications =
-      object.componentSpecifications?.map((e) => ComponentSpecificationData.fromPartial(e)) || [];
+      object.componentSpecifications?.map((e) =>
+        ComponentSpecificationData.fromPartial(e)
+      ) || [];
     return message;
   },
 };
@@ -442,12 +549,15 @@ export const FigmaData = {
   },
 
   fromJSON(object: any): Figma {
-    return { accessToken: isSet(object.accessToken) ? String(object.accessToken) : "" };
+    return {
+      accessToken: isSet(object.accessToken) ? String(object.accessToken) : "",
+    };
   },
 
   toJSON(message: Figma): unknown {
     const obj: any = {};
-    message.accessToken !== undefined && (obj.accessToken = message.accessToken);
+    message.accessToken !== undefined &&
+      (obj.accessToken = message.accessToken);
     return obj;
   },
 
@@ -458,11 +568,23 @@ export const FigmaData = {
   },
 };
 
-type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
+type Builtin =
+  | Date
+  | Function
+  | Uint8Array
+  | string
+  | number
+  | boolean
+  | undefined;
 
-type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
+type DeepPartial<T> = T extends Builtin
+  ? T
+  : T extends Array<infer U>
+  ? Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U>
+  ? ReadonlyArray<DeepPartial<U>>
+  : T extends {}
+  ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
 function isSet(value: any): boolean {
