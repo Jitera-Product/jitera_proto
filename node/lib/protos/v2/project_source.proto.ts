@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from "long";
 import _m0 from "protobufjs/minimal";
-import { StructData } from "../google/protobuf/struct.proto";
+import { Struct, StructData } from "../google/protobuf/struct.proto";
 import { Table, TableData } from "../v1/payloads.proto";
 
 export enum ImportBy {
@@ -11,6 +11,7 @@ export enum ImportBy {
   figma = 3,
   gitlab = 4,
   dsl = 5,
+  local = 6,
   UNRECOGNIZED = -1,
 }
 
@@ -34,6 +35,9 @@ export function importByFromJSON(object: any): ImportBy {
     case 5:
     case "dsl":
       return ImportBy.dsl;
+    case 6:
+    case "local":
+      return ImportBy.local;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -55,6 +59,8 @@ export function importByToJSON(object: ImportBy): string {
       return "gitlab";
     case ImportBy.dsl:
       return "dsl";
+    case ImportBy.local:
+      return "local";
     case ImportBy.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -75,6 +81,7 @@ export class ProjectSource {
   files: string;
   platform: ProjectSourcePlatform;
   masterLanguageCode: string;
+  sourceUrl?: string | undefined;
 }
 
 export enum ProjectSourceFramework {
@@ -729,6 +736,9 @@ export const ProjectSourceData = {
     if (message.masterLanguageCode !== "") {
       writer.uint32(58).string(message.masterLanguageCode);
     }
+    if (message.sourceUrl !== undefined) {
+      writer.uint32(66).string(message.sourceUrl);
+    }
     return writer;
   },
 
@@ -760,6 +770,9 @@ export const ProjectSourceData = {
         case 7:
           message.masterLanguageCode = reader.string();
           break;
+        case 8:
+          message.sourceUrl = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -777,6 +790,7 @@ export const ProjectSourceData = {
       files: isSet(object.files) ? String(object.files) : "",
       platform: isSet(object.platform) ? projectSourcePlatformFromJSON(object.platform) : 0,
       masterLanguageCode: isSet(object.masterLanguageCode) ? String(object.masterLanguageCode) : "",
+      sourceUrl: isSet(object.sourceUrl) ? String(object.sourceUrl) : undefined,
     };
   },
 
@@ -789,6 +803,7 @@ export const ProjectSourceData = {
     message.files !== undefined && (obj.files = message.files);
     message.platform !== undefined && (obj.platform = projectSourcePlatformToJSON(message.platform));
     message.masterLanguageCode !== undefined && (obj.masterLanguageCode = message.masterLanguageCode);
+    message.sourceUrl !== undefined && (obj.sourceUrl = message.sourceUrl);
     return obj;
   },
 
@@ -801,6 +816,7 @@ export const ProjectSourceData = {
     message.files = object.files ?? "";
     message.platform = object.platform ?? 0;
     message.masterLanguageCode = object.masterLanguageCode ?? "";
+    message.sourceUrl = object.sourceUrl ?? undefined;
     return message;
   },
 };
