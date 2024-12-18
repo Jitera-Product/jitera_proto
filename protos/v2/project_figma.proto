@@ -10,6 +10,7 @@ message ProjectFigmaImportRequest {
   string access_token = 3;
   string node_ids = 4;
   string file_key = 5;
+  string master_language_code = 6;
 }
 
 message ProjectFigmaSyncRequest {
@@ -17,6 +18,7 @@ message ProjectFigmaSyncRequest {
   int32 project_id = 2;
   string access_token = 3;
   repeated core.Block use_case_blocks = 4;
+  string master_language_code = 5;
 }
 
 message ProjectFigmaImportResponse {
