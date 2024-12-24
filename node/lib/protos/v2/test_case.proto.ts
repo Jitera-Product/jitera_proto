@@ -68,6 +68,7 @@ export class TestCasesCreation {
   testConfiguration?: TestCasesRunTestConfiguration;
   useCases: Block[];
   masterLanguageCode: string;
+  envConfiguration?: EnvConfiguration | undefined;
 }
 
 export class TestCasesRegeneration {
@@ -76,6 +77,15 @@ export class TestCasesRegeneration {
   testConfiguration?: TestCasesRunTestConfiguration;
   testCases: TestCase[];
   masterLanguageCode: string;
+  envConfiguration?: EnvConfiguration | undefined;
+}
+
+export class EnvConfiguration {
+  label?: string | undefined;
+  url?: string | undefined;
+  loginPath?: string | undefined;
+  httpBasicUsername?: string | undefined;
+  httpBasicPassword?: string | undefined;
 }
 
 export class TestCasesRegenerationReport {
@@ -134,6 +144,7 @@ export class ProjectImportPageTestCasesCreation {
   useCases: Block[];
   projectImportPages: ProjectImportPage[];
   masterLanguageCode: string;
+  envConfiguration?: EnvConfiguration | undefined;
 }
 
 export class TestCasesCreationReport {
@@ -190,10 +201,11 @@ export class TestCasesRun {
   projectId: number;
   testConfiguration?: TestCasesRunTestConfiguration;
   testCases: TestCase[];
+  envConfiguration?: EnvConfiguration | undefined;
 }
 
 export class TestCasesRunTestConfiguration {
-  url: string;
+  url?: string | undefined;
   username: string;
   password: string;
   loginPath?: string | undefined;
@@ -545,6 +557,9 @@ export const TestCasesCreationData = {
     if (message.masterLanguageCode !== "") {
       writer.uint32(42).string(message.masterLanguageCode);
     }
+    if (message.envConfiguration !== undefined) {
+      EnvConfigurationData.encode(message.envConfiguration, writer.uint32(50).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -570,6 +585,9 @@ export const TestCasesCreationData = {
         case 5:
           message.masterLanguageCode = reader.string();
           break;
+        case 6:
+          message.envConfiguration = EnvConfigurationData.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -587,6 +605,9 @@ export const TestCasesCreationData = {
         : undefined,
       useCases: Array.isArray(object?.useCases) ? object.useCases.map((e: any) => BlockData.fromJSON(e)) : [],
       masterLanguageCode: isSet(object.masterLanguageCode) ? String(object.masterLanguageCode) : "",
+      envConfiguration: isSet(object.envConfiguration)
+        ? EnvConfigurationData.fromJSON(object.envConfiguration)
+        : undefined,
     };
   },
 
@@ -603,6 +624,9 @@ export const TestCasesCreationData = {
       obj.useCases = [];
     }
     message.masterLanguageCode !== undefined && (obj.masterLanguageCode = message.masterLanguageCode);
+    message.envConfiguration !== undefined && (obj.envConfiguration = message.envConfiguration
+      ? EnvConfigurationData.toJSON(message.envConfiguration)
+      : undefined);
     return obj;
   },
 
@@ -615,6 +639,9 @@ export const TestCasesCreationData = {
       : undefined;
     message.useCases = object.useCases?.map((e) => BlockData.fromPartial(e)) || [];
     message.masterLanguageCode = object.masterLanguageCode ?? "";
+    message.envConfiguration = (object.envConfiguration !== undefined && object.envConfiguration !== null)
+      ? EnvConfigurationData.fromPartial(object.envConfiguration)
+      : undefined;
     return message;
   },
 };
@@ -639,6 +666,9 @@ export const TestCasesRegenerationData = {
     }
     if (message.masterLanguageCode !== "") {
       writer.uint32(42).string(message.masterLanguageCode);
+    }
+    if (message.envConfiguration !== undefined) {
+      EnvConfigurationData.encode(message.envConfiguration, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -665,6 +695,9 @@ export const TestCasesRegenerationData = {
         case 5:
           message.masterLanguageCode = reader.string();
           break;
+        case 6:
+          message.envConfiguration = EnvConfigurationData.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -682,6 +715,9 @@ export const TestCasesRegenerationData = {
         : undefined,
       testCases: Array.isArray(object?.testCases) ? object.testCases.map((e: any) => TestCaseData.fromJSON(e)) : [],
       masterLanguageCode: isSet(object.masterLanguageCode) ? String(object.masterLanguageCode) : "",
+      envConfiguration: isSet(object.envConfiguration)
+        ? EnvConfigurationData.fromJSON(object.envConfiguration)
+        : undefined,
     };
   },
 
@@ -698,6 +734,9 @@ export const TestCasesRegenerationData = {
       obj.testCases = [];
     }
     message.masterLanguageCode !== undefined && (obj.masterLanguageCode = message.masterLanguageCode);
+    message.envConfiguration !== undefined && (obj.envConfiguration = message.envConfiguration
+      ? EnvConfigurationData.toJSON(message.envConfiguration)
+      : undefined);
     return obj;
   },
 
@@ -710,6 +749,94 @@ export const TestCasesRegenerationData = {
       : undefined;
     message.testCases = object.testCases?.map((e) => TestCaseData.fromPartial(e)) || [];
     message.masterLanguageCode = object.masterLanguageCode ?? "";
+    message.envConfiguration = (object.envConfiguration !== undefined && object.envConfiguration !== null)
+      ? EnvConfigurationData.fromPartial(object.envConfiguration)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseEnvConfiguration(): EnvConfiguration {
+  return {};
+}
+
+export const EnvConfigurationData = {
+  encode(message: EnvConfiguration, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.label !== undefined) {
+      writer.uint32(10).string(message.label);
+    }
+    if (message.url !== undefined) {
+      writer.uint32(18).string(message.url);
+    }
+    if (message.loginPath !== undefined) {
+      writer.uint32(26).string(message.loginPath);
+    }
+    if (message.httpBasicUsername !== undefined) {
+      writer.uint32(34).string(message.httpBasicUsername);
+    }
+    if (message.httpBasicPassword !== undefined) {
+      writer.uint32(42).string(message.httpBasicPassword);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): EnvConfiguration {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEnvConfiguration();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.label = reader.string();
+          break;
+        case 2:
+          message.url = reader.string();
+          break;
+        case 3:
+          message.loginPath = reader.string();
+          break;
+        case 4:
+          message.httpBasicUsername = reader.string();
+          break;
+        case 5:
+          message.httpBasicPassword = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): EnvConfiguration {
+    return {
+      label: isSet(object.label) ? String(object.label) : undefined,
+      url: isSet(object.url) ? String(object.url) : undefined,
+      loginPath: isSet(object.loginPath) ? String(object.loginPath) : undefined,
+      httpBasicUsername: isSet(object.httpBasicUsername) ? String(object.httpBasicUsername) : undefined,
+      httpBasicPassword: isSet(object.httpBasicPassword) ? String(object.httpBasicPassword) : undefined,
+    };
+  },
+
+  toJSON(message: EnvConfiguration): unknown {
+    const obj: any = {};
+    message.label !== undefined && (obj.label = message.label);
+    message.url !== undefined && (obj.url = message.url);
+    message.loginPath !== undefined && (obj.loginPath = message.loginPath);
+    message.httpBasicUsername !== undefined && (obj.httpBasicUsername = message.httpBasicUsername);
+    message.httpBasicPassword !== undefined && (obj.httpBasicPassword = message.httpBasicPassword);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<EnvConfiguration>): EnvConfiguration {
+    const message = createBaseEnvConfiguration();
+    message.label = object.label ?? undefined;
+    message.url = object.url ?? undefined;
+    message.loginPath = object.loginPath ?? undefined;
+    message.httpBasicUsername = object.httpBasicUsername ?? undefined;
+    message.httpBasicPassword = object.httpBasicPassword ?? undefined;
     return message;
   },
 };
@@ -852,6 +979,9 @@ export const ProjectImportPageTestCasesCreationData = {
     if (message.masterLanguageCode !== "") {
       writer.uint32(50).string(message.masterLanguageCode);
     }
+    if (message.envConfiguration !== undefined) {
+      EnvConfigurationData.encode(message.envConfiguration, writer.uint32(58).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -880,6 +1010,9 @@ export const ProjectImportPageTestCasesCreationData = {
         case 6:
           message.masterLanguageCode = reader.string();
           break;
+        case 7:
+          message.envConfiguration = EnvConfigurationData.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -900,6 +1033,9 @@ export const ProjectImportPageTestCasesCreationData = {
         ? object.projectImportPages.map((e: any) => ProjectImportPageData.fromJSON(e))
         : [],
       masterLanguageCode: isSet(object.masterLanguageCode) ? String(object.masterLanguageCode) : "",
+      envConfiguration: isSet(object.envConfiguration)
+        ? EnvConfigurationData.fromJSON(object.envConfiguration)
+        : undefined,
     };
   },
 
@@ -921,6 +1057,9 @@ export const ProjectImportPageTestCasesCreationData = {
       obj.projectImportPages = [];
     }
     message.masterLanguageCode !== undefined && (obj.masterLanguageCode = message.masterLanguageCode);
+    message.envConfiguration !== undefined && (obj.envConfiguration = message.envConfiguration
+      ? EnvConfigurationData.toJSON(message.envConfiguration)
+      : undefined);
     return obj;
   },
 
@@ -934,6 +1073,9 @@ export const ProjectImportPageTestCasesCreationData = {
     message.useCases = object.useCases?.map((e) => BlockData.fromPartial(e)) || [];
     message.projectImportPages = object.projectImportPages?.map((e) => ProjectImportPageData.fromPartial(e)) || [];
     message.masterLanguageCode = object.masterLanguageCode ?? "";
+    message.envConfiguration = (object.envConfiguration !== undefined && object.envConfiguration !== null)
+      ? EnvConfigurationData.fromPartial(object.envConfiguration)
+      : undefined;
     return message;
   },
 };
@@ -1070,6 +1212,9 @@ export const TestCasesRunData = {
     for (const v of message.testCases) {
       TestCaseData.encode(v!, writer.uint32(34).fork()).ldelim();
     }
+    if (message.envConfiguration !== undefined) {
+      EnvConfigurationData.encode(message.envConfiguration, writer.uint32(42).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -1092,6 +1237,9 @@ export const TestCasesRunData = {
         case 4:
           message.testCases.push(TestCaseData.decode(reader, reader.uint32()));
           break;
+        case 5:
+          message.envConfiguration = EnvConfigurationData.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1108,6 +1256,9 @@ export const TestCasesRunData = {
         ? TestCasesRunTestConfigurationData.fromJSON(object.testConfiguration)
         : undefined,
       testCases: Array.isArray(object?.testCases) ? object.testCases.map((e: any) => TestCaseData.fromJSON(e)) : [],
+      envConfiguration: isSet(object.envConfiguration)
+        ? EnvConfigurationData.fromJSON(object.envConfiguration)
+        : undefined,
     };
   },
 
@@ -1123,6 +1274,9 @@ export const TestCasesRunData = {
     } else {
       obj.testCases = [];
     }
+    message.envConfiguration !== undefined && (obj.envConfiguration = message.envConfiguration
+      ? EnvConfigurationData.toJSON(message.envConfiguration)
+      : undefined);
     return obj;
   },
 
@@ -1134,17 +1288,20 @@ export const TestCasesRunData = {
       ? TestCasesRunTestConfigurationData.fromPartial(object.testConfiguration)
       : undefined;
     message.testCases = object.testCases?.map((e) => TestCaseData.fromPartial(e)) || [];
+    message.envConfiguration = (object.envConfiguration !== undefined && object.envConfiguration !== null)
+      ? EnvConfigurationData.fromPartial(object.envConfiguration)
+      : undefined;
     return message;
   },
 };
 
 function createBaseTestCasesRunTestConfiguration(): TestCasesRunTestConfiguration {
-  return { url: "", username: "", password: "", projectGenerateId: 0, projectId: 0 };
+  return { username: "", password: "", projectGenerateId: 0, projectId: 0 };
 }
 
 export const TestCasesRunTestConfigurationData = {
   encode(message: TestCasesRunTestConfiguration, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.url !== "") {
+    if (message.url !== undefined) {
       writer.uint32(10).string(message.url);
     }
     if (message.username !== "") {
@@ -1218,7 +1375,7 @@ export const TestCasesRunTestConfigurationData = {
 
   fromJSON(object: any): TestCasesRunTestConfiguration {
     return {
-      url: isSet(object.url) ? String(object.url) : "",
+      url: isSet(object.url) ? String(object.url) : undefined,
       username: isSet(object.username) ? String(object.username) : "",
       password: isSet(object.password) ? String(object.password) : "",
       loginPath: isSet(object.loginPath) ? String(object.loginPath) : undefined,
@@ -1248,7 +1405,7 @@ export const TestCasesRunTestConfigurationData = {
 
   fromPartial(object: DeepPartial<TestCasesRunTestConfiguration>): TestCasesRunTestConfiguration {
     const message = createBaseTestCasesRunTestConfiguration();
-    message.url = object.url ?? "";
+    message.url = object.url ?? undefined;
     message.username = object.username ?? "";
     message.password = object.password ?? "";
     message.loginPath = object.loginPath ?? undefined;
