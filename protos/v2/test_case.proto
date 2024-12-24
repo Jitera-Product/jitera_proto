@@ -35,6 +35,7 @@ message TestCasesCreation {
 	TestCasesRunTestConfiguration test_configuration = 3;
 	repeated core.Block use_cases = 4;
 	string master_language_code = 5;
+	optional EnvConfiguration env_configuration = 6;
 }
 
 message TestCasesRegeneration {
@@ -43,6 +44,15 @@ message TestCasesRegeneration {
 	TestCasesRunTestConfiguration test_configuration = 3;
 	repeated TestCase test_cases = 4;
 	string master_language_code = 5;
+	optional EnvConfiguration env_configuration = 6;
+}
+
+message EnvConfiguration {
+	optional string label = 1;
+	optional string url = 2;
+	optional string login_path = 3;
+	optional string http_basic_username = 4;
+	optional string http_basic_password = 5;
 }
 
 message TestCasesRegenerationReport {
@@ -67,6 +77,7 @@ message ProjectImportPageTestCasesCreation {
 	repeated core.Block use_cases = 4;
 	repeated ProjectImportPage project_import_pages = 5;
 	string master_language_code = 6;
+	optional EnvConfiguration env_configuration = 7;
 }
 
 
@@ -91,10 +102,11 @@ message TestCasesRun {
 	int32 project_id = 2;
 	TestCasesRunTestConfiguration test_configuration = 3;
 	repeated TestCase test_cases = 4;
+	optional EnvConfiguration env_configuration = 5;
 }
 
 message TestCasesRunTestConfiguration {
-	string url = 1;
+	optional string url = 1;
 	string username = 2;
 	string password = 3;
 	optional string login_path = 4;
