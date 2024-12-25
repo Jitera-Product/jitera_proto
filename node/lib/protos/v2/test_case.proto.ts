@@ -78,6 +78,11 @@ export class TestCasesRegeneration {
   masterLanguageCode: string;
 }
 
+export class EnvConfiguration {
+  httpBasicUsername?: string | undefined;
+  httpBasicPassword?: string | undefined;
+}
+
 export class TestCasesRegenerationReport {
   projectGenerateId: number;
   projectId: number;
@@ -193,7 +198,7 @@ export class TestCasesRun {
 }
 
 export class TestCasesRunTestConfiguration {
-  url: string;
+  url?: string | undefined;
   username: string;
   password: string;
   loginPath?: string | undefined;
@@ -202,6 +207,7 @@ export class TestCasesRunTestConfiguration {
   tokenExpirationSeconds?: number | undefined;
   code?: string | undefined;
   storageState?: BrowserStorageState;
+  envConfiguration?: EnvConfiguration | undefined;
 }
 
 export class TestCaseAuthorisationCreationReport {
@@ -714,6 +720,64 @@ export const TestCasesRegenerationData = {
   },
 };
 
+function createBaseEnvConfiguration(): EnvConfiguration {
+  return {};
+}
+
+export const EnvConfigurationData = {
+  encode(message: EnvConfiguration, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.httpBasicUsername !== undefined) {
+      writer.uint32(34).string(message.httpBasicUsername);
+    }
+    if (message.httpBasicPassword !== undefined) {
+      writer.uint32(42).string(message.httpBasicPassword);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): EnvConfiguration {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEnvConfiguration();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 4:
+          message.httpBasicUsername = reader.string();
+          break;
+        case 5:
+          message.httpBasicPassword = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): EnvConfiguration {
+    return {
+      httpBasicUsername: isSet(object.httpBasicUsername) ? String(object.httpBasicUsername) : undefined,
+      httpBasicPassword: isSet(object.httpBasicPassword) ? String(object.httpBasicPassword) : undefined,
+    };
+  },
+
+  toJSON(message: EnvConfiguration): unknown {
+    const obj: any = {};
+    message.httpBasicUsername !== undefined && (obj.httpBasicUsername = message.httpBasicUsername);
+    message.httpBasicPassword !== undefined && (obj.httpBasicPassword = message.httpBasicPassword);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<EnvConfiguration>): EnvConfiguration {
+    const message = createBaseEnvConfiguration();
+    message.httpBasicUsername = object.httpBasicUsername ?? undefined;
+    message.httpBasicPassword = object.httpBasicPassword ?? undefined;
+    return message;
+  },
+};
+
 function createBaseTestCasesRegenerationReport(): TestCasesRegenerationReport {
   return { projectGenerateId: 0, projectId: 0, testCases: [], status: 0, errors: [] };
 }
@@ -1139,12 +1203,12 @@ export const TestCasesRunData = {
 };
 
 function createBaseTestCasesRunTestConfiguration(): TestCasesRunTestConfiguration {
-  return { url: "", username: "", password: "", projectGenerateId: 0, projectId: 0 };
+  return { username: "", password: "", projectGenerateId: 0, projectId: 0 };
 }
 
 export const TestCasesRunTestConfigurationData = {
   encode(message: TestCasesRunTestConfiguration, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.url !== "") {
+    if (message.url !== undefined) {
       writer.uint32(10).string(message.url);
     }
     if (message.username !== "") {
@@ -1170,6 +1234,9 @@ export const TestCasesRunTestConfigurationData = {
     }
     if (message.storageState !== undefined) {
       BrowserStorageStateData.encode(message.storageState, writer.uint32(74).fork()).ldelim();
+    }
+    if (message.envConfiguration !== undefined) {
+      EnvConfigurationData.encode(message.envConfiguration, writer.uint32(82).fork()).ldelim();
     }
     return writer;
   },
@@ -1208,6 +1275,9 @@ export const TestCasesRunTestConfigurationData = {
         case 9:
           message.storageState = BrowserStorageStateData.decode(reader, reader.uint32());
           break;
+        case 10:
+          message.envConfiguration = EnvConfigurationData.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1218,7 +1288,7 @@ export const TestCasesRunTestConfigurationData = {
 
   fromJSON(object: any): TestCasesRunTestConfiguration {
     return {
-      url: isSet(object.url) ? String(object.url) : "",
+      url: isSet(object.url) ? String(object.url) : undefined,
       username: isSet(object.username) ? String(object.username) : "",
       password: isSet(object.password) ? String(object.password) : "",
       loginPath: isSet(object.loginPath) ? String(object.loginPath) : undefined,
@@ -1227,6 +1297,9 @@ export const TestCasesRunTestConfigurationData = {
       tokenExpirationSeconds: isSet(object.tokenExpirationSeconds) ? Number(object.tokenExpirationSeconds) : undefined,
       code: isSet(object.code) ? String(object.code) : undefined,
       storageState: isSet(object.storageState) ? BrowserStorageStateData.fromJSON(object.storageState) : undefined,
+      envConfiguration: isSet(object.envConfiguration)
+        ? EnvConfigurationData.fromJSON(object.envConfiguration)
+        : undefined,
     };
   },
 
@@ -1243,12 +1316,15 @@ export const TestCasesRunTestConfigurationData = {
     message.code !== undefined && (obj.code = message.code);
     message.storageState !== undefined &&
       (obj.storageState = message.storageState ? BrowserStorageStateData.toJSON(message.storageState) : undefined);
+    message.envConfiguration !== undefined && (obj.envConfiguration = message.envConfiguration
+      ? EnvConfigurationData.toJSON(message.envConfiguration)
+      : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<TestCasesRunTestConfiguration>): TestCasesRunTestConfiguration {
     const message = createBaseTestCasesRunTestConfiguration();
-    message.url = object.url ?? "";
+    message.url = object.url ?? undefined;
     message.username = object.username ?? "";
     message.password = object.password ?? "";
     message.loginPath = object.loginPath ?? undefined;
@@ -1258,6 +1334,9 @@ export const TestCasesRunTestConfigurationData = {
     message.code = object.code ?? undefined;
     message.storageState = (object.storageState !== undefined && object.storageState !== null)
       ? BrowserStorageStateData.fromPartial(object.storageState)
+      : undefined;
+    message.envConfiguration = (object.envConfiguration !== undefined && object.envConfiguration !== null)
+      ? EnvConfigurationData.fromPartial(object.envConfiguration)
       : undefined;
     return message;
   },
