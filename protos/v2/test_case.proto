@@ -35,7 +35,6 @@ message TestCasesCreation {
 	TestCasesRunTestConfiguration test_configuration = 3;
 	repeated core.Block use_cases = 4;
 	string master_language_code = 5;
-	optional EnvConfiguration env_configuration = 6;
 }
 
 message TestCasesRegeneration {
@@ -44,13 +43,9 @@ message TestCasesRegeneration {
 	TestCasesRunTestConfiguration test_configuration = 3;
 	repeated TestCase test_cases = 4;
 	string master_language_code = 5;
-	optional EnvConfiguration env_configuration = 6;
 }
 
 message EnvConfiguration {
-	optional string label = 1;
-	optional string url = 2;
-	optional string login_path = 3;
 	optional string http_basic_username = 4;
 	optional string http_basic_password = 5;
 }
@@ -77,7 +72,6 @@ message ProjectImportPageTestCasesCreation {
 	repeated core.Block use_cases = 4;
 	repeated ProjectImportPage project_import_pages = 5;
 	string master_language_code = 6;
-	optional EnvConfiguration env_configuration = 7;
 }
 
 
@@ -102,7 +96,6 @@ message TestCasesRun {
 	int32 project_id = 2;
 	TestCasesRunTestConfiguration test_configuration = 3;
 	repeated TestCase test_cases = 4;
-	optional EnvConfiguration env_configuration = 5;
 }
 
 message TestCasesRunTestConfiguration {
@@ -115,6 +108,7 @@ message TestCasesRunTestConfiguration {
 	optional int32 token_expiration_seconds = 7;
 	optional string code = 8;
 	browser.BrowserStorageState storage_state = 9;
+	optional EnvConfiguration env_configuration = 10;
 }
 
 message TestCaseAuthorisationCreationReport {
