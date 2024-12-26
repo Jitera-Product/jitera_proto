@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from "long";
 import _m0 from "protobufjs/minimal";
-import { Struct, StructData } from "../google/protobuf/struct.proto";
+import { StructData } from "../google/protobuf/struct.proto";
 import { Table, TableData } from "../v1/payloads.proto";
 
 export enum ImportBy {
