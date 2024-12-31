@@ -82,6 +82,7 @@ export class ProjectSource {
   platform: ProjectSourcePlatform;
   masterLanguageCode: string;
   sourceUrl?: string | undefined;
+  sourceFileEncryptedKey?: string | undefined;
 }
 
 export enum ProjectSourceFramework {
@@ -739,6 +740,9 @@ export const ProjectSourceData = {
     if (message.sourceUrl !== undefined) {
       writer.uint32(66).string(message.sourceUrl);
     }
+    if (message.sourceFileEncryptedKey !== undefined) {
+      writer.uint32(74).string(message.sourceFileEncryptedKey);
+    }
     return writer;
   },
 
@@ -773,6 +777,9 @@ export const ProjectSourceData = {
         case 8:
           message.sourceUrl = reader.string();
           break;
+        case 9:
+          message.sourceFileEncryptedKey = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -791,6 +798,7 @@ export const ProjectSourceData = {
       platform: isSet(object.platform) ? projectSourcePlatformFromJSON(object.platform) : 0,
       masterLanguageCode: isSet(object.masterLanguageCode) ? String(object.masterLanguageCode) : "",
       sourceUrl: isSet(object.sourceUrl) ? String(object.sourceUrl) : undefined,
+      sourceFileEncryptedKey: isSet(object.sourceFileEncryptedKey) ? String(object.sourceFileEncryptedKey) : undefined,
     };
   },
 
@@ -804,6 +812,7 @@ export const ProjectSourceData = {
     message.platform !== undefined && (obj.platform = projectSourcePlatformToJSON(message.platform));
     message.masterLanguageCode !== undefined && (obj.masterLanguageCode = message.masterLanguageCode);
     message.sourceUrl !== undefined && (obj.sourceUrl = message.sourceUrl);
+    message.sourceFileEncryptedKey !== undefined && (obj.sourceFileEncryptedKey = message.sourceFileEncryptedKey);
     return obj;
   },
 
@@ -817,6 +826,7 @@ export const ProjectSourceData = {
     message.platform = object.platform ?? 0;
     message.masterLanguageCode = object.masterLanguageCode ?? "";
     message.sourceUrl = object.sourceUrl ?? undefined;
+    message.sourceFileEncryptedKey = object.sourceFileEncryptedKey ?? undefined;
     return message;
   },
 };
