@@ -735,7 +735,7 @@ export const EnvConfigurationData = {
       writer.uint32(18).string(message.httpBasicPassword);
     }
     for (const v of message.header) {
-      StructData.encode(Struct.wrap(v!), writer.uint32(26).fork()).ldelim();
+      StructData.encode(StructData.wrap(v!), writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -754,7 +754,7 @@ export const EnvConfigurationData = {
           message.httpBasicPassword = reader.string();
           break;
         case 3:
-          message.header.push(Struct.unwrap(StructData.decode(reader, reader.uint32())));
+          message.header.push(StructData.unwrap(StructData.decode(reader, reader.uint32())));
           break;
         default:
           reader.skipType(tag & 7);
