@@ -50,7 +50,7 @@ message TestCasesRegeneration {
 message EnvConfiguration {
 	optional string http_basic_username = 1;
 	optional string http_basic_password = 2;
-	optional google.protobuf.Struct header = 3;
+	repeated google.protobuf.Struct header = 3;
 }
 
 message TestCasesRegenerationReport {
