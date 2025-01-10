@@ -2,8 +2,8 @@
 import * as _m0 from "protobufjs/minimal";
 import { Block, BlockData } from "./block_core.proto";
 import { BrowserStorageState, BrowserStorageStateData } from "./browser.proto";
+import { StructData } from "../google/protobuf/struct.proto";
 import { ProjectImportPage, ProjectImportPageData } from "./project_page_import.proto";
-
 export class TestCase {
   name: string;
   order: number;
@@ -81,6 +81,7 @@ export class TestCasesRegeneration {
 export class EnvConfiguration {
   httpBasicUsername?: string | undefined;
   httpBasicPassword?: string | undefined;
+  header?: { [key: string]: any };
 }
 
 export class TestCasesRegenerationReport {
@@ -727,10 +728,13 @@ function createBaseEnvConfiguration(): EnvConfiguration {
 export const EnvConfigurationData = {
   encode(message: EnvConfiguration, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.httpBasicUsername !== undefined) {
-      writer.uint32(34).string(message.httpBasicUsername);
+      writer.uint32(10).string(message.httpBasicUsername);
     }
     if (message.httpBasicPassword !== undefined) {
-      writer.uint32(42).string(message.httpBasicPassword);
+      writer.uint32(18).string(message.httpBasicPassword);
+    }
+    if (message.header !== undefined) {
+      StructData.encode(StructData.wrap(message.header), writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -742,11 +746,14 @@ export const EnvConfigurationData = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 4:
+        case 1:
           message.httpBasicUsername = reader.string();
           break;
-        case 5:
+        case 2:
           message.httpBasicPassword = reader.string();
+          break;
+        case 3:
+          message.header = StructData.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -760,6 +767,7 @@ export const EnvConfigurationData = {
     return {
       httpBasicUsername: isSet(object.httpBasicUsername) ? String(object.httpBasicUsername) : undefined,
       httpBasicPassword: isSet(object.httpBasicPassword) ? String(object.httpBasicPassword) : undefined,
+      header: isObject(object.header) ? object.header : undefined,
     };
   },
 
@@ -767,6 +775,7 @@ export const EnvConfigurationData = {
     const obj: any = {};
     message.httpBasicUsername !== undefined && (obj.httpBasicUsername = message.httpBasicUsername);
     message.httpBasicPassword !== undefined && (obj.httpBasicPassword = message.httpBasicPassword);
+    message.header !== undefined && (obj.header = message.header);
     return obj;
   },
 
@@ -774,6 +783,7 @@ export const EnvConfigurationData = {
     const message = createBaseEnvConfiguration();
     message.httpBasicUsername = object.httpBasicUsername ?? undefined;
     message.httpBasicPassword = object.httpBasicPassword ?? undefined;
+    message.header = object.header ?? undefined;
     return message;
   },
 };
@@ -1720,6 +1730,10 @@ type DeepPartial<T> = T extends Builtin ? T
   : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
+
+function isObject(value: any): boolean {
+  return typeof value === "object" && value !== null;
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;
