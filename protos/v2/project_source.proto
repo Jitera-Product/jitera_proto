@@ -122,6 +122,7 @@ message ProjectSourceCreation {
 	optional Action action = 6;
 	optional ActionSteps steps = 7;
 	optional google.protobuf.Struct metadata = 8;
+	repeated string changed_files = 9;
 
 	enum Action {
 		INDEX_CODE = 0;
