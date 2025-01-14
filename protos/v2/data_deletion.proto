@@ -2,10 +2,10 @@ syntax = "proto3";
 package schema.v2;
 
 message TeamDeletionRequest {
-  repeated ProjectData project_data = 1;
+  repeated ProjectDeletedData project_data = 1;
 }
 
-message ProjectData {
+message ProjectDeletedData {
   int32 project_id = 1;
   repeated int32 project_generate_id = 2;
 }
