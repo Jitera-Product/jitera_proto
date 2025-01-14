@@ -2,10 +2,10 @@
 import _m0 from "protobufjs/minimal";
 
 export class TeamDeletionRequest {
-  projectData: ProjectData[];
+  projectData: ProjectDeletedData[];
 }
 
-export class ProjectData {
+export class ProjectDeletedData {
   projectId: number;
   projectGenerateId: number[];
 }
@@ -17,7 +17,7 @@ function createBaseTeamDeletionRequest(): TeamDeletionRequest {
 export const TeamDeletionRequestData = {
   encode(message: TeamDeletionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.projectData) {
-      ProjectDataData.encode(v!, writer.uint32(10).fork()).ldelim();
+      ProjectDeletedDataData.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -30,7 +30,7 @@ export const TeamDeletionRequestData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.projectData.push(ProjectDataData.decode(reader, reader.uint32()));
+          message.projectData.push(ProjectDeletedDataData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -43,7 +43,7 @@ export const TeamDeletionRequestData = {
   fromJSON(object: any): TeamDeletionRequest {
     return {
       projectData: Array.isArray(object?.projectData)
-        ? object.projectData.map((e: any) => ProjectDataData.fromJSON(e))
+        ? object.projectData.map((e: any) => ProjectDeletedDataData.fromJSON(e))
         : [],
     };
   },
@@ -51,7 +51,7 @@ export const TeamDeletionRequestData = {
   toJSON(message: TeamDeletionRequest): unknown {
     const obj: any = {};
     if (message.projectData) {
-      obj.projectData = message.projectData.map((e) => e ? ProjectDataData.toJSON(e) : undefined);
+      obj.projectData = message.projectData.map((e) => e ? ProjectDeletedDataData.toJSON(e) : undefined);
     } else {
       obj.projectData = [];
     }
@@ -60,17 +60,17 @@ export const TeamDeletionRequestData = {
 
   fromPartial(object: DeepPartial<TeamDeletionRequest>): TeamDeletionRequest {
     const message = createBaseTeamDeletionRequest();
-    message.projectData = object.projectData?.map((e) => ProjectDataData.fromPartial(e)) || [];
+    message.projectData = object.projectData?.map((e) => ProjectDeletedDataData.fromPartial(e)) || [];
     return message;
   },
 };
 
-function createBaseProjectData(): ProjectData {
+function createBaseProjectDeletedData(): ProjectDeletedData {
   return { projectId: 0, projectGenerateId: [] };
 }
 
-export const ProjectDataData = {
-  encode(message: ProjectData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const ProjectDeletedDataData = {
+  encode(message: ProjectDeletedData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectId !== 0) {
       writer.uint32(8).int32(message.projectId);
     }
@@ -82,10 +82,10 @@ export const ProjectDataData = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectData {
+  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectDeletedData {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseProjectData();
+    const message = createBaseProjectDeletedData();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -110,7 +110,7 @@ export const ProjectDataData = {
     return message;
   },
 
-  fromJSON(object: any): ProjectData {
+  fromJSON(object: any): ProjectDeletedData {
     return {
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       projectGenerateId: Array.isArray(object?.projectGenerateId)
@@ -119,7 +119,7 @@ export const ProjectDataData = {
     };
   },
 
-  toJSON(message: ProjectData): unknown {
+  toJSON(message: ProjectDeletedData): unknown {
     const obj: any = {};
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     if (message.projectGenerateId) {
@@ -130,8 +130,8 @@ export const ProjectDataData = {
     return obj;
   },
 
-  fromPartial(object: DeepPartial<ProjectData>): ProjectData {
-    const message = createBaseProjectData();
+  fromPartial(object: DeepPartial<ProjectDeletedData>): ProjectDeletedData {
+    const message = createBaseProjectDeletedData();
     message.projectId = object.projectId ?? 0;
     message.projectGenerateId = object.projectGenerateId?.map((e) => e) || [];
     return message;

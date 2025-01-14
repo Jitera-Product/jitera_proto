@@ -24,3 +24,4 @@ export * from "./protos/v2/chat.proto";
 export * from "./protos/v2/browser.proto";
 export * from "./protos/v2/project_page_import.proto";
 export * from "./protos/v2/business_logic_group.proto";
+export * from "./protos/v2/data_deletion.proto";
