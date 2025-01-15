@@ -7,5 +7,6 @@ message TeamDeletionRequest {
 
 message ProjectDeletedData {
   int32 project_id = 1;
-  repeated int32 project_generate_id = 2;
+  repeated int32 project_source_id = 2;
+  repeated int32 project_generate_id = 3;
 }
