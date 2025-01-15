@@ -1,10 +1,12 @@
 syntax = "proto3";
 package schema.v2.test_case_common;
 import "v2/browser.proto";
+import "google/protobuf/struct.proto";
 
 message EnvConfiguration {
-	optional string http_basic_username = 4;
-	optional string http_basic_password = 5;
+	optional string http_basic_username = 1;
+	optional string http_basic_password = 2;
+	repeated google.protobuf.Struct header = 3;
 }
 
 message TestCasesRunTestConfiguration {
