@@ -1,5 +1,5 @@
 /* eslint-disable */
-import * as _m0 from "protobufjs/minimal";
+import _m0 from "protobufjs/minimal";
 
 /**
  * `NullValue` is a singleton enumeration to represent the null value for the
@@ -185,7 +185,7 @@ export const StructFieldsEntryData = {
       writer.uint32(10).string(message.key);
     }
     if (message.value !== undefined) {
-      ValueData.encode(ValueData.wrap(message.value), writer.uint32(18).fork()).ldelim();
+      ValueData.encode(Value.wrap(message.value), writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -201,7 +201,7 @@ export const StructFieldsEntryData = {
           message.key = reader.string();
           break;
         case 2:
-          message.value = ValueData.unwrap(ValueData.decode(reader, reader.uint32()));
+          message.value = Value.unwrap(ValueData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -249,10 +249,10 @@ export const ValueData = {
       writer.uint32(32).bool(message.boolValue);
     }
     if (message.structValue !== undefined) {
-      StructData.encode(StructData.wrap(message.structValue), writer.uint32(42).fork()).ldelim();
+      StructData.encode(Struct.wrap(message.structValue), writer.uint32(42).fork()).ldelim();
     }
     if (message.listValue !== undefined) {
-      ListValueData.encode(ListValueData.wrap(message.listValue), writer.uint32(50).fork()).ldelim();
+      ListValueData.encode(ListValue.wrap(message.listValue), writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -277,10 +277,10 @@ export const ValueData = {
           message.boolValue = reader.bool();
           break;
         case 5:
-          message.structValue = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.structValue = Struct.unwrap(StructData.decode(reader, reader.uint32()));
           break;
         case 6:
-          message.listValue = ListValueData.unwrap(ListValueData.decode(reader, reader.uint32()));
+          message.listValue = ListValue.unwrap(ListValueData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -371,7 +371,7 @@ function createBaseListValue(): ListValue {
 export const ListValueData = {
   encode(message: ListValue, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.values) {
-      ValueData.encode(ValueData.wrap(v!), writer.uint32(10).fork()).ldelim();
+      ValueData.encode(Value.wrap(v!), writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -384,7 +384,7 @@ export const ListValueData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.values.push(ValueData.unwrap(ValueData.decode(reader, reader.uint32())));
+          message.values.push(Value.unwrap(ValueData.decode(reader, reader.uint32())));
           break;
         default:
           reader.skipType(tag & 7);

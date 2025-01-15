@@ -4,6 +4,7 @@ package schema.v2;
 import "v2/browser.proto";
 import "v2/block_core.proto";
 import "v2/project_page_import.proto";
+import "v2/test_case_common.proto";
 
 message TestCase {
 	string name = 1;
@@ -32,7 +33,7 @@ message TestCaseStep {
 message TestCasesCreation {
 	int32 project_generate_id = 1;
 	int32 project_id = 2;
-	TestCasesRunTestConfiguration test_configuration = 3;
+	test_case_common.TestCasesRunTestConfiguration test_configuration = 3;
 	repeated core.Block use_cases = 4;
 	string master_language_code = 5;
 }
@@ -40,15 +41,11 @@ message TestCasesCreation {
 message TestCasesRegeneration {
 	int32 project_generate_id = 1;
 	int32 project_id = 2;
-	TestCasesRunTestConfiguration test_configuration = 3;
+	test_case_common.TestCasesRunTestConfiguration test_configuration = 3;
 	repeated TestCase test_cases = 4;
 	string master_language_code = 5;
 }
 
-message EnvConfiguration {
-	optional string http_basic_username = 4;
-	optional string http_basic_password = 5;
-}
 
 message TestCasesRegenerationReport {
 	int32 project_generate_id = 1;
@@ -68,7 +65,7 @@ message TestCasesRegenerationReport {
 message ProjectImportPageTestCasesCreation {
 	int32 project_generate_id = 1;
 	int32 project_id = 2;
-	TestCasesRunTestConfiguration test_configuration = 3;
+	test_case_common.TestCasesRunTestConfiguration test_configuration = 3;
 	repeated core.Block use_cases = 4;
 	repeated ProjectImportPage project_import_pages = 5;
 	string master_language_code = 6;
@@ -94,22 +91,10 @@ message TestCasesCreationReport {
 message TestCasesRun {
 	int32 project_generate_id = 1;
 	int32 project_id = 2;
-	TestCasesRunTestConfiguration test_configuration = 3;
+	test_case_common.TestCasesRunTestConfiguration test_configuration = 3;
 	repeated TestCase test_cases = 4;
 }
 
-message TestCasesRunTestConfiguration {
-	optional string url = 1;
-	string username = 2;
-	string password = 3;
-	optional string login_path = 4;
-	int32 project_generate_id = 5;
-	int32 project_id = 6;
-	optional int32 token_expiration_seconds = 7;
-	optional string code = 8;
-	browser.BrowserStorageState storage_state = 9;
-	optional EnvConfiguration env_configuration = 10;
-}
 
 message TestCaseAuthorisationCreationReport {
 	int32 project_generate_id = 1;
