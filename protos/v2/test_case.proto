@@ -5,6 +5,8 @@ import "v2/browser.proto";
 import "v2/block_core.proto";
 import "v2/project_page_import.proto";
 import "v2/test_case_common.proto";
+import "google/protobuf/struct.proto";
+
 
 message TestCase {
 	string name = 1;
@@ -46,6 +48,14 @@ message TestCasesRegeneration {
 	string master_language_code = 5;
 }
 
+<<<<<<< HEAD
+=======
+message EnvConfiguration {
+	optional string http_basic_username = 1;
+	optional string http_basic_password = 2;
+	repeated google.protobuf.Struct header = 3;
+}
+>>>>>>> a20d899a3ad4f89485e23f25971c0bf778947803
 
 message TestCasesRegenerationReport {
 	int32 project_generate_id = 1;

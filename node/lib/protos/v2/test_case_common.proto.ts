@@ -1,10 +1,12 @@
 /* eslint-disable */
 import _m0 from "protobufjs/minimal";
-import { BrowserStorageState } from "./browser.proto";
+import { StructData } from "../google/protobuf/struct.proto";
+import { BrowserStorageState, BrowserStorageStateData } from "./browser.proto";
 
 export class EnvConfiguration {
   httpBasicUsername?: string | undefined;
   httpBasicPassword?: string | undefined;
+  header: { [key: string]: any }[];
 }
 
 export class TestCasesRunTestConfiguration {
@@ -21,16 +23,22 @@ export class TestCasesRunTestConfiguration {
 }
 
 function createBaseEnvConfiguration(): EnvConfiguration {
-  return {};
+  return { header: [] };
 }
 
 export const EnvConfigurationData = {
-  encode(message: EnvConfiguration, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    message: EnvConfiguration,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     if (message.httpBasicUsername !== undefined) {
-      writer.uint32(34).string(message.httpBasicUsername);
+      writer.uint32(10).string(message.httpBasicUsername);
     }
     if (message.httpBasicPassword !== undefined) {
-      writer.uint32(42).string(message.httpBasicPassword);
+      writer.uint32(18).string(message.httpBasicPassword);
+    }
+    for (const v of message.header) {
+      StructData.encode(StructData.wrap(v!), writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -42,11 +50,16 @@ export const EnvConfigurationData = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 4:
+        case 1:
           message.httpBasicUsername = reader.string();
           break;
-        case 5:
+        case 2:
           message.httpBasicPassword = reader.string();
+          break;
+        case 3:
+          message.header.push(
+            StructData.unwrap(StructData.decode(reader, reader.uint32()))
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -58,15 +71,27 @@ export const EnvConfigurationData = {
 
   fromJSON(object: any): EnvConfiguration {
     return {
-      httpBasicUsername: isSet(object.httpBasicUsername) ? String(object.httpBasicUsername) : undefined,
-      httpBasicPassword: isSet(object.httpBasicPassword) ? String(object.httpBasicPassword) : undefined,
+      httpBasicUsername: isSet(object.httpBasicUsername)
+        ? String(object.httpBasicUsername)
+        : undefined,
+      httpBasicPassword: isSet(object.httpBasicPassword)
+        ? String(object.httpBasicPassword)
+        : undefined,
+      header: Array.isArray(object?.header) ? [...object.header] : [],
     };
   },
 
   toJSON(message: EnvConfiguration): unknown {
     const obj: any = {};
-    message.httpBasicUsername !== undefined && (obj.httpBasicUsername = message.httpBasicUsername);
-    message.httpBasicPassword !== undefined && (obj.httpBasicPassword = message.httpBasicPassword);
+    message.httpBasicUsername !== undefined &&
+      (obj.httpBasicUsername = message.httpBasicUsername);
+    message.httpBasicPassword !== undefined &&
+      (obj.httpBasicPassword = message.httpBasicPassword);
+    if (message.header) {
+      obj.header = message.header.map((e) => e);
+    } else {
+      obj.header = [];
+    }
     return obj;
   },
 
@@ -74,6 +99,7 @@ export const EnvConfigurationData = {
     const message = createBaseEnvConfiguration();
     message.httpBasicUsername = object.httpBasicUsername ?? undefined;
     message.httpBasicPassword = object.httpBasicPassword ?? undefined;
+    message.header = object.header?.map((e) => e) || [];
     return message;
   },
 };
@@ -83,7 +109,10 @@ function createBaseTestCasesRunTestConfiguration(): TestCasesRunTestConfiguratio
 }
 
 export const TestCasesRunTestConfigurationData = {
-  encode(message: TestCasesRunTestConfiguration, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    message: TestCasesRunTestConfiguration,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     if (message.url !== undefined) {
       writer.uint32(10).string(message.url);
     }
@@ -109,15 +138,24 @@ export const TestCasesRunTestConfigurationData = {
       writer.uint32(66).string(message.code);
     }
     if (message.storageState !== undefined) {
-      BrowserStorageStateData.encode(message.storageState, writer.uint32(74).fork()).ldelim();
+      BrowserStorageStateData.encode(
+        message.storageState,
+        writer.uint32(74).fork()
+      ).ldelim();
     }
     if (message.envConfiguration !== undefined) {
-      EnvConfigurationData.encode(message.envConfiguration, writer.uint32(82).fork()).ldelim();
+      EnvConfigurationData.encode(
+        message.envConfiguration,
+        writer.uint32(82).fork()
+      ).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): TestCasesRunTestConfiguration {
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): TestCasesRunTestConfiguration {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTestCasesRunTestConfiguration();
@@ -149,10 +187,16 @@ export const TestCasesRunTestConfigurationData = {
           message.code = reader.string();
           break;
         case 9:
-          message.storageState = BrowserStorageStateData.decode(reader, reader.uint32());
+          message.storageState = BrowserStorageStateData.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         case 10:
-          message.envConfiguration = EnvConfigurationData.decode(reader, reader.uint32());
+          message.envConfiguration = EnvConfigurationData.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -168,11 +212,17 @@ export const TestCasesRunTestConfigurationData = {
       username: isSet(object.username) ? String(object.username) : "",
       password: isSet(object.password) ? String(object.password) : "",
       loginPath: isSet(object.loginPath) ? String(object.loginPath) : undefined,
-      projectGenerateId: isSet(object.projectGenerateId) ? Number(object.projectGenerateId) : 0,
+      projectGenerateId: isSet(object.projectGenerateId)
+        ? Number(object.projectGenerateId)
+        : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      tokenExpirationSeconds: isSet(object.tokenExpirationSeconds) ? Number(object.tokenExpirationSeconds) : undefined,
+      tokenExpirationSeconds: isSet(object.tokenExpirationSeconds)
+        ? Number(object.tokenExpirationSeconds)
+        : undefined,
       code: isSet(object.code) ? String(object.code) : undefined,
-      storageState: isSet(object.storageState) ? BrowserStorageStateData.fromJSON(object.storageState) : undefined,
+      storageState: isSet(object.storageState)
+        ? BrowserStorageStateData.fromJSON(object.storageState)
+        : undefined,
       envConfiguration: isSet(object.envConfiguration)
         ? EnvConfigurationData.fromJSON(object.envConfiguration)
         : undefined,
@@ -185,20 +235,27 @@ export const TestCasesRunTestConfigurationData = {
     message.username !== undefined && (obj.username = message.username);
     message.password !== undefined && (obj.password = message.password);
     message.loginPath !== undefined && (obj.loginPath = message.loginPath);
-    message.projectGenerateId !== undefined && (obj.projectGenerateId = Math.round(message.projectGenerateId));
-    message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
+    message.projectGenerateId !== undefined &&
+      (obj.projectGenerateId = Math.round(message.projectGenerateId));
+    message.projectId !== undefined &&
+      (obj.projectId = Math.round(message.projectId));
     message.tokenExpirationSeconds !== undefined &&
       (obj.tokenExpirationSeconds = Math.round(message.tokenExpirationSeconds));
     message.code !== undefined && (obj.code = message.code);
     message.storageState !== undefined &&
-      (obj.storageState = message.storageState ? BrowserStorageStateData.toJSON(message.storageState) : undefined);
-    message.envConfiguration !== undefined && (obj.envConfiguration = message.envConfiguration
-      ? EnvConfigurationData.toJSON(message.envConfiguration)
-      : undefined);
+      (obj.storageState = message.storageState
+        ? BrowserStorageStateData.toJSON(message.storageState)
+        : undefined);
+    message.envConfiguration !== undefined &&
+      (obj.envConfiguration = message.envConfiguration
+        ? EnvConfigurationData.toJSON(message.envConfiguration)
+        : undefined);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<TestCasesRunTestConfiguration>): TestCasesRunTestConfiguration {
+  fromPartial(
+    object: DeepPartial<TestCasesRunTestConfiguration>
+  ): TestCasesRunTestConfiguration {
     const message = createBaseTestCasesRunTestConfiguration();
     message.url = object.url ?? undefined;
     message.username = object.username ?? "";
@@ -208,21 +265,35 @@ export const TestCasesRunTestConfigurationData = {
     message.projectId = object.projectId ?? 0;
     message.tokenExpirationSeconds = object.tokenExpirationSeconds ?? undefined;
     message.code = object.code ?? undefined;
-    message.storageState = (object.storageState !== undefined && object.storageState !== null)
-      ? BrowserStorageStateData.fromPartial(object.storageState)
-      : undefined;
-    message.envConfiguration = (object.envConfiguration !== undefined && object.envConfiguration !== null)
-      ? EnvConfigurationData.fromPartial(object.envConfiguration)
-      : undefined;
+    message.storageState =
+      object.storageState !== undefined && object.storageState !== null
+        ? BrowserStorageStateData.fromPartial(object.storageState)
+        : undefined;
+    message.envConfiguration =
+      object.envConfiguration !== undefined && object.envConfiguration !== null
+        ? EnvConfigurationData.fromPartial(object.envConfiguration)
+        : undefined;
     return message;
   },
 };
 
-type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
+type Builtin =
+  | Date
+  | Function
+  | Uint8Array
+  | string
+  | number
+  | boolean
+  | undefined;
 
-type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
+type DeepPartial<T> = T extends Builtin
+  ? T
+  : T extends Array<infer U>
+  ? Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U>
+  ? ReadonlyArray<DeepPartial<U>>
+  : T extends {}
+  ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
 function isSet(value: any): boolean {
