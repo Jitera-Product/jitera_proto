@@ -28,6 +28,7 @@ require_relative 'payloads/v2/ai_review_pb'
 require_relative 'payloads/v2/project_pdf_pb'
 require_relative 'payloads/v2/chat_pb'
 require_relative 'payloads/v2/business_logic_group_pb'
+require_relative 'payloads/v2/test_case_common_pb'
 
 module JiteraProto
 end
