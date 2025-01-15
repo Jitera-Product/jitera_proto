@@ -7,6 +7,7 @@ export class TeamDeletionRequest {
 
 export class ProjectDeletedData {
   projectId: number;
+  projectSourceId: number[];
   projectGenerateId: number[];
 }
 
@@ -66,7 +67,7 @@ export const TeamDeletionRequestData = {
 };
 
 function createBaseProjectDeletedData(): ProjectDeletedData {
-  return { projectId: 0, projectGenerateId: [] };
+  return { projectId: 0, projectSourceId: [], projectGenerateId: [] };
 }
 
 export const ProjectDeletedDataData = {
@@ -75,6 +76,11 @@ export const ProjectDeletedDataData = {
       writer.uint32(8).int32(message.projectId);
     }
     writer.uint32(18).fork();
+    for (const v of message.projectSourceId) {
+      writer.int32(v);
+    }
+    writer.ldelim();
+    writer.uint32(26).fork();
     for (const v of message.projectGenerateId) {
       writer.int32(v);
     }
@@ -96,6 +102,16 @@ export const ProjectDeletedDataData = {
           if ((tag & 7) === 2) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
+              message.projectSourceId.push(reader.int32());
+            }
+          } else {
+            message.projectSourceId.push(reader.int32());
+          }
+          break;
+        case 3:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
               message.projectGenerateId.push(reader.int32());
             }
           } else {
@@ -113,6 +129,7 @@ export const ProjectDeletedDataData = {
   fromJSON(object: any): ProjectDeletedData {
     return {
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
+      projectSourceId: Array.isArray(object?.projectSourceId) ? object.projectSourceId.map((e: any) => Number(e)) : [],
       projectGenerateId: Array.isArray(object?.projectGenerateId)
         ? object.projectGenerateId.map((e: any) => Number(e))
         : [],
@@ -122,6 +139,11 @@ export const ProjectDeletedDataData = {
   toJSON(message: ProjectDeletedData): unknown {
     const obj: any = {};
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
+    if (message.projectSourceId) {
+      obj.projectSourceId = message.projectSourceId.map((e) => Math.round(e));
+    } else {
+      obj.projectSourceId = [];
+    }
     if (message.projectGenerateId) {
       obj.projectGenerateId = message.projectGenerateId.map((e) => Math.round(e));
     } else {
@@ -133,6 +155,7 @@ export const ProjectDeletedDataData = {
   fromPartial(object: DeepPartial<ProjectDeletedData>): ProjectDeletedData {
     const message = createBaseProjectDeletedData();
     message.projectId = object.projectId ?? 0;
+    message.projectSourceId = object.projectSourceId?.map((e) => e) || [];
     message.projectGenerateId = object.projectGenerateId?.map((e) => e) || [];
     return message;
   },
