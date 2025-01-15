@@ -4,7 +4,7 @@
 
 require 'google/protobuf'
 
-require 'v2/browser_pb'
+require_relative './browser_pb'
 require 'google/protobuf/struct_pb'
 
 
