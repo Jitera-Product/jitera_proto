@@ -5,7 +5,7 @@ import "v2/browser.proto";
 import "v2/block_core.proto";
 import "v2/project_page_import.proto";
 import "v2/test_case_common.proto";
-=
+
 
 message TestCase {
 	string name = 1;
