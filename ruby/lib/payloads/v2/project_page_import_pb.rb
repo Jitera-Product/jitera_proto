@@ -4,10 +4,10 @@
 
 require 'google/protobuf'
 
-require 'google/protobuf/struct_pb'
-require "./project_source_pb.rb";
-require "./browser_pb.rb";
-require "./test_case_common_pb.rb";
+require_relative 'google/protobuf/struct_pb'
+require_relative "./project_source_pb.rb";
+require_relative "./browser_pb.rb";
+require_relative "./test_case_common_pb.rb";
 
 
 
