@@ -40,7 +40,6 @@ message Message {
   int32 created_at = 10;
   optional string uuid = 11;
   int32 resources_count = 12;
-  optional google.protobuf.Struct metadata = 13;
 
   enum Status {
     success = 0;

@@ -150,6 +150,7 @@ export enum MessageMessageAssistant {
   monorepo = 5,
   fullstack_developer = 6,
   assistant_role = 7,
+  job_manager = 8,
   UNRECOGNIZED = -1,
 }
 
@@ -179,6 +180,9 @@ export function messageMessageAssistantFromJSON(object: any): MessageMessageAssi
     case 7:
     case "assistant_role":
       return MessageMessageAssistant.assistant_role;
+    case 8:
+    case "job_manager":
+      return MessageMessageAssistant.job_manager;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -204,6 +208,8 @@ export function messageMessageAssistantToJSON(object: MessageMessageAssistant): 
       return "fullstack_developer";
     case MessageMessageAssistant.assistant_role:
       return "assistant_role";
+    case MessageMessageAssistant.job_manager:
+      return "job_manager";
     case MessageMessageAssistant.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
