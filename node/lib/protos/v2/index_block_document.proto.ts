@@ -13,7 +13,6 @@ export class IndexBlockDocumentResponse {
   projectGenerateQueueId: number;
   message?: string | undefined;
   status: IndexBlockDocumentResponseStatus;
-  module?: string | undefined;
   errorMessage: string;
 }
 
@@ -220,9 +219,6 @@ export const IndexBlockDocumentResponseData = {
     if (message.status !== 0) {
       writer.uint32(32).int32(message.status);
     }
-    if (message.module !== undefined) {
-      writer.uint32(42).string(message.module);
-    }
     if (message.errorMessage !== "") {
       writer.uint32(58).string(message.errorMessage);
     }
@@ -248,9 +244,6 @@ export const IndexBlockDocumentResponseData = {
         case 4:
           message.status = reader.int32() as any;
           break;
-        case 5:
-          message.module = reader.string();
-          break;
         case 7:
           message.errorMessage = reader.string();
           break;
@@ -271,7 +264,6 @@ export const IndexBlockDocumentResponseData = {
       status: isSet(object.status)
         ? indexBlockDocumentResponseStatusFromJSON(object.status)
         : 0,
-      module: isSet(object.module) ? String(object.module) : undefined,
       errorMessage: isSet(object.errorMessage)
         ? String(object.errorMessage)
         : "",
@@ -285,7 +277,6 @@ export const IndexBlockDocumentResponseData = {
     message.message !== undefined && (obj.message = message.message);
     message.status !== undefined &&
       (obj.status = indexBlockDocumentResponseStatusToJSON(message.status));
-    message.module !== undefined && (obj.module = message.module);
     message.errorMessage !== undefined &&
       (obj.errorMessage = message.errorMessage);
     return obj;
@@ -298,7 +289,6 @@ export const IndexBlockDocumentResponseData = {
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.message = object.message ?? undefined;
     message.status = object.status ?? 0;
-    message.module = object.module ?? undefined;
     message.errorMessage = object.errorMessage ?? "";
     return message;
   },
