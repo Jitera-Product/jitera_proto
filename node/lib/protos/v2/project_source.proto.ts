@@ -380,6 +380,8 @@ export class ProjectSourceCreation {
   action?: ProjectSourceCreationAction | undefined;
   steps?: ActionSteps | undefined;
   metadata?: { [key: string]: any };
+  changedFiles: string[];
+  commitSha?: string | undefined;
   sourcePath?: string | undefined;
   git?: Git | undefined;
 }
@@ -1336,7 +1338,7 @@ export const ActionStepsData = {
 };
 
 function createBaseProjectSourceCreation(): ProjectSourceCreation {
-  return { projectGenerateQueueId: 0 };
+  return { projectGenerateQueueId: 0, changedFiles: [] };
 }
 
 export const ProjectSourceCreationData = {
@@ -1358,6 +1360,12 @@ export const ProjectSourceCreationData = {
     }
     if (message.metadata !== undefined) {
       StructData.encode(StructData.wrap(message.metadata), writer.uint32(66).fork()).ldelim();
+    }
+    for (const v of message.changedFiles) {
+      writer.uint32(74).string(v!);
+    }
+    if (message.commitSha !== undefined) {
+      writer.uint32(82).string(message.commitSha);
     }
     if (message.sourcePath !== undefined) {
       writer.uint32(26).string(message.sourcePath);
@@ -1393,6 +1401,12 @@ export const ProjectSourceCreationData = {
         case 8:
           message.metadata = StructData.unwrap(StructData.decode(reader, reader.uint32()));
           break;
+        case 9:
+          message.changedFiles.push(reader.string());
+          break;
+        case 10:
+          message.commitSha = reader.string();
+          break;
         case 3:
           message.sourcePath = reader.string();
           break;
@@ -1415,6 +1429,8 @@ export const ProjectSourceCreationData = {
       action: isSet(object.action) ? projectSourceCreationActionFromJSON(object.action) : undefined,
       steps: isSet(object.steps) ? ActionStepsData.fromJSON(object.steps) : undefined,
       metadata: isObject(object.metadata) ? object.metadata : undefined,
+      changedFiles: Array.isArray(object?.changedFiles) ? object.changedFiles.map((e: any) => String(e)) : [],
+      commitSha: isSet(object.commitSha) ? String(object.commitSha) : undefined,
       sourcePath: isSet(object.sourcePath) ? String(object.sourcePath) : undefined,
       git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
     };
@@ -1432,6 +1448,12 @@ export const ProjectSourceCreationData = {
       (obj.action = message.action !== undefined ? projectSourceCreationActionToJSON(message.action) : undefined);
     message.steps !== undefined && (obj.steps = message.steps ? ActionStepsData.toJSON(message.steps) : undefined);
     message.metadata !== undefined && (obj.metadata = message.metadata);
+    if (message.changedFiles) {
+      obj.changedFiles = message.changedFiles.map((e) => e);
+    } else {
+      obj.changedFiles = [];
+    }
+    message.commitSha !== undefined && (obj.commitSha = message.commitSha);
     message.sourcePath !== undefined && (obj.sourcePath = message.sourcePath);
     message.git !== undefined && (obj.git = message.git ? GitData.toJSON(message.git) : undefined);
     return obj;
@@ -1449,6 +1471,8 @@ export const ProjectSourceCreationData = {
       ? ActionStepsData.fromPartial(object.steps)
       : undefined;
     message.metadata = object.metadata ?? undefined;
+    message.changedFiles = object.changedFiles?.map((e) => e) || [];
+    message.commitSha = object.commitSha ?? undefined;
     message.sourcePath = object.sourcePath ?? undefined;
     message.git = (object.git !== undefined && object.git !== null) ? GitData.fromPartial(object.git) : undefined;
     return message;
