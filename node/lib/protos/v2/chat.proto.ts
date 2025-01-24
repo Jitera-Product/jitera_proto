@@ -1,5 +1,5 @@
 /* eslint-disable */
-import * as _m0 from "protobufjs/minimal";
+import _m0 from "protobufjs/minimal";
 import { StructData } from "../google/protobuf/struct.proto";
 
 export class ChatRequest {
@@ -8,6 +8,7 @@ export class ChatRequest {
   status?: ChatRequestStatus | undefined;
   messages: Message[];
   createdFrom?: ChatRequestCreatedFrom | undefined;
+  chat?: Chat | undefined;
 }
 
 export enum ChatRequestStatus {
@@ -82,6 +83,10 @@ export function chatRequestCreatedFromToJSON(object: ChatRequestCreatedFrom): st
   }
 }
 
+export class Chat {
+  metadata?: { [key: string]: any };
+}
+
 export class Message {
   status?: MessageStatus | undefined;
   assistant?: MessageMessageAssistant | undefined;
@@ -145,6 +150,7 @@ export enum MessageMessageAssistant {
   monorepo = 5,
   fullstack_developer = 6,
   assistant_role = 7,
+  job_manager = 8,
   UNRECOGNIZED = -1,
 }
 
@@ -174,6 +180,9 @@ export function messageMessageAssistantFromJSON(object: any): MessageMessageAssi
     case 7:
     case "assistant_role":
       return MessageMessageAssistant.assistant_role;
+    case 8:
+    case "job_manager":
+      return MessageMessageAssistant.job_manager;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -199,6 +208,8 @@ export function messageMessageAssistantToJSON(object: MessageMessageAssistant): 
       return "fullstack_developer";
     case MessageMessageAssistant.assistant_role:
       return "assistant_role";
+    case MessageMessageAssistant.job_manager:
+      return "job_manager";
     case MessageMessageAssistant.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -444,6 +455,9 @@ export const ChatRequestData = {
     if (message.createdFrom !== undefined) {
       writer.uint32(40).int32(message.createdFrom);
     }
+    if (message.chat !== undefined) {
+      ChatData.encode(message.chat, writer.uint32(50).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -469,6 +483,9 @@ export const ChatRequestData = {
         case 5:
           message.createdFrom = reader.int32() as any;
           break;
+        case 6:
+          message.chat = ChatData.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -484,6 +501,7 @@ export const ChatRequestData = {
       status: isSet(object.status) ? chatRequestStatusFromJSON(object.status) : undefined,
       messages: Array.isArray(object?.messages) ? object.messages.map((e: any) => MessageData.fromJSON(e)) : [],
       createdFrom: isSet(object.createdFrom) ? chatRequestCreatedFromFromJSON(object.createdFrom) : undefined,
+      chat: isSet(object.chat) ? ChatData.fromJSON(object.chat) : undefined,
     };
   },
 
@@ -501,6 +519,7 @@ export const ChatRequestData = {
     message.createdFrom !== undefined && (obj.createdFrom = message.createdFrom !== undefined
       ? chatRequestCreatedFromToJSON(message.createdFrom)
       : undefined);
+    message.chat !== undefined && (obj.chat = message.chat ? ChatData.toJSON(message.chat) : undefined);
     return obj;
   },
 
@@ -513,6 +532,54 @@ export const ChatRequestData = {
     message.status = object.status ?? undefined;
     message.messages = object.messages?.map((e) => MessageData.fromPartial(e)) || [];
     message.createdFrom = object.createdFrom ?? undefined;
+    message.chat = (object.chat !== undefined && object.chat !== null) ? ChatData.fromPartial(object.chat) : undefined;
+    return message;
+  },
+};
+
+function createBaseChat(): Chat {
+  return {};
+}
+
+export const ChatData = {
+  encode(message: Chat, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.metadata !== undefined) {
+      StructData.encode(StructData.wrap(message.metadata), writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Chat {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseChat();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.metadata = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Chat {
+    return { metadata: isObject(object.metadata) ? object.metadata : undefined };
+  },
+
+  toJSON(message: Chat): unknown {
+    const obj: any = {};
+    message.metadata !== undefined && (obj.metadata = message.metadata);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<Chat>): Chat {
+    const message = createBaseChat();
+    message.metadata = object.metadata ?? undefined;
     return message;
   },
 };
