@@ -1,5 +1,5 @@
 /* eslint-disable */
-import * as _m0 from "protobufjs/minimal";
+import _m0 from "protobufjs/minimal";
 import { StructData } from "../google/protobuf/struct.proto";
 import { Block, BlockData } from "./block_core.proto";
 
@@ -11,6 +11,7 @@ export class IndexBlockDocumentRequest {
 
 export class IndexBlockDocumentResponse {
   projectGenerateQueueId: number;
+  message?: string | undefined;
   status: IndexBlockDocumentResponseStatus;
   errorMessage: string;
 }
@@ -22,7 +23,9 @@ export enum IndexBlockDocumentResponseStatus {
   UNRECOGNIZED = -1,
 }
 
-export function indexBlockDocumentResponseStatusFromJSON(object: any): IndexBlockDocumentResponseStatus {
+export function indexBlockDocumentResponseStatusFromJSON(
+  object: any
+): IndexBlockDocumentResponseStatus {
   switch (object) {
     case 0:
     case "SUCCEEDED":
@@ -40,7 +43,9 @@ export function indexBlockDocumentResponseStatusFromJSON(object: any): IndexBloc
   }
 }
 
-export function indexBlockDocumentResponseStatusToJSON(object: IndexBlockDocumentResponseStatus): string {
+export function indexBlockDocumentResponseStatusToJSON(
+  object: IndexBlockDocumentResponseStatus
+): string {
   switch (object) {
     case IndexBlockDocumentResponseStatus.SUCCEEDED:
       return "SUCCEEDED";
@@ -73,7 +78,9 @@ export enum DeleteIndexBlockDocumentResponseStatus {
   UNRECOGNIZED = -1,
 }
 
-export function deleteIndexBlockDocumentResponseStatusFromJSON(object: any): DeleteIndexBlockDocumentResponseStatus {
+export function deleteIndexBlockDocumentResponseStatusFromJSON(
+  object: any
+): DeleteIndexBlockDocumentResponseStatus {
   switch (object) {
     case 0:
     case "SUCCEEDED":
@@ -91,7 +98,9 @@ export function deleteIndexBlockDocumentResponseStatusFromJSON(object: any): Del
   }
 }
 
-export function deleteIndexBlockDocumentResponseStatusToJSON(object: DeleteIndexBlockDocumentResponseStatus): string {
+export function deleteIndexBlockDocumentResponseStatusToJSON(
+  object: DeleteIndexBlockDocumentResponseStatus
+): string {
   switch (object) {
     case DeleteIndexBlockDocumentResponseStatus.SUCCEEDED:
       return "SUCCEEDED";
@@ -110,7 +119,10 @@ function createBaseIndexBlockDocumentRequest(): IndexBlockDocumentRequest {
 }
 
 export const IndexBlockDocumentRequestData = {
-  encode(message: IndexBlockDocumentRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    message: IndexBlockDocumentRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
     }
@@ -123,7 +135,10 @@ export const IndexBlockDocumentRequestData = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): IndexBlockDocumentRequest {
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): IndexBlockDocumentRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseIndexBlockDocumentRequest();
@@ -149,9 +164,13 @@ export const IndexBlockDocumentRequestData = {
 
   fromJSON(object: any): IndexBlockDocumentRequest {
     return {
-      projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
+      projectGenerateQueueId: isSet(object.projectGenerateQueueId)
+        ? Number(object.projectGenerateQueueId)
+        : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      blocks: Array.isArray(object?.blocks) ? object.blocks.map((e: any) => BlockData.fromJSON(e)) : [],
+      blocks: Array.isArray(object?.blocks)
+        ? object.blocks.map((e: any) => BlockData.fromJSON(e))
+        : [],
     };
   },
 
@@ -159,16 +178,21 @@ export const IndexBlockDocumentRequestData = {
     const obj: any = {};
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
-    message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
+    message.projectId !== undefined &&
+      (obj.projectId = Math.round(message.projectId));
     if (message.blocks) {
-      obj.blocks = message.blocks.map((e) => e ? BlockData.toJSON(e) : undefined);
+      obj.blocks = message.blocks.map((e) =>
+        e ? BlockData.toJSON(e) : undefined
+      );
     } else {
       obj.blocks = [];
     }
     return obj;
   },
 
-  fromPartial(object: DeepPartial<IndexBlockDocumentRequest>): IndexBlockDocumentRequest {
+  fromPartial(
+    object: DeepPartial<IndexBlockDocumentRequest>
+  ): IndexBlockDocumentRequest {
     const message = createBaseIndexBlockDocumentRequest();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectId = object.projectId ?? 0;
@@ -182,9 +206,15 @@ function createBaseIndexBlockDocumentResponse(): IndexBlockDocumentResponse {
 }
 
 export const IndexBlockDocumentResponseData = {
-  encode(message: IndexBlockDocumentResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    message: IndexBlockDocumentResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
+    }
+    if (message.message !== undefined) {
+      writer.uint32(18).string(message.message);
     }
     if (message.status !== 0) {
       writer.uint32(32).int32(message.status);
@@ -195,7 +225,10 @@ export const IndexBlockDocumentResponseData = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): IndexBlockDocumentResponse {
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): IndexBlockDocumentResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseIndexBlockDocumentResponse();
@@ -204,6 +237,9 @@ export const IndexBlockDocumentResponseData = {
       switch (tag >>> 3) {
         case 1:
           message.projectGenerateQueueId = reader.int32();
+          break;
+        case 2:
+          message.message = reader.string();
           break;
         case 4:
           message.status = reader.int32() as any;
@@ -221,9 +257,16 @@ export const IndexBlockDocumentResponseData = {
 
   fromJSON(object: any): IndexBlockDocumentResponse {
     return {
-      projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
-      status: isSet(object.status) ? indexBlockDocumentResponseStatusFromJSON(object.status) : 0,
-      errorMessage: isSet(object.errorMessage) ? String(object.errorMessage) : "",
+      projectGenerateQueueId: isSet(object.projectGenerateQueueId)
+        ? Number(object.projectGenerateQueueId)
+        : 0,
+      message: isSet(object.message) ? String(object.message) : undefined,
+      status: isSet(object.status)
+        ? indexBlockDocumentResponseStatusFromJSON(object.status)
+        : 0,
+      errorMessage: isSet(object.errorMessage)
+        ? String(object.errorMessage)
+        : "",
     };
   },
 
@@ -231,14 +274,20 @@ export const IndexBlockDocumentResponseData = {
     const obj: any = {};
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
-    message.status !== undefined && (obj.status = indexBlockDocumentResponseStatusToJSON(message.status));
-    message.errorMessage !== undefined && (obj.errorMessage = message.errorMessage);
+    message.message !== undefined && (obj.message = message.message);
+    message.status !== undefined &&
+      (obj.status = indexBlockDocumentResponseStatusToJSON(message.status));
+    message.errorMessage !== undefined &&
+      (obj.errorMessage = message.errorMessage);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<IndexBlockDocumentResponse>): IndexBlockDocumentResponse {
+  fromPartial(
+    object: DeepPartial<IndexBlockDocumentResponse>
+  ): IndexBlockDocumentResponse {
     const message = createBaseIndexBlockDocumentResponse();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
+    message.message = object.message ?? undefined;
     message.status = object.status ?? 0;
     message.errorMessage = object.errorMessage ?? "";
     return message;
@@ -250,7 +299,10 @@ function createBaseDeleteIndexBlockDocumentRequest(): DeleteIndexBlockDocumentRe
 }
 
 export const DeleteIndexBlockDocumentRequestData = {
-  encode(message: DeleteIndexBlockDocumentRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    message: DeleteIndexBlockDocumentRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
     }
@@ -258,12 +310,18 @@ export const DeleteIndexBlockDocumentRequestData = {
       writer.uint32(16).int32(message.projectId);
     }
     if (message.deletedBlockNodeIds !== undefined) {
-      StructData.encode(StructData.wrap(message.deletedBlockNodeIds), writer.uint32(26).fork()).ldelim();
+      StructData.encode(
+        StructData.wrap(message.deletedBlockNodeIds),
+        writer.uint32(26).fork()
+      ).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): DeleteIndexBlockDocumentRequest {
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): DeleteIndexBlockDocumentRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeleteIndexBlockDocumentRequest();
@@ -277,7 +335,9 @@ export const DeleteIndexBlockDocumentRequestData = {
           message.projectId = reader.int32();
           break;
         case 3:
-          message.deletedBlockNodeIds = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.deletedBlockNodeIds = StructData.unwrap(
+            StructData.decode(reader, reader.uint32())
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -289,9 +349,13 @@ export const DeleteIndexBlockDocumentRequestData = {
 
   fromJSON(object: any): DeleteIndexBlockDocumentRequest {
     return {
-      projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
+      projectGenerateQueueId: isSet(object.projectGenerateQueueId)
+        ? Number(object.projectGenerateQueueId)
+        : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      deletedBlockNodeIds: isObject(object.deletedBlockNodeIds) ? object.deletedBlockNodeIds : undefined,
+      deletedBlockNodeIds: isObject(object.deletedBlockNodeIds)
+        ? object.deletedBlockNodeIds
+        : undefined,
     };
   },
 
@@ -299,12 +363,16 @@ export const DeleteIndexBlockDocumentRequestData = {
     const obj: any = {};
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
-    message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
-    message.deletedBlockNodeIds !== undefined && (obj.deletedBlockNodeIds = message.deletedBlockNodeIds);
+    message.projectId !== undefined &&
+      (obj.projectId = Math.round(message.projectId));
+    message.deletedBlockNodeIds !== undefined &&
+      (obj.deletedBlockNodeIds = message.deletedBlockNodeIds);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<DeleteIndexBlockDocumentRequest>): DeleteIndexBlockDocumentRequest {
+  fromPartial(
+    object: DeepPartial<DeleteIndexBlockDocumentRequest>
+  ): DeleteIndexBlockDocumentRequest {
     const message = createBaseDeleteIndexBlockDocumentRequest();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectId = object.projectId ?? 0;
@@ -318,7 +386,10 @@ function createBaseDeleteIndexBlockDocumentResponse(): DeleteIndexBlockDocumentR
 }
 
 export const DeleteIndexBlockDocumentResponseData = {
-  encode(message: DeleteIndexBlockDocumentResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    message: DeleteIndexBlockDocumentResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
     }
@@ -331,7 +402,10 @@ export const DeleteIndexBlockDocumentResponseData = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): DeleteIndexBlockDocumentResponse {
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): DeleteIndexBlockDocumentResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeleteIndexBlockDocumentResponse();
@@ -357,9 +431,15 @@ export const DeleteIndexBlockDocumentResponseData = {
 
   fromJSON(object: any): DeleteIndexBlockDocumentResponse {
     return {
-      projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
-      status: isSet(object.status) ? deleteIndexBlockDocumentResponseStatusFromJSON(object.status) : 0,
-      errorMessage: isSet(object.errorMessage) ? String(object.errorMessage) : "",
+      projectGenerateQueueId: isSet(object.projectGenerateQueueId)
+        ? Number(object.projectGenerateQueueId)
+        : 0,
+      status: isSet(object.status)
+        ? deleteIndexBlockDocumentResponseStatusFromJSON(object.status)
+        : 0,
+      errorMessage: isSet(object.errorMessage)
+        ? String(object.errorMessage)
+        : "",
     };
   },
 
@@ -367,12 +447,18 @@ export const DeleteIndexBlockDocumentResponseData = {
     const obj: any = {};
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
-    message.status !== undefined && (obj.status = deleteIndexBlockDocumentResponseStatusToJSON(message.status));
-    message.errorMessage !== undefined && (obj.errorMessage = message.errorMessage);
+    message.status !== undefined &&
+      (obj.status = deleteIndexBlockDocumentResponseStatusToJSON(
+        message.status
+      ));
+    message.errorMessage !== undefined &&
+      (obj.errorMessage = message.errorMessage);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<DeleteIndexBlockDocumentResponse>): DeleteIndexBlockDocumentResponse {
+  fromPartial(
+    object: DeepPartial<DeleteIndexBlockDocumentResponse>
+  ): DeleteIndexBlockDocumentResponse {
     const message = createBaseDeleteIndexBlockDocumentResponse();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.status = object.status ?? 0;
@@ -381,11 +467,23 @@ export const DeleteIndexBlockDocumentResponseData = {
   },
 };
 
-type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
+type Builtin =
+  | Date
+  | Function
+  | Uint8Array
+  | string
+  | number
+  | boolean
+  | undefined;
 
-type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
+type DeepPartial<T> = T extends Builtin
+  ? T
+  : T extends Array<infer U>
+  ? Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U>
+  ? ReadonlyArray<DeepPartial<U>>
+  : T extends {}
+  ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
 function isObject(value: any): boolean {
