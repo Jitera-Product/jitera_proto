@@ -9,6 +9,7 @@ message ChatRequest {
   optional Status status = 3;
   repeated Message messages = 4;
   optional CreatedFrom created_from = 5;
+  optional Chat chat = 6;
 
   enum Status {
     started = 0;
@@ -20,6 +21,10 @@ message ChatRequest {
     assistant = 0;
     plugin = 1;
   }
+}
+
+message Chat {
+  optional google.protobuf.Struct metadata = 1;
 }
 
 message Message {
@@ -51,6 +56,7 @@ message Message {
     monorepo = 5;
     fullstack_developer = 6;
     assistant_role = 7;
+    job_manager = 8;
   }
 
   enum MessageFrom {

@@ -10,6 +10,7 @@ export * from "./protos/v2/business_logic.proto";
 export * from "./protos/v2/business_logic_group.proto";
 export * from "./protos/v2/chat.proto";
 export * from "./protos/v2/component_specification.proto";
+export * from "./protos/v2/data_deletion.proto";
 export * from "./protos/v2/image_description.proto";
 export * from "./protos/v2/index_block_document.proto";
 export * from "./protos/v2/project_figma.proto";
