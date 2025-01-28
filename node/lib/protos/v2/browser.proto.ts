@@ -28,11 +28,23 @@ export class BrowserStorageState {
 }
 
 function createBaseBrowserCookie(): BrowserCookie {
-  return { name: "", value: "", domain: "", expires: 0, path: "", httpOnly: false, secure: false, sameSite: "" };
+  return {
+    name: "",
+    value: "",
+    domain: "",
+    expires: 0,
+    path: "",
+    httpOnly: false,
+    secure: false,
+    sameSite: "",
+  };
 }
 
 export const BrowserCookieData = {
-  encode(message: BrowserCookie, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    message: BrowserCookie,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
@@ -117,7 +129,8 @@ export const BrowserCookieData = {
     message.name !== undefined && (obj.name = message.name);
     message.value !== undefined && (obj.value = message.value);
     message.domain !== undefined && (obj.domain = message.domain);
-    message.expires !== undefined && (obj.expires = Math.round(message.expires));
+    message.expires !== undefined &&
+      (obj.expires = Math.round(message.expires));
     message.path !== undefined && (obj.path = message.path);
     message.httpOnly !== undefined && (obj.httpOnly = message.httpOnly);
     message.secure !== undefined && (obj.secure = message.secure);
@@ -144,7 +157,10 @@ function createBaseBrowserLocalStorage(): BrowserLocalStorage {
 }
 
 export const BrowserLocalStorageData = {
-  encode(message: BrowserLocalStorage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    message: BrowserLocalStorage,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
@@ -202,7 +218,10 @@ function createBaseBrowserOrigin(): BrowserOrigin {
 }
 
 export const BrowserOriginData = {
-  encode(message: BrowserOrigin, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    message: BrowserOrigin,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     if (message.origin !== "") {
       writer.uint32(10).string(message.origin);
     }
@@ -223,7 +242,9 @@ export const BrowserOriginData = {
           message.origin = reader.string();
           break;
         case 2:
-          message.localStorage.push(BrowserLocalStorageData.decode(reader, reader.uint32()));
+          message.localStorage.push(
+            BrowserLocalStorageData.decode(reader, reader.uint32())
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -237,7 +258,9 @@ export const BrowserOriginData = {
     return {
       origin: isSet(object.origin) ? String(object.origin) : "",
       localStorage: Array.isArray(object?.localStorage)
-        ? object.localStorage.map((e: any) => BrowserLocalStorageData.fromJSON(e))
+        ? object.localStorage.map((e: any) =>
+            BrowserLocalStorageData.fromJSON(e)
+          )
         : [],
     };
   },
@@ -246,7 +269,9 @@ export const BrowserOriginData = {
     const obj: any = {};
     message.origin !== undefined && (obj.origin = message.origin);
     if (message.localStorage) {
-      obj.localStorage = message.localStorage.map((e) => e ? BrowserLocalStorageData.toJSON(e) : undefined);
+      obj.localStorage = message.localStorage.map((e) =>
+        e ? BrowserLocalStorageData.toJSON(e) : undefined
+      );
     } else {
       obj.localStorage = [];
     }
@@ -256,7 +281,9 @@ export const BrowserOriginData = {
   fromPartial(object: DeepPartial<BrowserOrigin>): BrowserOrigin {
     const message = createBaseBrowserOrigin();
     message.origin = object.origin ?? "";
-    message.localStorage = object.localStorage?.map((e) => BrowserLocalStorageData.fromPartial(e)) || [];
+    message.localStorage =
+      object.localStorage?.map((e) => BrowserLocalStorageData.fromPartial(e)) ||
+      [];
     return message;
   },
 };
@@ -266,7 +293,10 @@ function createBaseBrowserStorageState(): BrowserStorageState {
 }
 
 export const BrowserStorageStateData = {
-  encode(message: BrowserStorageState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    message: BrowserStorageState,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     for (const v of message.cookies) {
       BrowserCookieData.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -284,10 +314,14 @@ export const BrowserStorageStateData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.cookies.push(BrowserCookieData.decode(reader, reader.uint32()));
+          message.cookies.push(
+            BrowserCookieData.decode(reader, reader.uint32())
+          );
           break;
         case 2:
-          message.origins.push(BrowserOriginData.decode(reader, reader.uint32()));
+          message.origins.push(
+            BrowserOriginData.decode(reader, reader.uint32())
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -299,20 +333,28 @@ export const BrowserStorageStateData = {
 
   fromJSON(object: any): BrowserStorageState {
     return {
-      cookies: Array.isArray(object?.cookies) ? object.cookies.map((e: any) => BrowserCookieData.fromJSON(e)) : [],
-      origins: Array.isArray(object?.origins) ? object.origins.map((e: any) => BrowserOriginData.fromJSON(e)) : [],
+      cookies: Array.isArray(object?.cookies)
+        ? object.cookies.map((e: any) => BrowserCookieData.fromJSON(e))
+        : [],
+      origins: Array.isArray(object?.origins)
+        ? object.origins.map((e: any) => BrowserOriginData.fromJSON(e))
+        : [],
     };
   },
 
   toJSON(message: BrowserStorageState): unknown {
     const obj: any = {};
     if (message.cookies) {
-      obj.cookies = message.cookies.map((e) => e ? BrowserCookieData.toJSON(e) : undefined);
+      obj.cookies = message.cookies.map((e) =>
+        e ? BrowserCookieData.toJSON(e) : undefined
+      );
     } else {
       obj.cookies = [];
     }
     if (message.origins) {
-      obj.origins = message.origins.map((e) => e ? BrowserOriginData.toJSON(e) : undefined);
+      obj.origins = message.origins.map((e) =>
+        e ? BrowserOriginData.toJSON(e) : undefined
+      );
     } else {
       obj.origins = [];
     }
@@ -321,17 +363,31 @@ export const BrowserStorageStateData = {
 
   fromPartial(object: DeepPartial<BrowserStorageState>): BrowserStorageState {
     const message = createBaseBrowserStorageState();
-    message.cookies = object.cookies?.map((e) => BrowserCookieData.fromPartial(e)) || [];
-    message.origins = object.origins?.map((e) => BrowserOriginData.fromPartial(e)) || [];
+    message.cookies =
+      object.cookies?.map((e) => BrowserCookieData.fromPartial(e)) || [];
+    message.origins =
+      object.origins?.map((e) => BrowserOriginData.fromPartial(e)) || [];
     return message;
   },
 };
 
-type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
+type Builtin =
+  | Date
+  | Function
+  | Uint8Array
+  | string
+  | number
+  | boolean
+  | undefined;
 
-type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
+type DeepPartial<T> = T extends Builtin
+  ? T
+  : T extends Array<infer U>
+  ? Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U>
+  ? ReadonlyArray<DeepPartial<U>>
+  : T extends {}
+  ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
 function isSet(value: any): boolean {
