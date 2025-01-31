@@ -1,0 +1,23 @@
+syntax = "proto3";
+package schema.v2.test_case_common;
+import "v2/browser.proto";
+import "google/protobuf/struct.proto";
+
+message EnvConfiguration {
+	optional string http_basic_username = 1;
+	optional string http_basic_password = 2;
+	repeated google.protobuf.Struct header = 3;
+}
+
+message TestCasesRunTestConfiguration {
+	optional string url = 1;
+	string username = 2;
+	string password = 3;
+	optional string login_path = 4;
+	int32 project_generate_id = 5;
+	int32 project_id = 6;
+	optional int32 token_expiration_seconds = 7;
+	optional string code = 8;
+	browser.BrowserStorageState storage_state = 9;
+	optional EnvConfiguration env_configuration = 10;
+}

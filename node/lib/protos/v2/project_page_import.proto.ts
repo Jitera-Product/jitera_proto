@@ -1,8 +1,12 @@
 /* eslint-disable */
-import * as _m0 from "protobufjs/minimal";
+import _m0 from "protobufjs/minimal";
+import { StructData } from "../google/protobuf/struct.proto";
 import { BrowserStorageState, BrowserStorageStateData } from "./browser.proto";
 import { ProjectSource, ProjectSourceData } from "./project_source.proto";
-import { StructData } from "../google/protobuf/struct.proto";
+import {
+  TestCasesRunTestConfiguration,
+  TestCasesRunTestConfigurationData,
+} from "./test_case_common.proto";
 
 export class ProjectPageImport {
   projectGenerateId: number;
@@ -10,6 +14,7 @@ export class ProjectPageImport {
   projectSource?: ProjectSource;
   url: string;
   storageState?: BrowserStorageState;
+  testConfiguration?: TestCasesRunTestConfiguration;
   handledUrls: string[];
 }
 
@@ -81,7 +86,9 @@ export enum ProjectPageImportResponseStatus {
   UNRECOGNIZED = -1,
 }
 
-export function projectPageImportResponseStatusFromJSON(object: any): ProjectPageImportResponseStatus {
+export function projectPageImportResponseStatusFromJSON(
+  object: any
+): ProjectPageImportResponseStatus {
   switch (object) {
     case 0:
     case "STARTED":
@@ -102,7 +109,9 @@ export function projectPageImportResponseStatusFromJSON(object: any): ProjectPag
   }
 }
 
-export function projectPageImportResponseStatusToJSON(object: ProjectPageImportResponseStatus): string {
+export function projectPageImportResponseStatusToJSON(
+  object: ProjectPageImportResponseStatus
+): string {
   switch (object) {
     case ProjectPageImportResponseStatus.STARTED:
       return "STARTED";
@@ -123,7 +132,10 @@ function createBaseProjectPageImport(): ProjectPageImport {
 }
 
 export const ProjectPageImportData = {
-  encode(message: ProjectPageImport, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    message: ProjectPageImport,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     if (message.projectGenerateId !== 0) {
       writer.uint32(8).int32(message.projectGenerateId);
     }
@@ -131,13 +143,25 @@ export const ProjectPageImportData = {
       writer.uint32(16).int32(message.projectId);
     }
     if (message.projectSource !== undefined) {
-      ProjectSourceData.encode(message.projectSource, writer.uint32(26).fork()).ldelim();
+      ProjectSourceData.encode(
+        message.projectSource,
+        writer.uint32(26).fork()
+      ).ldelim();
     }
     if (message.url !== "") {
       writer.uint32(34).string(message.url);
     }
     if (message.storageState !== undefined) {
-      BrowserStorageStateData.encode(message.storageState, writer.uint32(42).fork()).ldelim();
+      BrowserStorageStateData.encode(
+        message.storageState,
+        writer.uint32(42).fork()
+      ).ldelim();
+    }
+    if (message.testConfiguration !== undefined) {
+      TestCasesRunTestConfigurationData.encode(
+        message.testConfiguration,
+        writer.uint32(58).fork()
+      ).ldelim();
     }
     for (const v of message.handledUrls) {
       writer.uint32(50).string(v!);
@@ -159,13 +183,25 @@ export const ProjectPageImportData = {
           message.projectId = reader.int32();
           break;
         case 3:
-          message.projectSource = ProjectSourceData.decode(reader, reader.uint32());
+          message.projectSource = ProjectSourceData.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         case 4:
           message.url = reader.string();
           break;
         case 5:
-          message.storageState = BrowserStorageStateData.decode(reader, reader.uint32());
+          message.storageState = BrowserStorageStateData.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 7:
+          message.testConfiguration = TestCasesRunTestConfigurationData.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         case 6:
           message.handledUrls.push(reader.string());
@@ -180,24 +216,45 @@ export const ProjectPageImportData = {
 
   fromJSON(object: any): ProjectPageImport {
     return {
-      projectGenerateId: isSet(object.projectGenerateId) ? Number(object.projectGenerateId) : 0,
+      projectGenerateId: isSet(object.projectGenerateId)
+        ? Number(object.projectGenerateId)
+        : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
+      projectSource: isSet(object.projectSource)
+        ? ProjectSourceData.fromJSON(object.projectSource)
+        : undefined,
       url: isSet(object.url) ? String(object.url) : "",
-      storageState: isSet(object.storageState) ? BrowserStorageStateData.fromJSON(object.storageState) : undefined,
-      handledUrls: Array.isArray(object?.handledUrls) ? object.handledUrls.map((e: any) => String(e)) : [],
+      storageState: isSet(object.storageState)
+        ? BrowserStorageStateData.fromJSON(object.storageState)
+        : undefined,
+      testConfiguration: isSet(object.testConfiguration)
+        ? TestCasesRunTestConfigurationData.fromJSON(object.testConfiguration)
+        : undefined,
+      handledUrls: Array.isArray(object?.handledUrls)
+        ? object.handledUrls.map((e: any) => String(e))
+        : [],
     };
   },
 
   toJSON(message: ProjectPageImport): unknown {
     const obj: any = {};
-    message.projectGenerateId !== undefined && (obj.projectGenerateId = Math.round(message.projectGenerateId));
-    message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
+    message.projectGenerateId !== undefined &&
+      (obj.projectGenerateId = Math.round(message.projectGenerateId));
+    message.projectId !== undefined &&
+      (obj.projectId = Math.round(message.projectId));
     message.projectSource !== undefined &&
-      (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
+      (obj.projectSource = message.projectSource
+        ? ProjectSourceData.toJSON(message.projectSource)
+        : undefined);
     message.url !== undefined && (obj.url = message.url);
     message.storageState !== undefined &&
-      (obj.storageState = message.storageState ? BrowserStorageStateData.toJSON(message.storageState) : undefined);
+      (obj.storageState = message.storageState
+        ? BrowserStorageStateData.toJSON(message.storageState)
+        : undefined);
+    message.testConfiguration !== undefined &&
+      (obj.testConfiguration = message.testConfiguration
+        ? TestCasesRunTestConfigurationData.toJSON(message.testConfiguration)
+        : undefined);
     if (message.handledUrls) {
       obj.handledUrls = message.handledUrls.map((e) => e);
     } else {
@@ -210,13 +267,22 @@ export const ProjectPageImportData = {
     const message = createBaseProjectPageImport();
     message.projectGenerateId = object.projectGenerateId ?? 0;
     message.projectId = object.projectId ?? 0;
-    message.projectSource = (object.projectSource !== undefined && object.projectSource !== null)
-      ? ProjectSourceData.fromPartial(object.projectSource)
-      : undefined;
+    message.projectSource =
+      object.projectSource !== undefined && object.projectSource !== null
+        ? ProjectSourceData.fromPartial(object.projectSource)
+        : undefined;
     message.url = object.url ?? "";
-    message.storageState = (object.storageState !== undefined && object.storageState !== null)
-      ? BrowserStorageStateData.fromPartial(object.storageState)
-      : undefined;
+    message.storageState =
+      object.storageState !== undefined && object.storageState !== null
+        ? BrowserStorageStateData.fromPartial(object.storageState)
+        : undefined;
+    message.testConfiguration =
+      object.testConfiguration !== undefined &&
+      object.testConfiguration !== null
+        ? TestCasesRunTestConfigurationData.fromPartial(
+            object.testConfiguration
+          )
+        : undefined;
     message.handledUrls = object.handledUrls?.map((e) => e) || [];
     return message;
   },
@@ -240,7 +306,10 @@ function createBaseProjectImportPageAction(): ProjectImportPageAction {
 }
 
 export const ProjectImportPageActionData = {
-  encode(message: ProjectImportPageAction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    message: ProjectImportPageAction,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     if (message.uuid !== "") {
       writer.uint32(10).string(message.uuid);
     }
@@ -269,7 +338,10 @@ export const ProjectImportPageActionData = {
       writer.uint32(74).string(message.selector);
     }
     if (message.inputs !== undefined) {
-      StructData.encode(StructData.wrap(message.inputs), writer.uint32(82).fork()).ldelim();
+      StructData.encode(
+        StructData.wrap(message.inputs),
+        writer.uint32(82).fork()
+      ).ldelim();
     }
     for (const v of message.files) {
       writer.uint32(90).string(v!);
@@ -281,12 +353,18 @@ export const ProjectImportPageActionData = {
       writer.uint32(106).string(message.logicDescription);
     }
     if (message.metadata !== undefined) {
-      StructData.encode(StructData.wrap(message.metadata), writer.uint32(114).fork()).ldelim();
+      StructData.encode(
+        StructData.wrap(message.metadata),
+        writer.uint32(114).fork()
+      ).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectImportPageAction {
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ProjectImportPageAction {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseProjectImportPageAction();
@@ -321,7 +399,9 @@ export const ProjectImportPageActionData = {
           message.selector = reader.string();
           break;
         case 10:
-          message.inputs = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.inputs = StructData.unwrap(
+            StructData.decode(reader, reader.uint32())
+          );
           break;
         case 11:
           message.files.push(reader.string());
@@ -333,7 +413,9 @@ export const ProjectImportPageActionData = {
           message.logicDescription = reader.string();
           break;
         case 14:
-          message.metadata = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.metadata = StructData.unwrap(
+            StructData.decode(reader, reader.uint32())
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -346,8 +428,12 @@ export const ProjectImportPageActionData = {
   fromJSON(object: any): ProjectImportPageAction {
     return {
       uuid: isSet(object.uuid) ? String(object.uuid) : "",
-      actionableType: isSet(object.actionableType) ? String(object.actionableType) : "",
-      actionableId: isSet(object.actionableId) ? Number(object.actionableId) : 0,
+      actionableType: isSet(object.actionableType)
+        ? String(object.actionableType)
+        : "",
+      actionableId: isSet(object.actionableId)
+        ? Number(object.actionableId)
+        : 0,
       name: isSet(object.name) ? String(object.name) : "",
       script: isSet(object.script) ? String(object.script) : "",
       actionType: isSet(object.actionType) ? String(object.actionType) : "",
@@ -355,9 +441,13 @@ export const ProjectImportPageActionData = {
       dynamicPath: isSet(object.dynamicPath) ? String(object.dynamicPath) : "",
       selector: isSet(object.selector) ? String(object.selector) : "",
       inputs: isObject(object.inputs) ? object.inputs : undefined,
-      files: Array.isArray(object?.files) ? object.files.map((e: any) => String(e)) : [],
+      files: Array.isArray(object?.files)
+        ? object.files.map((e: any) => String(e))
+        : [],
       description: isSet(object.description) ? String(object.description) : "",
-      logicDescription: isSet(object.logicDescription) ? String(object.logicDescription) : "",
+      logicDescription: isSet(object.logicDescription)
+        ? String(object.logicDescription)
+        : "",
       metadata: isObject(object.metadata) ? object.metadata : undefined,
     };
   },
@@ -365,13 +455,16 @@ export const ProjectImportPageActionData = {
   toJSON(message: ProjectImportPageAction): unknown {
     const obj: any = {};
     message.uuid !== undefined && (obj.uuid = message.uuid);
-    message.actionableType !== undefined && (obj.actionableType = message.actionableType);
-    message.actionableId !== undefined && (obj.actionableId = Math.round(message.actionableId));
+    message.actionableType !== undefined &&
+      (obj.actionableType = message.actionableType);
+    message.actionableId !== undefined &&
+      (obj.actionableId = Math.round(message.actionableId));
     message.name !== undefined && (obj.name = message.name);
     message.script !== undefined && (obj.script = message.script);
     message.actionType !== undefined && (obj.actionType = message.actionType);
     message.url !== undefined && (obj.url = message.url);
-    message.dynamicPath !== undefined && (obj.dynamicPath = message.dynamicPath);
+    message.dynamicPath !== undefined &&
+      (obj.dynamicPath = message.dynamicPath);
     message.selector !== undefined && (obj.selector = message.selector);
     message.inputs !== undefined && (obj.inputs = message.inputs);
     if (message.files) {
@@ -379,13 +472,17 @@ export const ProjectImportPageActionData = {
     } else {
       obj.files = [];
     }
-    message.description !== undefined && (obj.description = message.description);
-    message.logicDescription !== undefined && (obj.logicDescription = message.logicDescription);
+    message.description !== undefined &&
+      (obj.description = message.description);
+    message.logicDescription !== undefined &&
+      (obj.logicDescription = message.logicDescription);
     message.metadata !== undefined && (obj.metadata = message.metadata);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<ProjectImportPageAction>): ProjectImportPageAction {
+  fromPartial(
+    object: DeepPartial<ProjectImportPageAction>
+  ): ProjectImportPageAction {
     const message = createBaseProjectImportPageAction();
     message.uuid = object.uuid ?? "";
     message.actionableType = object.actionableType ?? "";
@@ -422,7 +519,10 @@ function createBaseProjectImportPageComponent(): ProjectImportPageComponent {
 }
 
 export const ProjectImportPageComponentData = {
-  encode(message: ProjectImportPageComponent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    message: ProjectImportPageComponent,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     if (message.uuid !== "") {
       writer.uint32(10).string(message.uuid);
     }
@@ -451,27 +551,45 @@ export const ProjectImportPageComponentData = {
       writer.uint32(74).string(message.logicDescription);
     }
     if (message.size !== undefined) {
-      StructData.encode(StructData.wrap(message.size), writer.uint32(82).fork()).ldelim();
+      StructData.encode(
+        StructData.wrap(message.size),
+        writer.uint32(82).fork()
+      ).ldelim();
     }
     if (message.position !== undefined) {
-      StructData.encode(StructData.wrap(message.position), writer.uint32(90).fork()).ldelim();
+      StructData.encode(
+        StructData.wrap(message.position),
+        writer.uint32(90).fork()
+      ).ldelim();
     }
     if (message.elements !== undefined) {
-      StructData.encode(StructData.wrap(message.elements), writer.uint32(98).fork()).ldelim();
+      StructData.encode(
+        StructData.wrap(message.elements),
+        writer.uint32(98).fork()
+      ).ldelim();
     }
     for (const v of message.files) {
       writer.uint32(106).string(v!);
     }
     if (message.metadata !== undefined) {
-      StructData.encode(StructData.wrap(message.metadata), writer.uint32(114).fork()).ldelim();
+      StructData.encode(
+        StructData.wrap(message.metadata),
+        writer.uint32(114).fork()
+      ).ldelim();
     }
     for (const v of message.actions) {
-      ProjectImportPageActionData.encode(v!, writer.uint32(122).fork()).ldelim();
+      ProjectImportPageActionData.encode(
+        v!,
+        writer.uint32(122).fork()
+      ).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectImportPageComponent {
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ProjectImportPageComponent {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseProjectImportPageComponent();
@@ -506,22 +624,32 @@ export const ProjectImportPageComponentData = {
           message.logicDescription = reader.string();
           break;
         case 10:
-          message.size = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.size = StructData.unwrap(
+            StructData.decode(reader, reader.uint32())
+          );
           break;
         case 11:
-          message.position = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.position = StructData.unwrap(
+            StructData.decode(reader, reader.uint32())
+          );
           break;
         case 12:
-          message.elements = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.elements = StructData.unwrap(
+            StructData.decode(reader, reader.uint32())
+          );
           break;
         case 13:
           message.files.push(reader.string());
           break;
         case 14:
-          message.metadata = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.metadata = StructData.unwrap(
+            StructData.decode(reader, reader.uint32())
+          );
           break;
         case 15:
-          message.actions.push(ProjectImportPageActionData.decode(reader, reader.uint32()));
+          message.actions.push(
+            ProjectImportPageActionData.decode(reader, reader.uint32())
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -534,21 +662,29 @@ export const ProjectImportPageComponentData = {
   fromJSON(object: any): ProjectImportPageComponent {
     return {
       uuid: isSet(object.uuid) ? String(object.uuid) : "",
-      projectImportPageId: isSet(object.projectImportPageId) ? Number(object.projectImportPageId) : 0,
+      projectImportPageId: isSet(object.projectImportPageId)
+        ? Number(object.projectImportPageId)
+        : 0,
       name: isSet(object.name) ? String(object.name) : "",
       html: isSet(object.html) ? String(object.html) : "",
       script: isSet(object.script) ? String(object.script) : "",
       parent: isSet(object.parent) ? String(object.parent) : "",
       screenshot: isSet(object.screenshot) ? String(object.screenshot) : "",
       description: isSet(object.description) ? String(object.description) : "",
-      logicDescription: isSet(object.logicDescription) ? String(object.logicDescription) : "",
+      logicDescription: isSet(object.logicDescription)
+        ? String(object.logicDescription)
+        : "",
       size: isObject(object.size) ? object.size : undefined,
       position: isObject(object.position) ? object.position : undefined,
       elements: isObject(object.elements) ? object.elements : undefined,
-      files: Array.isArray(object?.files) ? object.files.map((e: any) => String(e)) : [],
+      files: Array.isArray(object?.files)
+        ? object.files.map((e: any) => String(e))
+        : [],
       metadata: isObject(object.metadata) ? object.metadata : undefined,
       actions: Array.isArray(object?.actions)
-        ? object.actions.map((e: any) => ProjectImportPageActionData.fromJSON(e))
+        ? object.actions.map((e: any) =>
+            ProjectImportPageActionData.fromJSON(e)
+          )
         : [],
     };
   },
@@ -556,14 +692,17 @@ export const ProjectImportPageComponentData = {
   toJSON(message: ProjectImportPageComponent): unknown {
     const obj: any = {};
     message.uuid !== undefined && (obj.uuid = message.uuid);
-    message.projectImportPageId !== undefined && (obj.projectImportPageId = Math.round(message.projectImportPageId));
+    message.projectImportPageId !== undefined &&
+      (obj.projectImportPageId = Math.round(message.projectImportPageId));
     message.name !== undefined && (obj.name = message.name);
     message.html !== undefined && (obj.html = message.html);
     message.script !== undefined && (obj.script = message.script);
     message.parent !== undefined && (obj.parent = message.parent);
     message.screenshot !== undefined && (obj.screenshot = message.screenshot);
-    message.description !== undefined && (obj.description = message.description);
-    message.logicDescription !== undefined && (obj.logicDescription = message.logicDescription);
+    message.description !== undefined &&
+      (obj.description = message.description);
+    message.logicDescription !== undefined &&
+      (obj.logicDescription = message.logicDescription);
     message.size !== undefined && (obj.size = message.size);
     message.position !== undefined && (obj.position = message.position);
     message.elements !== undefined && (obj.elements = message.elements);
@@ -574,14 +713,18 @@ export const ProjectImportPageComponentData = {
     }
     message.metadata !== undefined && (obj.metadata = message.metadata);
     if (message.actions) {
-      obj.actions = message.actions.map((e) => e ? ProjectImportPageActionData.toJSON(e) : undefined);
+      obj.actions = message.actions.map((e) =>
+        e ? ProjectImportPageActionData.toJSON(e) : undefined
+      );
     } else {
       obj.actions = [];
     }
     return obj;
   },
 
-  fromPartial(object: DeepPartial<ProjectImportPageComponent>): ProjectImportPageComponent {
+  fromPartial(
+    object: DeepPartial<ProjectImportPageComponent>
+  ): ProjectImportPageComponent {
     const message = createBaseProjectImportPageComponent();
     message.uuid = object.uuid ?? "";
     message.projectImportPageId = object.projectImportPageId ?? 0;
@@ -597,7 +740,9 @@ export const ProjectImportPageComponentData = {
     message.elements = object.elements ?? undefined;
     message.files = object.files?.map((e) => e) || [];
     message.metadata = object.metadata ?? undefined;
-    message.actions = object.actions?.map((e) => ProjectImportPageActionData.fromPartial(e)) || [];
+    message.actions =
+      object.actions?.map((e) => ProjectImportPageActionData.fromPartial(e)) ||
+      [];
     return message;
   },
 };
@@ -621,7 +766,10 @@ function createBaseProjectImportPage(): ProjectImportPage {
 }
 
 export const ProjectImportPageData = {
-  encode(message: ProjectImportPage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    message: ProjectImportPage,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     if (message.uuid !== "") {
       writer.uint32(10).string(message.uuid);
     }
@@ -650,7 +798,10 @@ export const ProjectImportPageData = {
       writer.uint32(74).string(message.html);
     }
     if (message.size !== undefined) {
-      StructData.encode(StructData.wrap(message.size), writer.uint32(82).fork()).ldelim();
+      StructData.encode(
+        StructData.wrap(message.size),
+        writer.uint32(82).fork()
+      ).ldelim();
     }
     for (const v of message.files) {
       writer.uint32(90).string(v!);
@@ -659,13 +810,22 @@ export const ProjectImportPageData = {
       writer.uint32(98).string(message.description);
     }
     if (message.metadata !== undefined) {
-      StructData.encode(StructData.wrap(message.metadata), writer.uint32(106).fork()).ldelim();
+      StructData.encode(
+        StructData.wrap(message.metadata),
+        writer.uint32(106).fork()
+      ).ldelim();
     }
     for (const v of message.actions) {
-      ProjectImportPageActionData.encode(v!, writer.uint32(114).fork()).ldelim();
+      ProjectImportPageActionData.encode(
+        v!,
+        writer.uint32(114).fork()
+      ).ldelim();
     }
     for (const v of message.components) {
-      ProjectImportPageComponentData.encode(v!, writer.uint32(122).fork()).ldelim();
+      ProjectImportPageComponentData.encode(
+        v!,
+        writer.uint32(122).fork()
+      ).ldelim();
     }
     return writer;
   },
@@ -705,7 +865,9 @@ export const ProjectImportPageData = {
           message.html = reader.string();
           break;
         case 10:
-          message.size = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.size = StructData.unwrap(
+            StructData.decode(reader, reader.uint32())
+          );
           break;
         case 11:
           message.files.push(reader.string());
@@ -714,13 +876,19 @@ export const ProjectImportPageData = {
           message.description = reader.string();
           break;
         case 13:
-          message.metadata = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.metadata = StructData.unwrap(
+            StructData.decode(reader, reader.uint32())
+          );
           break;
         case 14:
-          message.actions.push(ProjectImportPageActionData.decode(reader, reader.uint32()));
+          message.actions.push(
+            ProjectImportPageActionData.decode(reader, reader.uint32())
+          );
           break;
         case 15:
-          message.components.push(ProjectImportPageComponentData.decode(reader, reader.uint32()));
+          message.components.push(
+            ProjectImportPageComponentData.decode(reader, reader.uint32())
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -734,7 +902,9 @@ export const ProjectImportPageData = {
     return {
       uuid: isSet(object.uuid) ? String(object.uuid) : "",
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      projectSourceId: isSet(object.projectSourceId) ? Number(object.projectSourceId) : 0,
+      projectSourceId: isSet(object.projectSourceId)
+        ? Number(object.projectSourceId)
+        : 0,
       url: isSet(object.url) ? String(object.url) : "",
       name: isSet(object.name) ? String(object.name) : "",
       path: isSet(object.path) ? String(object.path) : "",
@@ -742,14 +912,20 @@ export const ProjectImportPageData = {
       dynamicPath: isSet(object.dynamicPath) ? String(object.dynamicPath) : "",
       html: isSet(object.html) ? String(object.html) : "",
       size: isObject(object.size) ? object.size : undefined,
-      files: Array.isArray(object?.files) ? object.files.map((e: any) => String(e)) : [],
+      files: Array.isArray(object?.files)
+        ? object.files.map((e: any) => String(e))
+        : [],
       description: isSet(object.description) ? String(object.description) : "",
       metadata: isObject(object.metadata) ? object.metadata : undefined,
       actions: Array.isArray(object?.actions)
-        ? object.actions.map((e: any) => ProjectImportPageActionData.fromJSON(e))
+        ? object.actions.map((e: any) =>
+            ProjectImportPageActionData.fromJSON(e)
+          )
         : [],
       components: Array.isArray(object?.components)
-        ? object.components.map((e: any) => ProjectImportPageComponentData.fromJSON(e))
+        ? object.components.map((e: any) =>
+            ProjectImportPageComponentData.fromJSON(e)
+          )
         : [],
     };
   },
@@ -757,13 +933,16 @@ export const ProjectImportPageData = {
   toJSON(message: ProjectImportPage): unknown {
     const obj: any = {};
     message.uuid !== undefined && (obj.uuid = message.uuid);
-    message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
-    message.projectSourceId !== undefined && (obj.projectSourceId = Math.round(message.projectSourceId));
+    message.projectId !== undefined &&
+      (obj.projectId = Math.round(message.projectId));
+    message.projectSourceId !== undefined &&
+      (obj.projectSourceId = Math.round(message.projectSourceId));
     message.url !== undefined && (obj.url = message.url);
     message.name !== undefined && (obj.name = message.name);
     message.path !== undefined && (obj.path = message.path);
     message.parentUrl !== undefined && (obj.parentUrl = message.parentUrl);
-    message.dynamicPath !== undefined && (obj.dynamicPath = message.dynamicPath);
+    message.dynamicPath !== undefined &&
+      (obj.dynamicPath = message.dynamicPath);
     message.html !== undefined && (obj.html = message.html);
     message.size !== undefined && (obj.size = message.size);
     if (message.files) {
@@ -771,15 +950,20 @@ export const ProjectImportPageData = {
     } else {
       obj.files = [];
     }
-    message.description !== undefined && (obj.description = message.description);
+    message.description !== undefined &&
+      (obj.description = message.description);
     message.metadata !== undefined && (obj.metadata = message.metadata);
     if (message.actions) {
-      obj.actions = message.actions.map((e) => e ? ProjectImportPageActionData.toJSON(e) : undefined);
+      obj.actions = message.actions.map((e) =>
+        e ? ProjectImportPageActionData.toJSON(e) : undefined
+      );
     } else {
       obj.actions = [];
     }
     if (message.components) {
-      obj.components = message.components.map((e) => e ? ProjectImportPageComponentData.toJSON(e) : undefined);
+      obj.components = message.components.map((e) =>
+        e ? ProjectImportPageComponentData.toJSON(e) : undefined
+      );
     } else {
       obj.components = [];
     }
@@ -801,8 +985,13 @@ export const ProjectImportPageData = {
     message.files = object.files?.map((e) => e) || [];
     message.description = object.description ?? "";
     message.metadata = object.metadata ?? undefined;
-    message.actions = object.actions?.map((e) => ProjectImportPageActionData.fromPartial(e)) || [];
-    message.components = object.components?.map((e) => ProjectImportPageComponentData.fromPartial(e)) || [];
+    message.actions =
+      object.actions?.map((e) => ProjectImportPageActionData.fromPartial(e)) ||
+      [];
+    message.components =
+      object.components?.map((e) =>
+        ProjectImportPageComponentData.fromPartial(e)
+      ) || [];
     return message;
   },
 };
@@ -812,7 +1001,10 @@ function createBaseProjectPageImportResponse(): ProjectPageImportResponse {
 }
 
 export const ProjectPageImportResponseData = {
-  encode(message: ProjectPageImportResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    message: ProjectPageImportResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     if (message.projectGenerateId !== 0) {
       writer.uint32(8).int32(message.projectGenerateId);
     }
@@ -823,12 +1015,18 @@ export const ProjectPageImportResponseData = {
       writer.uint32(24).int32(message.status);
     }
     if (message.payload !== undefined) {
-      StructData.encode(StructData.wrap(message.payload), writer.uint32(34).fork()).ldelim();
+      StructData.encode(
+        StructData.wrap(message.payload),
+        writer.uint32(34).fork()
+      ).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectPageImportResponse {
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ProjectPageImportResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseProjectPageImportResponse();
@@ -845,7 +1043,9 @@ export const ProjectPageImportResponseData = {
           message.status = reader.int32() as any;
           break;
         case 4:
-          message.payload = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.payload = StructData.unwrap(
+            StructData.decode(reader, reader.uint32())
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -857,23 +1057,32 @@ export const ProjectPageImportResponseData = {
 
   fromJSON(object: any): ProjectPageImportResponse {
     return {
-      projectGenerateId: isSet(object.projectGenerateId) ? Number(object.projectGenerateId) : 0,
+      projectGenerateId: isSet(object.projectGenerateId)
+        ? Number(object.projectGenerateId)
+        : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      status: isSet(object.status) ? projectPageImportResponseStatusFromJSON(object.status) : 0,
+      status: isSet(object.status)
+        ? projectPageImportResponseStatusFromJSON(object.status)
+        : 0,
       payload: isObject(object.payload) ? object.payload : undefined,
     };
   },
 
   toJSON(message: ProjectPageImportResponse): unknown {
     const obj: any = {};
-    message.projectGenerateId !== undefined && (obj.projectGenerateId = Math.round(message.projectGenerateId));
-    message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
-    message.status !== undefined && (obj.status = projectPageImportResponseStatusToJSON(message.status));
+    message.projectGenerateId !== undefined &&
+      (obj.projectGenerateId = Math.round(message.projectGenerateId));
+    message.projectId !== undefined &&
+      (obj.projectId = Math.round(message.projectId));
+    message.status !== undefined &&
+      (obj.status = projectPageImportResponseStatusToJSON(message.status));
     message.payload !== undefined && (obj.payload = message.payload);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<ProjectPageImportResponse>): ProjectPageImportResponse {
+  fromPartial(
+    object: DeepPartial<ProjectPageImportResponse>
+  ): ProjectPageImportResponse {
     const message = createBaseProjectPageImportResponse();
     message.projectGenerateId = object.projectGenerateId ?? 0;
     message.projectId = object.projectId ?? 0;
@@ -883,11 +1092,23 @@ export const ProjectPageImportResponseData = {
   },
 };
 
-type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
+type Builtin =
+  | Date
+  | Function
+  | Uint8Array
+  | string
+  | number
+  | boolean
+  | undefined;
 
-type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
+type DeepPartial<T> = T extends Builtin
+  ? T
+  : T extends Array<infer U>
+  ? Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U>
+  ? ReadonlyArray<DeepPartial<U>>
+  : T extends {}
+  ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
 function isObject(value: any): boolean {
