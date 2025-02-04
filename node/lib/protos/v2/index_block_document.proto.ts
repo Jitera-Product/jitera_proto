@@ -67,6 +67,7 @@ export class DeleteIndexBlockDocumentRequest {
 
 export class DeleteIndexBlockDocumentResponse {
   projectGenerateQueueId: number;
+  message?: string | undefined;
   status: DeleteIndexBlockDocumentResponseStatus;
   errorMessage: string;
 }
@@ -393,6 +394,9 @@ export const DeleteIndexBlockDocumentResponseData = {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
     }
+    if (message.message !== undefined) {
+      writer.uint32(18).string(message.message);
+    }
     if (message.status !== 0) {
       writer.uint32(32).int32(message.status);
     }
@@ -415,6 +419,9 @@ export const DeleteIndexBlockDocumentResponseData = {
         case 1:
           message.projectGenerateQueueId = reader.int32();
           break;
+        case 2:
+          message.message = reader.string();
+          break;
         case 4:
           message.status = reader.int32() as any;
           break;
@@ -434,6 +441,7 @@ export const DeleteIndexBlockDocumentResponseData = {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId)
         ? Number(object.projectGenerateQueueId)
         : 0,
+      message: isSet(object.message) ? String(object.message) : undefined,
       status: isSet(object.status)
         ? deleteIndexBlockDocumentResponseStatusFromJSON(object.status)
         : 0,
@@ -447,6 +455,7 @@ export const DeleteIndexBlockDocumentResponseData = {
     const obj: any = {};
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
+    message.message !== undefined && (obj.message = message.message);
     message.status !== undefined &&
       (obj.status = deleteIndexBlockDocumentResponseStatusToJSON(
         message.status
@@ -461,6 +470,7 @@ export const DeleteIndexBlockDocumentResponseData = {
   ): DeleteIndexBlockDocumentResponse {
     const message = createBaseDeleteIndexBlockDocumentResponse();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
+    message.message = object.message ?? undefined;
     message.status = object.status ?? 0;
     message.errorMessage = object.errorMessage ?? "";
     return message;
