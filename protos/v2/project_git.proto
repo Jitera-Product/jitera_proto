@@ -11,11 +11,25 @@ message ProjectGitSyncRequest {
   ProjectSource project_source = 4;
   repeated string changed_files = 5;
   optional Action action_type = 6;
+  repeated ProjectSourceConfiguration source_configurations = 7;
 
   enum Action {
 		CODE_TO_ERD = 0;
 		CODE_TO_NATURAL_LANGUAGE = 1;
 	}
+}
+
+message ProjectSourceConfiguration {
+  string id = 1;
+  ProjectSourceConfigurationCategoryEnum category = 2;
+  repeated string file_patterns = 3;
+}
+
+enum ProjectSourceConfigurationCategoryEnum {
+  ERD_MIGRATION = 0;
+  ERD_MODEL = 1;
+  BL = 2;
+  API = 3;
 }
 
 message ProjectGitSyncResponse {
