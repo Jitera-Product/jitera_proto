@@ -1,5 +1,6 @@
 syntax = "proto3";
 package schema.v2;
+import "v2/project_generate_queue.proto";
 // NOTE: Try block_core.proto
 // This structure has less support in utils of
 message BusinessLogicSync {
@@ -10,17 +11,8 @@ message BusinessLogicSync {
 }
 
 message BusinessLogicSyncResponse {
-	int32 project_generate_queue_id = 1;
-	string message = 2;
-	Status status = 3;
 	int32 token_usage = 4;
-
-	enum Status {
-		STATUS_UNSPECIFIED = 0;
-		STARTED = 1;
-		SUCCEEDED = 2;
-		FAILED = 3;
-	}
+  ProjectGenerateProgress progress = 6;
 }
 
 message Block {
