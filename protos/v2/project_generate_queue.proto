@@ -18,3 +18,8 @@ message ProjectGenerateReport {
 		string message = 1;
 	}
 }
+message ProjectGenerateProgress {
+	int32 project_generate_queue_id = 1;
+	string status_key = 2;
+	int64 event_timestamp = 3;  // Unix time in seconds
+}

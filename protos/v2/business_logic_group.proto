@@ -1,18 +1,12 @@
 syntax = "proto3";
 package schema.v2;
+import "v2/project_generate_queue.proto";
 
 message BusinessLogicGroupSyncResponse {
-	int32 project_generate_queue_id = 1;
 	string message = 2;
-	Status status = 3;
 	int32 token_usage = 4;
   	repeated BusinessLogicGroup business_logic_groups = 5;
-	enum Status {
-		STATUS_UNSPECIFIED = 0;
-		STARTED = 1;
-		SUCCEEDED = 2;
-		FAILED = 3;
-	}
+	ProjectGenerateProgress progress = 6;
 }
 
 message BusinessLogicGroup {
