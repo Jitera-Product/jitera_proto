@@ -54,6 +54,8 @@ export class ProjectGitSyncResponse {
   blocks: Block[];
   erds: string;
   errorMessage: string;
+  totalChunks: number;
+  items: string[];
 }
 
 export enum ProjectGitSyncResponseModule {
@@ -242,6 +244,8 @@ function createBaseProjectGitSyncResponse(): ProjectGitSyncResponse {
     blocks: [],
     erds: "",
     errorMessage: "",
+    totalChunks: 0,
+    items: [],
   };
 }
 
@@ -270,6 +274,12 @@ export const ProjectGitSyncResponseData = {
     }
     if (message.errorMessage !== "") {
       writer.uint32(66).string(message.errorMessage);
+    }
+    if (message.totalChunks !== 0) {
+      writer.uint32(72).int32(message.totalChunks);
+    }
+    for (const v of message.items) {
+      writer.uint32(82).string(v!);
     }
     return writer;
   },
@@ -305,6 +315,12 @@ export const ProjectGitSyncResponseData = {
         case 8:
           message.errorMessage = reader.string();
           break;
+        case 9:
+          message.totalChunks = reader.int32();
+          break;
+        case 10:
+          message.items.push(reader.string());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -323,6 +339,8 @@ export const ProjectGitSyncResponseData = {
       blocks: Array.isArray(object?.blocks) ? object.blocks.map((e: any) => BlockData.fromJSON(e)) : [],
       erds: isSet(object.erds) ? String(object.erds) : "",
       errorMessage: isSet(object.errorMessage) ? String(object.errorMessage) : "",
+      totalChunks: isSet(object.totalChunks) ? Number(object.totalChunks) : 0,
+      items: Array.isArray(object?.items) ? object.items.map((e: any) => String(e)) : [],
     };
   },
 
@@ -341,6 +359,12 @@ export const ProjectGitSyncResponseData = {
     }
     message.erds !== undefined && (obj.erds = message.erds);
     message.errorMessage !== undefined && (obj.errorMessage = message.errorMessage);
+    message.totalChunks !== undefined && (obj.totalChunks = Math.round(message.totalChunks));
+    if (message.items) {
+      obj.items = message.items.map((e) => e);
+    } else {
+      obj.items = [];
+    }
     return obj;
   },
 
@@ -354,6 +378,8 @@ export const ProjectGitSyncResponseData = {
     message.blocks = object.blocks?.map((e) => BlockData.fromPartial(e)) || [];
     message.erds = object.erds ?? "";
     message.errorMessage = object.errorMessage ?? "";
+    message.totalChunks = object.totalChunks ?? 0;
+    message.items = object.items?.map((e) => e) || [];
     return message;
   },
 };
