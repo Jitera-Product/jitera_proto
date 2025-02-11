@@ -1,0 +1,24 @@
+syntax = "proto3";
+package schema.v2;
+
+import "v2/block_core.proto";
+
+message GenerateDocResponse {
+  int32 project_generate_queue_id = 1;
+  Module module = 2;
+  Status status = 3;
+  repeated core.Block blocks = 4;
+  string error_message = 5;
+  int32 total_chunks = 6;
+  repeated string items = 7;
+
+  enum Module {
+    CODE_TO_NATURAL_LANGUAGE = 0;
+  }
+
+  enum Status {
+    STARTED = 0;
+    SUCCEEDED = 1;
+    FAILED = 2;
+  }
+}
