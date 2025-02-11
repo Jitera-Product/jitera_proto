@@ -5,57 +5,10 @@ import {
   Git,
   GitData,
   ProjectSource,
+  ProjectSourceConfiguration,
+  ProjectSourceConfigurationData,
   ProjectSourceData,
 } from "./project_source.proto";
-
-export enum ProjectSourceConfigurationCategoryEnum {
-  ERD_MIGRATION = 0,
-  ERD_MODEL = 1,
-  BL = 2,
-  API = 3,
-  UNRECOGNIZED = -1,
-}
-
-export function projectSourceConfigurationCategoryEnumFromJSON(
-  object: any
-): ProjectSourceConfigurationCategoryEnum {
-  switch (object) {
-    case 0:
-    case "ERD_MIGRATION":
-      return ProjectSourceConfigurationCategoryEnum.ERD_MIGRATION;
-    case 1:
-    case "ERD_MODEL":
-      return ProjectSourceConfigurationCategoryEnum.ERD_MODEL;
-    case 2:
-    case "BL":
-      return ProjectSourceConfigurationCategoryEnum.BL;
-    case 3:
-    case "API":
-      return ProjectSourceConfigurationCategoryEnum.API;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return ProjectSourceConfigurationCategoryEnum.UNRECOGNIZED;
-  }
-}
-
-export function projectSourceConfigurationCategoryEnumToJSON(
-  object: ProjectSourceConfigurationCategoryEnum
-): string {
-  switch (object) {
-    case ProjectSourceConfigurationCategoryEnum.ERD_MIGRATION:
-      return "ERD_MIGRATION";
-    case ProjectSourceConfigurationCategoryEnum.ERD_MODEL:
-      return "ERD_MODEL";
-    case ProjectSourceConfigurationCategoryEnum.BL:
-      return "BL";
-    case ProjectSourceConfigurationCategoryEnum.API:
-      return "API";
-    case ProjectSourceConfigurationCategoryEnum.UNRECOGNIZED:
-    default:
-      return "UNRECOGNIZED";
-  }
-}
 
 export class ProjectGitSyncRequest {
   projectGenerateQueueId: number;
@@ -102,12 +55,6 @@ export function projectGitSyncRequestActionToJSON(
     default:
       return "UNRECOGNIZED";
   }
-}
-
-export class ProjectSourceConfiguration {
-  id: string;
-  category: ProjectSourceConfigurationCategoryEnum;
-  filePatterns: string[];
 }
 
 export class ProjectGitSyncResponse {
@@ -365,92 +312,6 @@ export const ProjectGitSyncRequestData = {
       object.sourceConfigurations?.map((e) =>
         ProjectSourceConfigurationData.fromPartial(e)
       ) || [];
-    return message;
-  },
-};
-
-function createBaseProjectSourceConfiguration(): ProjectSourceConfiguration {
-  return { id: "", category: 0, filePatterns: [] };
-}
-
-export const ProjectSourceConfigurationData = {
-  encode(
-    message: ProjectSourceConfiguration,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.id !== "") {
-      writer.uint32(10).string(message.id);
-    }
-    if (message.category !== 0) {
-      writer.uint32(16).int32(message.category);
-    }
-    for (const v of message.filePatterns) {
-      writer.uint32(26).string(v!);
-    }
-    return writer;
-  },
-
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): ProjectSourceConfiguration {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseProjectSourceConfiguration();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.id = reader.string();
-          break;
-        case 2:
-          message.category = reader.int32() as any;
-          break;
-        case 3:
-          message.filePatterns.push(reader.string());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): ProjectSourceConfiguration {
-    return {
-      id: isSet(object.id) ? String(object.id) : "",
-      category: isSet(object.category)
-        ? projectSourceConfigurationCategoryEnumFromJSON(object.category)
-        : 0,
-      filePatterns: Array.isArray(object?.filePatterns)
-        ? object.filePatterns.map((e: any) => String(e))
-        : [],
-    };
-  },
-
-  toJSON(message: ProjectSourceConfiguration): unknown {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
-    message.category !== undefined &&
-      (obj.category = projectSourceConfigurationCategoryEnumToJSON(
-        message.category
-      ));
-    if (message.filePatterns) {
-      obj.filePatterns = message.filePatterns.map((e) => e);
-    } else {
-      obj.filePatterns = [];
-    }
-    return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<ProjectSourceConfiguration>
-  ): ProjectSourceConfiguration {
-    const message = createBaseProjectSourceConfiguration();
-    message.id = object.id ?? "";
-    message.category = object.category ?? 0;
-    message.filePatterns = object.filePatterns?.map((e) => e) || [];
     return message;
   },
 };
