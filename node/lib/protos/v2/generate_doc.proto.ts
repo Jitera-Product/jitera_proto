@@ -1,6 +1,6 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-import { Block, BlockData } from "./block_core.proto";
+import { Value } from "../google/protobuf/struct.proto";
 
 export class GenerateDocResponse {
   projectGenerateQueueId: number;
