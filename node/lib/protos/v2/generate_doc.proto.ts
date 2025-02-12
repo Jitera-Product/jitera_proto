@@ -6,10 +6,9 @@ export class GenerateDocResponse {
   projectGenerateQueueId: number;
   module: GenerateDocResponseModule;
   status: GenerateDocResponseStatus;
-  blocks: Block[];
-  errorMessage: string;
+  errorMessage?: string | undefined;
   totalChunks: number;
-  items: string[];
+  chunk?: GenerateDocResponseChunk | undefined;
 }
 
 export enum GenerateDocResponseModule {
@@ -41,8 +40,7 @@ export function generateDocResponseModuleToJSON(object: GenerateDocResponseModul
 
 export enum GenerateDocResponseStatus {
   STARTED = 0,
-  SUCCEEDED = 1,
-  FAILED = 2,
+  FAILED = 1,
   UNRECOGNIZED = -1,
 }
 
@@ -52,9 +50,6 @@ export function generateDocResponseStatusFromJSON(object: any): GenerateDocRespo
     case "STARTED":
       return GenerateDocResponseStatus.STARTED;
     case 1:
-    case "SUCCEEDED":
-      return GenerateDocResponseStatus.SUCCEEDED;
-    case 2:
     case "FAILED":
       return GenerateDocResponseStatus.FAILED;
     case -1:
@@ -68,8 +63,6 @@ export function generateDocResponseStatusToJSON(object: GenerateDocResponseStatu
   switch (object) {
     case GenerateDocResponseStatus.STARTED:
       return "STARTED";
-    case GenerateDocResponseStatus.SUCCEEDED:
-      return "SUCCEEDED";
     case GenerateDocResponseStatus.FAILED:
       return "FAILED";
     case GenerateDocResponseStatus.UNRECOGNIZED:
@@ -78,8 +71,47 @@ export function generateDocResponseStatusToJSON(object: GenerateDocResponseStatu
   }
 }
 
+export class GenerateDocResponseChunk {
+  status: GenerateDocResponseChunkStatus;
+  blocks: Block[];
+  errorMessage: string;
+}
+
+export enum GenerateDocResponseChunkStatus {
+  SUCCEEDED = 0,
+  FAILED = 1,
+  UNRECOGNIZED = -1,
+}
+
+export function generateDocResponseChunkStatusFromJSON(object: any): GenerateDocResponseChunkStatus {
+  switch (object) {
+    case 0:
+    case "SUCCEEDED":
+      return GenerateDocResponseChunkStatus.SUCCEEDED;
+    case 1:
+    case "FAILED":
+      return GenerateDocResponseChunkStatus.FAILED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return GenerateDocResponseChunkStatus.UNRECOGNIZED;
+  }
+}
+
+export function generateDocResponseChunkStatusToJSON(object: GenerateDocResponseChunkStatus): string {
+  switch (object) {
+    case GenerateDocResponseChunkStatus.SUCCEEDED:
+      return "SUCCEEDED";
+    case GenerateDocResponseChunkStatus.FAILED:
+      return "FAILED";
+    case GenerateDocResponseChunkStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 function createBaseGenerateDocResponse(): GenerateDocResponse {
-  return { projectGenerateQueueId: 0, module: 0, status: 0, blocks: [], errorMessage: "", totalChunks: 0, items: [] };
+  return { projectGenerateQueueId: 0, module: 0, status: 0, totalChunks: 0 };
 }
 
 export const GenerateDocResponseData = {
@@ -93,17 +125,14 @@ export const GenerateDocResponseData = {
     if (message.status !== 0) {
       writer.uint32(24).int32(message.status);
     }
-    for (const v of message.blocks) {
-      BlockData.encode(v!, writer.uint32(34).fork()).ldelim();
-    }
-    if (message.errorMessage !== "") {
-      writer.uint32(42).string(message.errorMessage);
+    if (message.errorMessage !== undefined) {
+      writer.uint32(34).string(message.errorMessage);
     }
     if (message.totalChunks !== 0) {
-      writer.uint32(48).int32(message.totalChunks);
+      writer.uint32(40).int32(message.totalChunks);
     }
-    for (const v of message.items) {
-      writer.uint32(58).string(v!);
+    if (message.chunk !== undefined) {
+      GenerateDocResponseChunkData.encode(message.chunk, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -125,16 +154,13 @@ export const GenerateDocResponseData = {
           message.status = reader.int32() as any;
           break;
         case 4:
-          message.blocks.push(BlockData.decode(reader, reader.uint32()));
-          break;
-        case 5:
           message.errorMessage = reader.string();
           break;
-        case 6:
+        case 5:
           message.totalChunks = reader.int32();
           break;
-        case 7:
-          message.items.push(reader.string());
+        case 6:
+          message.chunk = GenerateDocResponseChunkData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -149,10 +175,9 @@ export const GenerateDocResponseData = {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       module: isSet(object.module) ? generateDocResponseModuleFromJSON(object.module) : 0,
       status: isSet(object.status) ? generateDocResponseStatusFromJSON(object.status) : 0,
-      blocks: Array.isArray(object?.blocks) ? object.blocks.map((e: any) => BlockData.fromJSON(e)) : [],
-      errorMessage: isSet(object.errorMessage) ? String(object.errorMessage) : "",
+      errorMessage: isSet(object.errorMessage) ? String(object.errorMessage) : undefined,
       totalChunks: isSet(object.totalChunks) ? Number(object.totalChunks) : 0,
-      items: Array.isArray(object?.items) ? object.items.map((e: any) => String(e)) : [],
+      chunk: isSet(object.chunk) ? GenerateDocResponseChunkData.fromJSON(object.chunk) : undefined,
     };
   },
 
@@ -162,18 +187,10 @@ export const GenerateDocResponseData = {
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.module !== undefined && (obj.module = generateDocResponseModuleToJSON(message.module));
     message.status !== undefined && (obj.status = generateDocResponseStatusToJSON(message.status));
-    if (message.blocks) {
-      obj.blocks = message.blocks.map((e) => e ? BlockData.toJSON(e) : undefined);
-    } else {
-      obj.blocks = [];
-    }
     message.errorMessage !== undefined && (obj.errorMessage = message.errorMessage);
     message.totalChunks !== undefined && (obj.totalChunks = Math.round(message.totalChunks));
-    if (message.items) {
-      obj.items = message.items.map((e) => e);
-    } else {
-      obj.items = [];
-    }
+    message.chunk !== undefined &&
+      (obj.chunk = message.chunk ? GenerateDocResponseChunkData.toJSON(message.chunk) : undefined);
     return obj;
   },
 
@@ -182,10 +199,82 @@ export const GenerateDocResponseData = {
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.module = object.module ?? 0;
     message.status = object.status ?? 0;
+    message.errorMessage = object.errorMessage ?? undefined;
+    message.totalChunks = object.totalChunks ?? 0;
+    message.chunk = (object.chunk !== undefined && object.chunk !== null)
+      ? GenerateDocResponseChunkData.fromPartial(object.chunk)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGenerateDocResponseChunk(): GenerateDocResponseChunk {
+  return { status: 0, blocks: [], errorMessage: "" };
+}
+
+export const GenerateDocResponseChunkData = {
+  encode(message: GenerateDocResponseChunk, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.status !== 0) {
+      writer.uint32(8).int32(message.status);
+    }
+    for (const v of message.blocks) {
+      BlockData.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.errorMessage !== "") {
+      writer.uint32(26).string(message.errorMessage);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GenerateDocResponseChunk {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGenerateDocResponseChunk();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.status = reader.int32() as any;
+          break;
+        case 2:
+          message.blocks.push(BlockData.decode(reader, reader.uint32()));
+          break;
+        case 3:
+          message.errorMessage = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GenerateDocResponseChunk {
+    return {
+      status: isSet(object.status) ? generateDocResponseChunkStatusFromJSON(object.status) : 0,
+      blocks: Array.isArray(object?.blocks) ? object.blocks.map((e: any) => BlockData.fromJSON(e)) : [],
+      errorMessage: isSet(object.errorMessage) ? String(object.errorMessage) : "",
+    };
+  },
+
+  toJSON(message: GenerateDocResponseChunk): unknown {
+    const obj: any = {};
+    message.status !== undefined && (obj.status = generateDocResponseChunkStatusToJSON(message.status));
+    if (message.blocks) {
+      obj.blocks = message.blocks.map((e) => e ? BlockData.toJSON(e) : undefined);
+    } else {
+      obj.blocks = [];
+    }
+    message.errorMessage !== undefined && (obj.errorMessage = message.errorMessage);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<GenerateDocResponseChunk>): GenerateDocResponseChunk {
+    const message = createBaseGenerateDocResponseChunk();
+    message.status = object.status ?? 0;
     message.blocks = object.blocks?.map((e) => BlockData.fromPartial(e)) || [];
     message.errorMessage = object.errorMessage ?? "";
-    message.totalChunks = object.totalChunks ?? 0;
-    message.items = object.items?.map((e) => e) || [];
     return message;
   },
 };

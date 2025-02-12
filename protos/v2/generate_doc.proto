@@ -7,10 +7,9 @@ message GenerateDocResponse {
   int32 project_generate_queue_id = 1;
   Module module = 2;
   Status status = 3;
-  repeated core.Block blocks = 4;
-  string error_message = 5;
-  int32 total_chunks = 6;
-  repeated string items = 7;
+  optional string error_message = 4;
+  int32 total_chunks = 5;
+  optional Chunk chunk = 6;
 
   enum Module {
     CODE_TO_NATURAL_LANGUAGE = 0;
@@ -18,7 +17,17 @@ message GenerateDocResponse {
 
   enum Status {
     STARTED = 0;
-    SUCCEEDED = 1;
-    FAILED = 2;
+    FAILED = 1;
+  }
+
+  message Chunk {
+    Status status = 1;
+    repeated core.Block blocks = 2;
+    string error_message = 3;
+
+    enum Status {
+      SUCCEEDED = 0;
+      FAILED = 1;
+    }
   }
 }
