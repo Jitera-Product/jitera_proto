@@ -4,9 +4,9 @@ import * as _m0 from "protobufjs/minimal";
 export class GenerateDocResponse {
   projectGenerateQueueId: number;
   module: GenerateDocResponseModule;
-  status: GenerateDocResponseStatus;
+  status?: GenerateDocResponseStatus | undefined;
   errorMessage?: string | undefined;
-  totalChunks: number;
+  totalChunks?: number | undefined;
   chunk?: GenerateDocResponseChunk | undefined;
 }
 
@@ -111,7 +111,7 @@ export function generateDocResponseChunkStatusToJSON(object: GenerateDocResponse
 }
 
 function createBaseGenerateDocResponse(): GenerateDocResponse {
-  return { projectGenerateQueueId: 0, module: 0, status: 0, totalChunks: 0 };
+  return { projectGenerateQueueId: 0, module: 0 };
 }
 
 export const GenerateDocResponseData = {
@@ -122,13 +122,13 @@ export const GenerateDocResponseData = {
     if (message.module !== 0) {
       writer.uint32(16).int32(message.module);
     }
-    if (message.status !== 0) {
+    if (message.status !== undefined) {
       writer.uint32(24).int32(message.status);
     }
     if (message.errorMessage !== undefined) {
       writer.uint32(34).string(message.errorMessage);
     }
-    if (message.totalChunks !== 0) {
+    if (message.totalChunks !== undefined) {
       writer.uint32(40).int32(message.totalChunks);
     }
     if (message.chunk !== undefined) {
@@ -174,9 +174,9 @@ export const GenerateDocResponseData = {
     return {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       module: isSet(object.module) ? generateDocResponseModuleFromJSON(object.module) : 0,
-      status: isSet(object.status) ? generateDocResponseStatusFromJSON(object.status) : 0,
+      status: isSet(object.status) ? generateDocResponseStatusFromJSON(object.status) : undefined,
       errorMessage: isSet(object.errorMessage) ? String(object.errorMessage) : undefined,
-      totalChunks: isSet(object.totalChunks) ? Number(object.totalChunks) : 0,
+      totalChunks: isSet(object.totalChunks) ? Number(object.totalChunks) : undefined,
       chunk: isSet(object.chunk) ? GenerateDocResponseChunkData.fromJSON(object.chunk) : undefined,
     };
   },
@@ -186,7 +186,8 @@ export const GenerateDocResponseData = {
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.module !== undefined && (obj.module = generateDocResponseModuleToJSON(message.module));
-    message.status !== undefined && (obj.status = generateDocResponseStatusToJSON(message.status));
+    message.status !== undefined &&
+      (obj.status = message.status !== undefined ? generateDocResponseStatusToJSON(message.status) : undefined);
     message.errorMessage !== undefined && (obj.errorMessage = message.errorMessage);
     message.totalChunks !== undefined && (obj.totalChunks = Math.round(message.totalChunks));
     message.chunk !== undefined &&
@@ -198,9 +199,9 @@ export const GenerateDocResponseData = {
     const message = createBaseGenerateDocResponse();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.module = object.module ?? 0;
-    message.status = object.status ?? 0;
+    message.status = object.status ?? undefined;
     message.errorMessage = object.errorMessage ?? undefined;
-    message.totalChunks = object.totalChunks ?? 0;
+    message.totalChunks = object.totalChunks ?? undefined;
     message.chunk = (object.chunk !== undefined && object.chunk !== null)
       ? GenerateDocResponseChunkData.fromPartial(object.chunk)
       : undefined;

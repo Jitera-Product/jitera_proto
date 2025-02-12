@@ -4,9 +4,9 @@ package schema.v2;
 message GenerateDocResponse {
   int32 project_generate_queue_id = 1;
   Module module = 2;
-  Status status = 3;
+  optional Status status = 3;
   optional string error_message = 4;
-  int32 total_chunks = 5;
+  optional int32 total_chunks = 5;
   optional Chunk chunk = 6;
 
   enum Module {
