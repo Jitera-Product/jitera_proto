@@ -1,6 +1,6 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-import { Value } from "../google/protobuf/struct.proto";
+import { Value, ValueData } from "../google/protobuf/struct.proto";
 
 export class GenerateDocResponse {
   projectGenerateQueueId: number;
@@ -580,7 +580,7 @@ export const GenerateDocResponseChunkBlockResponseContentEntryContentEntryData =
       writer.uint32(10).string(message.key);
     }
     if (message.value !== undefined) {
-      ValueData.encode(Value.wrap(message.value), writer.uint32(18).fork()).ldelim();
+      ValueData.encode(ValueData.wrap(message.value), writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -599,7 +599,7 @@ export const GenerateDocResponseChunkBlockResponseContentEntryContentEntryData =
           message.key = reader.string();
           break;
         case 2:
-          message.value = Value.unwrap(ValueData.decode(reader, reader.uint32()));
+          message.value = ValueData.unwrap(ValueData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -723,7 +723,7 @@ export const GenerateDocResponseChunkBlockResponsePropertiesPropertiesEntryData 
       writer.uint32(10).string(message.key);
     }
     if (message.value !== undefined) {
-      ValueData.encode(Value.wrap(message.value), writer.uint32(18).fork()).ldelim();
+      ValueData.encode(ValueData.wrap(message.value), writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -742,7 +742,7 @@ export const GenerateDocResponseChunkBlockResponsePropertiesPropertiesEntryData 
           message.key = reader.string();
           break;
         case 2:
-          message.value = Value.unwrap(ValueData.decode(reader, reader.uint32()));
+          message.value = ValueData.unwrap(ValueData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
