@@ -1,8 +1,6 @@
 syntax = "proto3";
 package schema.v2;
 
-import "google/protobuf/struct.proto";
-
 message GenerateDocResponse {
   int32 project_generate_queue_id = 1;
   Module module = 2;
@@ -22,35 +20,13 @@ message GenerateDocResponse {
 
   message Chunk {
     Status status = 1;
-    repeated BlockResponse blocks = 2;
+    string data = 2;
     string error_message = 3;
     repeated string items = 4;
 
     enum Status {
       SUCCEEDED = 0;
       FAILED = 1;
-    }
-
-    message BlockResponse {
-      optional int32 id = 1;
-      string nodeId = 2;
-      string name = 3;
-      string blockType = 4;
-      string parentNodeId = 5;
-      string pageNodeId = 6;
-      optional int32 projectId = 7;
-      repeated ContentEntry content = 8;
-      optional Properties properties = 9;
-      repeated string children = 10;
-      optional string status = 11;
-
-      message ContentEntry {
-        map<string, google.protobuf.Value> content = 1;
-      }
-
-      message Properties {
-        map<string, google.protobuf.Value> properties = 1;
-      }
     }
   }
 }
