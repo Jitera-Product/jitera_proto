@@ -75,6 +75,7 @@ export class GenerateDocResponseChunk {
   status: GenerateDocResponseChunkStatus;
   blocks: Block[];
   errorMessage: string;
+  items: string[];
 }
 
 export enum GenerateDocResponseChunkStatus {
@@ -209,7 +210,7 @@ export const GenerateDocResponseData = {
 };
 
 function createBaseGenerateDocResponseChunk(): GenerateDocResponseChunk {
-  return { status: 0, blocks: [], errorMessage: "" };
+  return { status: 0, blocks: [], errorMessage: "", items: [] };
 }
 
 export const GenerateDocResponseChunkData = {
@@ -222,6 +223,9 @@ export const GenerateDocResponseChunkData = {
     }
     if (message.errorMessage !== "") {
       writer.uint32(26).string(message.errorMessage);
+    }
+    for (const v of message.items) {
+      writer.uint32(34).string(v!);
     }
     return writer;
   },
@@ -242,6 +246,9 @@ export const GenerateDocResponseChunkData = {
         case 3:
           message.errorMessage = reader.string();
           break;
+        case 4:
+          message.items.push(reader.string());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -255,6 +262,7 @@ export const GenerateDocResponseChunkData = {
       status: isSet(object.status) ? generateDocResponseChunkStatusFromJSON(object.status) : 0,
       blocks: Array.isArray(object?.blocks) ? object.blocks.map((e: any) => BlockData.fromJSON(e)) : [],
       errorMessage: isSet(object.errorMessage) ? String(object.errorMessage) : "",
+      items: Array.isArray(object?.items) ? object.items.map((e: any) => String(e)) : [],
     };
   },
 
@@ -267,6 +275,11 @@ export const GenerateDocResponseChunkData = {
       obj.blocks = [];
     }
     message.errorMessage !== undefined && (obj.errorMessage = message.errorMessage);
+    if (message.items) {
+      obj.items = message.items.map((e) => e);
+    } else {
+      obj.items = [];
+    }
     return obj;
   },
 
@@ -275,6 +288,7 @@ export const GenerateDocResponseChunkData = {
     message.status = object.status ?? 0;
     message.blocks = object.blocks?.map((e) => BlockData.fromPartial(e)) || [];
     message.errorMessage = object.errorMessage ?? "";
+    message.items = object.items?.map((e) => e) || [];
     return message;
   },
 };

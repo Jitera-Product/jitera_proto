@@ -24,6 +24,7 @@ message GenerateDocResponse {
     Status status = 1;
     repeated core.Block blocks = 2;
     string error_message = 3;
+    repeated string items = 4;
 
     enum Status {
       SUCCEEDED = 0;
