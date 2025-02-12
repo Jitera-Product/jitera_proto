@@ -38,17 +38,21 @@ export function generateDocResponseModuleToJSON(object: GenerateDocResponseModul
 }
 
 export enum GenerateDocResponseStatus {
-  STARTED = 0,
-  FAILED = 1,
+  UNSPECIFIED = 0,
+  STARTED = 1,
+  FAILED = 2,
   UNRECOGNIZED = -1,
 }
 
 export function generateDocResponseStatusFromJSON(object: any): GenerateDocResponseStatus {
   switch (object) {
     case 0:
+    case "UNSPECIFIED":
+      return GenerateDocResponseStatus.UNSPECIFIED;
+    case 1:
     case "STARTED":
       return GenerateDocResponseStatus.STARTED;
-    case 1:
+    case 2:
     case "FAILED":
       return GenerateDocResponseStatus.FAILED;
     case -1:
@@ -60,6 +64,8 @@ export function generateDocResponseStatusFromJSON(object: any): GenerateDocRespo
 
 export function generateDocResponseStatusToJSON(object: GenerateDocResponseStatus): string {
   switch (object) {
+    case GenerateDocResponseStatus.UNSPECIFIED:
+      return "UNSPECIFIED";
     case GenerateDocResponseStatus.STARTED:
       return "STARTED";
     case GenerateDocResponseStatus.FAILED:

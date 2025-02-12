@@ -14,8 +14,9 @@ message GenerateDocResponse {
   }
 
   enum Status {
-    STARTED = 0;
-    FAILED = 1;
+    UNSPECIFIED = 0;
+    STARTED = 1;
+    FAILED = 2;
   }
 
   message Chunk {
