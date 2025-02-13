@@ -1,5 +1,7 @@
 /* eslint-disable */
-import * as _m0 from "protobufjs/minimal";
+import _m0 from "protobufjs/minimal";
+import { ProjectGenerateProgress, ProjectGenerateProgressData } from "./project_generate_queue.proto";
+
 /**
  * NOTE: Try block_core.proto
  * This structure has less support in utils of
@@ -12,55 +14,8 @@ export class BusinessLogicSync {
 }
 
 export class BusinessLogicSyncResponse {
-  projectGenerateQueueId: number;
-  message: string;
-  status: BusinessLogicSyncResponseStatus;
   tokenUsage: number;
-}
-
-export enum BusinessLogicSyncResponseStatus {
-  STATUS_UNSPECIFIED = 0,
-  STARTED = 1,
-  SUCCEEDED = 2,
-  FAILED = 3,
-  UNRECOGNIZED = -1,
-}
-
-export function businessLogicSyncResponseStatusFromJSON(object: any): BusinessLogicSyncResponseStatus {
-  switch (object) {
-    case 0:
-    case "STATUS_UNSPECIFIED":
-      return BusinessLogicSyncResponseStatus.STATUS_UNSPECIFIED;
-    case 1:
-    case "STARTED":
-      return BusinessLogicSyncResponseStatus.STARTED;
-    case 2:
-    case "SUCCEEDED":
-      return BusinessLogicSyncResponseStatus.SUCCEEDED;
-    case 3:
-    case "FAILED":
-      return BusinessLogicSyncResponseStatus.FAILED;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return BusinessLogicSyncResponseStatus.UNRECOGNIZED;
-  }
-}
-
-export function businessLogicSyncResponseStatusToJSON(object: BusinessLogicSyncResponseStatus): string {
-  switch (object) {
-    case BusinessLogicSyncResponseStatus.STATUS_UNSPECIFIED:
-      return "STATUS_UNSPECIFIED";
-    case BusinessLogicSyncResponseStatus.STARTED:
-      return "STARTED";
-    case BusinessLogicSyncResponseStatus.SUCCEEDED:
-      return "SUCCEEDED";
-    case BusinessLogicSyncResponseStatus.FAILED:
-      return "FAILED";
-    case BusinessLogicSyncResponseStatus.UNRECOGNIZED:
-    default:
-      return "UNRECOGNIZED";
-  }
+  progress?: ProjectGenerateProgress;
 }
 
 export class Block {
@@ -195,22 +150,16 @@ export const BusinessLogicSyncData = {
 };
 
 function createBaseBusinessLogicSyncResponse(): BusinessLogicSyncResponse {
-  return { projectGenerateQueueId: 0, message: "", status: 0, tokenUsage: 0 };
+  return { tokenUsage: 0 };
 }
 
 export const BusinessLogicSyncResponseData = {
   encode(message: BusinessLogicSyncResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.projectGenerateQueueId !== 0) {
-      writer.uint32(8).int32(message.projectGenerateQueueId);
-    }
-    if (message.message !== "") {
-      writer.uint32(18).string(message.message);
-    }
-    if (message.status !== 0) {
-      writer.uint32(24).int32(message.status);
-    }
     if (message.tokenUsage !== 0) {
       writer.uint32(32).int32(message.tokenUsage);
+    }
+    if (message.progress !== undefined) {
+      ProjectGenerateProgressData.encode(message.progress, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -222,17 +171,11 @@ export const BusinessLogicSyncResponseData = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 1:
-          message.projectGenerateQueueId = reader.int32();
-          break;
-        case 2:
-          message.message = reader.string();
-          break;
-        case 3:
-          message.status = reader.int32() as any;
-          break;
         case 4:
           message.tokenUsage = reader.int32();
+          break;
+        case 6:
+          message.progress = ProjectGenerateProgressData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -244,29 +187,25 @@ export const BusinessLogicSyncResponseData = {
 
   fromJSON(object: any): BusinessLogicSyncResponse {
     return {
-      projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
-      message: isSet(object.message) ? String(object.message) : "",
-      status: isSet(object.status) ? businessLogicSyncResponseStatusFromJSON(object.status) : 0,
       tokenUsage: isSet(object.tokenUsage) ? Number(object.tokenUsage) : 0,
+      progress: isSet(object.progress) ? ProjectGenerateProgressData.fromJSON(object.progress) : undefined,
     };
   },
 
   toJSON(message: BusinessLogicSyncResponse): unknown {
     const obj: any = {};
-    message.projectGenerateQueueId !== undefined &&
-      (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
-    message.message !== undefined && (obj.message = message.message);
-    message.status !== undefined && (obj.status = businessLogicSyncResponseStatusToJSON(message.status));
     message.tokenUsage !== undefined && (obj.tokenUsage = Math.round(message.tokenUsage));
+    message.progress !== undefined &&
+      (obj.progress = message.progress ? ProjectGenerateProgressData.toJSON(message.progress) : undefined);
     return obj;
   },
 
   fromPartial(object: DeepPartial<BusinessLogicSyncResponse>): BusinessLogicSyncResponse {
     const message = createBaseBusinessLogicSyncResponse();
-    message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
-    message.message = object.message ?? "";
-    message.status = object.status ?? 0;
     message.tokenUsage = object.tokenUsage ?? 0;
+    message.progress = (object.progress !== undefined && object.progress !== null)
+      ? ProjectGenerateProgressData.fromPartial(object.progress)
+      : undefined;
     return message;
   },
 };

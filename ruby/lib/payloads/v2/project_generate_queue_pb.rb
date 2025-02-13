@@ -5,7 +5,7 @@
 require 'google/protobuf'
 
 
-descriptor_data = "\n\x1fv2/project_generate_queue.proto\x12\tschema.v2\"\x86\x02\n\x15ProjectGenerateReport\x12!\n\x19project_generate_queue_id\x18\x01 \x01(\x05\x12\x12\n\nproject_id\x18\x02 \x01(\x05\x12=\n\x08progress\x18\x03 \x01(\x0b\x32).schema.v2.ProjectGenerateReport.ProgressH\x00\x12\x37\n\x05\x65rror\x18\x04 \x01(\x0b\x32&.schema.v2.ProjectGenerateReport.ErrorH\x00\x1a\x1b\n\x08Progress\x12\x0f\n\x07message\x18\x01 \x01(\t\x1a\x18\n\x05\x45rror\x12\x0f\n\x07message\x18\x01 \x01(\tB\x07\n\x05stateb\x06proto3"
+descriptor_data = "\n\x1fv2/project_generate_queue.proto\x12\tschema.v2\"\x86\x02\n\x15ProjectGenerateReport\x12!\n\x19project_generate_queue_id\x18\x01 \x01(\x05\x12\x12\n\nproject_id\x18\x02 \x01(\x05\x12=\n\x08progress\x18\x03 \x01(\x0b\x32).schema.v2.ProjectGenerateReport.ProgressH\x00\x12\x37\n\x05\x65rror\x18\x04 \x01(\x0b\x32&.schema.v2.ProjectGenerateReport.ErrorH\x00\x1a\x1b\n\x08Progress\x12\x0f\n\x07message\x18\x01 \x01(\t\x1a\x18\n\x05\x45rror\x12\x0f\n\x07message\x18\x01 \x01(\tB\x07\n\x05state\"i\n\x17ProjectGenerateProgress\x12!\n\x19project_generate_queue_id\x18\x01 \x01(\x05\x12\x12\n\nstatus_key\x18\x02 \x01(\t\x12\x17\n\x0f\x65vent_timestamp\x18\x03 \x01(\x03\x62\x06proto3"
 
 pool = Google::Protobuf::DescriptorPool.generated_pool
 pool.add_serialized_file(descriptor_data)
@@ -15,5 +15,6 @@ module Schema
     ProjectGenerateReport = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.ProjectGenerateReport").msgclass
     ProjectGenerateReport::Progress = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.ProjectGenerateReport.Progress").msgclass
     ProjectGenerateReport::Error = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.ProjectGenerateReport.Error").msgclass
+    ProjectGenerateProgress = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.ProjectGenerateProgress").msgclass
   end
 end
