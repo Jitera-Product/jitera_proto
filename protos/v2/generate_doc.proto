@@ -1,0 +1,33 @@
+syntax = "proto3";
+package schema.v2;
+
+message GenerateDocResponse {
+  int32 project_generate_queue_id = 1;
+  Module module = 2;
+  optional Status status = 3;
+  optional string error_message = 4;
+  optional int32 total_chunks = 5;
+  optional Chunk chunk = 6;
+
+  enum Module {
+    CODE_TO_NATURAL_LANGUAGE = 0;
+  }
+
+  enum Status {
+    UNSPECIFIED = 0;
+    STARTED = 1;
+    FAILED = 2;
+  }
+
+  message Chunk {
+    Status status = 1;
+    string data = 2;
+    string error_message = 3;
+    repeated string items = 4;
+
+    enum Status {
+      SUCCEEDED = 0;
+      FAILED = 1;
+    }
+  }
+}
