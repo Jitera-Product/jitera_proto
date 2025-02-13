@@ -27,8 +27,6 @@ message ProjectGitSyncResponse {
   repeated core.Block blocks = 6;
   string erds = 7;
   string error_message = 8;
-  int32 total_chunks = 9;
-  repeated string items = 10;
 
   enum Module {
     CODE_TO_ERD = 0;
