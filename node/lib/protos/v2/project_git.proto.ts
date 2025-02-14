@@ -26,9 +26,7 @@ export enum ProjectGitSyncRequestAction {
   UNRECOGNIZED = -1,
 }
 
-export function projectGitSyncRequestActionFromJSON(
-  object: any
-): ProjectGitSyncRequestAction {
+export function projectGitSyncRequestActionFromJSON(object: any): ProjectGitSyncRequestAction {
   switch (object) {
     case 0:
     case "CODE_TO_ERD":
@@ -43,9 +41,7 @@ export function projectGitSyncRequestActionFromJSON(
   }
 }
 
-export function projectGitSyncRequestActionToJSON(
-  object: ProjectGitSyncRequestAction
-): string {
+export function projectGitSyncRequestActionToJSON(object: ProjectGitSyncRequestAction): string {
   switch (object) {
     case ProjectGitSyncRequestAction.CODE_TO_ERD:
       return "CODE_TO_ERD";
@@ -74,9 +70,7 @@ export enum ProjectGitSyncResponseModule {
   UNRECOGNIZED = -1,
 }
 
-export function projectGitSyncResponseModuleFromJSON(
-  object: any
-): ProjectGitSyncResponseModule {
+export function projectGitSyncResponseModuleFromJSON(object: any): ProjectGitSyncResponseModule {
   switch (object) {
     case 0:
     case "CODE_TO_ERD":
@@ -91,9 +85,7 @@ export function projectGitSyncResponseModuleFromJSON(
   }
 }
 
-export function projectGitSyncResponseModuleToJSON(
-  object: ProjectGitSyncResponseModule
-): string {
+export function projectGitSyncResponseModuleToJSON(object: ProjectGitSyncResponseModule): string {
   switch (object) {
     case ProjectGitSyncResponseModule.CODE_TO_ERD:
       return "CODE_TO_ERD";
@@ -112,9 +104,7 @@ export enum ProjectGitSyncResponseStatus {
   UNRECOGNIZED = -1,
 }
 
-export function projectGitSyncResponseStatusFromJSON(
-  object: any
-): ProjectGitSyncResponseStatus {
+export function projectGitSyncResponseStatusFromJSON(object: any): ProjectGitSyncResponseStatus {
   switch (object) {
     case 0:
     case "SUCCEEDED":
@@ -132,9 +122,7 @@ export function projectGitSyncResponseStatusFromJSON(
   }
 }
 
-export function projectGitSyncResponseStatusToJSON(
-  object: ProjectGitSyncResponseStatus
-): string {
+export function projectGitSyncResponseStatusToJSON(object: ProjectGitSyncResponseStatus): string {
   switch (object) {
     case ProjectGitSyncResponseStatus.SUCCEEDED:
       return "SUCCEEDED";
@@ -149,19 +137,11 @@ export function projectGitSyncResponseStatusToJSON(
 }
 
 function createBaseProjectGitSyncRequest(): ProjectGitSyncRequest {
-  return {
-    projectGenerateQueueId: 0,
-    projectId: 0,
-    changedFiles: [],
-    sourceConfigurations: [],
-  };
+  return { projectGenerateQueueId: 0, projectId: 0, changedFiles: [], sourceConfigurations: [] };
 }
 
 export const ProjectGitSyncRequestData = {
-  encode(
-    message: ProjectGitSyncRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: ProjectGitSyncRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
     }
@@ -172,10 +152,7 @@ export const ProjectGitSyncRequestData = {
       GitData.encode(message.git, writer.uint32(26).fork()).ldelim();
     }
     if (message.projectSource !== undefined) {
-      ProjectSourceData.encode(
-        message.projectSource,
-        writer.uint32(34).fork()
-      ).ldelim();
+      ProjectSourceData.encode(message.projectSource, writer.uint32(34).fork()).ldelim();
     }
     for (const v of message.changedFiles) {
       writer.uint32(42).string(v!);
@@ -184,18 +161,12 @@ export const ProjectGitSyncRequestData = {
       writer.uint32(48).int32(message.actionType);
     }
     for (const v of message.sourceConfigurations) {
-      ProjectSourceConfigurationData.encode(
-        v!,
-        writer.uint32(58).fork()
-      ).ldelim();
+      ProjectSourceConfigurationData.encode(v!, writer.uint32(58).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): ProjectGitSyncRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectGitSyncRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseProjectGitSyncRequest();
@@ -212,10 +183,7 @@ export const ProjectGitSyncRequestData = {
           message.git = GitData.decode(reader, reader.uint32());
           break;
         case 4:
-          message.projectSource = ProjectSourceData.decode(
-            reader,
-            reader.uint32()
-          );
+          message.projectSource = ProjectSourceData.decode(reader, reader.uint32());
           break;
         case 5:
           message.changedFiles.push(reader.string());
@@ -224,9 +192,7 @@ export const ProjectGitSyncRequestData = {
           message.actionType = reader.int32() as any;
           break;
         case 7:
-          message.sourceConfigurations.push(
-            ProjectSourceConfigurationData.decode(reader, reader.uint32())
-          );
+          message.sourceConfigurations.push(ProjectSourceConfigurationData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -238,24 +204,14 @@ export const ProjectGitSyncRequestData = {
 
   fromJSON(object: any): ProjectGitSyncRequest {
     return {
-      projectGenerateQueueId: isSet(object.projectGenerateQueueId)
-        ? Number(object.projectGenerateQueueId)
-        : 0,
+      projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
-      projectSource: isSet(object.projectSource)
-        ? ProjectSourceData.fromJSON(object.projectSource)
-        : undefined,
-      changedFiles: Array.isArray(object?.changedFiles)
-        ? object.changedFiles.map((e: any) => String(e))
-        : [],
-      actionType: isSet(object.actionType)
-        ? projectGitSyncRequestActionFromJSON(object.actionType)
-        : undefined,
+      projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
+      changedFiles: Array.isArray(object?.changedFiles) ? object.changedFiles.map((e: any) => String(e)) : [],
+      actionType: isSet(object.actionType) ? projectGitSyncRequestActionFromJSON(object.actionType) : undefined,
       sourceConfigurations: Array.isArray(object?.sourceConfigurations)
-        ? object.sourceConfigurations.map((e: any) =>
-            ProjectSourceConfigurationData.fromJSON(e)
-          )
+        ? object.sourceConfigurations.map((e: any) => ProjectSourceConfigurationData.fromJSON(e))
         : [],
     };
   },
@@ -264,24 +220,18 @@ export const ProjectGitSyncRequestData = {
     const obj: any = {};
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
-    message.projectId !== undefined &&
-      (obj.projectId = Math.round(message.projectId));
-    message.git !== undefined &&
-      (obj.git = message.git ? GitData.toJSON(message.git) : undefined);
+    message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
+    message.git !== undefined && (obj.git = message.git ? GitData.toJSON(message.git) : undefined);
     message.projectSource !== undefined &&
-      (obj.projectSource = message.projectSource
-        ? ProjectSourceData.toJSON(message.projectSource)
-        : undefined);
+      (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
     if (message.changedFiles) {
       obj.changedFiles = message.changedFiles.map((e) => e);
     } else {
       obj.changedFiles = [];
     }
-    message.actionType !== undefined &&
-      (obj.actionType =
-        message.actionType !== undefined
-          ? projectGitSyncRequestActionToJSON(message.actionType)
-          : undefined);
+    message.actionType !== undefined && (obj.actionType = message.actionType !== undefined
+      ? projectGitSyncRequestActionToJSON(message.actionType)
+      : undefined);
     if (message.sourceConfigurations) {
       obj.sourceConfigurations = message.sourceConfigurations.map((e) =>
         e ? ProjectSourceConfigurationData.toJSON(e) : undefined
@@ -292,26 +242,18 @@ export const ProjectGitSyncRequestData = {
     return obj;
   },
 
-  fromPartial(
-    object: DeepPartial<ProjectGitSyncRequest>
-  ): ProjectGitSyncRequest {
+  fromPartial(object: DeepPartial<ProjectGitSyncRequest>): ProjectGitSyncRequest {
     const message = createBaseProjectGitSyncRequest();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectId = object.projectId ?? 0;
-    message.git =
-      object.git !== undefined && object.git !== null
-        ? GitData.fromPartial(object.git)
-        : undefined;
-    message.projectSource =
-      object.projectSource !== undefined && object.projectSource !== null
-        ? ProjectSourceData.fromPartial(object.projectSource)
-        : undefined;
+    message.git = (object.git !== undefined && object.git !== null) ? GitData.fromPartial(object.git) : undefined;
+    message.projectSource = (object.projectSource !== undefined && object.projectSource !== null)
+      ? ProjectSourceData.fromPartial(object.projectSource)
+      : undefined;
     message.changedFiles = object.changedFiles?.map((e) => e) || [];
     message.actionType = object.actionType ?? undefined;
     message.sourceConfigurations =
-      object.sourceConfigurations?.map((e) =>
-        ProjectSourceConfigurationData.fromPartial(e)
-      ) || [];
+      object.sourceConfigurations?.map((e) => ProjectSourceConfigurationData.fromPartial(e)) || [];
     return message;
   },
 };
@@ -330,10 +272,7 @@ function createBaseProjectGitSyncResponse(): ProjectGitSyncResponse {
 }
 
 export const ProjectGitSyncResponseData = {
-  encode(
-    message: ProjectGitSyncResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: ProjectGitSyncResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
     }
@@ -361,10 +300,7 @@ export const ProjectGitSyncResponseData = {
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): ProjectGitSyncResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectGitSyncResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseProjectGitSyncResponse();
@@ -405,24 +341,14 @@ export const ProjectGitSyncResponseData = {
 
   fromJSON(object: any): ProjectGitSyncResponse {
     return {
-      projectGenerateQueueId: isSet(object.projectGenerateQueueId)
-        ? Number(object.projectGenerateQueueId)
-        : 0,
+      projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      module: isSet(object.module)
-        ? projectGitSyncResponseModuleFromJSON(object.module)
-        : 0,
-      status: isSet(object.status)
-        ? projectGitSyncResponseStatusFromJSON(object.status)
-        : 0,
+      module: isSet(object.module) ? projectGitSyncResponseModuleFromJSON(object.module) : 0,
+      status: isSet(object.status) ? projectGitSyncResponseStatusFromJSON(object.status) : 0,
       tokenUsage: isSet(object.tokenUsage) ? Number(object.tokenUsage) : 0,
-      blocks: Array.isArray(object?.blocks)
-        ? object.blocks.map((e: any) => BlockData.fromJSON(e))
-        : [],
+      blocks: Array.isArray(object?.blocks) ? object.blocks.map((e: any) => BlockData.fromJSON(e)) : [],
       erds: isSet(object.erds) ? String(object.erds) : "",
-      errorMessage: isSet(object.errorMessage)
-        ? String(object.errorMessage)
-        : "",
+      errorMessage: isSet(object.errorMessage) ? String(object.errorMessage) : "",
     };
   },
 
@@ -430,30 +356,21 @@ export const ProjectGitSyncResponseData = {
     const obj: any = {};
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
-    message.projectId !== undefined &&
-      (obj.projectId = Math.round(message.projectId));
-    message.module !== undefined &&
-      (obj.module = projectGitSyncResponseModuleToJSON(message.module));
-    message.status !== undefined &&
-      (obj.status = projectGitSyncResponseStatusToJSON(message.status));
-    message.tokenUsage !== undefined &&
-      (obj.tokenUsage = Math.round(message.tokenUsage));
+    message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
+    message.module !== undefined && (obj.module = projectGitSyncResponseModuleToJSON(message.module));
+    message.status !== undefined && (obj.status = projectGitSyncResponseStatusToJSON(message.status));
+    message.tokenUsage !== undefined && (obj.tokenUsage = Math.round(message.tokenUsage));
     if (message.blocks) {
-      obj.blocks = message.blocks.map((e) =>
-        e ? BlockData.toJSON(e) : undefined
-      );
+      obj.blocks = message.blocks.map((e) => e ? BlockData.toJSON(e) : undefined);
     } else {
       obj.blocks = [];
     }
     message.erds !== undefined && (obj.erds = message.erds);
-    message.errorMessage !== undefined &&
-      (obj.errorMessage = message.errorMessage);
+    message.errorMessage !== undefined && (obj.errorMessage = message.errorMessage);
     return obj;
   },
 
-  fromPartial(
-    object: DeepPartial<ProjectGitSyncResponse>
-  ): ProjectGitSyncResponse {
+  fromPartial(object: DeepPartial<ProjectGitSyncResponse>): ProjectGitSyncResponse {
     const message = createBaseProjectGitSyncResponse();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectId = object.projectId ?? 0;
@@ -467,23 +384,11 @@ export const ProjectGitSyncResponseData = {
   },
 };
 
-type Builtin =
-  | Date
-  | Function
-  | Uint8Array
-  | string
-  | number
-  | boolean
-  | undefined;
+type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
-type DeepPartial<T> = T extends Builtin
-  ? T
-  : T extends Array<infer U>
-  ? Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U>
-  ? ReadonlyArray<DeepPartial<U>>
-  : T extends {}
-  ? { [K in keyof T]?: DeepPartial<T[K]> }
+type DeepPartial<T> = T extends Builtin ? T
+  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
 function isSet(value: any): boolean {
