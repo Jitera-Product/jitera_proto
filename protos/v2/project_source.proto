@@ -10,6 +10,19 @@ message GenerateSource {
 	optional google.protobuf.Struct data = 3;
 }
 
+message ProjectSourceConfiguration {
+  string id = 1;
+  ProjectSourceConfigurationCategoryEnum category = 2;
+  repeated string file_patterns = 3;
+}
+
+enum ProjectSourceConfigurationCategoryEnum {
+  ERD_MIGRATION = 0;
+  ERD_MODEL = 1;
+  BL = 2;
+  API = 3;
+}
+
 message ProjectSource {
 	int32 id = 1;
 	int32 project_id = 2;
@@ -124,6 +137,7 @@ message ProjectSourceCreation {
 	optional google.protobuf.Struct metadata = 8;
 	repeated string changed_files = 9;
 	optional string commit_sha = 10;
+	repeated ProjectSourceConfiguration source_configurations = 11;
 
 	enum Action {
 		INDEX_CODE = 0;

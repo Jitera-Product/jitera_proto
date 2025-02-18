@@ -11,6 +11,7 @@ message ProjectGitSyncRequest {
   ProjectSource project_source = 4;
   repeated string changed_files = 5;
   optional Action action_type = 6;
+  repeated ProjectSourceConfiguration source_configurations = 7;
 
   enum Action {
 		CODE_TO_ERD = 0;
