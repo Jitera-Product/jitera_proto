@@ -1,7 +1,7 @@
 syntax = "proto3";
 package schema.v2;
 
-import "v2/block_core.proto";
+import "v2/document.proto" ;
 
 message ProjectPdfImportRequest {
   int32 project_generate_queue_id = 1;
@@ -17,7 +17,7 @@ message ProjectPdfImportResponse {
   Module module = 3;
   Status status = 4;
   int32 token_usage = 5;
-  repeated core.Block use_case_blocks = 6;
+  repeated core.Document documents = 6;
   string error_message = 7;
   repeated int32 succeed_pages = 8;
   repeated int32 failed_pages = 9;
