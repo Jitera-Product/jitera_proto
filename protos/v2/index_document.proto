@@ -2,7 +2,6 @@ syntax = "proto3";
 package schema.v2;
 
 import "v2/document.proto";
-import "google/protobuf/struct.proto";
 
 message IndexDocumentRequest {
   int32 project_generate_queue_id = 1;
