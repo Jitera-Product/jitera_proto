@@ -1,7 +1,14 @@
 /* eslint-disable */
-import * as _m0 from "protobufjs/minimal";
+import _m0 from "protobufjs/minimal";
 import { Block, BlockData } from "./block_core.proto";
-import { Git, GitData, ProjectSource, ProjectSourceData } from "./project_source.proto";
+import {
+  Git,
+  GitData,
+  ProjectSource,
+  ProjectSourceConfiguration,
+  ProjectSourceConfigurationData,
+  ProjectSourceData,
+} from "./project_source.proto";
 
 export class ProjectGitSyncRequest {
   projectGenerateQueueId: number;
@@ -10,6 +17,7 @@ export class ProjectGitSyncRequest {
   projectSource?: ProjectSource;
   changedFiles: string[];
   actionType?: ProjectGitSyncRequestAction | undefined;
+  sourceConfigurations: ProjectSourceConfiguration[];
 }
 
 export enum ProjectGitSyncRequestAction {
@@ -129,7 +137,7 @@ export function projectGitSyncResponseStatusToJSON(object: ProjectGitSyncRespons
 }
 
 function createBaseProjectGitSyncRequest(): ProjectGitSyncRequest {
-  return { projectGenerateQueueId: 0, projectId: 0, changedFiles: [] };
+  return { projectGenerateQueueId: 0, projectId: 0, changedFiles: [], sourceConfigurations: [] };
 }
 
 export const ProjectGitSyncRequestData = {
@@ -151,6 +159,9 @@ export const ProjectGitSyncRequestData = {
     }
     if (message.actionType !== undefined) {
       writer.uint32(48).int32(message.actionType);
+    }
+    for (const v of message.sourceConfigurations) {
+      ProjectSourceConfigurationData.encode(v!, writer.uint32(58).fork()).ldelim();
     }
     return writer;
   },
@@ -180,6 +191,9 @@ export const ProjectGitSyncRequestData = {
         case 6:
           message.actionType = reader.int32() as any;
           break;
+        case 7:
+          message.sourceConfigurations.push(ProjectSourceConfigurationData.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -196,6 +210,9 @@ export const ProjectGitSyncRequestData = {
       projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
       changedFiles: Array.isArray(object?.changedFiles) ? object.changedFiles.map((e: any) => String(e)) : [],
       actionType: isSet(object.actionType) ? projectGitSyncRequestActionFromJSON(object.actionType) : undefined,
+      sourceConfigurations: Array.isArray(object?.sourceConfigurations)
+        ? object.sourceConfigurations.map((e: any) => ProjectSourceConfigurationData.fromJSON(e))
+        : [],
     };
   },
 
@@ -215,6 +232,13 @@ export const ProjectGitSyncRequestData = {
     message.actionType !== undefined && (obj.actionType = message.actionType !== undefined
       ? projectGitSyncRequestActionToJSON(message.actionType)
       : undefined);
+    if (message.sourceConfigurations) {
+      obj.sourceConfigurations = message.sourceConfigurations.map((e) =>
+        e ? ProjectSourceConfigurationData.toJSON(e) : undefined
+      );
+    } else {
+      obj.sourceConfigurations = [];
+    }
     return obj;
   },
 
@@ -228,6 +252,8 @@ export const ProjectGitSyncRequestData = {
       : undefined;
     message.changedFiles = object.changedFiles?.map((e) => e) || [];
     message.actionType = object.actionType ?? undefined;
+    message.sourceConfigurations =
+      object.sourceConfigurations?.map((e) => ProjectSourceConfigurationData.fromPartial(e)) || [];
     return message;
   },
 };
