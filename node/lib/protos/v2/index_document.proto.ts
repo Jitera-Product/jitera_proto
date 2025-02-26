@@ -1,5 +1,6 @@
 /* eslint-disable */
 import _m0 from "protobufjs/minimal";
+import { StructData } from "../google/protobuf/struct.proto";
 import { Document, DocumentData } from "./document.proto";
 
 export class IndexDocumentRequest {
@@ -61,7 +62,7 @@ export function indexDocumentResponseStatusToJSON(
 export class DeleteIndexDocumentRequest {
   projectGenerateQueueId: number;
   projectId: number;
-  documentUuids: string[];
+  deletedDocuments?: { [key: string]: any };
 }
 
 export class DeleteIndexDocumentResponse {
@@ -293,7 +294,7 @@ export const IndexDocumentResponseData = {
 };
 
 function createBaseDeleteIndexDocumentRequest(): DeleteIndexDocumentRequest {
-  return { projectGenerateQueueId: 0, projectId: 0, documentUuids: [] };
+  return { projectGenerateQueueId: 0, projectId: 0 };
 }
 
 export const DeleteIndexDocumentRequestData = {
@@ -307,8 +308,11 @@ export const DeleteIndexDocumentRequestData = {
     if (message.projectId !== 0) {
       writer.uint32(16).int32(message.projectId);
     }
-    for (const v of message.documentUuids) {
-      writer.uint32(26).string(v!);
+    if (message.deletedDocuments !== undefined) {
+      StructData.encode(
+        StructData.wrap(message.deletedDocuments),
+        writer.uint32(26).fork()
+      ).ldelim();
     }
     return writer;
   },
@@ -330,7 +334,9 @@ export const DeleteIndexDocumentRequestData = {
           message.projectId = reader.int32();
           break;
         case 3:
-          message.documentUuids.push(reader.string());
+          message.deletedDocuments = StructData.unwrap(
+            StructData.decode(reader, reader.uint32())
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -346,9 +352,9 @@ export const DeleteIndexDocumentRequestData = {
         ? Number(object.projectGenerateQueueId)
         : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      documentUuids: Array.isArray(object?.documentUuids)
-        ? object.documentUuids.map((e: any) => String(e))
-        : [],
+      deletedDocuments: isObject(object.deletedDocuments)
+        ? object.deletedDocuments
+        : undefined,
     };
   },
 
@@ -358,11 +364,8 @@ export const DeleteIndexDocumentRequestData = {
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.projectId !== undefined &&
       (obj.projectId = Math.round(message.projectId));
-    if (message.documentUuids) {
-      obj.documentUuids = message.documentUuids.map((e) => e);
-    } else {
-      obj.documentUuids = [];
-    }
+    message.deletedDocuments !== undefined &&
+      (obj.deletedDocuments = message.deletedDocuments);
     return obj;
   },
 
@@ -372,7 +375,7 @@ export const DeleteIndexDocumentRequestData = {
     const message = createBaseDeleteIndexDocumentRequest();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectId = object.projectId ?? 0;
-    message.documentUuids = object.documentUuids?.map((e) => e) || [];
+    message.deletedDocuments = object.deletedDocuments ?? undefined;
     return message;
   },
 };
@@ -488,6 +491,10 @@ type DeepPartial<T> = T extends Builtin
   : T extends {}
   ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
+
+function isObject(value: any): boolean {
+  return typeof value === "object" && value !== null;
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;
