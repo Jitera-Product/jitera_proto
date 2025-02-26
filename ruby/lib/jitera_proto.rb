@@ -32,5 +32,6 @@ require_relative 'payloads/v2/business_logic_group_pb'
 require_relative 'payloads/v2/test_case_common_pb'
 require_relative 'payloads/v2/data_deletion_pb'
 require_relative 'payloads/v2/generate_doc_pb'
+require_relative 'payloads/v2/index_document_pb'
 module JiteraProto
 end
