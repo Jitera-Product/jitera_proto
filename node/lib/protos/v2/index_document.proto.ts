@@ -61,7 +61,7 @@ export function indexDocumentResponseStatusToJSON(
 export class DeleteIndexDocumentRequest {
   projectGenerateQueueId: number;
   projectId: number;
-  documentId: number;
+  documentUuids: string[];
 }
 
 export class DeleteIndexDocumentResponse {
@@ -293,7 +293,7 @@ export const IndexDocumentResponseData = {
 };
 
 function createBaseDeleteIndexDocumentRequest(): DeleteIndexDocumentRequest {
-  return { projectGenerateQueueId: 0, projectId: 0, documentId: 0 };
+  return { projectGenerateQueueId: 0, projectId: 0, documentUuids: [] };
 }
 
 export const DeleteIndexDocumentRequestData = {
@@ -307,8 +307,8 @@ export const DeleteIndexDocumentRequestData = {
     if (message.projectId !== 0) {
       writer.uint32(16).int32(message.projectId);
     }
-    if (message.documentId !== 0) {
-      writer.uint32(24).int32(message.documentId);
+    for (const v of message.documentUuids) {
+      writer.uint32(26).string(v!);
     }
     return writer;
   },
@@ -330,7 +330,7 @@ export const DeleteIndexDocumentRequestData = {
           message.projectId = reader.int32();
           break;
         case 3:
-          message.documentId = reader.int32();
+          message.documentUuids.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -346,7 +346,9 @@ export const DeleteIndexDocumentRequestData = {
         ? Number(object.projectGenerateQueueId)
         : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      documentId: isSet(object.documentId) ? Number(object.documentId) : 0,
+      documentUuids: Array.isArray(object?.documentUuids)
+        ? object.documentUuids.map((e: any) => String(e))
+        : [],
     };
   },
 
@@ -356,8 +358,11 @@ export const DeleteIndexDocumentRequestData = {
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.projectId !== undefined &&
       (obj.projectId = Math.round(message.projectId));
-    message.documentId !== undefined &&
-      (obj.documentId = Math.round(message.documentId));
+    if (message.documentUuids) {
+      obj.documentUuids = message.documentUuids.map((e) => e);
+    } else {
+      obj.documentUuids = [];
+    }
     return obj;
   },
 
@@ -367,7 +372,7 @@ export const DeleteIndexDocumentRequestData = {
     const message = createBaseDeleteIndexDocumentRequest();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectId = object.projectId ?? 0;
-    message.documentId = object.documentId ?? 0;
+    message.documentUuids = object.documentUuids?.map((e) => e) || [];
     return message;
   },
 };

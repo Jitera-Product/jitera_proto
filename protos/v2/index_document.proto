@@ -25,7 +25,7 @@ message IndexDocumentResponse {
 message DeleteIndexDocumentRequest {
   int32 project_generate_queue_id = 1;
   int32 project_id = 2;
-  int32 document_id = 3;
+  repeated string document_uuids = 3;
 }
 
 message DeleteIndexDocumentResponse {
