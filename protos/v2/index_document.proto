@@ -7,7 +7,7 @@ import "google/protobuf/struct.proto";
 message IndexDocumentRequest {
   int32 project_generate_queue_id = 1;
   int32 project_id = 2;
-  core.Document document = 3;
+  repeated core.Document documents = 3;
 }
 
 message IndexDocumentResponse {

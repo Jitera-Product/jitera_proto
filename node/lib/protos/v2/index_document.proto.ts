@@ -6,7 +6,7 @@ import { Document, DocumentData } from "./document.proto";
 export class IndexDocumentRequest {
   projectGenerateQueueId: number;
   projectId: number;
-  document?: Document;
+  documents: Document[];
 }
 
 export class IndexDocumentResponse {
@@ -116,7 +116,7 @@ export function deleteIndexDocumentResponseStatusToJSON(
 }
 
 function createBaseIndexDocumentRequest(): IndexDocumentRequest {
-  return { projectGenerateQueueId: 0, projectId: 0 };
+  return { projectGenerateQueueId: 0, projectId: 0, documents: [] };
 }
 
 export const IndexDocumentRequestData = {
@@ -130,8 +130,8 @@ export const IndexDocumentRequestData = {
     if (message.projectId !== 0) {
       writer.uint32(16).int32(message.projectId);
     }
-    if (message.document !== undefined) {
-      DocumentData.encode(message.document, writer.uint32(26).fork()).ldelim();
+    for (const v of message.documents) {
+      DocumentData.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -153,7 +153,7 @@ export const IndexDocumentRequestData = {
           message.projectId = reader.int32();
           break;
         case 3:
-          message.document = DocumentData.decode(reader, reader.uint32());
+          message.documents.push(DocumentData.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -169,9 +169,9 @@ export const IndexDocumentRequestData = {
         ? Number(object.projectGenerateQueueId)
         : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      document: isSet(object.document)
-        ? DocumentData.fromJSON(object.document)
-        : undefined,
+      documents: Array.isArray(object?.documents)
+        ? object.documents.map((e: any) => DocumentData.fromJSON(e))
+        : [],
     };
   },
 
@@ -181,10 +181,13 @@ export const IndexDocumentRequestData = {
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.projectId !== undefined &&
       (obj.projectId = Math.round(message.projectId));
-    message.document !== undefined &&
-      (obj.document = message.document
-        ? DocumentData.toJSON(message.document)
-        : undefined);
+    if (message.documents) {
+      obj.documents = message.documents.map((e) =>
+        e ? DocumentData.toJSON(e) : undefined
+      );
+    } else {
+      obj.documents = [];
+    }
     return obj;
   },
 
@@ -192,10 +195,8 @@ export const IndexDocumentRequestData = {
     const message = createBaseIndexDocumentRequest();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectId = object.projectId ?? 0;
-    message.document =
-      object.document !== undefined && object.document !== null
-        ? DocumentData.fromPartial(object.document)
-        : undefined;
+    message.documents =
+      object.documents?.map((e) => DocumentData.fromPartial(e)) || [];
     return message;
   },
 };
