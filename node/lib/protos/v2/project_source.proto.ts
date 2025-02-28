@@ -126,6 +126,7 @@ export class ProjectSourceConfiguration {
   id: string;
   category: ProjectSourceConfigurationCategoryEnum;
   filePatterns: string[];
+  autoDiscover: boolean;
 }
 
 export class ProjectSource {
@@ -793,7 +794,7 @@ export const GenerateSourceData = {
 };
 
 function createBaseProjectSourceConfiguration(): ProjectSourceConfiguration {
-  return { id: "", category: 0, filePatterns: [] };
+  return { id: "", category: 0, filePatterns: [], autoDiscover: false };
 }
 
 export const ProjectSourceConfigurationData = {
@@ -809,6 +810,9 @@ export const ProjectSourceConfigurationData = {
     }
     for (const v of message.filePatterns) {
       writer.uint32(26).string(v!);
+    }
+    if (message.autoDiscover === true) {
+      writer.uint32(32).bool(message.autoDiscover);
     }
     return writer;
   },
@@ -832,6 +836,9 @@ export const ProjectSourceConfigurationData = {
         case 3:
           message.filePatterns.push(reader.string());
           break;
+        case 4:
+          message.autoDiscover = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -849,6 +856,9 @@ export const ProjectSourceConfigurationData = {
       filePatterns: Array.isArray(object?.filePatterns)
         ? object.filePatterns.map((e: any) => String(e))
         : [],
+      autoDiscover: isSet(object.autoDiscover)
+        ? Boolean(object.autoDiscover)
+        : false,
     };
   },
 
@@ -864,6 +874,8 @@ export const ProjectSourceConfigurationData = {
     } else {
       obj.filePatterns = [];
     }
+    message.autoDiscover !== undefined &&
+      (obj.autoDiscover = message.autoDiscover);
     return obj;
   },
 
@@ -874,6 +886,7 @@ export const ProjectSourceConfigurationData = {
     message.id = object.id ?? "";
     message.category = object.category ?? 0;
     message.filePatterns = object.filePatterns?.map((e) => e) || [];
+    message.autoDiscover = object.autoDiscover ?? false;
     return message;
   },
 };
