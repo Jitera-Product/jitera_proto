@@ -14,6 +14,7 @@ message ProjectSourceConfiguration {
   string id = 1;
   ProjectSourceConfigurationCategoryEnum category = 2;
   repeated string file_patterns = 3;
+  bool auto_discover = 4;
 }
 
 enum ProjectSourceConfigurationCategoryEnum {
