@@ -5,7 +5,7 @@
 require 'google/protobuf'
 
 
-descriptor_data = "\n\x15v2/generate_erd.proto\x12\tschema.v2\"\xcd\x01\n\x13GenerateERDResponse\x12!\n\x19project_generate_queue_id\x18\x01 \x01(\x05\x12\x35\n\x06status\x18\x02 \x01(\x0e\x32%.schema.v2.GenerateERDResponse.Status\x12\x15\n\rerror_message\x18\x03 \x01(\t\x12\x0f\n\x07payload\x18\x04 \x01(\t\"4\n\x06Status\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\r\n\tSUCCEEDED\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\x62\x06proto3"
+descriptor_data = "\n\x15v2/generate_erd.proto\x12\tschema.v2\"\xca\x01\n\x13GenerateERDResponse\x12!\n\x19project_generate_queue_id\x18\x01 \x01(\x05\x12\x35\n\x06status\x18\x02 \x01(\x0e\x32%.schema.v2.GenerateERDResponse.Status\x12\x15\n\rerror_message\x18\x03 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x04 \x01(\t\"4\n\x06Status\x12\x0f\n\x0bUNSPECIFIED\x10\x00\x12\r\n\tSUCCEEDED\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\x62\x06proto3"
 
 pool = Google::Protobuf::DescriptorPool.generated_pool
 pool.add_serialized_file(descriptor_data)

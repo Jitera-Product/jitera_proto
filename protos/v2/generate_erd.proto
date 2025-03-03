@@ -6,7 +6,7 @@ message GenerateERDResponse {
 
   Status status = 2;
   string error_message = 3;
-  string payload = 4;
+  string data = 4;
 
   enum Status {
     UNSPECIFIED = 0;

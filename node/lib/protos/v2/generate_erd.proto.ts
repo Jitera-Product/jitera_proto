@@ -5,7 +5,7 @@ export class GenerateERDResponse {
   projectGenerateQueueId: number;
   status: GenerateERDResponseStatus;
   errorMessage: string;
-  payload: string;
+  data: string;
 }
 
 export enum GenerateERDResponseStatus {
@@ -48,7 +48,7 @@ export function generateERDResponseStatusToJSON(object: GenerateERDResponseStatu
 }
 
 function createBaseGenerateERDResponse(): GenerateERDResponse {
-  return { projectGenerateQueueId: 0, status: 0, errorMessage: "", payload: "" };
+  return { projectGenerateQueueId: 0, status: 0, errorMessage: "", data: "" };
 }
 
 export const GenerateERDResponseData = {
@@ -62,8 +62,8 @@ export const GenerateERDResponseData = {
     if (message.errorMessage !== "") {
       writer.uint32(26).string(message.errorMessage);
     }
-    if (message.payload !== "") {
-      writer.uint32(34).string(message.payload);
+    if (message.data !== "") {
+      writer.uint32(34).string(message.data);
     }
     return writer;
   },
@@ -85,7 +85,7 @@ export const GenerateERDResponseData = {
           message.errorMessage = reader.string();
           break;
         case 4:
-          message.payload = reader.string();
+          message.data = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -100,7 +100,7 @@ export const GenerateERDResponseData = {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       status: isSet(object.status) ? generateERDResponseStatusFromJSON(object.status) : 0,
       errorMessage: isSet(object.errorMessage) ? String(object.errorMessage) : "",
-      payload: isSet(object.payload) ? String(object.payload) : "",
+      data: isSet(object.data) ? String(object.data) : "",
     };
   },
 
@@ -110,7 +110,7 @@ export const GenerateERDResponseData = {
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.status !== undefined && (obj.status = generateERDResponseStatusToJSON(message.status));
     message.errorMessage !== undefined && (obj.errorMessage = message.errorMessage);
-    message.payload !== undefined && (obj.payload = message.payload);
+    message.data !== undefined && (obj.data = message.data);
     return obj;
   },
 
@@ -119,7 +119,7 @@ export const GenerateERDResponseData = {
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.status = object.status ?? 0;
     message.errorMessage = object.errorMessage ?? "";
-    message.payload = object.payload ?? "";
+    message.data = object.data ?? "";
     return message;
   },
 };
