@@ -12,7 +12,7 @@ message IndexDocumentRequest {
 
 message IndexDocumentResponse {
   int32 project_generate_queue_id = 1;
-  optional string message = 2;
+  repeated core.Document documents = 2;
   Status status = 4;
   string error_message = 7;
 
