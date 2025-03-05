@@ -67,7 +67,7 @@ export class DeleteIndexDocumentRequest {
 
 export class DeleteIndexDocumentResponse {
   projectGenerateQueueId: number;
-  message?: string | undefined;
+  documents: Document[];
   status: DeleteIndexDocumentResponseStatus;
   errorMessage: string;
 }
@@ -396,7 +396,12 @@ export const DeleteIndexDocumentRequestData = {
 };
 
 function createBaseDeleteIndexDocumentResponse(): DeleteIndexDocumentResponse {
-  return { projectGenerateQueueId: 0, status: 0, errorMessage: "" };
+  return {
+    projectGenerateQueueId: 0,
+    documents: [],
+    status: 0,
+    errorMessage: "",
+  };
 }
 
 export const DeleteIndexDocumentResponseData = {
@@ -407,8 +412,8 @@ export const DeleteIndexDocumentResponseData = {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
     }
-    if (message.message !== undefined) {
-      writer.uint32(18).string(message.message);
+    for (const v of message.documents) {
+      DocumentData.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     if (message.status !== 0) {
       writer.uint32(32).int32(message.status);
@@ -433,7 +438,7 @@ export const DeleteIndexDocumentResponseData = {
           message.projectGenerateQueueId = reader.int32();
           break;
         case 2:
-          message.message = reader.string();
+          message.documents.push(DocumentData.decode(reader, reader.uint32()));
           break;
         case 4:
           message.status = reader.int32() as any;
@@ -454,7 +459,9 @@ export const DeleteIndexDocumentResponseData = {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId)
         ? Number(object.projectGenerateQueueId)
         : 0,
-      message: isSet(object.message) ? String(object.message) : undefined,
+      documents: Array.isArray(object?.documents)
+        ? object.documents.map((e: any) => DocumentData.fromJSON(e))
+        : [],
       status: isSet(object.status)
         ? deleteIndexDocumentResponseStatusFromJSON(object.status)
         : 0,
@@ -468,7 +475,13 @@ export const DeleteIndexDocumentResponseData = {
     const obj: any = {};
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
-    message.message !== undefined && (obj.message = message.message);
+    if (message.documents) {
+      obj.documents = message.documents.map((e) =>
+        e ? DocumentData.toJSON(e) : undefined
+      );
+    } else {
+      obj.documents = [];
+    }
     message.status !== undefined &&
       (obj.status = deleteIndexDocumentResponseStatusToJSON(message.status));
     message.errorMessage !== undefined &&
@@ -481,7 +494,8 @@ export const DeleteIndexDocumentResponseData = {
   ): DeleteIndexDocumentResponse {
     const message = createBaseDeleteIndexDocumentResponse();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
-    message.message = object.message ?? undefined;
+    message.documents =
+      object.documents?.map((e) => DocumentData.fromPartial(e)) || [];
     message.status = object.status ?? 0;
     message.errorMessage = object.errorMessage ?? "";
     return message;
