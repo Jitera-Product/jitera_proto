@@ -12,6 +12,7 @@ export * from "./protos/v2/chat.proto";
 export * from "./protos/v2/component_specification.proto";
 export * from "./protos/v2/data_deletion.proto";
 export * from "./protos/v2/generate_doc.proto";
+export * from "./protos/v2/generate_erd.proto";
 export * from "./protos/v2/image_description.proto";
 export * from "./protos/v2/index_block_document.proto";
 export * from "./protos/v2/project_figma.proto";
