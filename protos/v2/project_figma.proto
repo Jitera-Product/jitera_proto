@@ -1,7 +1,8 @@
 syntax = "proto3";
 package schema.v2;
 
-import "v2/document.proto";
+import "v2/block_core.proto";
+import "v2/component_specification.proto";
 
 message ProjectFigmaImportRequest {
   int32 project_generate_queue_id = 1;
@@ -16,21 +17,23 @@ message ProjectFigmaSyncRequest {
   int32 project_generate_queue_id = 1;
   int32 project_id = 2;
   string access_token = 3;
-  repeated core.Document documents = 4;
+  repeated core.Block use_case_blocks = 4;
   string master_language_code = 5;
 }
 
 message ProjectFigmaImportResponse {
   int32 project_generate_queue_id = 1;
   int32 project_id = 2;
-  repeated core.Document documents = 3;
-  Module module = 4;
-  Status status = 5;
-  int32 token_usage = 6;
+  Module module = 3;
+  Status status = 4;
+  int32 token_usage = 5;
+  repeated core.Block use_case_blocks = 6;
   string error_message = 7;
+  repeated ComponentSpecification component_specifications = 8;
 
   enum Module {
     FIGMA_TO_NATURAL_LANGUAGE = 0;
+    FIGMA_TO_COMPONENT_SPECIFICATION = 1;
   }
 
   enum Status {
