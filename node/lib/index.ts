@@ -28,3 +28,4 @@ export * from "./protos/v2/test_case.proto";
 export * from "./protos/v2/test_case_common.proto";
 export * from "./protos/v2/translation_blocks.proto";
 export * from "./protos/v2/use_case_creation.proto";
+export * from "./protos/v2/index_document.proto";
