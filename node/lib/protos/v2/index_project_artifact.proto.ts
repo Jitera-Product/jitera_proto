@@ -2,41 +2,41 @@
 import _m0 from "protobufjs/minimal";
 import { Git, GitData, ProjectSource, ProjectSourceData } from "./project_source.proto";
 
-export class ProjectArtifactOperationRequest {
+export class IndexProjectArtifactRequest {
   projectGenerateId: number;
   projectSource?: ProjectSource;
-  reindexDocument?: ProjectArtifactOperationRequestReIndexDocumentOperation | undefined;
-  reindexSourceCode?: ProjectArtifactOperationRequestReIndexSourceCodeOperation | undefined;
+  reindexDocument?: IndexProjectArtifactRequestReIndexDocument | undefined;
+  reindexSourceCode?: IndexProjectArtifactRequestReIndexSourceCode | undefined;
 }
 
-export class ProjectArtifactOperationRequestReIndexDocumentOperation {
+export class IndexProjectArtifactRequestReIndexDocument {
   indexAll?: boolean | undefined;
-  documentPaths?: ProjectArtifactOperationRequestDocumentPaths | undefined;
+  documentPaths?: IndexProjectArtifactRequestDocumentPaths | undefined;
 }
 
-export class ProjectArtifactOperationRequestDocumentPaths {
+export class IndexProjectArtifactRequestDocumentPaths {
   /** List of document paths */
   paths: string[];
 }
 
-export class ProjectArtifactOperationRequestReIndexSourceCodeOperation {
+export class IndexProjectArtifactRequestReIndexSourceCode {
   git?: Git;
 }
 
-export class ProjectArtifactOperationResponse {
-  projectGenerateQueueId: number;
+export class IndexProjectArtifactResponse {
+  projectGenerateId: number;
   projectId: number;
-  progress?: ProjectArtifactOperationResponseProgress | undefined;
-  success?: ProjectArtifactOperationResponseSuccess | undefined;
-  error?: ProjectArtifactOperationResponseError | undefined;
+  progress?: IndexProjectArtifactResponseProgress | undefined;
+  success?: IndexProjectArtifactResponseSuccess | undefined;
+  error?: IndexProjectArtifactResponseError | undefined;
 }
 
-export class ProjectArtifactOperationResponseProgress {
+export class IndexProjectArtifactResponseProgress {
   progress: number;
   message: string;
 }
 
-export class ProjectArtifactOperationResponseError {
+export class IndexProjectArtifactResponseError {
   /** Error code (e.g., "INVALID_PATH", "AUTH_FAILED") */
   code: string;
   /** Human-readable error message */
@@ -44,27 +44,27 @@ export class ProjectArtifactOperationResponseError {
   details: { [key: string]: string };
 }
 
-export class ProjectArtifactOperationResponseErrorDetailsEntry {
+export class IndexProjectArtifactResponseErrorDetailsEntry {
   key: string;
   value: string;
 }
 
-export class ProjectArtifactOperationResponseSuccess {
+export class IndexProjectArtifactResponseSuccess {
   message: string;
   results: { [key: string]: string };
 }
 
-export class ProjectArtifactOperationResponseSuccessResultsEntry {
+export class IndexProjectArtifactResponseSuccessResultsEntry {
   key: string;
   value: string;
 }
 
-function createBaseProjectArtifactOperationRequest(): ProjectArtifactOperationRequest {
+function createBaseIndexProjectArtifactRequest(): IndexProjectArtifactRequest {
   return { projectGenerateId: 0 };
 }
 
-export const ProjectArtifactOperationRequestData = {
-  encode(message: ProjectArtifactOperationRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const IndexProjectArtifactRequestData = {
+  encode(message: IndexProjectArtifactRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.projectGenerateId !== 0) {
       writer.uint32(8).int32(message.projectGenerateId);
     }
@@ -72,24 +72,19 @@ export const ProjectArtifactOperationRequestData = {
       ProjectSourceData.encode(message.projectSource, writer.uint32(18).fork()).ldelim();
     }
     if (message.reindexDocument !== undefined) {
-      ProjectArtifactOperationRequestReIndexDocumentOperationData.encode(
-        message.reindexDocument,
-        writer.uint32(26).fork(),
-      ).ldelim();
+      IndexProjectArtifactRequestReIndexDocumentData.encode(message.reindexDocument, writer.uint32(26).fork()).ldelim();
     }
     if (message.reindexSourceCode !== undefined) {
-      ProjectArtifactOperationRequestReIndexSourceCodeOperationData.encode(
-        message.reindexSourceCode,
-        writer.uint32(34).fork(),
-      ).ldelim();
+      IndexProjectArtifactRequestReIndexSourceCodeData.encode(message.reindexSourceCode, writer.uint32(34).fork())
+        .ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectArtifactOperationRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): IndexProjectArtifactRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseProjectArtifactOperationRequest();
+    const message = createBaseIndexProjectArtifactRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -100,16 +95,10 @@ export const ProjectArtifactOperationRequestData = {
           message.projectSource = ProjectSourceData.decode(reader, reader.uint32());
           break;
         case 3:
-          message.reindexDocument = ProjectArtifactOperationRequestReIndexDocumentOperationData.decode(
-            reader,
-            reader.uint32(),
-          );
+          message.reindexDocument = IndexProjectArtifactRequestReIndexDocumentData.decode(reader, reader.uint32());
           break;
         case 4:
-          message.reindexSourceCode = ProjectArtifactOperationRequestReIndexSourceCodeOperationData.decode(
-            reader,
-            reader.uint32(),
-          );
+          message.reindexSourceCode = IndexProjectArtifactRequestReIndexSourceCodeData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -119,71 +108,68 @@ export const ProjectArtifactOperationRequestData = {
     return message;
   },
 
-  fromJSON(object: any): ProjectArtifactOperationRequest {
+  fromJSON(object: any): IndexProjectArtifactRequest {
     return {
       projectGenerateId: isSet(object.projectGenerateId) ? Number(object.projectGenerateId) : 0,
       projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
       reindexDocument: isSet(object.reindexDocument)
-        ? ProjectArtifactOperationRequestReIndexDocumentOperationData.fromJSON(object.reindexDocument)
+        ? IndexProjectArtifactRequestReIndexDocumentData.fromJSON(object.reindexDocument)
         : undefined,
       reindexSourceCode: isSet(object.reindexSourceCode)
-        ? ProjectArtifactOperationRequestReIndexSourceCodeOperationData.fromJSON(object.reindexSourceCode)
+        ? IndexProjectArtifactRequestReIndexSourceCodeData.fromJSON(object.reindexSourceCode)
         : undefined,
     };
   },
 
-  toJSON(message: ProjectArtifactOperationRequest): unknown {
+  toJSON(message: IndexProjectArtifactRequest): unknown {
     const obj: any = {};
     message.projectGenerateId !== undefined && (obj.projectGenerateId = Math.round(message.projectGenerateId));
     message.projectSource !== undefined &&
       (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
     message.reindexDocument !== undefined && (obj.reindexDocument = message.reindexDocument
-      ? ProjectArtifactOperationRequestReIndexDocumentOperationData.toJSON(message.reindexDocument)
+      ? IndexProjectArtifactRequestReIndexDocumentData.toJSON(message.reindexDocument)
       : undefined);
     message.reindexSourceCode !== undefined && (obj.reindexSourceCode = message.reindexSourceCode
-      ? ProjectArtifactOperationRequestReIndexSourceCodeOperationData.toJSON(message.reindexSourceCode)
+      ? IndexProjectArtifactRequestReIndexSourceCodeData.toJSON(message.reindexSourceCode)
       : undefined);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<ProjectArtifactOperationRequest>): ProjectArtifactOperationRequest {
-    const message = createBaseProjectArtifactOperationRequest();
+  fromPartial(object: DeepPartial<IndexProjectArtifactRequest>): IndexProjectArtifactRequest {
+    const message = createBaseIndexProjectArtifactRequest();
     message.projectGenerateId = object.projectGenerateId ?? 0;
     message.projectSource = (object.projectSource !== undefined && object.projectSource !== null)
       ? ProjectSourceData.fromPartial(object.projectSource)
       : undefined;
     message.reindexDocument = (object.reindexDocument !== undefined && object.reindexDocument !== null)
-      ? ProjectArtifactOperationRequestReIndexDocumentOperationData.fromPartial(object.reindexDocument)
+      ? IndexProjectArtifactRequestReIndexDocumentData.fromPartial(object.reindexDocument)
       : undefined;
     message.reindexSourceCode = (object.reindexSourceCode !== undefined && object.reindexSourceCode !== null)
-      ? ProjectArtifactOperationRequestReIndexSourceCodeOperationData.fromPartial(object.reindexSourceCode)
+      ? IndexProjectArtifactRequestReIndexSourceCodeData.fromPartial(object.reindexSourceCode)
       : undefined;
     return message;
   },
 };
 
-function createBaseProjectArtifactOperationRequestReIndexDocumentOperation(): ProjectArtifactOperationRequestReIndexDocumentOperation {
+function createBaseIndexProjectArtifactRequestReIndexDocument(): IndexProjectArtifactRequestReIndexDocument {
   return {};
 }
 
-export const ProjectArtifactOperationRequestReIndexDocumentOperationData = {
-  encode(
-    message: ProjectArtifactOperationRequestReIndexDocumentOperation,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+export const IndexProjectArtifactRequestReIndexDocumentData = {
+  encode(message: IndexProjectArtifactRequestReIndexDocument, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.indexAll !== undefined) {
       writer.uint32(8).bool(message.indexAll);
     }
     if (message.documentPaths !== undefined) {
-      ProjectArtifactOperationRequestDocumentPathsData.encode(message.documentPaths, writer.uint32(18).fork()).ldelim();
+      IndexProjectArtifactRequestDocumentPathsData.encode(message.documentPaths, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectArtifactOperationRequestReIndexDocumentOperation {
+  decode(input: _m0.Reader | Uint8Array, length?: number): IndexProjectArtifactRequestReIndexDocument {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseProjectArtifactOperationRequestReIndexDocumentOperation();
+    const message = createBaseIndexProjectArtifactRequestReIndexDocument();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -191,7 +177,7 @@ export const ProjectArtifactOperationRequestReIndexDocumentOperationData = {
           message.indexAll = reader.bool();
           break;
         case 2:
-          message.documentPaths = ProjectArtifactOperationRequestDocumentPathsData.decode(reader, reader.uint32());
+          message.documentPaths = IndexProjectArtifactRequestDocumentPathsData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -201,52 +187,52 @@ export const ProjectArtifactOperationRequestReIndexDocumentOperationData = {
     return message;
   },
 
-  fromJSON(object: any): ProjectArtifactOperationRequestReIndexDocumentOperation {
+  fromJSON(object: any): IndexProjectArtifactRequestReIndexDocument {
     return {
       indexAll: isSet(object.indexAll) ? Boolean(object.indexAll) : undefined,
       documentPaths: isSet(object.documentPaths)
-        ? ProjectArtifactOperationRequestDocumentPathsData.fromJSON(object.documentPaths)
+        ? IndexProjectArtifactRequestDocumentPathsData.fromJSON(object.documentPaths)
         : undefined,
     };
   },
 
-  toJSON(message: ProjectArtifactOperationRequestReIndexDocumentOperation): unknown {
+  toJSON(message: IndexProjectArtifactRequestReIndexDocument): unknown {
     const obj: any = {};
     message.indexAll !== undefined && (obj.indexAll = message.indexAll);
     message.documentPaths !== undefined && (obj.documentPaths = message.documentPaths
-      ? ProjectArtifactOperationRequestDocumentPathsData.toJSON(message.documentPaths)
+      ? IndexProjectArtifactRequestDocumentPathsData.toJSON(message.documentPaths)
       : undefined);
     return obj;
   },
 
   fromPartial(
-    object: DeepPartial<ProjectArtifactOperationRequestReIndexDocumentOperation>,
-  ): ProjectArtifactOperationRequestReIndexDocumentOperation {
-    const message = createBaseProjectArtifactOperationRequestReIndexDocumentOperation();
+    object: DeepPartial<IndexProjectArtifactRequestReIndexDocument>,
+  ): IndexProjectArtifactRequestReIndexDocument {
+    const message = createBaseIndexProjectArtifactRequestReIndexDocument();
     message.indexAll = object.indexAll ?? undefined;
     message.documentPaths = (object.documentPaths !== undefined && object.documentPaths !== null)
-      ? ProjectArtifactOperationRequestDocumentPathsData.fromPartial(object.documentPaths)
+      ? IndexProjectArtifactRequestDocumentPathsData.fromPartial(object.documentPaths)
       : undefined;
     return message;
   },
 };
 
-function createBaseProjectArtifactOperationRequestDocumentPaths(): ProjectArtifactOperationRequestDocumentPaths {
+function createBaseIndexProjectArtifactRequestDocumentPaths(): IndexProjectArtifactRequestDocumentPaths {
   return { paths: [] };
 }
 
-export const ProjectArtifactOperationRequestDocumentPathsData = {
-  encode(message: ProjectArtifactOperationRequestDocumentPaths, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const IndexProjectArtifactRequestDocumentPathsData = {
+  encode(message: IndexProjectArtifactRequestDocumentPaths, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.paths) {
       writer.uint32(10).string(v!);
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectArtifactOperationRequestDocumentPaths {
+  decode(input: _m0.Reader | Uint8Array, length?: number): IndexProjectArtifactRequestDocumentPaths {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseProjectArtifactOperationRequestDocumentPaths();
+    const message = createBaseIndexProjectArtifactRequestDocumentPaths();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -261,11 +247,11 @@ export const ProjectArtifactOperationRequestDocumentPathsData = {
     return message;
   },
 
-  fromJSON(object: any): ProjectArtifactOperationRequestDocumentPaths {
+  fromJSON(object: any): IndexProjectArtifactRequestDocumentPaths {
     return { paths: Array.isArray(object?.paths) ? object.paths.map((e: any) => String(e)) : [] };
   },
 
-  toJSON(message: ProjectArtifactOperationRequestDocumentPaths): unknown {
+  toJSON(message: IndexProjectArtifactRequestDocumentPaths): unknown {
     const obj: any = {};
     if (message.paths) {
       obj.paths = message.paths.map((e) => e);
@@ -275,34 +261,29 @@ export const ProjectArtifactOperationRequestDocumentPathsData = {
     return obj;
   },
 
-  fromPartial(
-    object: DeepPartial<ProjectArtifactOperationRequestDocumentPaths>,
-  ): ProjectArtifactOperationRequestDocumentPaths {
-    const message = createBaseProjectArtifactOperationRequestDocumentPaths();
+  fromPartial(object: DeepPartial<IndexProjectArtifactRequestDocumentPaths>): IndexProjectArtifactRequestDocumentPaths {
+    const message = createBaseIndexProjectArtifactRequestDocumentPaths();
     message.paths = object.paths?.map((e) => e) || [];
     return message;
   },
 };
 
-function createBaseProjectArtifactOperationRequestReIndexSourceCodeOperation(): ProjectArtifactOperationRequestReIndexSourceCodeOperation {
+function createBaseIndexProjectArtifactRequestReIndexSourceCode(): IndexProjectArtifactRequestReIndexSourceCode {
   return {};
 }
 
-export const ProjectArtifactOperationRequestReIndexSourceCodeOperationData = {
-  encode(
-    message: ProjectArtifactOperationRequestReIndexSourceCodeOperation,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+export const IndexProjectArtifactRequestReIndexSourceCodeData = {
+  encode(message: IndexProjectArtifactRequestReIndexSourceCode, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.git !== undefined) {
       GitData.encode(message.git, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectArtifactOperationRequestReIndexSourceCodeOperation {
+  decode(input: _m0.Reader | Uint8Array, length?: number): IndexProjectArtifactRequestReIndexSourceCode {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseProjectArtifactOperationRequestReIndexSourceCodeOperation();
+    const message = createBaseIndexProjectArtifactRequestReIndexSourceCode();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -317,70 +298,70 @@ export const ProjectArtifactOperationRequestReIndexSourceCodeOperationData = {
     return message;
   },
 
-  fromJSON(object: any): ProjectArtifactOperationRequestReIndexSourceCodeOperation {
+  fromJSON(object: any): IndexProjectArtifactRequestReIndexSourceCode {
     return { git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined };
   },
 
-  toJSON(message: ProjectArtifactOperationRequestReIndexSourceCodeOperation): unknown {
+  toJSON(message: IndexProjectArtifactRequestReIndexSourceCode): unknown {
     const obj: any = {};
     message.git !== undefined && (obj.git = message.git ? GitData.toJSON(message.git) : undefined);
     return obj;
   },
 
   fromPartial(
-    object: DeepPartial<ProjectArtifactOperationRequestReIndexSourceCodeOperation>,
-  ): ProjectArtifactOperationRequestReIndexSourceCodeOperation {
-    const message = createBaseProjectArtifactOperationRequestReIndexSourceCodeOperation();
+    object: DeepPartial<IndexProjectArtifactRequestReIndexSourceCode>,
+  ): IndexProjectArtifactRequestReIndexSourceCode {
+    const message = createBaseIndexProjectArtifactRequestReIndexSourceCode();
     message.git = (object.git !== undefined && object.git !== null) ? GitData.fromPartial(object.git) : undefined;
     return message;
   },
 };
 
-function createBaseProjectArtifactOperationResponse(): ProjectArtifactOperationResponse {
-  return { projectGenerateQueueId: 0, projectId: 0 };
+function createBaseIndexProjectArtifactResponse(): IndexProjectArtifactResponse {
+  return { projectGenerateId: 0, projectId: 0 };
 }
 
-export const ProjectArtifactOperationResponseData = {
-  encode(message: ProjectArtifactOperationResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.projectGenerateQueueId !== 0) {
-      writer.uint32(8).int32(message.projectGenerateQueueId);
+export const IndexProjectArtifactResponseData = {
+  encode(message: IndexProjectArtifactResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.projectGenerateId !== 0) {
+      writer.uint32(8).int32(message.projectGenerateId);
     }
     if (message.projectId !== 0) {
       writer.uint32(16).int32(message.projectId);
     }
     if (message.progress !== undefined) {
-      ProjectArtifactOperationResponseProgressData.encode(message.progress, writer.uint32(42).fork()).ldelim();
+      IndexProjectArtifactResponseProgressData.encode(message.progress, writer.uint32(42).fork()).ldelim();
     }
     if (message.success !== undefined) {
-      ProjectArtifactOperationResponseSuccessData.encode(message.success, writer.uint32(50).fork()).ldelim();
+      IndexProjectArtifactResponseSuccessData.encode(message.success, writer.uint32(50).fork()).ldelim();
     }
     if (message.error !== undefined) {
-      ProjectArtifactOperationResponseErrorData.encode(message.error, writer.uint32(58).fork()).ldelim();
+      IndexProjectArtifactResponseErrorData.encode(message.error, writer.uint32(58).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectArtifactOperationResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): IndexProjectArtifactResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseProjectArtifactOperationResponse();
+    const message = createBaseIndexProjectArtifactResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.projectGenerateQueueId = reader.int32();
+          message.projectGenerateId = reader.int32();
           break;
         case 2:
           message.projectId = reader.int32();
           break;
         case 5:
-          message.progress = ProjectArtifactOperationResponseProgressData.decode(reader, reader.uint32());
+          message.progress = IndexProjectArtifactResponseProgressData.decode(reader, reader.uint32());
           break;
         case 6:
-          message.success = ProjectArtifactOperationResponseSuccessData.decode(reader, reader.uint32());
+          message.success = IndexProjectArtifactResponseSuccessData.decode(reader, reader.uint32());
           break;
         case 7:
-          message.error = ProjectArtifactOperationResponseErrorData.decode(reader, reader.uint32());
+          message.error = IndexProjectArtifactResponseErrorData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -390,56 +371,52 @@ export const ProjectArtifactOperationResponseData = {
     return message;
   },
 
-  fromJSON(object: any): ProjectArtifactOperationResponse {
+  fromJSON(object: any): IndexProjectArtifactResponse {
     return {
-      projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
+      projectGenerateId: isSet(object.projectGenerateId) ? Number(object.projectGenerateId) : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      progress: isSet(object.progress)
-        ? ProjectArtifactOperationResponseProgressData.fromJSON(object.progress)
-        : undefined,
-      success: isSet(object.success) ? ProjectArtifactOperationResponseSuccessData.fromJSON(object.success) : undefined,
-      error: isSet(object.error) ? ProjectArtifactOperationResponseErrorData.fromJSON(object.error) : undefined,
+      progress: isSet(object.progress) ? IndexProjectArtifactResponseProgressData.fromJSON(object.progress) : undefined,
+      success: isSet(object.success) ? IndexProjectArtifactResponseSuccessData.fromJSON(object.success) : undefined,
+      error: isSet(object.error) ? IndexProjectArtifactResponseErrorData.fromJSON(object.error) : undefined,
     };
   },
 
-  toJSON(message: ProjectArtifactOperationResponse): unknown {
+  toJSON(message: IndexProjectArtifactResponse): unknown {
     const obj: any = {};
-    message.projectGenerateQueueId !== undefined &&
-      (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
+    message.projectGenerateId !== undefined && (obj.projectGenerateId = Math.round(message.projectGenerateId));
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
-    message.progress !== undefined && (obj.progress = message.progress
-      ? ProjectArtifactOperationResponseProgressData.toJSON(message.progress)
-      : undefined);
+    message.progress !== undefined &&
+      (obj.progress = message.progress ? IndexProjectArtifactResponseProgressData.toJSON(message.progress) : undefined);
     message.success !== undefined &&
-      (obj.success = message.success ? ProjectArtifactOperationResponseSuccessData.toJSON(message.success) : undefined);
+      (obj.success = message.success ? IndexProjectArtifactResponseSuccessData.toJSON(message.success) : undefined);
     message.error !== undefined &&
-      (obj.error = message.error ? ProjectArtifactOperationResponseErrorData.toJSON(message.error) : undefined);
+      (obj.error = message.error ? IndexProjectArtifactResponseErrorData.toJSON(message.error) : undefined);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<ProjectArtifactOperationResponse>): ProjectArtifactOperationResponse {
-    const message = createBaseProjectArtifactOperationResponse();
-    message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
+  fromPartial(object: DeepPartial<IndexProjectArtifactResponse>): IndexProjectArtifactResponse {
+    const message = createBaseIndexProjectArtifactResponse();
+    message.projectGenerateId = object.projectGenerateId ?? 0;
     message.projectId = object.projectId ?? 0;
     message.progress = (object.progress !== undefined && object.progress !== null)
-      ? ProjectArtifactOperationResponseProgressData.fromPartial(object.progress)
+      ? IndexProjectArtifactResponseProgressData.fromPartial(object.progress)
       : undefined;
     message.success = (object.success !== undefined && object.success !== null)
-      ? ProjectArtifactOperationResponseSuccessData.fromPartial(object.success)
+      ? IndexProjectArtifactResponseSuccessData.fromPartial(object.success)
       : undefined;
     message.error = (object.error !== undefined && object.error !== null)
-      ? ProjectArtifactOperationResponseErrorData.fromPartial(object.error)
+      ? IndexProjectArtifactResponseErrorData.fromPartial(object.error)
       : undefined;
     return message;
   },
 };
 
-function createBaseProjectArtifactOperationResponseProgress(): ProjectArtifactOperationResponseProgress {
+function createBaseIndexProjectArtifactResponseProgress(): IndexProjectArtifactResponseProgress {
   return { progress: 0, message: "" };
 }
 
-export const ProjectArtifactOperationResponseProgressData = {
-  encode(message: ProjectArtifactOperationResponseProgress, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const IndexProjectArtifactResponseProgressData = {
+  encode(message: IndexProjectArtifactResponseProgress, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.progress !== 0) {
       writer.uint32(8).int32(message.progress);
     }
@@ -449,10 +426,10 @@ export const ProjectArtifactOperationResponseProgressData = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectArtifactOperationResponseProgress {
+  decode(input: _m0.Reader | Uint8Array, length?: number): IndexProjectArtifactResponseProgress {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseProjectArtifactOperationResponseProgress();
+    const message = createBaseIndexProjectArtifactResponseProgress();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -470,34 +447,34 @@ export const ProjectArtifactOperationResponseProgressData = {
     return message;
   },
 
-  fromJSON(object: any): ProjectArtifactOperationResponseProgress {
+  fromJSON(object: any): IndexProjectArtifactResponseProgress {
     return {
       progress: isSet(object.progress) ? Number(object.progress) : 0,
       message: isSet(object.message) ? String(object.message) : "",
     };
   },
 
-  toJSON(message: ProjectArtifactOperationResponseProgress): unknown {
+  toJSON(message: IndexProjectArtifactResponseProgress): unknown {
     const obj: any = {};
     message.progress !== undefined && (obj.progress = Math.round(message.progress));
     message.message !== undefined && (obj.message = message.message);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<ProjectArtifactOperationResponseProgress>): ProjectArtifactOperationResponseProgress {
-    const message = createBaseProjectArtifactOperationResponseProgress();
+  fromPartial(object: DeepPartial<IndexProjectArtifactResponseProgress>): IndexProjectArtifactResponseProgress {
+    const message = createBaseIndexProjectArtifactResponseProgress();
     message.progress = object.progress ?? 0;
     message.message = object.message ?? "";
     return message;
   },
 };
 
-function createBaseProjectArtifactOperationResponseError(): ProjectArtifactOperationResponseError {
+function createBaseIndexProjectArtifactResponseError(): IndexProjectArtifactResponseError {
   return { code: "", message: "", details: {} };
 }
 
-export const ProjectArtifactOperationResponseErrorData = {
-  encode(message: ProjectArtifactOperationResponseError, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const IndexProjectArtifactResponseErrorData = {
+  encode(message: IndexProjectArtifactResponseError, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.code !== "") {
       writer.uint32(10).string(message.code);
     }
@@ -505,16 +482,16 @@ export const ProjectArtifactOperationResponseErrorData = {
       writer.uint32(18).string(message.message);
     }
     Object.entries(message.details).forEach(([key, value]) => {
-      ProjectArtifactOperationResponseErrorDetailsEntryData.encode({ key: key as any, value }, writer.uint32(26).fork())
+      IndexProjectArtifactResponseErrorDetailsEntryData.encode({ key: key as any, value }, writer.uint32(26).fork())
         .ldelim();
     });
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectArtifactOperationResponseError {
+  decode(input: _m0.Reader | Uint8Array, length?: number): IndexProjectArtifactResponseError {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseProjectArtifactOperationResponseError();
+    const message = createBaseIndexProjectArtifactResponseError();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -525,7 +502,7 @@ export const ProjectArtifactOperationResponseErrorData = {
           message.message = reader.string();
           break;
         case 3:
-          const entry3 = ProjectArtifactOperationResponseErrorDetailsEntryData.decode(reader, reader.uint32());
+          const entry3 = IndexProjectArtifactResponseErrorDetailsEntryData.decode(reader, reader.uint32());
           if (entry3.value !== undefined) {
             message.details[entry3.key] = entry3.value;
           }
@@ -538,7 +515,7 @@ export const ProjectArtifactOperationResponseErrorData = {
     return message;
   },
 
-  fromJSON(object: any): ProjectArtifactOperationResponseError {
+  fromJSON(object: any): IndexProjectArtifactResponseError {
     return {
       code: isSet(object.code) ? String(object.code) : "",
       message: isSet(object.message) ? String(object.message) : "",
@@ -551,7 +528,7 @@ export const ProjectArtifactOperationResponseErrorData = {
     };
   },
 
-  toJSON(message: ProjectArtifactOperationResponseError): unknown {
+  toJSON(message: IndexProjectArtifactResponseError): unknown {
     const obj: any = {};
     message.code !== undefined && (obj.code = message.code);
     message.message !== undefined && (obj.message = message.message);
@@ -564,8 +541,8 @@ export const ProjectArtifactOperationResponseErrorData = {
     return obj;
   },
 
-  fromPartial(object: DeepPartial<ProjectArtifactOperationResponseError>): ProjectArtifactOperationResponseError {
-    const message = createBaseProjectArtifactOperationResponseError();
+  fromPartial(object: DeepPartial<IndexProjectArtifactResponseError>): IndexProjectArtifactResponseError {
+    const message = createBaseIndexProjectArtifactResponseError();
     message.code = object.code ?? "";
     message.message = object.message ?? "";
     message.details = Object.entries(object.details ?? {}).reduce<{ [key: string]: string }>((acc, [key, value]) => {
@@ -578,15 +555,12 @@ export const ProjectArtifactOperationResponseErrorData = {
   },
 };
 
-function createBaseProjectArtifactOperationResponseErrorDetailsEntry(): ProjectArtifactOperationResponseErrorDetailsEntry {
+function createBaseIndexProjectArtifactResponseErrorDetailsEntry(): IndexProjectArtifactResponseErrorDetailsEntry {
   return { key: "", value: "" };
 }
 
-export const ProjectArtifactOperationResponseErrorDetailsEntryData = {
-  encode(
-    message: ProjectArtifactOperationResponseErrorDetailsEntry,
-    writer: _m0.Writer = _m0.Writer.create(),
-  ): _m0.Writer {
+export const IndexProjectArtifactResponseErrorDetailsEntryData = {
+  encode(message: IndexProjectArtifactResponseErrorDetailsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
     }
@@ -596,10 +570,10 @@ export const ProjectArtifactOperationResponseErrorDetailsEntryData = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectArtifactOperationResponseErrorDetailsEntry {
+  decode(input: _m0.Reader | Uint8Array, length?: number): IndexProjectArtifactResponseErrorDetailsEntry {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseProjectArtifactOperationResponseErrorDetailsEntry();
+    const message = createBaseIndexProjectArtifactResponseErrorDetailsEntry();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -617,11 +591,11 @@ export const ProjectArtifactOperationResponseErrorDetailsEntryData = {
     return message;
   },
 
-  fromJSON(object: any): ProjectArtifactOperationResponseErrorDetailsEntry {
+  fromJSON(object: any): IndexProjectArtifactResponseErrorDetailsEntry {
     return { key: isSet(object.key) ? String(object.key) : "", value: isSet(object.value) ? String(object.value) : "" };
   },
 
-  toJSON(message: ProjectArtifactOperationResponseErrorDetailsEntry): unknown {
+  toJSON(message: IndexProjectArtifactResponseErrorDetailsEntry): unknown {
     const obj: any = {};
     message.key !== undefined && (obj.key = message.key);
     message.value !== undefined && (obj.value = message.value);
@@ -629,37 +603,35 @@ export const ProjectArtifactOperationResponseErrorDetailsEntryData = {
   },
 
   fromPartial(
-    object: DeepPartial<ProjectArtifactOperationResponseErrorDetailsEntry>,
-  ): ProjectArtifactOperationResponseErrorDetailsEntry {
-    const message = createBaseProjectArtifactOperationResponseErrorDetailsEntry();
+    object: DeepPartial<IndexProjectArtifactResponseErrorDetailsEntry>,
+  ): IndexProjectArtifactResponseErrorDetailsEntry {
+    const message = createBaseIndexProjectArtifactResponseErrorDetailsEntry();
     message.key = object.key ?? "";
     message.value = object.value ?? "";
     return message;
   },
 };
 
-function createBaseProjectArtifactOperationResponseSuccess(): ProjectArtifactOperationResponseSuccess {
+function createBaseIndexProjectArtifactResponseSuccess(): IndexProjectArtifactResponseSuccess {
   return { message: "", results: {} };
 }
 
-export const ProjectArtifactOperationResponseSuccessData = {
-  encode(message: ProjectArtifactOperationResponseSuccess, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const IndexProjectArtifactResponseSuccessData = {
+  encode(message: IndexProjectArtifactResponseSuccess, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.message !== "") {
       writer.uint32(10).string(message.message);
     }
     Object.entries(message.results).forEach(([key, value]) => {
-      ProjectArtifactOperationResponseSuccessResultsEntryData.encode(
-        { key: key as any, value },
-        writer.uint32(18).fork(),
-      ).ldelim();
+      IndexProjectArtifactResponseSuccessResultsEntryData.encode({ key: key as any, value }, writer.uint32(18).fork())
+        .ldelim();
     });
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectArtifactOperationResponseSuccess {
+  decode(input: _m0.Reader | Uint8Array, length?: number): IndexProjectArtifactResponseSuccess {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseProjectArtifactOperationResponseSuccess();
+    const message = createBaseIndexProjectArtifactResponseSuccess();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -667,7 +639,7 @@ export const ProjectArtifactOperationResponseSuccessData = {
           message.message = reader.string();
           break;
         case 2:
-          const entry2 = ProjectArtifactOperationResponseSuccessResultsEntryData.decode(reader, reader.uint32());
+          const entry2 = IndexProjectArtifactResponseSuccessResultsEntryData.decode(reader, reader.uint32());
           if (entry2.value !== undefined) {
             message.results[entry2.key] = entry2.value;
           }
@@ -680,7 +652,7 @@ export const ProjectArtifactOperationResponseSuccessData = {
     return message;
   },
 
-  fromJSON(object: any): ProjectArtifactOperationResponseSuccess {
+  fromJSON(object: any): IndexProjectArtifactResponseSuccess {
     return {
       message: isSet(object.message) ? String(object.message) : "",
       results: isObject(object.results)
@@ -692,7 +664,7 @@ export const ProjectArtifactOperationResponseSuccessData = {
     };
   },
 
-  toJSON(message: ProjectArtifactOperationResponseSuccess): unknown {
+  toJSON(message: IndexProjectArtifactResponseSuccess): unknown {
     const obj: any = {};
     message.message !== undefined && (obj.message = message.message);
     obj.results = {};
@@ -704,8 +676,8 @@ export const ProjectArtifactOperationResponseSuccessData = {
     return obj;
   },
 
-  fromPartial(object: DeepPartial<ProjectArtifactOperationResponseSuccess>): ProjectArtifactOperationResponseSuccess {
-    const message = createBaseProjectArtifactOperationResponseSuccess();
+  fromPartial(object: DeepPartial<IndexProjectArtifactResponseSuccess>): IndexProjectArtifactResponseSuccess {
+    const message = createBaseIndexProjectArtifactResponseSuccess();
     message.message = object.message ?? "";
     message.results = Object.entries(object.results ?? {}).reduce<{ [key: string]: string }>((acc, [key, value]) => {
       if (value !== undefined) {
@@ -717,13 +689,13 @@ export const ProjectArtifactOperationResponseSuccessData = {
   },
 };
 
-function createBaseProjectArtifactOperationResponseSuccessResultsEntry(): ProjectArtifactOperationResponseSuccessResultsEntry {
+function createBaseIndexProjectArtifactResponseSuccessResultsEntry(): IndexProjectArtifactResponseSuccessResultsEntry {
   return { key: "", value: "" };
 }
 
-export const ProjectArtifactOperationResponseSuccessResultsEntryData = {
+export const IndexProjectArtifactResponseSuccessResultsEntryData = {
   encode(
-    message: ProjectArtifactOperationResponseSuccessResultsEntry,
+    message: IndexProjectArtifactResponseSuccessResultsEntry,
     writer: _m0.Writer = _m0.Writer.create(),
   ): _m0.Writer {
     if (message.key !== "") {
@@ -735,10 +707,10 @@ export const ProjectArtifactOperationResponseSuccessResultsEntryData = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectArtifactOperationResponseSuccessResultsEntry {
+  decode(input: _m0.Reader | Uint8Array, length?: number): IndexProjectArtifactResponseSuccessResultsEntry {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseProjectArtifactOperationResponseSuccessResultsEntry();
+    const message = createBaseIndexProjectArtifactResponseSuccessResultsEntry();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -756,11 +728,11 @@ export const ProjectArtifactOperationResponseSuccessResultsEntryData = {
     return message;
   },
 
-  fromJSON(object: any): ProjectArtifactOperationResponseSuccessResultsEntry {
+  fromJSON(object: any): IndexProjectArtifactResponseSuccessResultsEntry {
     return { key: isSet(object.key) ? String(object.key) : "", value: isSet(object.value) ? String(object.value) : "" };
   },
 
-  toJSON(message: ProjectArtifactOperationResponseSuccessResultsEntry): unknown {
+  toJSON(message: IndexProjectArtifactResponseSuccessResultsEntry): unknown {
     const obj: any = {};
     message.key !== undefined && (obj.key = message.key);
     message.value !== undefined && (obj.value = message.value);
@@ -768,9 +740,9 @@ export const ProjectArtifactOperationResponseSuccessResultsEntryData = {
   },
 
   fromPartial(
-    object: DeepPartial<ProjectArtifactOperationResponseSuccessResultsEntry>,
-  ): ProjectArtifactOperationResponseSuccessResultsEntry {
-    const message = createBaseProjectArtifactOperationResponseSuccessResultsEntry();
+    object: DeepPartial<IndexProjectArtifactResponseSuccessResultsEntry>,
+  ): IndexProjectArtifactResponseSuccessResultsEntry {
+    const message = createBaseIndexProjectArtifactResponseSuccessResultsEntry();
     message.key = object.key ?? "";
     message.value = object.value ?? "";
     return message;

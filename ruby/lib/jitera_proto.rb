@@ -34,7 +34,7 @@ require_relative 'payloads/v2/data_deletion_pb'
 require_relative 'payloads/v2/generate_doc_pb'
 require_relative 'payloads/v2/index_document_pb'
 require_relative 'payloads/v2/generate_erd_pb'
-require_relative 'payloads/v2/project_artifact_pb'
+require_relative 'payloads/v2/index_project_artifact_pb'
 
 module JiteraProto
 end
