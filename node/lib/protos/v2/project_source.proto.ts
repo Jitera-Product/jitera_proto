@@ -4,6 +4,51 @@ import _m0 from "protobufjs/minimal";
 import { StructData } from "../google/protobuf/struct.proto";
 import { Table, TableData } from "../v1/payloads.proto";
 
+export enum ProjectSourceConfigurationCategoryEnum {
+  ERD_MIGRATION = 0,
+  ERD_MODEL = 1,
+  BL = 2,
+  API = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function projectSourceConfigurationCategoryEnumFromJSON(object: any): ProjectSourceConfigurationCategoryEnum {
+  switch (object) {
+    case 0:
+    case "ERD_MIGRATION":
+      return ProjectSourceConfigurationCategoryEnum.ERD_MIGRATION;
+    case 1:
+    case "ERD_MODEL":
+      return ProjectSourceConfigurationCategoryEnum.ERD_MODEL;
+    case 2:
+    case "BL":
+      return ProjectSourceConfigurationCategoryEnum.BL;
+    case 3:
+    case "API":
+      return ProjectSourceConfigurationCategoryEnum.API;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ProjectSourceConfigurationCategoryEnum.UNRECOGNIZED;
+  }
+}
+
+export function projectSourceConfigurationCategoryEnumToJSON(object: ProjectSourceConfigurationCategoryEnum): string {
+  switch (object) {
+    case ProjectSourceConfigurationCategoryEnum.ERD_MIGRATION:
+      return "ERD_MIGRATION";
+    case ProjectSourceConfigurationCategoryEnum.ERD_MODEL:
+      return "ERD_MODEL";
+    case ProjectSourceConfigurationCategoryEnum.BL:
+      return "BL";
+    case ProjectSourceConfigurationCategoryEnum.API:
+      return "API";
+    case ProjectSourceConfigurationCategoryEnum.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 export enum ImportBy {
   github = 0,
   notion = 1,
@@ -71,6 +116,13 @@ export class GenerateSource {
   id: number;
   type: string;
   data?: { [key: string]: any };
+}
+
+export class ProjectSourceConfiguration {
+  id: string;
+  category: ProjectSourceConfigurationCategoryEnum;
+  filePatterns: string[];
+  autoDiscover: boolean;
 }
 
 export class ProjectSource {
@@ -382,6 +434,7 @@ export class ProjectSourceCreation {
   metadata?: { [key: string]: any };
   changedFiles: string[];
   commitSha?: string | undefined;
+  sourceConfigurations: ProjectSourceConfiguration[];
   sourcePath?: string | undefined;
   git?: Git | undefined;
 }
@@ -453,75 +506,6 @@ export function projectSourceCreationActionToJSON(object: ProjectSourceCreationA
     default:
       return "UNRECOGNIZED";
   }
-}
-
-export class ERDConfig {
-  projectGenerateQueueId: number;
-  projectSource?: ProjectSource;
-  git?: Git;
-  importBy?: ImportBy | undefined;
-  import?: ERDConfigImport | undefined;
-  local?: ERDConfigLocal | undefined;
-}
-
-export enum ERDConfigTableChangedType {
-  TABLECHANGEDTYPE_UNSPECIFIED = 0,
-  ADDED = 1,
-  UPDATED = 2,
-  DELETED = 3,
-  UNRECOGNIZED = -1,
-}
-
-export function eRDConfigTableChangedTypeFromJSON(object: any): ERDConfigTableChangedType {
-  switch (object) {
-    case 0:
-    case "TABLECHANGEDTYPE_UNSPECIFIED":
-      return ERDConfigTableChangedType.TABLECHANGEDTYPE_UNSPECIFIED;
-    case 1:
-    case "ADDED":
-      return ERDConfigTableChangedType.ADDED;
-    case 2:
-    case "UPDATED":
-      return ERDConfigTableChangedType.UPDATED;
-    case 3:
-    case "DELETED":
-      return ERDConfigTableChangedType.DELETED;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return ERDConfigTableChangedType.UNRECOGNIZED;
-  }
-}
-
-export function eRDConfigTableChangedTypeToJSON(object: ERDConfigTableChangedType): string {
-  switch (object) {
-    case ERDConfigTableChangedType.TABLECHANGEDTYPE_UNSPECIFIED:
-      return "TABLECHANGEDTYPE_UNSPECIFIED";
-    case ERDConfigTableChangedType.ADDED:
-      return "ADDED";
-    case ERDConfigTableChangedType.UPDATED:
-      return "UPDATED";
-    case ERDConfigTableChangedType.DELETED:
-      return "DELETED";
-    case ERDConfigTableChangedType.UNRECOGNIZED:
-    default:
-      return "UNRECOGNIZED";
-  }
-}
-
-export class ERDConfigLocal {
-  sourcePath: string;
-  tables: Table[];
-  projectPlugins: ProjectPlugin[];
-}
-
-export class ERDConfigImport {
-  tables: ERDConfigTableChanged[];
-}
-
-export class ERDConfigTableChanged {
-  type: ERDConfigTableChangedType;
-  table?: Table;
 }
 
 export class BusinessLogicChanges {
@@ -633,18 +617,6 @@ export class UseCaseRemovalBlock {
   children: string[];
 }
 
-export class ProjectPlugin {
-  id: number;
-  name: string;
-  status: string;
-  projectPluginTables: ProjectPluginTable[];
-}
-
-export class ProjectPluginTable {
-  id: number;
-  table?: Table;
-}
-
 function createBaseGenerateSource(): GenerateSource {
   return { id: 0, type: "" };
 }
@@ -658,7 +630,10 @@ export const GenerateSourceData = {
       writer.uint32(18).string(message.type);
     }
     if (message.data !== undefined) {
-      StructData.encode(StructData.wrap(message.data), writer.uint32(26).fork()).ldelim();
+      StructData.encode(
+        StructData.wrap(message.data),
+        writer.uint32(26).fork()
+      ).ldelim();
     }
     return writer;
   },
@@ -677,7 +652,9 @@ export const GenerateSourceData = {
           message.type = reader.string();
           break;
         case 3:
-          message.data = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.data = StructData.unwrap(
+            StructData.decode(reader, reader.uint32())
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -708,6 +685,86 @@ export const GenerateSourceData = {
     message.id = object.id ?? 0;
     message.type = object.type ?? "";
     message.data = object.data ?? undefined;
+    return message;
+  },
+};
+
+function createBaseProjectSourceConfiguration(): ProjectSourceConfiguration {
+  return { id: "", category: 0, filePatterns: [], autoDiscover: false };
+}
+
+export const ProjectSourceConfigurationData = {
+  encode(message: ProjectSourceConfiguration, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.category !== 0) {
+      writer.uint32(16).int32(message.category);
+    }
+    for (const v of message.filePatterns) {
+      writer.uint32(26).string(v!);
+    }
+    if (message.autoDiscover === true) {
+      writer.uint32(32).bool(message.autoDiscover);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectSourceConfiguration {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseProjectSourceConfiguration();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.string();
+          break;
+        case 2:
+          message.category = reader.int32() as any;
+          break;
+        case 3:
+          message.filePatterns.push(reader.string());
+          break;
+        case 4:
+          message.autoDiscover = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ProjectSourceConfiguration {
+    return {
+      id: isSet(object.id) ? String(object.id) : "",
+      category: isSet(object.category) ? projectSourceConfigurationCategoryEnumFromJSON(object.category) : 0,
+      filePatterns: Array.isArray(object?.filePatterns) ? object.filePatterns.map((e: any) => String(e)) : [],
+      autoDiscover: isSet(object.autoDiscover) ? Boolean(object.autoDiscover) : false,
+    };
+  },
+
+  toJSON(message: ProjectSourceConfiguration): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    message.category !== undefined && (obj.category = projectSourceConfigurationCategoryEnumToJSON(message.category));
+    if (message.filePatterns) {
+      obj.filePatterns = message.filePatterns.map((e) => e);
+    } else {
+      obj.filePatterns = [];
+    }
+    message.autoDiscover !== undefined && (obj.autoDiscover = message.autoDiscover);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ProjectSourceConfiguration>): ProjectSourceConfiguration {
+    const message = createBaseProjectSourceConfiguration();
+    message.id = object.id ?? "";
+    message.category = object.category ?? 0;
+    message.filePatterns = object.filePatterns?.map((e) => e) || [];
+    message.autoDiscover = object.autoDiscover ?? false;
     return message;
   },
 };
@@ -1177,7 +1234,10 @@ export const GitData = {
       writer.uint32(90).string(message.providerHostUrl);
     }
     if (message.headers !== undefined) {
-      StructData.encode(StructData.wrap(message.headers), writer.uint32(98).fork()).ldelim();
+      StructData.encode(
+        StructData.wrap(message.headers),
+        writer.uint32(98).fork()
+      ).ldelim();
     }
     return writer;
   },
@@ -1217,7 +1277,9 @@ export const GitData = {
           message.providerHostUrl = reader.string();
           break;
         case 12:
-          message.headers = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.headers = StructData.unwrap(
+            StructData.decode(reader, reader.uint32())
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -1338,7 +1400,7 @@ export const ActionStepsData = {
 };
 
 function createBaseProjectSourceCreation(): ProjectSourceCreation {
-  return { projectGenerateQueueId: 0, changedFiles: [] };
+  return { projectGenerateQueueId: 0, changedFiles: [], sourceConfigurations: [] };
 }
 
 export const ProjectSourceCreationData = {
@@ -1359,13 +1421,19 @@ export const ProjectSourceCreationData = {
       ActionStepsData.encode(message.steps, writer.uint32(58).fork()).ldelim();
     }
     if (message.metadata !== undefined) {
-      StructData.encode(StructData.wrap(message.metadata), writer.uint32(66).fork()).ldelim();
+      StructData.encode(
+        StructData.wrap(message.metadata),
+        writer.uint32(66).fork()
+      ).ldelim();
     }
     for (const v of message.changedFiles) {
       writer.uint32(74).string(v!);
     }
     if (message.commitSha !== undefined) {
       writer.uint32(82).string(message.commitSha);
+    }
+    for (const v of message.sourceConfigurations) {
+      ProjectSourceConfigurationData.encode(v!, writer.uint32(90).fork()).ldelim();
     }
     if (message.sourcePath !== undefined) {
       writer.uint32(26).string(message.sourcePath);
@@ -1399,13 +1467,18 @@ export const ProjectSourceCreationData = {
           message.steps = ActionStepsData.decode(reader, reader.uint32());
           break;
         case 8:
-          message.metadata = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.metadata = StructData.unwrap(
+            StructData.decode(reader, reader.uint32())
+          );
           break;
         case 9:
           message.changedFiles.push(reader.string());
           break;
         case 10:
           message.commitSha = reader.string();
+          break;
+        case 11:
+          message.sourceConfigurations.push(ProjectSourceConfigurationData.decode(reader, reader.uint32()));
           break;
         case 3:
           message.sourcePath = reader.string();
@@ -1431,6 +1504,9 @@ export const ProjectSourceCreationData = {
       metadata: isObject(object.metadata) ? object.metadata : undefined,
       changedFiles: Array.isArray(object?.changedFiles) ? object.changedFiles.map((e: any) => String(e)) : [],
       commitSha: isSet(object.commitSha) ? String(object.commitSha) : undefined,
+      sourceConfigurations: Array.isArray(object?.sourceConfigurations)
+        ? object.sourceConfigurations.map((e: any) => ProjectSourceConfigurationData.fromJSON(e))
+        : [],
       sourcePath: isSet(object.sourcePath) ? String(object.sourcePath) : undefined,
       git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
     };
@@ -1454,6 +1530,13 @@ export const ProjectSourceCreationData = {
       obj.changedFiles = [];
     }
     message.commitSha !== undefined && (obj.commitSha = message.commitSha);
+    if (message.sourceConfigurations) {
+      obj.sourceConfigurations = message.sourceConfigurations.map((e) =>
+        e ? ProjectSourceConfigurationData.toJSON(e) : undefined
+      );
+    } else {
+      obj.sourceConfigurations = [];
+    }
     message.sourcePath !== undefined && (obj.sourcePath = message.sourcePath);
     message.git !== undefined && (obj.git = message.git ? GitData.toJSON(message.git) : undefined);
     return obj;
@@ -1473,302 +1556,10 @@ export const ProjectSourceCreationData = {
     message.metadata = object.metadata ?? undefined;
     message.changedFiles = object.changedFiles?.map((e) => e) || [];
     message.commitSha = object.commitSha ?? undefined;
+    message.sourceConfigurations =
+      object.sourceConfigurations?.map((e) => ProjectSourceConfigurationData.fromPartial(e)) || [];
     message.sourcePath = object.sourcePath ?? undefined;
     message.git = (object.git !== undefined && object.git !== null) ? GitData.fromPartial(object.git) : undefined;
-    return message;
-  },
-};
-
-function createBaseERDConfig(): ERDConfig {
-  return { projectGenerateQueueId: 0 };
-}
-
-export const ERDConfigData = {
-  encode(message: ERDConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.projectGenerateQueueId !== 0) {
-      writer.uint32(8).int32(message.projectGenerateQueueId);
-    }
-    if (message.projectSource !== undefined) {
-      ProjectSourceData.encode(message.projectSource, writer.uint32(18).fork()).ldelim();
-    }
-    if (message.git !== undefined) {
-      GitData.encode(message.git, writer.uint32(26).fork()).ldelim();
-    }
-    if (message.importBy !== undefined) {
-      writer.uint32(48).int32(message.importBy);
-    }
-    if (message.import !== undefined) {
-      ERDConfigImportData.encode(message.import, writer.uint32(34).fork()).ldelim();
-    }
-    if (message.local !== undefined) {
-      ERDConfigLocalData.encode(message.local, writer.uint32(42).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ERDConfig {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseERDConfig();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.projectGenerateQueueId = reader.int32();
-          break;
-        case 2:
-          message.projectSource = ProjectSourceData.decode(reader, reader.uint32());
-          break;
-        case 3:
-          message.git = GitData.decode(reader, reader.uint32());
-          break;
-        case 6:
-          message.importBy = reader.int32() as any;
-          break;
-        case 4:
-          message.import = ERDConfigImportData.decode(reader, reader.uint32());
-          break;
-        case 5:
-          message.local = ERDConfigLocalData.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): ERDConfig {
-    return {
-      projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
-      projectSource: isSet(object.projectSource) ? ProjectSourceData.fromJSON(object.projectSource) : undefined,
-      git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
-      importBy: isSet(object.importBy) ? importByFromJSON(object.importBy) : undefined,
-      import: isSet(object.import) ? ERDConfigImportData.fromJSON(object.import) : undefined,
-      local: isSet(object.local) ? ERDConfigLocalData.fromJSON(object.local) : undefined,
-    };
-  },
-
-  toJSON(message: ERDConfig): unknown {
-    const obj: any = {};
-    message.projectGenerateQueueId !== undefined &&
-      (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
-    message.projectSource !== undefined &&
-      (obj.projectSource = message.projectSource ? ProjectSourceData.toJSON(message.projectSource) : undefined);
-    message.git !== undefined && (obj.git = message.git ? GitData.toJSON(message.git) : undefined);
-    message.importBy !== undefined &&
-      (obj.importBy = message.importBy !== undefined ? importByToJSON(message.importBy) : undefined);
-    message.import !== undefined &&
-      (obj.import = message.import ? ERDConfigImportData.toJSON(message.import) : undefined);
-    message.local !== undefined && (obj.local = message.local ? ERDConfigLocalData.toJSON(message.local) : undefined);
-    return obj;
-  },
-
-  fromPartial(object: DeepPartial<ERDConfig>): ERDConfig {
-    const message = createBaseERDConfig();
-    message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
-    message.projectSource = (object.projectSource !== undefined && object.projectSource !== null)
-      ? ProjectSourceData.fromPartial(object.projectSource)
-      : undefined;
-    message.git = (object.git !== undefined && object.git !== null) ? GitData.fromPartial(object.git) : undefined;
-    message.importBy = object.importBy ?? undefined;
-    message.import = (object.import !== undefined && object.import !== null)
-      ? ERDConfigImportData.fromPartial(object.import)
-      : undefined;
-    message.local = (object.local !== undefined && object.local !== null)
-      ? ERDConfigLocalData.fromPartial(object.local)
-      : undefined;
-    return message;
-  },
-};
-
-function createBaseERDConfigLocal(): ERDConfigLocal {
-  return { sourcePath: "", tables: [], projectPlugins: [] };
-}
-
-export const ERDConfigLocalData = {
-  encode(message: ERDConfigLocal, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.sourcePath !== "") {
-      writer.uint32(10).string(message.sourcePath);
-    }
-    for (const v of message.tables) {
-      TableData.encode(v!, writer.uint32(18).fork()).ldelim();
-    }
-    for (const v of message.projectPlugins) {
-      ProjectPluginData.encode(v!, writer.uint32(26).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ERDConfigLocal {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseERDConfigLocal();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.sourcePath = reader.string();
-          break;
-        case 2:
-          message.tables.push(TableData.decode(reader, reader.uint32()));
-          break;
-        case 3:
-          message.projectPlugins.push(ProjectPluginData.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): ERDConfigLocal {
-    return {
-      sourcePath: isSet(object.sourcePath) ? String(object.sourcePath) : "",
-      tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => TableData.fromJSON(e)) : [],
-      projectPlugins: Array.isArray(object?.projectPlugins)
-        ? object.projectPlugins.map((e: any) => ProjectPluginData.fromJSON(e))
-        : [],
-    };
-  },
-
-  toJSON(message: ERDConfigLocal): unknown {
-    const obj: any = {};
-    message.sourcePath !== undefined && (obj.sourcePath = message.sourcePath);
-    if (message.tables) {
-      obj.tables = message.tables.map((e) => e ? TableData.toJSON(e) : undefined);
-    } else {
-      obj.tables = [];
-    }
-    if (message.projectPlugins) {
-      obj.projectPlugins = message.projectPlugins.map((e) => e ? ProjectPluginData.toJSON(e) : undefined);
-    } else {
-      obj.projectPlugins = [];
-    }
-    return obj;
-  },
-
-  fromPartial(object: DeepPartial<ERDConfigLocal>): ERDConfigLocal {
-    const message = createBaseERDConfigLocal();
-    message.sourcePath = object.sourcePath ?? "";
-    message.tables = object.tables?.map((e) => TableData.fromPartial(e)) || [];
-    message.projectPlugins = object.projectPlugins?.map((e) => ProjectPluginData.fromPartial(e)) || [];
-    return message;
-  },
-};
-
-function createBaseERDConfigImport(): ERDConfigImport {
-  return { tables: [] };
-}
-
-export const ERDConfigImportData = {
-  encode(message: ERDConfigImport, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.tables) {
-      ERDConfigTableChangedData.encode(v!, writer.uint32(18).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ERDConfigImport {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseERDConfigImport();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 2:
-          message.tables.push(ERDConfigTableChangedData.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): ERDConfigImport {
-    return {
-      tables: Array.isArray(object?.tables) ? object.tables.map((e: any) => ERDConfigTableChangedData.fromJSON(e)) : [],
-    };
-  },
-
-  toJSON(message: ERDConfigImport): unknown {
-    const obj: any = {};
-    if (message.tables) {
-      obj.tables = message.tables.map((e) => e ? ERDConfigTableChangedData.toJSON(e) : undefined);
-    } else {
-      obj.tables = [];
-    }
-    return obj;
-  },
-
-  fromPartial(object: DeepPartial<ERDConfigImport>): ERDConfigImport {
-    const message = createBaseERDConfigImport();
-    message.tables = object.tables?.map((e) => ERDConfigTableChangedData.fromPartial(e)) || [];
-    return message;
-  },
-};
-
-function createBaseERDConfigTableChanged(): ERDConfigTableChanged {
-  return { type: 0 };
-}
-
-export const ERDConfigTableChangedData = {
-  encode(message: ERDConfigTableChanged, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.type !== 0) {
-      writer.uint32(8).int32(message.type);
-    }
-    if (message.table !== undefined) {
-      TableData.encode(message.table, writer.uint32(18).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ERDConfigTableChanged {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseERDConfigTableChanged();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.type = reader.int32() as any;
-          break;
-        case 2:
-          message.table = TableData.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): ERDConfigTableChanged {
-    return {
-      type: isSet(object.type) ? eRDConfigTableChangedTypeFromJSON(object.type) : 0,
-      table: isSet(object.table) ? TableData.fromJSON(object.table) : undefined,
-    };
-  },
-
-  toJSON(message: ERDConfigTableChanged): unknown {
-    const obj: any = {};
-    message.type !== undefined && (obj.type = eRDConfigTableChangedTypeToJSON(message.type));
-    message.table !== undefined && (obj.table = message.table ? TableData.toJSON(message.table) : undefined);
-    return obj;
-  },
-
-  fromPartial(object: DeepPartial<ERDConfigTableChanged>): ERDConfigTableChanged {
-    const message = createBaseERDConfigTableChanged();
-    message.type = object.type ?? 0;
-    message.table = (object.table !== undefined && object.table !== null)
-      ? TableData.fromPartial(object.table)
-      : undefined;
     return message;
   },
 };
@@ -2297,7 +2088,10 @@ export const BlockDiffBlockBodyData = {
       StructData.encode(StructData.wrap(v!), writer.uint32(34).fork()).ldelim();
     }
     if (message.properties !== undefined) {
-      StructData.encode(StructData.wrap(message.properties), writer.uint32(42).fork()).ldelim();
+      StructData.encode(
+        StructData.wrap(message.properties),
+        writer.uint32(42).fork()
+      ).ldelim();
     }
     for (const v of message.children) {
       writer.uint32(50).string(v!);
@@ -2322,10 +2116,14 @@ export const BlockDiffBlockBodyData = {
           message.parentNodeId = reader.string();
           break;
         case 4:
-          message.content.push(StructData.unwrap(StructData.decode(reader, reader.uint32())));
+          message.content.push(
+            StructData.unwrap(StructData.decode(reader, reader.uint32()))
+          );
           break;
         case 5:
-          message.properties = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.properties = StructData.unwrap(
+            StructData.decode(reader, reader.uint32())
+          );
           break;
         case 6:
           message.children.push(reader.string());
@@ -2550,7 +2348,10 @@ export const ProjectSourceReportData = {
       writer.uint32(32).int32(message.tokenUsage);
     }
     if (message.payload !== undefined) {
-      StructData.encode(StructData.wrap(message.payload), writer.uint32(66).fork()).ldelim();
+      StructData.encode(
+        StructData.wrap(message.payload),
+        writer.uint32(66).fork()
+      ).ldelim();
     }
     if (message.progress !== undefined) {
       ProjectSourceReportProgressData.encode(message.progress, writer.uint32(42).fork()).ldelim();
@@ -2584,7 +2385,9 @@ export const ProjectSourceReportData = {
           message.tokenUsage = reader.int32();
           break;
         case 8:
-          message.payload = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.payload = StructData.unwrap(
+            StructData.decode(reader, reader.uint32())
+          );
           break;
         case 5:
           message.progress = ProjectSourceReportProgressData.decode(reader, reader.uint32());
@@ -2964,7 +2767,10 @@ export const UseCaseRemovalBlockData = {
       writer.uint32(42).string(message.parentNodeId);
     }
     if (message.properties !== undefined) {
-      StructData.encode(StructData.wrap(message.properties), writer.uint32(50).fork()).ldelim();
+      StructData.encode(
+        StructData.wrap(message.properties),
+        writer.uint32(50).fork()
+      ).ldelim();
     }
     for (const v of message.children) {
       writer.uint32(58).string(v!);
@@ -2995,7 +2801,9 @@ export const UseCaseRemovalBlockData = {
           message.parentNodeId = reader.string();
           break;
         case 6:
-          message.properties = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.properties = StructData.unwrap(
+            StructData.decode(reader, reader.uint32())
+          );
           break;
         case 7:
           message.children.push(reader.string());
@@ -3045,150 +2853,6 @@ export const UseCaseRemovalBlockData = {
     message.parentNodeId = object.parentNodeId ?? "";
     message.properties = object.properties ?? undefined;
     message.children = object.children?.map((e) => e) || [];
-    return message;
-  },
-};
-
-function createBaseProjectPlugin(): ProjectPlugin {
-  return { id: 0, name: "", status: "", projectPluginTables: [] };
-}
-
-export const ProjectPluginData = {
-  encode(message: ProjectPlugin, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== 0) {
-      writer.uint32(8).int32(message.id);
-    }
-    if (message.name !== "") {
-      writer.uint32(26).string(message.name);
-    }
-    if (message.status !== "") {
-      writer.uint32(34).string(message.status);
-    }
-    for (const v of message.projectPluginTables) {
-      ProjectPluginTableData.encode(v!, writer.uint32(42).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectPlugin {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseProjectPlugin();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.id = reader.int32();
-          break;
-        case 3:
-          message.name = reader.string();
-          break;
-        case 4:
-          message.status = reader.string();
-          break;
-        case 5:
-          message.projectPluginTables.push(ProjectPluginTableData.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): ProjectPlugin {
-    return {
-      id: isSet(object.id) ? Number(object.id) : 0,
-      name: isSet(object.name) ? String(object.name) : "",
-      status: isSet(object.status) ? String(object.status) : "",
-      projectPluginTables: Array.isArray(object?.projectPluginTables)
-        ? object.projectPluginTables.map((e: any) => ProjectPluginTableData.fromJSON(e))
-        : [],
-    };
-  },
-
-  toJSON(message: ProjectPlugin): unknown {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.name !== undefined && (obj.name = message.name);
-    message.status !== undefined && (obj.status = message.status);
-    if (message.projectPluginTables) {
-      obj.projectPluginTables = message.projectPluginTables.map((e) =>
-        e ? ProjectPluginTableData.toJSON(e) : undefined
-      );
-    } else {
-      obj.projectPluginTables = [];
-    }
-    return obj;
-  },
-
-  fromPartial(object: DeepPartial<ProjectPlugin>): ProjectPlugin {
-    const message = createBaseProjectPlugin();
-    message.id = object.id ?? 0;
-    message.name = object.name ?? "";
-    message.status = object.status ?? "";
-    message.projectPluginTables = object.projectPluginTables?.map((e) => ProjectPluginTableData.fromPartial(e)) || [];
-    return message;
-  },
-};
-
-function createBaseProjectPluginTable(): ProjectPluginTable {
-  return { id: 0 };
-}
-
-export const ProjectPluginTableData = {
-  encode(message: ProjectPluginTable, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== 0) {
-      writer.uint32(8).int32(message.id);
-    }
-    if (message.table !== undefined) {
-      TableData.encode(message.table, writer.uint32(18).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectPluginTable {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseProjectPluginTable();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.id = reader.int32();
-          break;
-        case 2:
-          message.table = TableData.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): ProjectPluginTable {
-    return {
-      id: isSet(object.id) ? Number(object.id) : 0,
-      table: isSet(object.table) ? TableData.fromJSON(object.table) : undefined,
-    };
-  },
-
-  toJSON(message: ProjectPluginTable): unknown {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.table !== undefined && (obj.table = message.table ? TableData.toJSON(message.table) : undefined);
-    return obj;
-  },
-
-  fromPartial(object: DeepPartial<ProjectPluginTable>): ProjectPluginTable {
-    const message = createBaseProjectPluginTable();
-    message.id = object.id ?? 0;
-    message.table = (object.table !== undefined && object.table !== null)
-      ? TableData.fromPartial(object.table)
-      : undefined;
     return message;
   },
 };

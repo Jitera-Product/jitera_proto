@@ -1,6 +1,6 @@
 /* eslint-disable */
-import * as _m0 from "protobufjs/minimal";
-import { Block, BlockData } from "./block_core.proto";
+import _m0 from "protobufjs/minimal";
+import { Document, DocumentData } from "./document.proto";
 
 export class ProjectPdfImportRequest {
   projectGenerateQueueId: number;
@@ -16,7 +16,7 @@ export class ProjectPdfImportResponse {
   module: ProjectPdfImportResponseModule;
   status: ProjectPdfImportResponseStatus;
   tokenUsage: number;
-  useCaseBlocks: Block[];
+  documents: Document[];
   errorMessage: string;
   succeedPages: number[];
   failedPages: number[];
@@ -28,7 +28,9 @@ export enum ProjectPdfImportResponseModule {
   UNRECOGNIZED = -1,
 }
 
-export function projectPdfImportResponseModuleFromJSON(object: any): ProjectPdfImportResponseModule {
+export function projectPdfImportResponseModuleFromJSON(
+  object: any
+): ProjectPdfImportResponseModule {
   switch (object) {
     case 0:
     case "PDF_TO_NATURAL_LANGUAGE":
@@ -40,7 +42,9 @@ export function projectPdfImportResponseModuleFromJSON(object: any): ProjectPdfI
   }
 }
 
-export function projectPdfImportResponseModuleToJSON(object: ProjectPdfImportResponseModule): string {
+export function projectPdfImportResponseModuleToJSON(
+  object: ProjectPdfImportResponseModule
+): string {
   switch (object) {
     case ProjectPdfImportResponseModule.PDF_TO_NATURAL_LANGUAGE:
       return "PDF_TO_NATURAL_LANGUAGE";
@@ -57,7 +61,9 @@ export enum ProjectPdfImportResponseStatus {
   UNRECOGNIZED = -1,
 }
 
-export function projectPdfImportResponseStatusFromJSON(object: any): ProjectPdfImportResponseStatus {
+export function projectPdfImportResponseStatusFromJSON(
+  object: any
+): ProjectPdfImportResponseStatus {
   switch (object) {
     case 0:
     case "SUCCEEDED":
@@ -75,7 +81,9 @@ export function projectPdfImportResponseStatusFromJSON(object: any): ProjectPdfI
   }
 }
 
-export function projectPdfImportResponseStatusToJSON(object: ProjectPdfImportResponseStatus): string {
+export function projectPdfImportResponseStatusToJSON(
+  object: ProjectPdfImportResponseStatus
+): string {
   switch (object) {
     case ProjectPdfImportResponseStatus.SUCCEEDED:
       return "SUCCEEDED";
@@ -90,11 +98,20 @@ export function projectPdfImportResponseStatusToJSON(object: ProjectPdfImportRes
 }
 
 function createBaseProjectPdfImportRequest(): ProjectPdfImportRequest {
-  return { projectGenerateQueueId: 0, projectId: 0, file: "", succeedPages: [], failedPages: [] };
+  return {
+    projectGenerateQueueId: 0,
+    projectId: 0,
+    file: "",
+    succeedPages: [],
+    failedPages: [],
+  };
 }
 
 export const ProjectPdfImportRequestData = {
-  encode(message: ProjectPdfImportRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    message: ProjectPdfImportRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
     }
@@ -117,7 +134,10 @@ export const ProjectPdfImportRequestData = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectPdfImportRequest {
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ProjectPdfImportRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseProjectPdfImportRequest();
@@ -163,11 +183,17 @@ export const ProjectPdfImportRequestData = {
 
   fromJSON(object: any): ProjectPdfImportRequest {
     return {
-      projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
+      projectGenerateQueueId: isSet(object.projectGenerateQueueId)
+        ? Number(object.projectGenerateQueueId)
+        : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       file: isSet(object.file) ? String(object.file) : "",
-      succeedPages: Array.isArray(object?.succeedPages) ? object.succeedPages.map((e: any) => Number(e)) : [],
-      failedPages: Array.isArray(object?.failedPages) ? object.failedPages.map((e: any) => Number(e)) : [],
+      succeedPages: Array.isArray(object?.succeedPages)
+        ? object.succeedPages.map((e: any) => Number(e))
+        : [],
+      failedPages: Array.isArray(object?.failedPages)
+        ? object.failedPages.map((e: any) => Number(e))
+        : [],
     };
   },
 
@@ -175,7 +201,8 @@ export const ProjectPdfImportRequestData = {
     const obj: any = {};
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
-    message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
+    message.projectId !== undefined &&
+      (obj.projectId = Math.round(message.projectId));
     message.file !== undefined && (obj.file = message.file);
     if (message.succeedPages) {
       obj.succeedPages = message.succeedPages.map((e) => Math.round(e));
@@ -190,7 +217,9 @@ export const ProjectPdfImportRequestData = {
     return obj;
   },
 
-  fromPartial(object: DeepPartial<ProjectPdfImportRequest>): ProjectPdfImportRequest {
+  fromPartial(
+    object: DeepPartial<ProjectPdfImportRequest>
+  ): ProjectPdfImportRequest {
     const message = createBaseProjectPdfImportRequest();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectId = object.projectId ?? 0;
@@ -208,7 +237,7 @@ function createBaseProjectPdfImportResponse(): ProjectPdfImportResponse {
     module: 0,
     status: 0,
     tokenUsage: 0,
-    useCaseBlocks: [],
+    documents: [],
     errorMessage: "",
     succeedPages: [],
     failedPages: [],
@@ -217,7 +246,10 @@ function createBaseProjectPdfImportResponse(): ProjectPdfImportResponse {
 }
 
 export const ProjectPdfImportResponseData = {
-  encode(message: ProjectPdfImportResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    message: ProjectPdfImportResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     if (message.projectGenerateQueueId !== 0) {
       writer.uint32(8).int32(message.projectGenerateQueueId);
     }
@@ -233,8 +265,8 @@ export const ProjectPdfImportResponseData = {
     if (message.tokenUsage !== 0) {
       writer.uint32(40).int32(message.tokenUsage);
     }
-    for (const v of message.useCaseBlocks) {
-      BlockData.encode(v!, writer.uint32(50).fork()).ldelim();
+    for (const v of message.documents) {
+      DocumentData.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     if (message.errorMessage !== "") {
       writer.uint32(58).string(message.errorMessage);
@@ -255,7 +287,10 @@ export const ProjectPdfImportResponseData = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ProjectPdfImportResponse {
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): ProjectPdfImportResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseProjectPdfImportResponse();
@@ -278,7 +313,7 @@ export const ProjectPdfImportResponseData = {
           message.tokenUsage = reader.int32();
           break;
         case 6:
-          message.useCaseBlocks.push(BlockData.decode(reader, reader.uint32()));
+          message.documents.push(DocumentData.decode(reader, reader.uint32()));
           break;
         case 7:
           message.errorMessage = reader.string();
@@ -316,17 +351,29 @@ export const ProjectPdfImportResponseData = {
 
   fromJSON(object: any): ProjectPdfImportResponse {
     return {
-      projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
+      projectGenerateQueueId: isSet(object.projectGenerateQueueId)
+        ? Number(object.projectGenerateQueueId)
+        : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
-      module: isSet(object.module) ? projectPdfImportResponseModuleFromJSON(object.module) : 0,
-      status: isSet(object.status) ? projectPdfImportResponseStatusFromJSON(object.status) : 0,
+      module: isSet(object.module)
+        ? projectPdfImportResponseModuleFromJSON(object.module)
+        : 0,
+      status: isSet(object.status)
+        ? projectPdfImportResponseStatusFromJSON(object.status)
+        : 0,
       tokenUsage: isSet(object.tokenUsage) ? Number(object.tokenUsage) : 0,
-      useCaseBlocks: Array.isArray(object?.useCaseBlocks)
-        ? object.useCaseBlocks.map((e: any) => BlockData.fromJSON(e))
+      documents: Array.isArray(object?.documents)
+        ? object.documents.map((e: any) => DocumentData.fromJSON(e))
         : [],
-      errorMessage: isSet(object.errorMessage) ? String(object.errorMessage) : "",
-      succeedPages: Array.isArray(object?.succeedPages) ? object.succeedPages.map((e: any) => Number(e)) : [],
-      failedPages: Array.isArray(object?.failedPages) ? object.failedPages.map((e: any) => Number(e)) : [],
+      errorMessage: isSet(object.errorMessage)
+        ? String(object.errorMessage)
+        : "",
+      succeedPages: Array.isArray(object?.succeedPages)
+        ? object.succeedPages.map((e: any) => Number(e))
+        : [],
+      failedPages: Array.isArray(object?.failedPages)
+        ? object.failedPages.map((e: any) => Number(e))
+        : [],
       language: isSet(object.language) ? String(object.language) : "",
     };
   },
@@ -335,16 +382,23 @@ export const ProjectPdfImportResponseData = {
     const obj: any = {};
     message.projectGenerateQueueId !== undefined &&
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
-    message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
-    message.module !== undefined && (obj.module = projectPdfImportResponseModuleToJSON(message.module));
-    message.status !== undefined && (obj.status = projectPdfImportResponseStatusToJSON(message.status));
-    message.tokenUsage !== undefined && (obj.tokenUsage = Math.round(message.tokenUsage));
-    if (message.useCaseBlocks) {
-      obj.useCaseBlocks = message.useCaseBlocks.map((e) => e ? BlockData.toJSON(e) : undefined);
+    message.projectId !== undefined &&
+      (obj.projectId = Math.round(message.projectId));
+    message.module !== undefined &&
+      (obj.module = projectPdfImportResponseModuleToJSON(message.module));
+    message.status !== undefined &&
+      (obj.status = projectPdfImportResponseStatusToJSON(message.status));
+    message.tokenUsage !== undefined &&
+      (obj.tokenUsage = Math.round(message.tokenUsage));
+    if (message.documents) {
+      obj.documents = message.documents.map((e) =>
+        e ? DocumentData.toJSON(e) : undefined
+      );
     } else {
-      obj.useCaseBlocks = [];
+      obj.documents = [];
     }
-    message.errorMessage !== undefined && (obj.errorMessage = message.errorMessage);
+    message.errorMessage !== undefined &&
+      (obj.errorMessage = message.errorMessage);
     if (message.succeedPages) {
       obj.succeedPages = message.succeedPages.map((e) => Math.round(e));
     } else {
@@ -359,14 +413,17 @@ export const ProjectPdfImportResponseData = {
     return obj;
   },
 
-  fromPartial(object: DeepPartial<ProjectPdfImportResponse>): ProjectPdfImportResponse {
+  fromPartial(
+    object: DeepPartial<ProjectPdfImportResponse>
+  ): ProjectPdfImportResponse {
     const message = createBaseProjectPdfImportResponse();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectId = object.projectId ?? 0;
     message.module = object.module ?? 0;
     message.status = object.status ?? 0;
     message.tokenUsage = object.tokenUsage ?? 0;
-    message.useCaseBlocks = object.useCaseBlocks?.map((e) => BlockData.fromPartial(e)) || [];
+    message.documents =
+      object.documents?.map((e) => DocumentData.fromPartial(e)) || [];
     message.errorMessage = object.errorMessage ?? "";
     message.succeedPages = object.succeedPages?.map((e) => e) || [];
     message.failedPages = object.failedPages?.map((e) => e) || [];
@@ -375,11 +432,23 @@ export const ProjectPdfImportResponseData = {
   },
 };
 
-type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
+type Builtin =
+  | Date
+  | Function
+  | Uint8Array
+  | string
+  | number
+  | boolean
+  | undefined;
 
-type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
+type DeepPartial<T> = T extends Builtin
+  ? T
+  : T extends Array<infer U>
+  ? Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U>
+  ? ReadonlyArray<DeepPartial<U>>
+  : T extends {}
+  ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
 function isSet(value: any): boolean {

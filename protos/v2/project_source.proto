@@ -2,12 +2,25 @@ syntax = "proto3";
 package schema.v2;
 
 import "google/protobuf/struct.proto";
-import "v1/payloads.proto";
 
 message GenerateSource {
 	int32 id = 1;
 	string type = 2;
 	optional google.protobuf.Struct data = 3;
+}
+
+message ProjectSourceConfiguration {
+  string id = 1;
+  ProjectSourceConfigurationCategoryEnum category = 2;
+  repeated string file_patterns = 3;
+  bool auto_discover = 4;
+}
+
+enum ProjectSourceConfigurationCategoryEnum {
+  ERD_MIGRATION = 0;
+  ERD_MODEL = 1;
+  BL = 2;
+  API = 3;
 }
 
 message ProjectSource {
@@ -124,6 +137,7 @@ message ProjectSourceCreation {
 	optional google.protobuf.Struct metadata = 8;
 	repeated string changed_files = 9;
 	optional string commit_sha = 10;
+	repeated ProjectSourceConfiguration source_configurations = 11;
 
 	enum Action {
 		INDEX_CODE = 0;
@@ -139,40 +153,6 @@ message ProjectSourceCreation {
 	oneof source {
 		string source_path = 3;
 		Git git = 4;
-	}
-}
-
-message ERDConfig {
-	int32 project_generate_queue_id = 1;
-	ProjectSource project_source = 2;
-	Git git = 3;
-	optional ImportBy import_by = 6;
-
-	oneof source {
-		Import import = 4;
-		Local local = 5;
-	}
-
-	message Local {
-		string source_path = 1;
-		repeated schema.v1.Table tables = 2;
-		repeated ProjectPlugin project_plugins = 3;
-	}
-
-	message Import {
-		repeated TableChanged tables = 2;
-	}
-
-	message TableChanged {
-		TableChangedType type = 1;
-		schema.v1.Table table = 2;
-	}
-
-	enum TableChangedType {
-		TABLECHANGEDTYPE_UNSPECIFIED = 0;
-		ADDED = 1;
-		UPDATED = 2;
-		DELETED = 3;
 	}
 }
 
@@ -289,16 +269,4 @@ message UseCaseRemoval {
 		google.protobuf.Struct properties = 6;
 		repeated string children = 7;
 	}
-}
-
-message ProjectPlugin {
-	int32 id = 1;
-	string name = 3;
-	string status = 4;
-	repeated ProjectPluginTable project_plugin_tables = 5;
-}
-
-message ProjectPluginTable {
-	int32 id = 1;
-	schema.v1.Table table = 2;
 }

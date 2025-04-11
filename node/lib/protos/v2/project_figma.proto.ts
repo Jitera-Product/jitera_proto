@@ -1,10 +1,6 @@
 /* eslint-disable */
-import * as _m0 from "protobufjs/minimal";
-import { Block, BlockData } from "./block_core.proto";
-import {
-  ComponentSpecification,
-  ComponentSpecificationData,
-} from "./component_specification.proto";
+import _m0 from "protobufjs/minimal";
+import { Document, DocumentData } from "./document.proto";
 
 export class ProjectFigmaImportRequest {
   projectGenerateQueueId: number;
@@ -19,24 +15,22 @@ export class ProjectFigmaSyncRequest {
   projectGenerateQueueId: number;
   projectId: number;
   accessToken: string;
-  useCaseBlocks: Block[];
+  documents: Document[];
   masterLanguageCode: string;
 }
 
 export class ProjectFigmaImportResponse {
   projectGenerateQueueId: number;
   projectId: number;
+  documents: Document[];
   module: ProjectFigmaImportResponseModule;
   status: ProjectFigmaImportResponseStatus;
   tokenUsage: number;
-  useCaseBlocks: Block[];
   errorMessage: string;
-  componentSpecifications: ComponentSpecification[];
 }
 
 export enum ProjectFigmaImportResponseModule {
   FIGMA_TO_NATURAL_LANGUAGE = 0,
-  FIGMA_TO_COMPONENT_SPECIFICATION = 1,
   UNRECOGNIZED = -1,
 }
 
@@ -47,9 +41,6 @@ export function projectFigmaImportResponseModuleFromJSON(
     case 0:
     case "FIGMA_TO_NATURAL_LANGUAGE":
       return ProjectFigmaImportResponseModule.FIGMA_TO_NATURAL_LANGUAGE;
-    case 1:
-    case "FIGMA_TO_COMPONENT_SPECIFICATION":
-      return ProjectFigmaImportResponseModule.FIGMA_TO_COMPONENT_SPECIFICATION;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -63,8 +54,6 @@ export function projectFigmaImportResponseModuleToJSON(
   switch (object) {
     case ProjectFigmaImportResponseModule.FIGMA_TO_NATURAL_LANGUAGE:
       return "FIGMA_TO_NATURAL_LANGUAGE";
-    case ProjectFigmaImportResponseModule.FIGMA_TO_COMPONENT_SPECIFICATION:
-      return "FIGMA_TO_COMPONENT_SPECIFICATION";
     case ProjectFigmaImportResponseModule.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -240,7 +229,7 @@ function createBaseProjectFigmaSyncRequest(): ProjectFigmaSyncRequest {
     projectGenerateQueueId: 0,
     projectId: 0,
     accessToken: "",
-    useCaseBlocks: [],
+    documents: [],
     masterLanguageCode: "",
   };
 }
@@ -259,8 +248,8 @@ export const ProjectFigmaSyncRequestData = {
     if (message.accessToken !== "") {
       writer.uint32(26).string(message.accessToken);
     }
-    for (const v of message.useCaseBlocks) {
-      BlockData.encode(v!, writer.uint32(34).fork()).ldelim();
+    for (const v of message.documents) {
+      DocumentData.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     if (message.masterLanguageCode !== "") {
       writer.uint32(42).string(message.masterLanguageCode);
@@ -288,7 +277,7 @@ export const ProjectFigmaSyncRequestData = {
           message.accessToken = reader.string();
           break;
         case 4:
-          message.useCaseBlocks.push(BlockData.decode(reader, reader.uint32()));
+          message.documents.push(DocumentData.decode(reader, reader.uint32()));
           break;
         case 5:
           message.masterLanguageCode = reader.string();
@@ -308,8 +297,8 @@ export const ProjectFigmaSyncRequestData = {
         : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       accessToken: isSet(object.accessToken) ? String(object.accessToken) : "",
-      useCaseBlocks: Array.isArray(object?.useCaseBlocks)
-        ? object.useCaseBlocks.map((e: any) => BlockData.fromJSON(e))
+      documents: Array.isArray(object?.documents)
+        ? object.documents.map((e: any) => DocumentData.fromJSON(e))
         : [],
       masterLanguageCode: isSet(object.masterLanguageCode)
         ? String(object.masterLanguageCode)
@@ -325,12 +314,12 @@ export const ProjectFigmaSyncRequestData = {
       (obj.projectId = Math.round(message.projectId));
     message.accessToken !== undefined &&
       (obj.accessToken = message.accessToken);
-    if (message.useCaseBlocks) {
-      obj.useCaseBlocks = message.useCaseBlocks.map((e) =>
-        e ? BlockData.toJSON(e) : undefined
+    if (message.documents) {
+      obj.documents = message.documents.map((e) =>
+        e ? DocumentData.toJSON(e) : undefined
       );
     } else {
-      obj.useCaseBlocks = [];
+      obj.documents = [];
     }
     message.masterLanguageCode !== undefined &&
       (obj.masterLanguageCode = message.masterLanguageCode);
@@ -344,8 +333,8 @@ export const ProjectFigmaSyncRequestData = {
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectId = object.projectId ?? 0;
     message.accessToken = object.accessToken ?? "";
-    message.useCaseBlocks =
-      object.useCaseBlocks?.map((e) => BlockData.fromPartial(e)) || [];
+    message.documents =
+      object.documents?.map((e) => DocumentData.fromPartial(e)) || [];
     message.masterLanguageCode = object.masterLanguageCode ?? "";
     return message;
   },
@@ -355,12 +344,11 @@ function createBaseProjectFigmaImportResponse(): ProjectFigmaImportResponse {
   return {
     projectGenerateQueueId: 0,
     projectId: 0,
+    documents: [],
     module: 0,
     status: 0,
     tokenUsage: 0,
-    useCaseBlocks: [],
     errorMessage: "",
-    componentSpecifications: [],
   };
 }
 
@@ -375,23 +363,20 @@ export const ProjectFigmaImportResponseData = {
     if (message.projectId !== 0) {
       writer.uint32(16).int32(message.projectId);
     }
+    for (const v of message.documents) {
+      DocumentData.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
     if (message.module !== 0) {
-      writer.uint32(24).int32(message.module);
+      writer.uint32(32).int32(message.module);
     }
     if (message.status !== 0) {
-      writer.uint32(32).int32(message.status);
+      writer.uint32(40).int32(message.status);
     }
     if (message.tokenUsage !== 0) {
-      writer.uint32(40).int32(message.tokenUsage);
-    }
-    for (const v of message.useCaseBlocks) {
-      BlockData.encode(v!, writer.uint32(50).fork()).ldelim();
+      writer.uint32(48).int32(message.tokenUsage);
     }
     if (message.errorMessage !== "") {
       writer.uint32(58).string(message.errorMessage);
-    }
-    for (const v of message.componentSpecifications) {
-      ComponentSpecificationData.encode(v!, writer.uint32(66).fork()).ldelim();
     }
     return writer;
   },
@@ -413,24 +398,19 @@ export const ProjectFigmaImportResponseData = {
           message.projectId = reader.int32();
           break;
         case 3:
-          message.module = reader.int32() as any;
+          message.documents.push(DocumentData.decode(reader, reader.uint32()));
           break;
         case 4:
-          message.status = reader.int32() as any;
+          message.module = reader.int32() as any;
           break;
         case 5:
-          message.tokenUsage = reader.int32();
+          message.status = reader.int32() as any;
           break;
         case 6:
-          message.useCaseBlocks.push(BlockData.decode(reader, reader.uint32()));
+          message.tokenUsage = reader.int32();
           break;
         case 7:
           message.errorMessage = reader.string();
-          break;
-        case 8:
-          message.componentSpecifications.push(
-            ComponentSpecificationData.decode(reader, reader.uint32())
-          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -446,6 +426,9 @@ export const ProjectFigmaImportResponseData = {
         ? Number(object.projectGenerateQueueId)
         : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
+      documents: Array.isArray(object?.documents)
+        ? object.documents.map((e: any) => DocumentData.fromJSON(e))
+        : [],
       module: isSet(object.module)
         ? projectFigmaImportResponseModuleFromJSON(object.module)
         : 0,
@@ -453,17 +436,9 @@ export const ProjectFigmaImportResponseData = {
         ? projectFigmaImportResponseStatusFromJSON(object.status)
         : 0,
       tokenUsage: isSet(object.tokenUsage) ? Number(object.tokenUsage) : 0,
-      useCaseBlocks: Array.isArray(object?.useCaseBlocks)
-        ? object.useCaseBlocks.map((e: any) => BlockData.fromJSON(e))
-        : [],
       errorMessage: isSet(object.errorMessage)
         ? String(object.errorMessage)
         : "",
-      componentSpecifications: Array.isArray(object?.componentSpecifications)
-        ? object.componentSpecifications.map((e: any) =>
-            ComponentSpecificationData.fromJSON(e)
-          )
-        : [],
     };
   },
 
@@ -473,28 +448,21 @@ export const ProjectFigmaImportResponseData = {
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.projectId !== undefined &&
       (obj.projectId = Math.round(message.projectId));
+    if (message.documents) {
+      obj.documents = message.documents.map((e) =>
+        e ? DocumentData.toJSON(e) : undefined
+      );
+    } else {
+      obj.documents = [];
+    }
     message.module !== undefined &&
       (obj.module = projectFigmaImportResponseModuleToJSON(message.module));
     message.status !== undefined &&
       (obj.status = projectFigmaImportResponseStatusToJSON(message.status));
     message.tokenUsage !== undefined &&
       (obj.tokenUsage = Math.round(message.tokenUsage));
-    if (message.useCaseBlocks) {
-      obj.useCaseBlocks = message.useCaseBlocks.map((e) =>
-        e ? BlockData.toJSON(e) : undefined
-      );
-    } else {
-      obj.useCaseBlocks = [];
-    }
     message.errorMessage !== undefined &&
       (obj.errorMessage = message.errorMessage);
-    if (message.componentSpecifications) {
-      obj.componentSpecifications = message.componentSpecifications.map((e) =>
-        e ? ComponentSpecificationData.toJSON(e) : undefined
-      );
-    } else {
-      obj.componentSpecifications = [];
-    }
     return obj;
   },
 
@@ -504,16 +472,12 @@ export const ProjectFigmaImportResponseData = {
     const message = createBaseProjectFigmaImportResponse();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectId = object.projectId ?? 0;
+    message.documents =
+      object.documents?.map((e) => DocumentData.fromPartial(e)) || [];
     message.module = object.module ?? 0;
     message.status = object.status ?? 0;
     message.tokenUsage = object.tokenUsage ?? 0;
-    message.useCaseBlocks =
-      object.useCaseBlocks?.map((e) => BlockData.fromPartial(e)) || [];
     message.errorMessage = object.errorMessage ?? "";
-    message.componentSpecifications =
-      object.componentSpecifications?.map((e) =>
-        ComponentSpecificationData.fromPartial(e)
-      ) || [];
     return message;
   },
 };
