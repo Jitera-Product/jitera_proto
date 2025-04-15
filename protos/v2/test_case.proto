@@ -16,6 +16,10 @@ message TestCase {
 	repeated TestCaseStep steps = 6;
 	optional bool updateRequired = 7;
 	optional AuthenticationState authentication_state = 8;
+	optional string starting_url = 9;
+	optional string precondition = 10;
+	optional string expected_result = 11;
+
 	enum AuthenticationState {
 		UNDEFINED = 0;
 		NOT_AUTHENTICATED = 1;
