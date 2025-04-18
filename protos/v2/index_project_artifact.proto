@@ -24,7 +24,10 @@ message IndexProjectArtifactRequest {
   }
 
 	message ReIndexSourceCode {
-		Git git = 1;
+		oneof source {
+			Git git = 1;
+			bool local = 2;
+		}
 	}
 }
 
