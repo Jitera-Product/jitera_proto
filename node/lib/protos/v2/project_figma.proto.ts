@@ -1,6 +1,11 @@
 /* eslint-disable */
 import _m0 from "protobufjs/minimal";
-import { Document, DocumentData } from "./document.proto";
+import {
+  Document,
+  DocumentData,
+  DocumentResponse,
+  DocumentResponseData,
+} from "./document.proto";
 
 export class ProjectFigmaImportRequest {
   projectGenerateQueueId: number;
@@ -22,7 +27,7 @@ export class ProjectFigmaSyncRequest {
 export class ProjectFigmaImportResponse {
   projectGenerateQueueId: number;
   projectId: number;
-  documents: Document[];
+  documents: DocumentResponse[];
   module: ProjectFigmaImportResponseModule;
   status: ProjectFigmaImportResponseStatus;
   tokenUsage: number;
@@ -364,7 +369,7 @@ export const ProjectFigmaImportResponseData = {
       writer.uint32(16).int32(message.projectId);
     }
     for (const v of message.documents) {
-      DocumentData.encode(v!, writer.uint32(26).fork()).ldelim();
+      DocumentResponseData.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     if (message.module !== 0) {
       writer.uint32(32).int32(message.module);
@@ -398,7 +403,9 @@ export const ProjectFigmaImportResponseData = {
           message.projectId = reader.int32();
           break;
         case 3:
-          message.documents.push(DocumentData.decode(reader, reader.uint32()));
+          message.documents.push(
+            DocumentResponseData.decode(reader, reader.uint32())
+          );
           break;
         case 4:
           message.module = reader.int32() as any;
@@ -427,7 +434,7 @@ export const ProjectFigmaImportResponseData = {
         : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       documents: Array.isArray(object?.documents)
-        ? object.documents.map((e: any) => DocumentData.fromJSON(e))
+        ? object.documents.map((e: any) => DocumentResponseData.fromJSON(e))
         : [],
       module: isSet(object.module)
         ? projectFigmaImportResponseModuleFromJSON(object.module)
@@ -450,7 +457,7 @@ export const ProjectFigmaImportResponseData = {
       (obj.projectId = Math.round(message.projectId));
     if (message.documents) {
       obj.documents = message.documents.map((e) =>
-        e ? DocumentData.toJSON(e) : undefined
+        e ? DocumentResponseData.toJSON(e) : undefined
       );
     } else {
       obj.documents = [];
@@ -473,7 +480,7 @@ export const ProjectFigmaImportResponseData = {
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.projectId = object.projectId ?? 0;
     message.documents =
-      object.documents?.map((e) => DocumentData.fromPartial(e)) || [];
+      object.documents?.map((e) => DocumentResponseData.fromPartial(e)) || [];
     message.module = object.module ?? 0;
     message.status = object.status ?? 0;
     message.tokenUsage = object.tokenUsage ?? 0;

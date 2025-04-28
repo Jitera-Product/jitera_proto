@@ -1,6 +1,6 @@
 /* eslint-disable */
 import _m0 from "protobufjs/minimal";
-import { Document, DocumentData } from "./document.proto";
+import { DocumentResponse, DocumentResponseData } from "./document.proto";
 
 export class ProjectPdfImportRequest {
   projectGenerateQueueId: number;
@@ -16,7 +16,7 @@ export class ProjectPdfImportResponse {
   module: ProjectPdfImportResponseModule;
   status: ProjectPdfImportResponseStatus;
   tokenUsage: number;
-  documents: Document[];
+  documents: DocumentResponse[];
   errorMessage: string;
   succeedPages: number[];
   failedPages: number[];
@@ -266,7 +266,7 @@ export const ProjectPdfImportResponseData = {
       writer.uint32(40).int32(message.tokenUsage);
     }
     for (const v of message.documents) {
-      DocumentData.encode(v!, writer.uint32(50).fork()).ldelim();
+      DocumentResponseData.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     if (message.errorMessage !== "") {
       writer.uint32(58).string(message.errorMessage);
@@ -313,7 +313,9 @@ export const ProjectPdfImportResponseData = {
           message.tokenUsage = reader.int32();
           break;
         case 6:
-          message.documents.push(DocumentData.decode(reader, reader.uint32()));
+          message.documents.push(
+            DocumentResponseData.decode(reader, reader.uint32())
+          );
           break;
         case 7:
           message.errorMessage = reader.string();
@@ -363,7 +365,7 @@ export const ProjectPdfImportResponseData = {
         : 0,
       tokenUsage: isSet(object.tokenUsage) ? Number(object.tokenUsage) : 0,
       documents: Array.isArray(object?.documents)
-        ? object.documents.map((e: any) => DocumentData.fromJSON(e))
+        ? object.documents.map((e: any) => DocumentResponseData.fromJSON(e))
         : [],
       errorMessage: isSet(object.errorMessage)
         ? String(object.errorMessage)
@@ -392,7 +394,7 @@ export const ProjectPdfImportResponseData = {
       (obj.tokenUsage = Math.round(message.tokenUsage));
     if (message.documents) {
       obj.documents = message.documents.map((e) =>
-        e ? DocumentData.toJSON(e) : undefined
+        e ? DocumentResponseData.toJSON(e) : undefined
       );
     } else {
       obj.documents = [];
@@ -423,7 +425,7 @@ export const ProjectPdfImportResponseData = {
     message.status = object.status ?? 0;
     message.tokenUsage = object.tokenUsage ?? 0;
     message.documents =
-      object.documents?.map((e) => DocumentData.fromPartial(e)) || [];
+      object.documents?.map((e) => DocumentResponseData.fromPartial(e)) || [];
     message.errorMessage = object.errorMessage ?? "";
     message.succeedPages = object.succeedPages?.map((e) => e) || [];
     message.failedPages = object.failedPages?.map((e) => e) || [];
