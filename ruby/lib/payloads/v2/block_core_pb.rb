@@ -4,10 +4,8 @@
 
 require 'google/protobuf'
 
-require 'google/protobuf/struct_pb'
 
-
-descriptor_data = "\n\x13v2/block_core.proto\x12\x0eschema.v2.core\x1a\x1cgoogle/protobuf/struct.proto\"\xe0\x03\n\x05\x42lock\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0f\n\x07node_id\x18\x02 \x01(\t\x12\x16\n\x0eparent_node_id\x18\x03 \x01(\t\x12\x14\n\x0cpage_node_id\x18\x04 \x01(\t\x12\x12\n\nblock_type\x18\x05 \x01(\t\x12\x0c\n\x04name\x18\x06 \x01(\t\x12\x12\n\nproject_id\x18\x07 \x01(\x05\x12+\n\nproperties\x18\x08 \x01(\x0b\x32\x17.google.protobuf.Struct\x12.\n\x07\x63ontent\x18\t \x03(\x0b\x32\x1d.schema.v2.core.Block.Content\x12\x10\n\x08\x63hildren\x18\n \x03(\t\x12\x13\n\x06status\x18\x0b \x01(\tH\x00\x88\x01\x01\x12-\n\x0e\x63hildren_nodes\x18\x0c \x03(\x0b\x32\x15.schema.v2.core.Block\x1a\x97\x01\n\x07\x43ontent\x12\x0c\n\x04type\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\x12\x11\n\x04href\x18\x03 \x01(\tH\x00\x88\x01\x01\x12\'\n\x06styles\x18\x04 \x01(\x0b\x32\x17.google.protobuf.Struct\x12*\n\treference\x18\x05 \x01(\x0b\x32\x17.google.protobuf.StructB\x07\n\x05_hrefB\t\n\x07_statusb\x06proto3"
+descriptor_data = "\n\x13v2/block_core.proto\x12\x0eschema.v2.core\"\x18\n\x05\x42lock\x12\x0f\n\x07node_id\x18\x01 \x01(\tb\x06proto3"
 
 pool = Google::Protobuf::DescriptorPool.generated_pool
 pool.add_serialized_file(descriptor_data)
@@ -16,7 +14,6 @@ module Schema
   module V2
     module Core
       Block = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.core.Block").msgclass
-      Block::Content = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("schema.v2.core.Block.Content").msgclass
     end
   end
 end
