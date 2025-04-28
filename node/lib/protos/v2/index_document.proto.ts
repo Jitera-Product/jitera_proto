@@ -1,7 +1,12 @@
 /* eslint-disable */
 import _m0 from "protobufjs/minimal";
 import { StructData } from "../google/protobuf/struct.proto";
-import { Document, DocumentData } from "./document.proto";
+import {
+  Document,
+  DocumentData,
+  DocumentResponse,
+  DocumentResponseData,
+} from "./document.proto";
 
 export class IndexDocumentRequest {
   projectGenerateQueueId: number;
@@ -11,7 +16,7 @@ export class IndexDocumentRequest {
 
 export class IndexDocumentResponse {
   projectGenerateQueueId: number;
-  documents: Document[];
+  documents: DocumentResponse[];
   status: IndexDocumentResponseStatus;
   errorMessage: string;
 }
@@ -67,7 +72,7 @@ export class DeleteIndexDocumentRequest {
 
 export class DeleteIndexDocumentResponse {
   projectGenerateQueueId: number;
-  documents: Document[];
+  documents: DocumentResponse[];
   status: DeleteIndexDocumentResponseStatus;
   errorMessage: string;
 }
@@ -219,7 +224,7 @@ export const IndexDocumentResponseData = {
       writer.uint32(8).int32(message.projectGenerateQueueId);
     }
     for (const v of message.documents) {
-      DocumentData.encode(v!, writer.uint32(18).fork()).ldelim();
+      DocumentResponseData.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     if (message.status !== 0) {
       writer.uint32(32).int32(message.status);
@@ -244,7 +249,9 @@ export const IndexDocumentResponseData = {
           message.projectGenerateQueueId = reader.int32();
           break;
         case 2:
-          message.documents.push(DocumentData.decode(reader, reader.uint32()));
+          message.documents.push(
+            DocumentResponseData.decode(reader, reader.uint32())
+          );
           break;
         case 4:
           message.status = reader.int32() as any;
@@ -266,7 +273,7 @@ export const IndexDocumentResponseData = {
         ? Number(object.projectGenerateQueueId)
         : 0,
       documents: Array.isArray(object?.documents)
-        ? object.documents.map((e: any) => DocumentData.fromJSON(e))
+        ? object.documents.map((e: any) => DocumentResponseData.fromJSON(e))
         : [],
       status: isSet(object.status)
         ? indexDocumentResponseStatusFromJSON(object.status)
@@ -283,7 +290,7 @@ export const IndexDocumentResponseData = {
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     if (message.documents) {
       obj.documents = message.documents.map((e) =>
-        e ? DocumentData.toJSON(e) : undefined
+        e ? DocumentResponseData.toJSON(e) : undefined
       );
     } else {
       obj.documents = [];
@@ -301,7 +308,7 @@ export const IndexDocumentResponseData = {
     const message = createBaseIndexDocumentResponse();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.documents =
-      object.documents?.map((e) => DocumentData.fromPartial(e)) || [];
+      object.documents?.map((e) => DocumentResponseData.fromPartial(e)) || [];
     message.status = object.status ?? 0;
     message.errorMessage = object.errorMessage ?? "";
     return message;
@@ -413,7 +420,7 @@ export const DeleteIndexDocumentResponseData = {
       writer.uint32(8).int32(message.projectGenerateQueueId);
     }
     for (const v of message.documents) {
-      DocumentData.encode(v!, writer.uint32(18).fork()).ldelim();
+      DocumentResponseData.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     if (message.status !== 0) {
       writer.uint32(32).int32(message.status);
@@ -438,7 +445,9 @@ export const DeleteIndexDocumentResponseData = {
           message.projectGenerateQueueId = reader.int32();
           break;
         case 2:
-          message.documents.push(DocumentData.decode(reader, reader.uint32()));
+          message.documents.push(
+            DocumentResponseData.decode(reader, reader.uint32())
+          );
           break;
         case 4:
           message.status = reader.int32() as any;
@@ -460,7 +469,7 @@ export const DeleteIndexDocumentResponseData = {
         ? Number(object.projectGenerateQueueId)
         : 0,
       documents: Array.isArray(object?.documents)
-        ? object.documents.map((e: any) => DocumentData.fromJSON(e))
+        ? object.documents.map((e: any) => DocumentResponseData.fromJSON(e))
         : [],
       status: isSet(object.status)
         ? deleteIndexDocumentResponseStatusFromJSON(object.status)
@@ -477,7 +486,7 @@ export const DeleteIndexDocumentResponseData = {
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     if (message.documents) {
       obj.documents = message.documents.map((e) =>
-        e ? DocumentData.toJSON(e) : undefined
+        e ? DocumentResponseData.toJSON(e) : undefined
       );
     } else {
       obj.documents = [];
@@ -495,7 +504,7 @@ export const DeleteIndexDocumentResponseData = {
     const message = createBaseDeleteIndexDocumentResponse();
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.documents =
-      object.documents?.map((e) => DocumentData.fromPartial(e)) || [];
+      object.documents?.map((e) => DocumentResponseData.fromPartial(e)) || [];
     message.status = object.status ?? 0;
     message.errorMessage = object.errorMessage ?? "";
     return message;
