@@ -31,6 +31,8 @@
     "lib/**/*"
   ],
   "resolutions": {
-    "ts-proto@1.136.1": "patch:ts-proto@npm%3A1.136.1#./.yarn/patches/ts-proto-npm-1.136.1-c27de25407.patch"
+    "ts-proto@1.136.1": "patch:ts-proto@npm%3A1.136.1#./.yarn/patches/ts-proto-npm-1.136.1-c27de25407.patch",
+    "protobufjs": "^7.2.5",
+    "@grpc/grpc-js": "^1.8.22"
   }
 }
