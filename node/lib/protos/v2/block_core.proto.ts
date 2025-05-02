@@ -1,5 +1,5 @@
 /* eslint-disable */
-import * as _m0 from "protobufjs/minimal";
+import _m0 from "protobufjs/minimal";
 import { StructData } from "../google/protobuf/struct.proto";
 
 export class Block {
@@ -23,6 +23,10 @@ export class BlockContent {
   href?: string | undefined;
   styles?: { [key: string]: any };
   reference?: { [key: string]: any };
+}
+
+export class BlockRequest {
+  nodeId: string;
 }
 
 function createBaseBlock(): Block {
@@ -64,7 +68,10 @@ export const BlockData = {
       writer.uint32(56).int32(message.projectId);
     }
     if (message.properties !== undefined) {
-      StructData.encode(StructData.wrap(message.properties), writer.uint32(66).fork()).ldelim();
+      StructData.encode(
+        StructData.wrap(message.properties),
+        writer.uint32(66).fork()
+      ).ldelim();
     }
     for (const v of message.content) {
       BlockContentData.encode(v!, writer.uint32(74).fork()).ldelim();
@@ -110,10 +117,14 @@ export const BlockData = {
           message.projectId = reader.int32();
           break;
         case 8:
-          message.properties = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.properties = StructData.unwrap(
+            StructData.decode(reader, reader.uint32())
+          );
           break;
         case 9:
-          message.content.push(BlockContentData.decode(reader, reader.uint32()));
+          message.content.push(
+            BlockContentData.decode(reader, reader.uint32())
+          );
           break;
         case 10:
           message.children.push(reader.string());
@@ -136,14 +147,20 @@ export const BlockData = {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
       nodeId: isSet(object.nodeId) ? String(object.nodeId) : "",
-      parentNodeId: isSet(object.parentNodeId) ? String(object.parentNodeId) : "",
+      parentNodeId: isSet(object.parentNodeId)
+        ? String(object.parentNodeId)
+        : "",
       pageNodeId: isSet(object.pageNodeId) ? String(object.pageNodeId) : "",
       blockType: isSet(object.blockType) ? String(object.blockType) : "",
       name: isSet(object.name) ? String(object.name) : "",
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       properties: isObject(object.properties) ? object.properties : undefined,
-      content: Array.isArray(object?.content) ? object.content.map((e: any) => BlockContentData.fromJSON(e)) : [],
-      children: Array.isArray(object?.children) ? object.children.map((e: any) => String(e)) : [],
+      content: Array.isArray(object?.content)
+        ? object.content.map((e: any) => BlockContentData.fromJSON(e))
+        : [],
+      children: Array.isArray(object?.children)
+        ? object.children.map((e: any) => String(e))
+        : [],
       status: isSet(object.status) ? String(object.status) : undefined,
       childrenNodes: Array.isArray(object?.childrenNodes)
         ? object.childrenNodes.map((e: any) => BlockData.fromJSON(e))
@@ -155,14 +172,18 @@ export const BlockData = {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
     message.nodeId !== undefined && (obj.nodeId = message.nodeId);
-    message.parentNodeId !== undefined && (obj.parentNodeId = message.parentNodeId);
+    message.parentNodeId !== undefined &&
+      (obj.parentNodeId = message.parentNodeId);
     message.pageNodeId !== undefined && (obj.pageNodeId = message.pageNodeId);
     message.blockType !== undefined && (obj.blockType = message.blockType);
     message.name !== undefined && (obj.name = message.name);
-    message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
+    message.projectId !== undefined &&
+      (obj.projectId = Math.round(message.projectId));
     message.properties !== undefined && (obj.properties = message.properties);
     if (message.content) {
-      obj.content = message.content.map((e) => e ? BlockContentData.toJSON(e) : undefined);
+      obj.content = message.content.map((e) =>
+        e ? BlockContentData.toJSON(e) : undefined
+      );
     } else {
       obj.content = [];
     }
@@ -173,7 +194,9 @@ export const BlockData = {
     }
     message.status !== undefined && (obj.status = message.status);
     if (message.childrenNodes) {
-      obj.childrenNodes = message.childrenNodes.map((e) => e ? BlockData.toJSON(e) : undefined);
+      obj.childrenNodes = message.childrenNodes.map((e) =>
+        e ? BlockData.toJSON(e) : undefined
+      );
     } else {
       obj.childrenNodes = [];
     }
@@ -190,10 +213,12 @@ export const BlockData = {
     message.name = object.name ?? "";
     message.projectId = object.projectId ?? 0;
     message.properties = object.properties ?? undefined;
-    message.content = object.content?.map((e) => BlockContentData.fromPartial(e)) || [];
+    message.content =
+      object.content?.map((e) => BlockContentData.fromPartial(e)) || [];
     message.children = object.children?.map((e) => e) || [];
     message.status = object.status ?? undefined;
-    message.childrenNodes = object.childrenNodes?.map((e) => BlockData.fromPartial(e)) || [];
+    message.childrenNodes =
+      object.childrenNodes?.map((e) => BlockData.fromPartial(e)) || [];
     return message;
   },
 };
@@ -203,7 +228,10 @@ function createBaseBlockContent(): BlockContent {
 }
 
 export const BlockContentData = {
-  encode(message: BlockContent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    message: BlockContent,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     if (message.type !== "") {
       writer.uint32(10).string(message.type);
     }
@@ -214,10 +242,16 @@ export const BlockContentData = {
       writer.uint32(26).string(message.href);
     }
     if (message.styles !== undefined) {
-      StructData.encode(StructData.wrap(message.styles), writer.uint32(34).fork()).ldelim();
+      StructData.encode(
+        StructData.wrap(message.styles),
+        writer.uint32(34).fork()
+      ).ldelim();
     }
     if (message.reference !== undefined) {
-      StructData.encode(StructData.wrap(message.reference), writer.uint32(42).fork()).ldelim();
+      StructData.encode(
+        StructData.wrap(message.reference),
+        writer.uint32(42).fork()
+      ).ldelim();
     }
     return writer;
   },
@@ -239,10 +273,14 @@ export const BlockContentData = {
           message.href = reader.string();
           break;
         case 4:
-          message.styles = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.styles = StructData.unwrap(
+            StructData.decode(reader, reader.uint32())
+          );
           break;
         case 5:
-          message.reference = StructData.unwrap(StructData.decode(reader, reader.uint32()));
+          message.reference = StructData.unwrap(
+            StructData.decode(reader, reader.uint32())
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -283,11 +321,73 @@ export const BlockContentData = {
   },
 };
 
-type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
+function createBaseBlockRequest(): BlockRequest {
+  return { nodeId: "" };
+}
 
-type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
+export const BlockRequestData = {
+  encode(
+    message: BlockRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.nodeId !== "") {
+      writer.uint32(10).string(message.nodeId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): BlockRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBlockRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.nodeId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BlockRequest {
+    return { nodeId: isSet(object.nodeId) ? String(object.nodeId) : "" };
+  },
+
+  toJSON(message: BlockRequest): unknown {
+    const obj: any = {};
+    message.nodeId !== undefined && (obj.nodeId = message.nodeId);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<BlockRequest>): BlockRequest {
+    const message = createBaseBlockRequest();
+    message.nodeId = object.nodeId ?? "";
+    return message;
+  },
+};
+
+type Builtin =
+  | Date
+  | Function
+  | Uint8Array
+  | string
+  | number
+  | boolean
+  | undefined;
+
+type DeepPartial<T> = T extends Builtin
+  ? T
+  : T extends Array<infer U>
+  ? Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U>
+  ? ReadonlyArray<DeepPartial<U>>
+  : T extends {}
+  ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
 function isObject(value: any): boolean {

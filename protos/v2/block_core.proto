@@ -25,3 +25,7 @@ message Block {
     google.protobuf.Struct reference = 5;
   }
 }
+
+message BlockRequest {
+  string node_id = 1;
+}
