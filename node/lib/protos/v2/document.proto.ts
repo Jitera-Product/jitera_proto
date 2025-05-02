@@ -3,6 +3,10 @@ import _m0 from "protobufjs/minimal";
 import { StructData } from "../google/protobuf/struct.proto";
 
 export class Document {
+  uuid: string;
+}
+
+export class DocumentResponse {
   id: number;
   projectId: number;
   uuid: string;
@@ -12,12 +16,62 @@ export class Document {
 }
 
 function createBaseDocument(): Document {
-  return { id: 0, projectId: 0, uuid: "", title: "", content: "" };
+  return { uuid: "" };
 }
 
 export const DocumentData = {
   encode(
     message: Document,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.uuid !== "") {
+      writer.uint32(26).string(message.uuid);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Document {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDocument();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 3:
+          message.uuid = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Document {
+    return { uuid: isSet(object.uuid) ? String(object.uuid) : "" };
+  },
+
+  toJSON(message: Document): unknown {
+    const obj: any = {};
+    message.uuid !== undefined && (obj.uuid = message.uuid);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<Document>): Document {
+    const message = createBaseDocument();
+    message.uuid = object.uuid ?? "";
+    return message;
+  },
+};
+
+function createBaseDocumentResponse(): DocumentResponse {
+  return { id: 0, projectId: 0, uuid: "", title: "", content: "" };
+}
+
+export const DocumentResponseData = {
+  encode(
+    message: DocumentResponse,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.id !== 0) {
@@ -44,10 +98,10 @@ export const DocumentData = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): Document {
+  decode(input: _m0.Reader | Uint8Array, length?: number): DocumentResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseDocument();
+    const message = createBaseDocumentResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -79,7 +133,7 @@ export const DocumentData = {
     return message;
   },
 
-  fromJSON(object: any): Document {
+  fromJSON(object: any): DocumentResponse {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
@@ -90,7 +144,7 @@ export const DocumentData = {
     };
   },
 
-  toJSON(message: Document): unknown {
+  toJSON(message: DocumentResponse): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
     message.projectId !== undefined &&
@@ -102,8 +156,8 @@ export const DocumentData = {
     return obj;
   },
 
-  fromPartial(object: DeepPartial<Document>): Document {
-    const message = createBaseDocument();
+  fromPartial(object: DeepPartial<DocumentResponse>): DocumentResponse {
+    const message = createBaseDocumentResponse();
     message.id = object.id ?? 0;
     message.projectId = object.projectId ?? 0;
     message.uuid = object.uuid ?? "";

@@ -70,7 +70,7 @@ message ProjectImportPageTestCasesCreation {
 	int32 project_generate_id = 1;
 	int32 project_id = 2;
 	test_case_common.TestCasesRunTestConfiguration test_configuration = 3;
-	repeated core.Block use_cases = 4;
+	repeated core.BlockRequest use_cases = 4;
 	repeated ProjectImportPage project_import_pages = 5;
 	string master_language_code = 6;
 }
