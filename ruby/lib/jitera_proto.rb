@@ -36,6 +36,7 @@ require_relative 'payloads/v2/index_document_pb'
 require_relative 'payloads/v2/generate_erd_pb'
 require_relative 'payloads/v2/index_project_artifact_pb'
 require_relative 'payloads/v2/generate_dynamic_doc_pb'
+require_relative 'payloads/v2/generate_dynamic_doc_report_pb'
 
 module JiteraProto
 end

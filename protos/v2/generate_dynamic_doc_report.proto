@@ -1,0 +1,14 @@
+syntax = "proto3";
+package schema.v2;
+
+message GenerateDynamicDocReport {
+  int32 project_generate_queue_id = 1;
+  Status status = 2;
+  string error_message = 3;
+
+  enum Status {
+    STARTED = 0;
+    COMPLETED = 1;
+    FAILED = 2;
+  }
+}
