@@ -1,6 +1,6 @@
 /* eslint-disable */
 import _m0 from "protobufjs/minimal";
-import { Git, ProjectSource } from "./project_source.proto";
+import { Git, ProjectSource, ProjectSourceData, GitData } from "./project_source.proto";
 
 export class GenerateDynamicDocRequest {
   projectGenerateQueueId: number;
