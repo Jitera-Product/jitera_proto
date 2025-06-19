@@ -30,3 +30,5 @@ export * from "./protos/v2/translation_blocks.proto";
 export * from "./protos/v2/use_case_creation.proto";
 export * from "./protos/v2/index_document.proto";
 export * from "./protos/v2/index_project_artifact.proto";
+export * from './protos/v2/generate_dynamic_doc.proto'
+export * from './protos/v2/generate_dynamic_doc_report.proto'
