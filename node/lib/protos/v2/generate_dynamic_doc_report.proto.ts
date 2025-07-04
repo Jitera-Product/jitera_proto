@@ -5,6 +5,7 @@ export class GenerateDynamicDocReport {
   projectGenerateQueueId: number;
   status: GenerateDynamicDocReportStatus;
   errorMessage: string;
+  documentUuids: string[];
 }
 
 export enum GenerateDynamicDocReportStatus {
@@ -47,7 +48,7 @@ export function generateDynamicDocReportStatusToJSON(object: GenerateDynamicDocR
 }
 
 function createBaseGenerateDynamicDocReport(): GenerateDynamicDocReport {
-  return { projectGenerateQueueId: 0, status: 0, errorMessage: "" };
+  return { projectGenerateQueueId: 0, status: 0, errorMessage: "", documentUuids: [] };
 }
 
 export const GenerateDynamicDocReportData = {
@@ -60,6 +61,9 @@ export const GenerateDynamicDocReportData = {
     }
     if (message.errorMessage !== "") {
       writer.uint32(26).string(message.errorMessage);
+    }
+    for (const v of message.documentUuids) {
+      writer.uint32(34).string(v!);
     }
     return writer;
   },
@@ -80,6 +84,9 @@ export const GenerateDynamicDocReportData = {
         case 3:
           message.errorMessage = reader.string();
           break;
+        case 4:
+          message.documentUuids.push(reader.string());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -93,6 +100,7 @@ export const GenerateDynamicDocReportData = {
       projectGenerateQueueId: isSet(object.projectGenerateQueueId) ? Number(object.projectGenerateQueueId) : 0,
       status: isSet(object.status) ? generateDynamicDocReportStatusFromJSON(object.status) : 0,
       errorMessage: isSet(object.errorMessage) ? String(object.errorMessage) : "",
+      documentUuids: Array.isArray(object?.documentUuids) ? object.documentUuids.map((e: any) => String(e)) : [],
     };
   },
 
@@ -102,6 +110,11 @@ export const GenerateDynamicDocReportData = {
       (obj.projectGenerateQueueId = Math.round(message.projectGenerateQueueId));
     message.status !== undefined && (obj.status = generateDynamicDocReportStatusToJSON(message.status));
     message.errorMessage !== undefined && (obj.errorMessage = message.errorMessage);
+    if (message.documentUuids) {
+      obj.documentUuids = message.documentUuids.map((e) => e);
+    } else {
+      obj.documentUuids = [];
+    }
     return obj;
   },
 
@@ -110,6 +123,7 @@ export const GenerateDynamicDocReportData = {
     message.projectGenerateQueueId = object.projectGenerateQueueId ?? 0;
     message.status = object.status ?? 0;
     message.errorMessage = object.errorMessage ?? "";
+    message.documentUuids = object.documentUuids?.map((e) => e) || [];
     return message;
   },
 };
