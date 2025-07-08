@@ -33,6 +33,7 @@ message ProjectSource {
 	string master_language_code = 7;
 	optional string source_url = 8;
 	optional string source_file_encrypted_key = 9;
+	string uuid = 10;
 
 	enum Framework {
 		FRAMEWORK_UNSPECIFIED = 0;
