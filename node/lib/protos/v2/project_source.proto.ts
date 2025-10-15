@@ -337,7 +337,7 @@ export class Git {
   token: string;
   jiteraBranch: string;
   targetBranch: string;
-  repoId: string;
+  repoId: number;
   pullRequest?: PullRequest;
   provider?: GitProvider | undefined;
   providerHostUrl?: string | undefined;
@@ -1206,7 +1206,7 @@ export const PullRequestData = {
 };
 
 function createBaseGit(): Git {
-  return { repo: "", owner: "", branch: "", token: "", jiteraBranch: "", targetBranch: "", repoId: "" };
+  return { repo: "", owner: "", branch: "", token: "", jiteraBranch: "", targetBranch: "", repoId: 0 };
 }
 
 export const GitData = {
@@ -1229,8 +1229,8 @@ export const GitData = {
     if (message.targetBranch !== "") {
       writer.uint32(66).string(message.targetBranch);
     }
-    if (message.repoId !== "") {
-      writer.uint32(106).string(message.repoId);
+    if (message.repoId !== 0) {
+      writer.uint32(104).int64(message.repoId);
     }
     if (message.pullRequest !== undefined) {
       PullRequestData.encode(message.pullRequest, writer.uint32(74).fork()).ldelim();
@@ -1273,7 +1273,7 @@ export const GitData = {
           message.targetBranch = reader.string();
           break;
         case 13:
-          message.repoId = reader.string();
+          message.repoId = longToNumber(reader.int64() as Long);
           break;
         case 9:
           message.pullRequest = PullRequestData.decode(reader, reader.uint32());
@@ -1303,7 +1303,7 @@ export const GitData = {
       token: isSet(object.token) ? String(object.token) : "",
       jiteraBranch: isSet(object.jiteraBranch) ? String(object.jiteraBranch) : "",
       targetBranch: isSet(object.targetBranch) ? String(object.targetBranch) : "",
-      repoId: isSet(object.repoId) ? String(object.repoId) : "",
+      repoId: isSet(object.repoId) ? Number(object.repoId) : 0,
       pullRequest: isSet(object.pullRequest) ? PullRequestData.fromJSON(object.pullRequest) : undefined,
       provider: isSet(object.provider) ? gitProviderFromJSON(object.provider) : undefined,
       providerHostUrl: isSet(object.providerHostUrl) ? String(object.providerHostUrl) : undefined,
@@ -1319,7 +1319,7 @@ export const GitData = {
     message.token !== undefined && (obj.token = message.token);
     message.jiteraBranch !== undefined && (obj.jiteraBranch = message.jiteraBranch);
     message.targetBranch !== undefined && (obj.targetBranch = message.targetBranch);
-    message.repoId !== undefined && (obj.repoId = message.repoId);
+    message.repoId !== undefined && (obj.repoId = Math.round(message.repoId));
     message.pullRequest !== undefined &&
       (obj.pullRequest = message.pullRequest ? PullRequestData.toJSON(message.pullRequest) : undefined);
     message.provider !== undefined &&
@@ -1337,7 +1337,7 @@ export const GitData = {
     message.token = object.token ?? "";
     message.jiteraBranch = object.jiteraBranch ?? "";
     message.targetBranch = object.targetBranch ?? "";
-    message.repoId = object.repoId ?? "";
+    message.repoId = object.repoId ?? 0;
     message.pullRequest = (object.pullRequest !== undefined && object.pullRequest !== null)
       ? PullRequestData.fromPartial(object.pullRequest)
       : undefined;
