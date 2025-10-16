@@ -337,7 +337,7 @@ export class Git {
   token: string;
   jiteraBranch: string;
   targetBranch: string;
-  repoId: number;
+  repoId?: number | undefined;
   pullRequest?: PullRequest;
   provider?: GitProvider | undefined;
   providerHostUrl?: string | undefined;
@@ -1206,7 +1206,7 @@ export const PullRequestData = {
 };
 
 function createBaseGit(): Git {
-  return { repo: "", owner: "", branch: "", token: "", jiteraBranch: "", targetBranch: "", repoId: 0 };
+  return { repo: "", owner: "", branch: "", token: "", jiteraBranch: "", targetBranch: "" };
 }
 
 export const GitData = {
@@ -1229,7 +1229,7 @@ export const GitData = {
     if (message.targetBranch !== "") {
       writer.uint32(66).string(message.targetBranch);
     }
-    if (message.repoId !== 0) {
+    if (message.repoId !== undefined) {
       writer.uint32(104).int64(message.repoId);
     }
     if (message.pullRequest !== undefined) {
@@ -1303,7 +1303,7 @@ export const GitData = {
       token: isSet(object.token) ? String(object.token) : "",
       jiteraBranch: isSet(object.jiteraBranch) ? String(object.jiteraBranch) : "",
       targetBranch: isSet(object.targetBranch) ? String(object.targetBranch) : "",
-      repoId: isSet(object.repoId) ? Number(object.repoId) : 0,
+      repoId: isSet(object.repoId) ? Number(object.repoId) : undefined,
       pullRequest: isSet(object.pullRequest) ? PullRequestData.fromJSON(object.pullRequest) : undefined,
       provider: isSet(object.provider) ? gitProviderFromJSON(object.provider) : undefined,
       providerHostUrl: isSet(object.providerHostUrl) ? String(object.providerHostUrl) : undefined,
@@ -1337,7 +1337,7 @@ export const GitData = {
     message.token = object.token ?? "";
     message.jiteraBranch = object.jiteraBranch ?? "";
     message.targetBranch = object.targetBranch ?? "";
-    message.repoId = object.repoId ?? 0;
+    message.repoId = object.repoId ?? undefined;
     message.pullRequest = (object.pullRequest !== undefined && object.pullRequest !== null)
       ? PullRequestData.fromPartial(object.pullRequest)
       : undefined;
