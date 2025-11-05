@@ -4,7 +4,7 @@
 
 require 'google/protobuf'
 
-descriptor_data = "\n\x1dv2/generate_dynamic_doc.proto\x12\tschema.v2\x1a\x17v2/project_source.proto\"\xb7\x01\n\x19GenerateDynamicDocRequest\x12!\n\x19project_generate_queue_id\x18\x01 \x01(\x05\x12\x30\n\x0eproject_source\x18\x02 \x01(\x0b\x32\x18.schema.v2.ProjectSource\x12\x1b\n\x03git\x18\x03 \x01(\x0b\x32\x0e.schema.v2.Git\x12\x12\n\nproject_id\x18\x04 \x01(\x05\x12\x14\n\x0cproject_uuid\x18\x05 \x01(\tb\x06proto3"
+descriptor_data = "\n\x1dv2/generate_dynamic_doc.proto\x12\tschema.v2\x1a\x17v2/project_source.proto\"\xc9\x01\n\x19GenerateDynamicDocRequest\x12!\n\x19project_generate_queue_id\x18\x01 \x01(\x05\x12\x30\n\x0eproject_source\x18\x02 \x01(\x0b\x32\x18.schema.v2.ProjectSource\x12\x1b\n\x03git\x18\x03 \x01(\x0b\x32\x0e.schema.v2.Git\x12\x12\n\nproject_id\x18\x04 \x01(\x05\x12\x14\n\x0cproject_uuid\x18\x05 \x01(\t\x12\x10\n\x08llm_name\x18\x06 \x01(\tb\x06proto3"
 
 pool = Google::Protobuf::DescriptorPool.generated_pool
 pool.add_serialized_file(descriptor_data)
