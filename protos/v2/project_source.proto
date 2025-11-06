@@ -102,7 +102,7 @@ message Git {
 	optional Provider provider = 10;
 	optional string provider_host_url = 11;
 	optional google.protobuf.Struct headers = 12;
-	
+
 	enum Provider {
 		github = 0;
 		gitlab = 1;
