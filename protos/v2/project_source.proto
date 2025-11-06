@@ -97,6 +97,7 @@ message Git {
 	string token = 6;
 	string jitera_branch = 7;
 	string target_branch = 8;
+	optional int64 repoId = 13;
 	PullRequest pull_request = 9;
 	optional Provider provider = 10;
 	optional string provider_host_url = 11;
