@@ -8,10 +8,11 @@ export class GenerateDynamicDocRequest {
   git?: Git;
   projectId: number;
   projectUuid: string;
+  llmName?: string | undefined;
 }
 
 function createBaseGenerateDynamicDocRequest(): GenerateDynamicDocRequest {
-  return { projectGenerateQueueId: 0, projectId: 0, projectUuid: "" };
+  return { projectGenerateQueueId: 0, projectId: 0, projectUuid: "", llmName: undefined };
 }
 
 export const GenerateDynamicDocRequestData = {
@@ -30,6 +31,9 @@ export const GenerateDynamicDocRequestData = {
     }
     if (message.projectUuid !== "") {
       writer.uint32(42).string(message.projectUuid);
+    }
+    if (message.llmName !== undefined) {
+      writer.uint32(50).string(message.llmName);
     }
     return writer;
   },
@@ -56,6 +60,9 @@ export const GenerateDynamicDocRequestData = {
         case 5:
           message.projectUuid = reader.string();
           break;
+        case 6:
+          message.llmName = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -71,6 +78,7 @@ export const GenerateDynamicDocRequestData = {
       git: isSet(object.git) ? GitData.fromJSON(object.git) : undefined,
       projectId: isSet(object.projectId) ? Number(object.projectId) : 0,
       projectUuid: isSet(object.projectUuid) ? String(object.projectUuid) : "",
+      llmName: isSet(object.llmName) ? String(object.llmName) : "",
     };
   },
 
@@ -83,6 +91,7 @@ export const GenerateDynamicDocRequestData = {
     message.git !== undefined && (obj.git = message.git ? GitData.toJSON(message.git) : undefined);
     message.projectId !== undefined && (obj.projectId = Math.round(message.projectId));
     message.projectUuid !== undefined && (obj.projectUuid = message.projectUuid);
+    message.llmName !== undefined && (obj.llmName = message.llmName);
     return obj;
   },
 
@@ -95,6 +104,7 @@ export const GenerateDynamicDocRequestData = {
     message.git = (object.git !== undefined && object.git !== null) ? GitData.fromPartial(object.git) : undefined;
     message.projectId = object.projectId ?? 0;
     message.projectUuid = object.projectUuid ?? "";
+    message.llmName = object.llmName ?? "";
     return message;
   },
 };
