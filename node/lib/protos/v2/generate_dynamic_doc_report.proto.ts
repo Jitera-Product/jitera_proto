@@ -12,6 +12,7 @@ export enum GenerateDynamicDocReportStatus {
   STARTED = 0,
   COMPLETED = 1,
   FAILED = 2,
+  IN_PROGRESS = 3,
   UNRECOGNIZED = -1,
 }
 
@@ -26,6 +27,9 @@ export function generateDynamicDocReportStatusFromJSON(object: any): GenerateDyn
     case 2:
     case "FAILED":
       return GenerateDynamicDocReportStatus.FAILED;
+    case 3:
+    case "IN_PROGRESS":
+      return GenerateDynamicDocReportStatus.IN_PROGRESS;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -41,6 +45,8 @@ export function generateDynamicDocReportStatusToJSON(object: GenerateDynamicDocR
       return "COMPLETED";
     case GenerateDynamicDocReportStatus.FAILED:
       return "FAILED";
+    case GenerateDynamicDocReportStatus.IN_PROGRESS:
+      return "IN_PROGRESS";
     case GenerateDynamicDocReportStatus.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
